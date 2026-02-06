@@ -484,7 +484,7 @@ const HomePage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 font-serif"
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 font-serif text-white"
                   data-testid="hero-title"
                 >
                   {heroMessages[heroIndex]}
