@@ -364,6 +364,65 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
+            {/* Practice Areas Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setPracticeAreasOpen(true)}
+              onMouseLeave={() => setPracticeAreasOpen(false)}
+            >
+              <button 
+                className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
+                  isPracticeAreasActive ? 'text-[#e63946]' : 'text-[#0a1628] hover:text-[#e63946]'
+                }`}
+                data-testid="practice-areas-dropdown-btn"
+              >
+                Practice Areas <ChevronDown className={`w-4 h-4 transition-transform ${practiceAreasOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {practiceAreasOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[520px]"
+                  >
+                    <div className="bg-white shadow-xl border border-[#e2e8f0] p-6">
+                      <div className="grid grid-cols-2 gap-2">
+                        {practiceAreaLinks.map((area, index) => (
+                          <Link
+                            key={area.path}
+                            to={area.path}
+                            onClick={() => setPracticeAreasOpen(false)}
+                            className={`flex items-start gap-3 p-3 hover:bg-[#f8fafc] transition-colors group ${
+                              index === 0 ? 'col-span-2 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                            }`}
+                          >
+                            <area.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                              index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                            } transition-colors`} />
+                            <div>
+                              <span className={`text-sm font-semibold block ${
+                                index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                              } transition-colors`}>
+                                {area.name}
+                              </span>
+                              <span className={`text-xs ${
+                                index === 0 ? 'text-white/70' : 'text-[#64748b]'
+                              }`}>
+                                {area.description}
+                              </span>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {navLinks.slice(2).map((link) => (
               <Link
                 key={link.path}
