@@ -16,7 +16,15 @@ import {
   DataCollectionPage,
   DataAnalyticsPage,
   CapacityBuildingPage,
-  TechnicalAdvisoryPage
+  TechnicalAdvisoryPage,
+  KnowledgeManagementPage,
+  DigitalDataSolutionsPage,
+  GISGeospatialPage,
+  QualitativeResearchPage,
+  SurveyDesignPage,
+  ProgramDesignPage,
+  PolicyResearchPage,
+  EconomicAnalysisPage
 } from './pages/ServicePages';
 import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
 import {
