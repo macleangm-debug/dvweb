@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { 
   ArrowRight, CheckCircle2, BarChart3, Users, Globe, Target,
   BookOpen, Droplets, Heart, Sprout, Building2, Shield, TrendingUp,
-  Briefcase, Scale, Lightbulb, Zap, MapPin, Award
+  Briefcase, Scale, Lightbulb, Zap, MapPin, Award, Home, Truck,
+  Baby, HandHeart, Utensils, AlertTriangle, GraduationCap, Factory
 } from 'lucide-react';
 
 // Shared Components for Practice Area Pages
