@@ -267,13 +267,21 @@ const Navbar = () => {
   ];
 
   const serviceLinks = [
-    { name: 'All Services', path: '/services', icon: Globe, description: 'Comprehensive research & evidence solutions' },
-    { name: 'Research & Statistics', path: '/services/research-statistics', icon: BarChart3, description: 'Quantitative & qualitative research' },
-    { name: 'Monitoring & Evaluation', path: '/services/monitoring-evaluation', icon: Target, description: 'M&E frameworks & impact evaluations' },
-    { name: 'Data Collection', path: '/services/data-collection', icon: Users, description: 'Large-scale field operations' },
+    { name: 'All Services', path: '/services', icon: Globe, description: 'Comprehensive research solutions' },
+    { name: 'Research & Statistics', path: '/services/research-statistics', icon: BarChart3, description: 'Quantitative & qualitative' },
+    { name: 'Monitoring & Evaluation', path: '/services/monitoring-evaluation', icon: Target, description: 'M&E frameworks' },
+    { name: 'Data Collection', path: '/services/data-collection', icon: Users, description: 'Field operations' },
     { name: 'Data Analytics', path: '/services/data-analytics', icon: PieChart, description: 'Analysis & visualization' },
-    { name: 'Capacity Building', path: '/services/capacity-building', icon: GraduationCap, description: 'Training & knowledge transfer' },
-    { name: 'Technical Advisory', path: '/services/technical-advisory', icon: Compass, description: 'Strategic guidance & consultation' },
+    { name: 'Survey Design', path: '/services/survey-design', icon: PenTool, description: 'Methodology expertise' },
+    { name: 'Qualitative Research', path: '/services/qualitative-research', icon: MessageCircle, description: 'In-depth understanding' },
+    { name: 'GIS & Geospatial', path: '/services/gis-geospatial', icon: Map, description: 'Spatial analysis' },
+    { name: 'Digital Solutions', path: '/services/digital-solutions', icon: Smartphone, description: 'Tech-enabled data' },
+    { name: 'Program Design', path: '/services/program-design', icon: Workflow, description: 'ToC & frameworks' },
+    { name: 'Policy Research', path: '/services/policy-research', icon: FileText, description: 'Evidence to action' },
+    { name: 'Economic Analysis', path: '/services/economic-analysis', icon: Calculator, description: 'Cost-benefit & ROI' },
+    { name: 'Knowledge Management', path: '/services/knowledge-management', icon: FolderOpen, description: 'Learning systems' },
+    { name: 'Capacity Building', path: '/services/capacity-building', icon: GraduationCap, description: 'Training programs' },
+    { name: 'Technical Advisory', path: '/services/technical-advisory', icon: Compass, description: 'Strategic guidance' },
   ];
 
   const practiceAreaLinks = [
