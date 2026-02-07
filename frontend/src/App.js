@@ -400,10 +400,42 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t"
+            className="lg:hidden bg-white border-t overflow-y-auto max-h-[80vh]"
           >
             <div className="container mx-auto px-6 py-4">
-              {navLinks.map((link) => (
+              {navLinks.slice(0, 2).map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block py-3 text-sm font-medium ${
+                    location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              {/* Services Section in Mobile */}
+              <div className="py-3 border-t border-b border-[#e2e8f0] my-2">
+                <p className="text-sm font-semibold text-[#0a1628] mb-2">Services</p>
+                <div className="pl-4 space-y-2">
+                  {serviceLinks.map((service) => (
+                    <Link
+                      key={service.path}
+                      to={service.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`block py-2 text-sm ${
+                        location.pathname === service.path ? 'text-[#e63946]' : 'text-[#64748b]'
+                      }`}
+                    >
+                      {service.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              
+              {navLinks.slice(2).map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
