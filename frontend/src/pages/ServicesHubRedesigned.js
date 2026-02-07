@@ -236,7 +236,7 @@ const ServicesHubPageRedesigned = () => {
                 <span className="text-sm font-medium">Tanzania's Leading Research Partner</span>
               </motion.div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
                 Evidence That
                 <span className="block text-[#e63946]">Drives Impact</span>
               </h1>
