@@ -2117,8 +2117,16 @@ function App() {
                   <Route path="/practice-areas/education" element={<EducationPage />} />
                   <Route path="/practice-areas/health" element={<HealthPage />} />
                   <Route path="/practice-areas/wash" element={<WASHPage />} />
+                  <Route path="/practice-areas/nutrition" element={<NutritionPage />} />
                   <Route path="/practice-areas/governance" element={<GovernancePage />} />
                   <Route path="/practice-areas/economic-development" element={<EconomicDevelopmentPage />} />
+                  <Route path="/practice-areas/social-protection" element={<SocialProtectionPage />} />
+                  <Route path="/practice-areas/inclusion" element={<InclusionPage />} />
+                  <Route path="/practice-areas/youth" element={<YouthPage />} />
+                  <Route path="/practice-areas/conflict-humanitarian" element={<ConflictHumanitarianPage />} />
+                  <Route path="/practice-areas/urban" element={<UrbanDevelopmentPage />} />
+                  <Route path="/practice-areas/infrastructure" element={<InfrastructurePage />} />
+                  <Route path="/practice-areas/private-sector" element={<PrivateSectorPage />} />
                   <Route path="/practice-areas/environment" element={<EnvironmentPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
