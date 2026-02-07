@@ -26,7 +26,15 @@ import {
   WASHPage,
   GovernancePage,
   EconomicDevelopmentPage,
-  EnvironmentPage
+  EnvironmentPage,
+  SocialProtectionPage,
+  InclusionPage,
+  NutritionPage,
+  ConflictHumanitarianPage,
+  UrbanDevelopmentPage,
+  YouthPage,
+  InfrastructurePage,
+  PrivateSectorPage
 } from './pages/PracticeAreaPages';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
