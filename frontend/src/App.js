@@ -269,13 +269,21 @@ const Navbar = () => {
 
   const practiceAreaLinks = [
     { name: 'All Practice Areas', path: '/practice-areas', icon: Globe, description: 'Our sector expertise' },
-    { name: 'Agriculture & Food Security', path: '/practice-areas/agriculture', icon: Sprout, description: 'Food security & farming research' },
-    { name: 'Education', path: '/practice-areas/education', icon: BookOpen, description: 'Learning & school assessments' },
-    { name: 'Health', path: '/practice-areas/health', icon: Heart, description: 'Health systems & facilities' },
-    { name: 'WASH', path: '/practice-areas/wash', icon: Droplets, description: 'Water, sanitation & hygiene' },
-    { name: 'Governance', path: '/practice-areas/governance', icon: Scale, description: 'Public finance & accountability' },
-    { name: 'Economic Development', path: '/practice-areas/economic-development', icon: TrendingUp, description: 'Enterprise & employment' },
-    { name: 'Environment & Climate', path: '/practice-areas/environment', icon: Globe, description: 'Climate & natural resources' },
+    { name: 'Agriculture & Food Security', path: '/practice-areas/agriculture', icon: Sprout, description: 'Food security & farming' },
+    { name: 'Education', path: '/practice-areas/education', icon: BookOpen, description: 'Learning assessments' },
+    { name: 'Health', path: '/practice-areas/health', icon: Heart, description: 'Health systems' },
+    { name: 'WASH', path: '/practice-areas/wash', icon: Droplets, description: 'Water & sanitation' },
+    { name: 'Nutrition', path: '/practice-areas/nutrition', icon: Utensils, description: 'Nutrition surveys' },
+    { name: 'Social Protection', path: '/practice-areas/social-protection', icon: Shield, description: 'Safety nets' },
+    { name: 'Inclusion & Disability', path: '/practice-areas/inclusion', icon: HandHeart, description: 'Inclusive programming' },
+    { name: 'Youth & Adolescents', path: '/practice-areas/youth', icon: GraduationCap, description: 'Youth development' },
+    { name: 'Governance', path: '/practice-areas/governance', icon: Scale, description: 'Public finance' },
+    { name: 'Economic Development', path: '/practice-areas/economic-development', icon: TrendingUp, description: 'Enterprise & jobs' },
+    { name: 'Conflict & Humanitarian', path: '/practice-areas/conflict-humanitarian', icon: AlertTriangle, description: 'Crisis response' },
+    { name: 'Urban Development', path: '/practice-areas/urban', icon: Building2, description: 'Cities & services' },
+    { name: 'Infrastructure', path: '/practice-areas/infrastructure', icon: Truck, description: 'Roads & energy' },
+    { name: 'Private Sector', path: '/practice-areas/private-sector', icon: Factory, description: 'Business environment' },
+    { name: 'Environment & Climate', path: '/practice-areas/environment', icon: Globe, description: 'Climate resilience' },
   ];
 
   const isServicesActive = location.pathname.startsWith('/services');
