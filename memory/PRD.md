@@ -1,101 +1,91 @@
 # DataVision International Website - PRD
 
-## Project Overview
-Modern website for DataVision International - a 25+ year old Tanzanian research and statistics consultancy expanding across Africa to attract local partners for donor-funded research projects.
-
 ## Original Problem Statement
-Build a modern, McKinsey-style website that positions DataVision as Africa's premier research consultancy. Focus on Research & Statistics while keeping other services (ICT, Payments, Training) secondary.
+User requested restructuring of the DataVision website navigation and services:
+1. Remove "Research & Statistics" as a standalone navigation item
+2. Move Research & Statistics under a "Services" dropdown
+3. Create comprehensive McKinsey-style service pages with deep insights, not shallow information
+
+## Application Overview
+DataVision International is a research and statistics consultancy based in Tanzania, specializing in:
+- Agriculture, Education, Health, and WASH sectors
+- Large-scale surveys and data collection
+- Monitoring & Evaluation
+- Capacity building and training
 
 ## User Personas
-1. **Development Organizations** - World Bank, USAID, UNICEF, UN agencies seeking African research partners
-2. **NGOs & Foundations** - Room to Read, Ecorys looking for data collection services
-3. **Potential Local Partners** - African firms wanting to collaborate on large research projects
-4. **Government Agencies** - Ministries needing M&E studies
+1. **Development Partners** (World Bank, USAID, UN agencies) - Looking for reliable research partners
+2. **NGOs and Implementers** - Seeking M&E and data collection services
+3. **Government Agencies** - Need policy research and statistics support
+4. **Admin Users** - Managing website content
 
-## Core Requirements
-- McKinsey-style design (clean, authoritative, professional)
-- Colors: Deep Navy (#0a1628), Red accent (#e63946)
-- Focus: Research & Statistics (primary), other services (secondary)
-- Interactive Africa map showing project presence
-- Animated statistics counters
-- Client testimonials carousel
-- Admin panel for content management
-- Contact form with bot protection (honeypot)
+## Core Requirements (Static)
+- Professional consultancy website
+- Admin dashboard for content management
+- Contact inquiry system
+- Project portfolio showcase
+- Team member profiles
+- Testimonials from partners
 
-## What's Been Implemented (Jan 2026)
+## What's Been Implemented
 
-### Backend (FastAPI + MongoDB)
-- ✅ Admin authentication (JWT-based)
-- ✅ Statistics API (CRUD)
-- ✅ Projects API (CRUD, filter by sector)
-- ✅ Team members API (CRUD)
-- ✅ Testimonials API (CRUD)
-- ✅ Partners API (CRUD)
-- ✅ News/Articles API (CRUD)
-- ✅ Inquiries API with honeypot bot protection
-- ✅ Database seeding with initial content
+### January 2026 - Services Restructure
+**Navigation Changes:**
+- Removed standalone "Research & Statistics" from main nav
+- Created Services dropdown with hover functionality
+- Services menu includes: All Services, Research & Statistics, M&E, Data Collection, Data Analytics, Capacity Building, Technical Advisory
 
-### Frontend (React + Tailwind)
-- ✅ Homepage with rotating hero messages
-- ✅ Interactive Africa map (SVG-based)
-- ✅ Animated statistics counters
-- ✅ Testimonials carousel (auto-rotate)
-- ✅ Featured projects section
-- ✅ Practice areas (Agriculture, Education, Health, WASH)
-- ✅ Partners logo strip
-- ✅ About page with team, values, story
-- ✅ Research & Statistics page (detailed)
-- ✅ Other Services page (combined, less prominent)
-- ✅ Practice Areas page with map
-- ✅ Projects page with sector filtering
-- ✅ News page
-- ✅ Contact page with form (honeypot protection)
-- ✅ Admin login page
-- ✅ Admin dashboard (inquiries, projects, statistics)
-- ✅ Responsive design
-- ✅ McKinsey-style typography (Crimson Text + DM Sans)
+**New Service Pages (McKinsey-style):**
+Each page contains 7 comprehensive sections:
+1. **Hero Section** - Value proposition with tagline, title, description, and image
+2. **The Challenge** - Industry context and problems clients face
+3. **Our Approach** - Step-by-step methodology with numbered process
+4. **What We Deliver** - Grid of deliverables with icons
+5. **Key Insights** - Statistics and thought leadership content
+6. **Why DataVision** - Differentiation and value proposition
+7. **CTA Section** - Call-to-action for engagement
 
-### Admin Credentials
-- Email: info@datavision.co.tz
-- Password: walkthetalkdvi1998
+**Service Pages Created:**
+1. `/services` - Services Hub with overview of all offerings
+2. `/services/research-statistics` - Core quantitative/qualitative research
+3. `/services/monitoring-evaluation` - M&E frameworks, baselines, impact evaluations
+4. `/services/data-collection` - Large-scale field operations
+5. `/services/data-analytics` - Analysis and visualization
+6. `/services/capacity-building` - Training and knowledge transfer
+7. `/services/technical-advisory` - Strategic consulting and policy support
+
+**Files Modified/Created:**
+- `/app/frontend/src/App.js` - Updated navigation with dropdown
+- `/app/frontend/src/pages/ServicePages.js` - New comprehensive service pages
+
+## Tech Stack
+- Frontend: React.js with Tailwind CSS
+- Backend: FastAPI (Python)
+- Database: MongoDB
+- Animations: Framer Motion
 
 ## Prioritized Backlog
 
-### P0 (Critical) - DONE
-- [x] Core website structure
-- [x] Research & Statistics focus
-- [x] Contact form with bot protection
-- [x] Admin panel
+### P0 (Critical)
+- None remaining
 
 ### P1 (High Priority)
-- [ ] Email notifications for new inquiries (SendGrid/Resend integration)
-- [ ] Rich text editor for news articles in admin
-- [ ] Image upload for projects/team members
+- Add case study/project detail pages
+- Implement blog/news article detail views
+- Add newsletter subscription functionality
 
 ### P2 (Medium Priority)
-- [ ] Blog/Insights section with full CMS
-- [ ] Case study detail pages
-- [ ] Newsletter subscription
-- [ ] Multi-language support (Swahili)
+- Enhanced search functionality
+- Multi-language support (Swahili)
+- Client portal for project tracking
 
-### P3 (Nice to Have)
-- [ ] Advanced analytics dashboard
-- [ ] PDF company profile download
-- [ ] Calendar integration for consultations
-- [ ] Live chat widget
+### P3 (Future Enhancements)
+- Testimonial video integration
+- Interactive impact map
+- Career/job application system
 
 ## Next Tasks
-1. Add email notifications for inquiries (SendGrid integration)
-2. Implement image upload for admin panel
-3. Add rich text editor for news content
-4. Create detailed case study pages
-
-## Tech Stack
-- Frontend: React 19, Tailwind CSS, Framer Motion
-- Backend: FastAPI, MongoDB, Motor
-- Auth: JWT with bcrypt
-- Hosting: Emergent Platform
-
-## Testing Status
-- Backend: 100% (16/16 tests passed)
-- Frontend: 95% (all core features working)
+1. Add detailed project case study pages
+2. Enhance admin dashboard with rich text editor
+3. Implement SEO optimizations
+4. Add Google Analytics integration
