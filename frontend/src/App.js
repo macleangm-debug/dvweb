@@ -2005,9 +2005,15 @@ function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/about-us" element={<AboutPage />} />
-                  <Route path="/research" element={<ResearchPage />} />
-                  <Route path="/research-statistics" element={<ResearchPage />} />
-                  <Route path="/services" element={<ServicesPage />} />
+                  <Route path="/services" element={<ServicesHubPage />} />
+                  <Route path="/services/research-statistics" element={<ResearchStatisticsPage />} />
+                  <Route path="/services/monitoring-evaluation" element={<MonitoringEvaluationPage />} />
+                  <Route path="/services/data-collection" element={<DataCollectionPage />} />
+                  <Route path="/services/data-analytics" element={<DataAnalyticsPage />} />
+                  <Route path="/services/capacity-building" element={<CapacityBuildingPage />} />
+                  <Route path="/services/technical-advisory" element={<TechnicalAdvisoryPage />} />
+                  <Route path="/research" element={<ResearchStatisticsPage />} />
+                  <Route path="/research-statistics" element={<ResearchStatisticsPage />} />
                   <Route path="/practice-areas" element={<PracticeAreasPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
