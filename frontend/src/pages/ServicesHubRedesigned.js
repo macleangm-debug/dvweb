@@ -393,23 +393,41 @@ const ServicesHubPageRedesigned = () => {
                   to={service.path}
                   className="group block h-full bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                 >
-                  {/* Image header */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img 
-                      src={service.image} 
-                      alt={service.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div 
-                      className="absolute top-4 right-4 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm"
-                      style={{ backgroundColor: service.color + '90' }}
-                    >
-                      <service.icon className="w-6 h-6 text-white" />
+                  {/* Icon-based header */}
+                  <div 
+                    className="relative h-48 overflow-hidden flex items-center justify-center"
+                    style={{ backgroundColor: service.color + '10' }}
+                  >
+                    {/* Decorative background pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute inset-0" style={{
+                        backgroundImage: `radial-gradient(circle at 20% 50%, ${service.color}40 0%, transparent 50%), 
+                                          radial-gradient(circle at 80% 50%, ${service.color}30 0%, transparent 40%),
+                                          radial-gradient(circle at 50% 80%, ${service.color}20 0%, transparent 30%)`
+                      }} />
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="text-white/80 text-xs uppercase tracking-wider mb-1">{service.statLabel}</div>
-                      <div className="text-white text-2xl font-bold">{service.stat}</div>
+                    
+                    {/* Main icon */}
+                    <motion.div 
+                      className="relative z-10 w-24 h-24 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+                      style={{ backgroundColor: service.color + '20' }}
+                      whileHover={{ rotate: [0, -5, 5, 0] }}
+                    >
+                      <service.icon 
+                        className="w-12 h-12 transition-colors duration-300" 
+                        style={{ color: service.color }}
+                      />
+                    </motion.div>
+                    
+                    {/* Stat badge */}
+                    <div 
+                      className="absolute bottom-4 left-4 px-4 py-2 rounded-full backdrop-blur-sm"
+                      style={{ backgroundColor: service.color }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-white text-lg font-bold">{service.stat}</span>
+                        <span className="text-white/80 text-xs uppercase tracking-wider">{service.statLabel}</span>
+                      </div>
                     </div>
                   </div>
                   
