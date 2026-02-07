@@ -7,7 +7,8 @@ import {
   BookOpen, Droplets, Heart, Sprout, Mail, Phone, Building2,
   ExternalLink, Linkedin, Quote, BarChart3, Globe, CheckCircle2,
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
-  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp
+  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
+  Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
