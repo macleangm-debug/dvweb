@@ -24,7 +24,7 @@ const ServiceHero = ({ tagline, title, description, image }) => (
           <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">
             {tagline}
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif leading-tight text-white">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6  leading-tight text-white">
             {title}
           </h1>
           <p className="text-xl text-white/80 leading-relaxed">
@@ -60,7 +60,7 @@ const ChallengeSection = ({ title, challenges }) => (
     <div className="container mx-auto px-6 lg:px-12">
       <div className="max-w-3xl mx-auto text-center mb-16">
         <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">The Challenge</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] ">
           {title}
         </h2>
       </div>
@@ -90,7 +90,7 @@ const ApproachSection = ({ title, subtitle, steps }) => (
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <div className="lg:sticky lg:top-32">
           <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">Our Approach</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628]  mb-6">
             {title}
           </h2>
           <p className="text-[#64748b] text-lg leading-relaxed">
@@ -127,7 +127,7 @@ const DeliverablesSection = ({ deliverables }) => (
     <div className="container mx-auto px-6 lg:px-12">
       <div className="text-center mb-16">
         <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">What We Deliver</p>
-        <h2 className="text-3xl md:text-4xl font-bold font-serif">
+        <h2 className="text-3xl md:text-4xl font-bold ">
           Comprehensive Deliverables
         </h2>
       </div>
@@ -156,7 +156,7 @@ const InsightsSection = ({ insights }) => (
     <div className="container mx-auto px-6 lg:px-12">
       <div className="text-center mb-16">
         <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">Key Insights</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] ">
           Perspectives That Matter
         </h2>
       </div>
@@ -187,7 +187,7 @@ const WhyUsSection = ({ points }) => (
         <div className="grid lg:grid-cols-2 gap-12">
           <div>
             <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">Why DataVision</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white font-serif mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white  mb-6">
               The DataVision Difference
             </h2>
             <p className="text-white/70 leading-relaxed">
@@ -212,7 +212,7 @@ const WhyUsSection = ({ points }) => (
 const ServiceCTA = ({ title, description }) => (
   <section className="py-24 bg-[#e63946] text-white">
     <div className="container mx-auto px-6 lg:px-12 text-center">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 font-serif">
+      <h2 className="text-3xl md:text-4xl font-bold mb-6 ">
         {title}
       </h2>
       <p className="text-white/90 max-w-2xl mx-auto mb-8 text-lg">
@@ -1039,7 +1039,7 @@ export const ServicesHubPage = () => {
             <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">
               Our Services
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif text-white">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6  text-white">
               Comprehensive Research & Evidence Solutions
             </h1>
             <p className="text-xl text-white/80 leading-relaxed">
@@ -1067,7 +1067,7 @@ export const ServicesHubPage = () => {
                   className="block h-full bg-white border border-[#e2e8f0] p-8 hover:border-l-4 hover:border-l-[#e63946] hover:shadow-xl transition-all group"
                 >
                   <service.icon className="w-12 h-12 text-[#2a9d8f] mb-6 group-hover:text-[#e63946] transition-colors" />
-                  <h3 className="text-xl font-bold text-[#0a1628] mb-3 font-serif group-hover:text-[#e63946] transition-colors">
+                  <h3 className="text-xl font-bold text-[#0a1628] mb-3  group-hover:text-[#e63946] transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-[#64748b] text-sm mb-6 leading-relaxed">
@@ -1096,7 +1096,7 @@ export const ServicesHubPage = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">How We Work</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] ">
               Our Engagement Approach
             </h2>
           </div>
@@ -1127,7 +1127,7 @@ export const ServicesHubPage = () => {
       {/* CTA */}
       <section className="py-24 bg-[#e63946] text-white">
         <div className="container mx-auto px-6 lg:px-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-serif">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 ">
             Ready to Partner with Africa's Leading Research Consultancy?
           </h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-8 text-lg">
