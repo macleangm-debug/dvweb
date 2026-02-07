@@ -7,7 +7,7 @@ import {
   BookOpen, Droplets, Heart, Sprout, Mail, Phone, Building2,
   ExternalLink, Linkedin, Quote, BarChart3, Globe, CheckCircle2,
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
-  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass
+  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
@@ -18,6 +18,16 @@ import {
   TechnicalAdvisoryPage
 } from './pages/ServicePages';
 import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
+import {
+  PracticeAreasHubPage,
+  AgriculturePage,
+  EducationPage,
+  HealthPage,
+  WASHPage,
+  GovernancePage,
+  EconomicDevelopmentPage,
+  EnvironmentPage
+} from './pages/PracticeAreaPages';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
