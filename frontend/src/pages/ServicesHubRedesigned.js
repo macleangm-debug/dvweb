@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { 
   ArrowRight, CheckCircle2, BarChart3, Users, Globe, 
   Award, Target, Layers, Zap, Search,
-  PieChart, GraduationCap, Compass
+  PieChart, GraduationCap, Compass, BookOpen, Droplets, Heart, Sprout
 } from 'lucide-react';
 
 // Services Overview/Hub Page - Redesigned with rich visuals
