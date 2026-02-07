@@ -219,6 +219,7 @@ const AfricaMap = ({ onCountryClick }) => {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -231,13 +232,23 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
-    { name: 'Research & Statistics', path: '/research', highlight: true },
-    { name: 'Services', path: '/services' },
     { name: 'Practice Areas', path: '/practice-areas' },
     { name: 'Projects', path: '/projects' },
     { name: 'News', path: '/news' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  const serviceLinks = [
+    { name: 'All Services', path: '/services', icon: Globe, description: 'Comprehensive research & evidence solutions' },
+    { name: 'Research & Statistics', path: '/services/research-statistics', icon: BarChart3, description: 'Quantitative & qualitative research' },
+    { name: 'Monitoring & Evaluation', path: '/services/monitoring-evaluation', icon: Target, description: 'M&E frameworks & impact evaluations' },
+    { name: 'Data Collection', path: '/services/data-collection', icon: Users, description: 'Large-scale field operations' },
+    { name: 'Data Analytics', path: '/services/data-analytics', icon: PieChart, description: 'Analysis & visualization' },
+    { name: 'Capacity Building', path: '/services/capacity-building', icon: GraduationCap, description: 'Training & knowledge transfer' },
+    { name: 'Technical Advisory', path: '/services/technical-advisory', icon: Compass, description: 'Strategic guidance & consultation' },
+  ];
+
+  const isServicesActive = location.pathname.startsWith('/services');
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -257,17 +268,88 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
+          <div className="hidden lg:flex items-center gap-6">
+            {navLinks.slice(0, 2).map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors ${
                   location.pathname === link.path 
                     ? 'text-[#e63946]' 
-                    : link.highlight 
-                      ? 'text-[#0a1628] font-semibold'
-                      : 'text-[#64748b] hover:text-[#0a1628]'
+                    : 'text-[#64748b] hover:text-[#0a1628]'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            
+            {/* Services Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setServicesOpen(true)}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
+              <button 
+                className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
+                  isServicesActive ? 'text-[#e63946]' : 'text-[#0a1628] hover:text-[#e63946]'
+                }`}
+                data-testid="services-dropdown-btn"
+              >
+                Services <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {servicesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[520px]"
+                  >
+                    <div className="bg-white shadow-xl border border-[#e2e8f0] p-6">
+                      <div className="grid grid-cols-2 gap-2">
+                        {serviceLinks.map((service, index) => (
+                          <Link
+                            key={service.path}
+                            to={service.path}
+                            onClick={() => setServicesOpen(false)}
+                            className={`flex items-start gap-3 p-3 hover:bg-[#f8fafc] transition-colors group ${
+                              index === 0 ? 'col-span-2 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                            }`}
+                          >
+                            <service.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                              index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                            } transition-colors`} />
+                            <div>
+                              <span className={`text-sm font-semibold block ${
+                                index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                              } transition-colors`}>
+                                {service.name}
+                              </span>
+                              <span className={`text-xs ${
+                                index === 0 ? 'text-white/70' : 'text-[#64748b]'
+                              }`}>
+                                {service.description}
+                              </span>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {navLinks.slice(2).map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`text-sm font-medium transition-colors ${
+                  location.pathname === link.path 
+                    ? 'text-[#e63946]' 
+                    : 'text-[#64748b] hover:text-[#0a1628]'
                 }`}
               >
                 {link.name}
