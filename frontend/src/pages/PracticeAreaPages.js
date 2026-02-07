@@ -741,6 +741,15 @@ export const PracticeAreasHubPage = () => {
       stats: '130K+ Water Points'
     },
     { 
+      id: 'nutrition', 
+      icon: Utensils, 
+      title: 'Nutrition', 
+      color: '#f97316',
+      path: '/practice-areas/nutrition',
+      description: 'Nutrition surveys, stunting and wasting assessments, IYCF practices, and food fortification research.',
+      stats: '35+ Projects'
+    },
+    { 
       id: 'governance', 
       icon: Scale, 
       title: 'Governance & Public Finance', 
@@ -757,6 +766,69 @@ export const PracticeAreasHubPage = () => {
       path: '/practice-areas/economic-development',
       description: 'Enterprise surveys, employment studies, financial inclusion research, and poverty analysis.',
       stats: '40+ Projects'
+    },
+    { 
+      id: 'social-protection', 
+      icon: Shield, 
+      title: 'Social Protection', 
+      color: '#ec4899',
+      path: '/practice-areas/social-protection',
+      description: 'Cash transfer evaluations, safety net targeting, vulnerability assessments, and social registry support.',
+      stats: '30+ Projects'
+    },
+    { 
+      id: 'inclusion', 
+      icon: HandHeart, 
+      title: 'Inclusion & Disability', 
+      color: '#14b8a6',
+      path: '/practice-areas/inclusion',
+      description: 'Disability inclusion research, marginalized populations studies, accessibility assessments, and inclusive programming.',
+      stats: '20+ Projects'
+    },
+    { 
+      id: 'youth', 
+      icon: GraduationCap, 
+      title: 'Youth & Adolescents', 
+      color: '#6366f1',
+      path: '/practice-areas/youth',
+      description: 'Youth livelihoods research, adolescent health studies, vocational training evaluation, and transition to work.',
+      stats: '25+ Projects'
+    },
+    { 
+      id: 'conflict', 
+      icon: AlertTriangle, 
+      title: 'Conflict & Humanitarian', 
+      color: '#dc2626',
+      path: '/practice-areas/conflict-humanitarian',
+      description: 'Displacement surveys, humanitarian needs assessments, peacebuilding evaluation, and crisis response research.',
+      stats: '15+ Projects'
+    },
+    { 
+      id: 'urban', 
+      icon: Building2, 
+      title: 'Urban Development', 
+      color: '#0891b2',
+      path: '/practice-areas/urban',
+      description: 'Urban planning research, informal settlements studies, municipal services assessment, and urban livelihoods.',
+      stats: '20+ Projects'
+    },
+    { 
+      id: 'infrastructure', 
+      icon: Truck, 
+      title: 'Infrastructure', 
+      color: '#78716c',
+      path: '/practice-areas/infrastructure',
+      description: 'Roads and transport studies, energy access surveys, telecommunications research, and infrastructure impact evaluation.',
+      stats: '15+ Projects'
+    },
+    { 
+      id: 'private-sector', 
+      icon: Factory, 
+      title: 'Private Sector Development', 
+      color: '#059669',
+      path: '/practice-areas/private-sector',
+      description: 'Business environment assessments, investment climate studies, trade facilitation research, and value chain development.',
+      stats: '20+ Projects'
     },
     { 
       id: 'environment', 
