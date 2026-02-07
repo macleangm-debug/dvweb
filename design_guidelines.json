@@ -1,0 +1,107 @@
+{
+  "identity": {
+    "name": "DataVision International",
+    "persona": "The Executive Strategist",
+    "description": "A 25+ year old authoritative research & statistics consultancy. The design must feel like a McKinsey or BCG report came to life: precise, high-contrast, data-driven, and undeniably premium.",
+    "emotional_tone": "Authority, Precision, Trust, Insight, African Innovation"
+  },
+  "typography": {
+    "strategy": "The 'Old Money Tech' - Classic Authority meets Modern Data",
+    "headings": {
+      "family": "Crimson Text",
+      "weights": ["600", "700"],
+      "usage": "Use for all H1-H3. It conveys history and trust. Tracking: tight (-0.02em)."
+    },
+    "body": {
+      "family": "DM Sans",
+      "weights": ["400", "500", "700"],
+      "usage": "Use for all body text, UI elements, and data visualizations. It conveys clarity and modernity."
+    },
+    "install_instructions": "Import via Google Fonts in index.css: @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap');"
+  },
+  "colors": {
+    "palette": {
+      "primary": "#0a1628",
+      "primary_foreground": "#ffffff",
+      "accent": "#e63946",
+      "accent_foreground": "#ffffff",
+      "secondary": "#f4f4f5",
+      "secondary_foreground": "#0a1628",
+      "background": "#ffffff",
+      "surface_alt": "#f8fafc",
+      "data_teal": "#2a9d8f",
+      "data_gold": "#e9c46a",
+      "border": "#e2e8f0"
+    },
+    "usage_rules": {
+      "primary": "Use for Hero sections, Footers, and strong Section Breaks. Deep Navy conveys infinite depth.",
+      "accent": "Use SPARINGLY. Only for primary CTAs ('Partner With Us') and key data highlights. Never for backgrounds.",
+      "background": "Keep 80% of the site White or very light grey (Surface Alt). Authority comes from white space.",
+      "text": "Body text should be #1e293b (Slate 800) for readability, never pure black."
+    },
+    "gradients": "No full screen gradients. Use subtle 'spotlight' gradients on dark backgrounds: radial-gradient(circle at top right, #1e293b 0%, #0a1628 100%)."
+  },
+  "layout": {
+    "grid_system": "The Swiss Grid",
+    "spacing": {
+      "section_padding": "py-24 or py-32",
+      "container_padding": "px-6 md:px-12 lg:px-24",
+      "element_gap": "gap-8 or gap-12"
+    },
+    "container_width": "max-w-7xl mx-auto",
+    "strategies": {
+      "hero": "Asymmetric split. Text on left (6 cols), Visual/Map on right (6 cols).",
+      "features": "Bento Grid. Use col-span-4 and col-span-8 variants to break monotony.",
+      "stats": "Horizontal strip with vertical dividers. Large numbers (text-6xl+).",
+      "testimonials": "Carousel with heavy left padding. Quote marks as massive background watermarks."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#e63946] text-white hover:bg-[#d02835] rounded-none px-8 py-4 font-semibold uppercase tracking-wider text-sm shadow-none transition-all hover:-translate-y-1",
+      "secondary": "border-2 border-[#0a1628] text-[#0a1628] hover:bg-[#0a1628] hover:text-white rounded-none px-8 py-4 font-semibold uppercase tracking-wider text-sm transition-all"
+    },
+    "cards": {
+      "style": "Flat, white background, 1px border (#e2e8f0). NO SHADOW by default. On hover: border-l-4 border-l-[#e63946] and subtle shadow-lg.",
+      "padding": "p-8 or p-10"
+    },
+    "map": {
+      "library": "react-simple-maps",
+      "style": "Minimalist SVG map. Africa continent only. Countries with projects highlighted in Red or Teal. Tooltip on hover."
+    },
+    "navigation": {
+      "style": "Sticky, white background, mild border-b. Logo on left, Links centered, 'Partner' CTA on right."
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Use subtle 'noise' overlay on dark sections to prevent banding and add premium feel.",
+    "icons": "Lucide React (already installed). Use thin strokes (1.5px).",
+    "motion": "Use framer-motion. Stagger children for lists. Fade-up for sections. Smooth, slow transitions (0.6s ease-out)."
+  },
+  "images": {
+    "hero_bg": "https://images.unsplash.com/photo-1739285452644-3a2c009112fe?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHw0fHxhZnJpY2FuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWxzJTIwbWVldGluZ3xlbnwwfHx8fDE3NzA0MTE2NzZ8MA&ixlib=rb-4.1.0&q=85",
+    "team_meeting": "https://images.unsplash.com/photo-1720700126957-769e2f2fc0fc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxhZnJpY2FuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWxzJTIwbWVldGluZ3xlbnwwfHx8fDE3NzA0MTE2NzZ8MA&ixlib=rb-4.1.0&q=85",
+    "modern_office": "https://images.unsplash.com/photo-1686676104932-3d7b6bbaef52?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBvZmZpY2UlMjBidWlsZGluZyUyMGFyY2hpdGVjdHVyZSUyMGdsYXNzfGVufDB8fHx8MTc3MDQxMTY3N3ww&ixlib=rb-4.1.0&q=85",
+    "abstract_data": "https://images.unsplash.com/photo-1584931423298-c576fda54bd2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxkYXRhJTIwdmlzdWFsaXphdGlvbiUyMGFic3RyYWN0JTIwZGlnaXRhbCUyMGdsb2JhbCUyMG1hcHxlbnwwfHx8fDE3NzA0MTE2NjV8MA&ixlib=rb-4.1.0&q=85",
+    "logos": {
+        "world_bank": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/The_World_Bank_logo.svg/2560px-The_World_Bank_logo.svg.png",
+        "usaid": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/USAID-Identity.svg/2560px-USAID-Identity.svg.png"
+    }
+  },
+  "instructions_to_main_agent": [
+    "INSTALL: yarn add framer-motion react-simple-maps d3-scale",
+    "SETUP: Add the Google Fonts import to src/index.css immediately.",
+    "COMPONENT OVERRIDE: Modify Shadcn Button to be square/sharp (rounded-none) to match the 'Consultancy' aesthetic.",
+    "NAVBAR: Create a responsive Navbar with a 'Mega Menu' structure for 'Services' and 'Practice Areas'.",
+    "MAP: Create a component 'AfricaProjectMap.js' using react-simple-maps. Focus on East Africa (Tanzania, Kenya, Uganda) but show the whole continent.",
+    "STATS: Use 'framer-motion' for animated counters that count up when in view.",
+    "FORMS: Ensure Contact Form has a hidden 'honeypot' field for bot protection.",
+    "ADMIN: The Admin Panel should use a Sidebar layout (Shadcn Resizable or standard flex) and be distinctly functional vs the marketing site."
+  ],
+  "universal_guidelines": [
+    "Do not use gradients for text.",
+    "Use generous padding. A section should never feel cramped.",
+    "Ensure all text has sufficient contrast (APCA standards).",
+    "Micro-interactions on every button and card (hover lift, border color change)."
+  ]
+}
