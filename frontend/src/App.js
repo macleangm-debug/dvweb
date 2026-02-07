@@ -2005,7 +2005,7 @@ function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/about-us" element={<AboutPage />} />
-                  <Route path="/services" element={<ServicesHubPage />} />
+                  <Route path="/services" element={<ServicesHubPageRedesigned />} />
                   <Route path="/services/research-statistics" element={<ResearchStatisticsPage />} />
                   <Route path="/services/monitoring-evaluation" element={<MonitoringEvaluationPage />} />
                   <Route path="/services/data-collection" element={<DataCollectionPage />} />
