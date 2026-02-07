@@ -6,7 +6,9 @@ import {
   Award, Target, TrendingUp, Database, Layers, Shield, 
   BookOpen, Lightbulb, Zap, Clock, MapPin, Building2,
   PieChart, LineChart, Search, Microscope, ClipboardCheck,
-  GraduationCap, Presentation, UserCheck, Network, Compass
+  GraduationCap, Presentation, UserCheck, Network, Compass,
+  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow,
+  ScrollText, Calculator, Share2, Code, Satellite, FileQuestion
 } from 'lucide-react';
 
 // ==================== SHARED COMPONENTS ====================
