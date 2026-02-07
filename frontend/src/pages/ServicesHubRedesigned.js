@@ -169,7 +169,7 @@ const ServicesHubPageRedesigned = () => {
         <Icon className={`w-8 h-8 mx-auto mb-4 transition-colors ${
           hoveredStat === index ? 'text-white' : 'text-[#2a9d8f]'
         }`} />
-        <div className={`text-4xl md:text-5xl font-bold mb-2 font-serif transition-colors ${
+        <div className={`text-4xl md:text-5xl font-bold mb-2  transition-colors ${
           hoveredStat === index ? 'text-white' : 'text-[#0a1628]'
         }`}>
           {count.toLocaleString()}{suffix}
@@ -369,7 +369,7 @@ const ServicesHubPageRedesigned = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif mb-4"
+              className="text-3xl md:text-4xl font-bold text-[#0a1628]  mb-4"
             >
               Comprehensive Service Portfolio
             </motion.h2>
@@ -437,7 +437,7 @@ const ServicesHubPageRedesigned = () => {
                   
                   {/* Content */}
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-[#0a1628] mb-3 font-serif group-hover:text-[#e63946] transition-colors">
+                    <h3 className="text-xl font-bold text-[#0a1628] mb-3  group-hover:text-[#e63946] transition-colors">
                       {service.title}
                     </h3>
                     <p className="text-[#64748b] text-sm mb-4 line-clamp-2">
@@ -486,7 +486,7 @@ const ServicesHubPageRedesigned = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl md:text-4xl font-bold font-serif"
+                className="text-3xl md:text-4xl font-bold "
               >
                 Featured Case Studies
               </motion.h2>
@@ -548,7 +548,7 @@ const ServicesHubPageRedesigned = () => {
                   
                   {/* Content */}
                   <div className="md:col-span-3 p-6 md:p-8 flex flex-col justify-center">
-                    <h3 className="text-xl font-bold mb-3 font-serif group-hover:text-[#e63946] transition-colors">
+                    <h3 className="text-xl font-bold mb-3  group-hover:text-[#e63946] transition-colors">
                       {study.title}
                     </h3>
                     <p className="text-white/60 text-sm mb-4 line-clamp-3">
@@ -592,7 +592,7 @@ const ServicesHubPageRedesigned = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif"
+              className="text-3xl md:text-4xl font-bold text-[#0a1628] "
             >
               Find the Right Solution
             </motion.h2>
@@ -607,11 +607,11 @@ const ServicesHubPageRedesigned = () => {
             <table className="w-full min-w-[800px]">
               <thead>
                 <tr className="border-b-2 border-[#0a1628]">
-                  <th className="text-left py-4 px-4 font-serif text-[#0a1628]">Service</th>
-                  <th className="text-center py-4 px-4 font-serif text-[#0a1628]">Best For</th>
-                  <th className="text-center py-4 px-4 font-serif text-[#0a1628]">Timeline</th>
-                  <th className="text-center py-4 px-4 font-serif text-[#0a1628]">Team Size</th>
-                  <th className="text-center py-4 px-4 font-serif text-[#0a1628]">Deliverables</th>
+                  <th className="text-left py-4 px-4  text-[#0a1628]">Service</th>
+                  <th className="text-center py-4 px-4  text-[#0a1628]">Best For</th>
+                  <th className="text-center py-4 px-4  text-[#0a1628]">Timeline</th>
+                  <th className="text-center py-4 px-4  text-[#0a1628]">Team Size</th>
+                  <th className="text-center py-4 px-4  text-[#0a1628]">Deliverables</th>
                   <th className="text-center py-4 px-4"></th>
                 </tr>
               </thead>
@@ -695,7 +695,7 @@ const ServicesHubPageRedesigned = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold text-[#0a1628] font-serif"
+              className="text-3xl md:text-4xl font-bold text-[#0a1628] "
             >
               Our Engagement Process
             </motion.h2>
@@ -726,7 +726,7 @@ const ServicesHubPageRedesigned = () => {
                   </div>
                   
                   <div className="text-5xl font-bold text-[#e63946]/10 mb-2">{step.num}</div>
-                  <h3 className="text-xl font-bold text-[#0a1628] mb-2 font-serif">{step.title}</h3>
+                  <h3 className="text-xl font-bold text-[#0a1628] mb-2 ">{step.title}</h3>
                   <p className="text-[#64748b] text-sm">{step.desc}</p>
                 </motion.div>
               ))}
@@ -750,7 +750,7 @@ const ServicesHubPageRedesigned = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6 font-serif"
+              className="text-3xl md:text-5xl font-bold mb-6 "
             >
               Ready to Generate Evidence That Matters?
             </motion.h2>
