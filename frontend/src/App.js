@@ -7,8 +7,17 @@ import {
   BookOpen, Droplets, Heart, Sprout, Mail, Phone, Building2,
   ExternalLink, Linkedin, Quote, BarChart3, Globe, CheckCircle2,
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
-  Trash2, Edit, Eye, ChevronRight
+  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass
 } from 'lucide-react';
+import {
+  ServicesHubPage,
+  ResearchStatisticsPage,
+  MonitoringEvaluationPage,
+  DataCollectionPage,
+  DataAnalyticsPage,
+  CapacityBuildingPage,
+  TechnicalAdvisoryPage
+} from './pages/ServicePages';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
