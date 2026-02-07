@@ -701,6 +701,502 @@ export const EnvironmentPage = () => {
   );
 };
 
+// ==================== SOCIAL PROTECTION PAGE ====================
+export const SocialProtectionPage = () => {
+  const expertiseAreas = [
+    { icon: Shield, title: "Cash Transfer Evaluation", description: "Impact evaluation of unconditional and conditional cash transfer programs." },
+    { icon: Target, title: "Targeting Assessment", description: "Evaluation of beneficiary targeting mechanisms and inclusion/exclusion errors." },
+    { icon: Users, title: "Social Registry Support", description: "Design and validation of unified beneficiary registries and MIS systems." },
+    { icon: BarChart3, title: "Vulnerability Analysis", description: "Multidimensional poverty and vulnerability assessments for program design." },
+    { icon: Heart, title: "Graduation Programs", description: "Evaluation of economic inclusion and graduation pathway interventions." },
+    { icon: Building2, title: "Institutional Capacity", description: "Assessment of social protection delivery systems and institutional readiness." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Impact Evaluation",
+      title: "Productive Social Safety Net Evaluation",
+      description: "Rigorous evaluation of Tanzania's flagship social protection program measuring impacts on consumption, assets, and productive activities.",
+      metrics: [{ value: "5,000", label: "Households" }, { value: "40", label: "Districts" }, { value: "3", label: "Rounds" }]
+    },
+    {
+      type: "Targeting Study",
+      title: "Social Registry Validation",
+      description: "Independent verification of social registry data accuracy and assessment of targeting performance.",
+      metrics: [{ value: "10,000", label: "Records Verified" }, { value: "15", label: "Districts" }, { value: "95%", label: "Accuracy" }]
+    },
+  ];
+
+  const stats = [
+    { value: "30+", label: "Social Protection Projects" },
+    { value: "50,000+", label: "Beneficiaries Surveyed" },
+    { value: "40+", label: "Districts Covered" },
+    { value: "5", label: "National Programs" },
+  ];
+
+  const methodology = [
+    { title: "Baseline Design", description: "Randomized or quasi-experimental designs for rigorous impact measurement" },
+    { title: "Household Tracking", description: "Longitudinal tracking of beneficiary and control households" },
+    { title: "Process Evaluation", description: "Assessment of implementation fidelity and delivery mechanisms" },
+    { title: "Cost-Effectiveness", description: "Analysis of program costs relative to measured impacts" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={Shield}
+        color="#ec4899"
+        title="Social Protection"
+        tagline="Practice Area"
+        description="Rigorous evaluation and research supporting effective social protection programs, safety nets, and economic inclusion initiatives."
+      />
+      <StatsSection color="#ec4899" stats={stats} />
+      <ExpertiseSection color="#ec4899" areas={expertiseAreas} />
+      <CaseStudiesSection color="#ec4899" studies={caseStudies} />
+      <MethodologySection color="#ec4899" steps={methodology} />
+      <CTASection
+        color="#ec4899"
+        title="Ready to Strengthen Social Protection?"
+        description="Our social protection expertise helps governments and partners design and evaluate effective safety net programs."
+      />
+    </div>
+  );
+};
+
+// ==================== INCLUSION & DISABILITY PAGE ====================
+export const InclusionPage = () => {
+  const expertiseAreas = [
+    { icon: HandHeart, title: "Disability Inclusion", description: "Research on disability prevalence, barriers to services, and inclusive programming." },
+    { icon: Users, title: "Marginalized Populations", description: "Studies focusing on hard-to-reach and underserved communities." },
+    { icon: Building2, title: "Accessibility Assessment", description: "Evaluation of physical and service accessibility for persons with disabilities." },
+    { icon: Target, title: "Inclusive Programming", description: "Assessment of mainstream program inclusion of marginalized groups." },
+    { icon: BarChart3, title: "Disaggregated Analysis", description: "Data collection and analysis disaggregated by disability status and vulnerability." },
+    { icon: Shield, title: "Rights-Based Research", description: "Research aligned with CRPD and human rights frameworks." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Inclusion Survey",
+      title: "Disability Prevalence and Barriers Study",
+      description: "Population-based survey using Washington Group questions to measure disability prevalence and barriers to services.",
+      metrics: [{ value: "8,000", label: "Households" }, { value: "12", label: "Districts" }, { value: "6", label: "Domains" }]
+    },
+    {
+      type: "Program Assessment",
+      title: "Inclusive Education Evaluation",
+      description: "Assessment of education system's inclusion of children with disabilities, identifying gaps and recommendations.",
+      metrics: [{ value: "500", label: "Schools" }, { value: "2,000", label: "Children" }, { value: "10", label: "Regions" }]
+    },
+  ];
+
+  const stats = [
+    { value: "20+", label: "Inclusion Projects" },
+    { value: "15,000+", label: "Individuals Surveyed" },
+    { value: "10+", label: "Disability Types" },
+    { value: "15", label: "Districts Covered" },
+  ];
+
+  const methodology = [
+    { title: "Inclusive Design", description: "Research tools designed for accessibility and meaningful participation" },
+    { title: "Washington Group", description: "Standardized disability measurement using WG questions" },
+    { title: "Participatory Methods", description: "Involvement of persons with disabilities in research design" },
+    { title: "Barrier Analysis", description: "Systematic identification of barriers and enablers to inclusion" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={HandHeart}
+        color="#14b8a6"
+        title="Inclusion & Disability"
+        tagline="Practice Area"
+        description="Research promoting inclusion of persons with disabilities and marginalized populations in development programs and services."
+      />
+      <StatsSection color="#14b8a6" stats={stats} />
+      <ExpertiseSection color="#14b8a6" areas={expertiseAreas} />
+      <CaseStudiesSection color="#14b8a6" studies={caseStudies} />
+      <MethodologySection color="#14b8a6" steps={methodology} />
+      <CTASection
+        color="#14b8a6"
+        title="Ready to Advance Inclusion?"
+        description="Our inclusion expertise helps organizations design accessible, inclusive programs for all populations."
+      />
+    </div>
+  );
+};
+
+// ==================== NUTRITION PAGE ====================
+export const NutritionPage = () => {
+  const expertiseAreas = [
+    { icon: Utensils, title: "Nutrition Surveys", description: "SMART methodology surveys measuring acute and chronic malnutrition." },
+    { icon: Baby, title: "IYCF Assessment", description: "Infant and young child feeding practices, breastfeeding, and complementary feeding." },
+    { icon: Heart, title: "Maternal Nutrition", description: "Assessment of maternal dietary diversity, anemia, and nutrition during pregnancy." },
+    { icon: Target, title: "Food Fortification", description: "Evaluation of food fortification programs and micronutrient interventions." },
+    { icon: BarChart3, title: "Nutrition Surveillance", description: "Ongoing monitoring of nutrition indicators and early warning systems." },
+    { icon: Users, title: "Nutrition-Sensitive", description: "Assessment of nutrition outcomes in agriculture, WASH, and social protection programs." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "SMART Survey",
+      title: "National Nutrition Assessment",
+      description: "Multi-regional SMART survey measuring stunting, wasting, and underweight among children under five.",
+      metrics: [{ value: "6,000", label: "Children" }, { value: "15", label: "Regions" }, { value: "3", label: "Indicators" }]
+    },
+    {
+      type: "IYCF Study",
+      title: "Infant Feeding Practices Assessment",
+      description: "Comprehensive assessment of breastfeeding and complementary feeding practices among caregivers.",
+      metrics: [{ value: "3,000", label: "Mothers" }, { value: "10", label: "Districts" }, { value: "8", label: "IYCF Indicators" }]
+    },
+  ];
+
+  const stats = [
+    { value: "35+", label: "Nutrition Projects" },
+    { value: "25,000+", label: "Children Measured" },
+    { value: "15+", label: "Regions Covered" },
+    { value: "10", label: "SMART Surveys" },
+  ];
+
+  const methodology = [
+    { title: "SMART Methods", description: "Standardized Monitoring and Assessment of Relief and Transitions methodology" },
+    { title: "Anthropometry", description: "Trained anthropometrists using calibrated equipment for accurate measurements" },
+    { title: "Dietary Assessment", description: "24-hour recall and food frequency questionnaires for dietary diversity" },
+    { title: "Biomarkers", description: "Hemoglobin testing and other biomarker collection where appropriate" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={Utensils}
+        color="#f97316"
+        title="Nutrition"
+        tagline="Practice Area"
+        description="Comprehensive nutrition research supporting improved maternal and child nutrition outcomes across Tanzania."
+      />
+      <StatsSection color="#f97316" stats={stats} />
+      <ExpertiseSection color="#f97316" areas={expertiseAreas} />
+      <CaseStudiesSection color="#f97316" studies={caseStudies} />
+      <MethodologySection color="#f97316" steps={methodology} />
+      <CTASection
+        color="#f97316"
+        title="Ready to Improve Nutrition Outcomes?"
+        description="Our nutrition expertise helps organizations understand and address malnutrition challenges."
+      />
+    </div>
+  );
+};
+
+// ==================== CONFLICT & HUMANITARIAN PAGE ====================
+export const ConflictHumanitarianPage = () => {
+  const expertiseAreas = [
+    { icon: AlertTriangle, title: "Humanitarian Needs", description: "Multi-sector needs assessments in emergency and protracted crisis contexts." },
+    { icon: Users, title: "Displacement Research", description: "IDP and refugee surveys measuring displacement patterns and needs." },
+    { icon: Shield, title: "Protection Assessment", description: "Research on protection risks, GBV, and child protection in crisis settings." },
+    { icon: Target, title: "Peacebuilding Evaluation", description: "Evaluation of conflict resolution and peacebuilding interventions." },
+    { icon: Heart, title: "Resilience Measurement", description: "Assessment of community resilience and recovery in post-conflict settings." },
+    { icon: BarChart3, title: "Early Warning", description: "Conflict early warning systems and monitoring indicators." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Needs Assessment",
+      title: "Refugee Settlement Assessment",
+      description: "Multi-sector needs assessment in refugee settlements measuring access to services and protection concerns.",
+      metrics: [{ value: "2,000", label: "Households" }, { value: "3", label: "Settlements" }, { value: "5", label: "Sectors" }]
+    },
+    {
+      type: "Impact Evaluation",
+      title: "Peacebuilding Program Evaluation",
+      description: "Evaluation of community-level peacebuilding interventions measuring social cohesion and conflict reduction.",
+      metrics: [{ value: "1,500", label: "Participants" }, { value: "8", label: "Communities" }, { value: "2", label: "Years" }]
+    },
+  ];
+
+  const stats = [
+    { value: "15+", label: "Humanitarian Projects" },
+    { value: "10,000+", label: "Affected Persons Surveyed" },
+    { value: "5", label: "Crisis Contexts" },
+    { value: "8+", label: "Partner Agencies" },
+  ];
+
+  const methodology = [
+    { title: "Do No Harm", description: "Conflict-sensitive research design minimizing risks to participants" },
+    { title: "Rapid Assessment", description: "Quick deployment methodologies for time-sensitive humanitarian contexts" },
+    { title: "Remote Methods", description: "Phone surveys and remote sensing for hard-to-access areas" },
+    { title: "Protection Focus", description: "Integration of protection principles throughout research process" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={AlertTriangle}
+        color="#dc2626"
+        title="Conflict & Humanitarian"
+        tagline="Practice Area"
+        description="Research supporting humanitarian response, peacebuilding, and community resilience in crisis-affected areas."
+      />
+      <StatsSection color="#dc2626" stats={stats} />
+      <ExpertiseSection color="#dc2626" areas={expertiseAreas} />
+      <CaseStudiesSection color="#dc2626" studies={caseStudies} />
+      <MethodologySection color="#dc2626" steps={methodology} />
+      <CTASection
+        color="#dc2626"
+        title="Ready for Crisis Research?"
+        description="Our humanitarian expertise supports evidence-based response in complex emergency contexts."
+      />
+    </div>
+  );
+};
+
+// ==================== URBAN DEVELOPMENT PAGE ====================
+export const UrbanDevelopmentPage = () => {
+  const expertiseAreas = [
+    { icon: Building2, title: "Urban Planning", description: "Research supporting urban development planning and land use management." },
+    { icon: Home, title: "Informal Settlements", description: "Surveys and mapping of informal settlements and slum upgrading needs." },
+    { icon: Truck, title: "Urban Services", description: "Assessment of municipal service delivery and infrastructure access." },
+    { icon: Users, title: "Urban Livelihoods", description: "Research on urban employment, informal economy, and economic opportunities." },
+    { icon: Target, title: "Urban Governance", description: "Assessment of municipal governance, citizen participation, and accountability." },
+    { icon: BarChart3, title: "City Diagnostics", description: "Comprehensive urban diagnostics and city competitiveness assessments." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Settlements Survey",
+      title: "Informal Settlement Mapping",
+      description: "Comprehensive mapping and household survey in urban informal settlements assessing living conditions and service access.",
+      metrics: [{ value: "5,000", label: "Households" }, { value: "25", label: "Settlements" }, { value: "3", label: "Cities" }]
+    },
+    {
+      type: "Service Assessment",
+      title: "Municipal Service Delivery Study",
+      description: "Assessment of water, sanitation, waste management, and other municipal services in secondary cities.",
+      metrics: [{ value: "8", label: "Cities" }, { value: "50+", label: "Indicators" }, { value: "10,000", label: "Residents" }]
+    },
+  ];
+
+  const stats = [
+    { value: "20+", label: "Urban Projects" },
+    { value: "15,000+", label: "Urban Residents Surveyed" },
+    { value: "10+", label: "Cities Covered" },
+    { value: "50+", label: "Settlements Mapped" },
+  ];
+
+  const methodology = [
+    { title: "GIS Mapping", description: "Spatial analysis and mapping of urban areas and informal settlements" },
+    { title: "Household Surveys", description: "Representative surveys capturing urban living conditions" },
+    { title: "Service Assessment", description: "Technical assessment of municipal service infrastructure" },
+    { title: "Stakeholder Mapping", description: "Analysis of urban governance actors and relationships" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={Building2}
+        color="#0891b2"
+        title="Urban Development"
+        tagline="Practice Area"
+        description="Research supporting sustainable urban development, improved municipal services, and inclusive city planning."
+      />
+      <StatsSection color="#0891b2" stats={stats} />
+      <ExpertiseSection color="#0891b2" areas={expertiseAreas} />
+      <CaseStudiesSection color="#0891b2" studies={caseStudies} />
+      <MethodologySection color="#0891b2" steps={methodology} />
+      <CTASection
+        color="#0891b2"
+        title="Ready to Improve Urban Development?"
+        description="Our urban expertise helps cities plan, deliver services, and create inclusive urban environments."
+      />
+    </div>
+  );
+};
+
+// ==================== YOUTH & ADOLESCENTS PAGE ====================
+export const YouthPage = () => {
+  const expertiseAreas = [
+    { icon: GraduationCap, title: "Youth Livelihoods", description: "Research on youth employment, entrepreneurship, and economic opportunities." },
+    { icon: Heart, title: "Adolescent Health", description: "Studies on adolescent health behaviors, SRH, and mental health." },
+    { icon: BookOpen, title: "Skills Development", description: "Evaluation of vocational training and skills development programs." },
+    { icon: Target, title: "School-to-Work", description: "Research on transitions from education to employment for youth." },
+    { icon: Users, title: "Youth Engagement", description: "Assessment of youth participation in civic and community activities." },
+    { icon: BarChart3, title: "Youth Indicators", description: "Development and tracking of youth development indicators." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Impact Evaluation",
+      title: "Youth Employment Program Evaluation",
+      description: "Rigorous evaluation of vocational training and job placement program measuring employment and income outcomes.",
+      metrics: [{ value: "3,000", label: "Youth" }, { value: "75%", label: "Employment Rate" }, { value: "3", label: "Years" }]
+    },
+    {
+      type: "Baseline Survey",
+      title: "Adolescent Health Assessment",
+      description: "Population-based survey of adolescent health knowledge, behaviors, and access to services.",
+      metrics: [{ value: "5,000", label: "Adolescents" }, { value: "12", label: "Districts" }, { value: "10-19", label: "Age Range" }]
+    },
+  ];
+
+  const stats = [
+    { value: "25+", label: "Youth Projects" },
+    { value: "20,000+", label: "Youth Surveyed" },
+    { value: "15+", label: "Districts Covered" },
+    { value: "5", label: "National Programs" },
+  ];
+
+  const methodology = [
+    { title: "Youth-Friendly", description: "Research approaches designed for meaningful youth participation" },
+    { title: "Mixed Methods", description: "Combining quantitative surveys with qualitative youth perspectives" },
+    { title: "Longitudinal Tracking", description: "Following youth cohorts to measure transitions and outcomes" },
+    { title: "Digital Methods", description: "Leveraging technology for youth engagement and data collection" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={GraduationCap}
+        color="#6366f1"
+        title="Youth & Adolescents"
+        tagline="Practice Area"
+        description="Research supporting youth development, employment, health, and successful transitions to adulthood."
+      />
+      <StatsSection color="#6366f1" stats={stats} />
+      <ExpertiseSection color="#6366f1" areas={expertiseAreas} />
+      <CaseStudiesSection color="#6366f1" studies={caseStudies} />
+      <MethodologySection color="#6366f1" steps={methodology} />
+      <CTASection
+        color="#6366f1"
+        title="Ready to Invest in Youth?"
+        description="Our youth expertise helps organizations design effective programs for adolescents and young adults."
+      />
+    </div>
+  );
+};
+
+// ==================== INFRASTRUCTURE PAGE ====================
+export const InfrastructurePage = () => {
+  const expertiseAreas = [
+    { icon: Truck, title: "Transport Research", description: "Road condition surveys, transport demand studies, and connectivity assessments." },
+    { icon: Zap, title: "Energy Access", description: "Household energy surveys, grid extension studies, and off-grid energy research." },
+    { icon: Globe, title: "Digital Infrastructure", description: "Telecommunications access, internet connectivity, and digital inclusion studies." },
+    { icon: Building2, title: "Public Facilities", description: "Assessment of schools, health facilities, and other public infrastructure." },
+    { icon: Target, title: "Impact Evaluation", description: "Evaluation of infrastructure investments and their development impacts." },
+    { icon: BarChart3, title: "Infrastructure Planning", description: "Data collection supporting infrastructure planning and prioritization." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Energy Survey",
+      title: "Rural Electrification Assessment",
+      description: "Household survey measuring electricity access, consumption patterns, and willingness to pay.",
+      metrics: [{ value: "6,000", label: "Households" }, { value: "20", label: "Districts" }, { value: "3", label: "Energy Types" }]
+    },
+    {
+      type: "Transport Study",
+      title: "Rural Road Impact Evaluation",
+      description: "Evaluation of rural road improvements measuring impacts on market access, travel time, and livelihoods.",
+      metrics: [{ value: "4,000", label: "Households" }, { value: "50", label: "Roads" }, { value: "15", label: "Districts" }]
+    },
+  ];
+
+  const stats = [
+    { value: "15+", label: "Infrastructure Projects" },
+    { value: "10,000+", label: "Households Surveyed" },
+    { value: "20+", label: "Districts Covered" },
+    { value: "500+", label: "Facilities Assessed" },
+  ];
+
+  const methodology = [
+    { title: "Asset Mapping", description: "GPS-based mapping and condition assessment of infrastructure" },
+    { title: "User Surveys", description: "Household and community surveys on infrastructure access and use" },
+    { title: "Technical Assessment", description: "Engineering-informed assessment of infrastructure condition" },
+    { title: "Economic Analysis", description: "Cost-benefit and economic impact analysis of infrastructure" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={Truck}
+        color="#78716c"
+        title="Infrastructure"
+        tagline="Practice Area"
+        description="Research supporting infrastructure planning, investment prioritization, and impact evaluation."
+      />
+      <StatsSection color="#78716c" stats={stats} />
+      <ExpertiseSection color="#78716c" areas={expertiseAreas} />
+      <CaseStudiesSection color="#78716c" studies={caseStudies} />
+      <MethodologySection color="#78716c" steps={methodology} />
+      <CTASection
+        color="#78716c"
+        title="Ready to Assess Infrastructure Impact?"
+        description="Our infrastructure expertise helps organizations plan and evaluate infrastructure investments."
+      />
+    </div>
+  );
+};
+
+// ==================== PRIVATE SECTOR DEVELOPMENT PAGE ====================
+export const PrivateSectorPage = () => {
+  const expertiseAreas = [
+    { icon: Factory, title: "Business Environment", description: "Assessment of regulatory environment, business climate, and ease of doing business." },
+    { icon: TrendingUp, title: "Investment Climate", description: "Research on investment barriers, incentives, and private sector growth potential." },
+    { icon: Globe, title: "Trade Facilitation", description: "Studies on trade barriers, cross-border commerce, and regional integration." },
+    { icon: Target, title: "Value Chain Development", description: "Analysis of value chains, market systems, and private sector engagement." },
+    { icon: Users, title: "SME Research", description: "Surveys and assessments of micro, small, and medium enterprises." },
+    { icon: BarChart3, title: "Sector Analysis", description: "Deep-dive analysis of specific economic sectors and growth opportunities." },
+  ];
+
+  const caseStudies = [
+    {
+      type: "Business Survey",
+      title: "Enterprise Climate Assessment",
+      description: "Comprehensive survey of businesses measuring constraints, opportunities, and growth potential.",
+      metrics: [{ value: "2,000", label: "Enterprises" }, { value: "10", label: "Sectors" }, { value: "5", label: "Cities" }]
+    },
+    {
+      type: "Value Chain Study",
+      title: "Agricultural Value Chain Analysis",
+      description: "In-depth analysis of agricultural value chains identifying bottlenecks and opportunities for private sector engagement.",
+      metrics: [{ value: "4", label: "Value Chains" }, { value: "500", label: "Actors" }, { value: "8", label: "Districts" }]
+    },
+  ];
+
+  const stats = [
+    { value: "20+", label: "Private Sector Projects" },
+    { value: "5,000+", label: "Businesses Surveyed" },
+    { value: "15+", label: "Sectors Analyzed" },
+    { value: "10", label: "Value Chains" },
+  ];
+
+  const methodology = [
+    { title: "Enterprise Surveys", description: "Standardized business surveys capturing firm-level data" },
+    { title: "Value Chain Mapping", description: "Systematic mapping of value chain actors and relationships" },
+    { title: "Key Informant Interviews", description: "In-depth interviews with private sector leaders and experts" },
+    { title: "Market Analysis", description: "Analysis of market dynamics, competition, and opportunities" },
+  ];
+
+  return (
+    <div className="pt-20">
+      <PracticeHero
+        icon={Factory}
+        color="#059669"
+        title="Private Sector Development"
+        tagline="Practice Area"
+        description="Research supporting private sector growth, business environment improvement, and market development."
+      />
+      <StatsSection color="#059669" stats={stats} />
+      <ExpertiseSection color="#059669" areas={expertiseAreas} />
+      <CaseStudiesSection color="#059669" studies={caseStudies} />
+      <MethodologySection color="#059669" steps={methodology} />
+      <CTASection
+        color="#059669"
+        title="Ready to Support Private Sector Growth?"
+        description="Our private sector expertise helps organizations understand and improve business environments."
+      />
+    </div>
+  );
+};
+
 // ==================== PRACTICE AREAS HUB PAGE ====================
 export const PracticeAreasHubPage = () => {
   const areas = [
