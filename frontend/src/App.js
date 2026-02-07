@@ -8,7 +8,8 @@ import {
   ExternalLink, Linkedin, Quote, BarChart3, Globe, CheckCircle2,
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
   Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
-  Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory
+  Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
+  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
