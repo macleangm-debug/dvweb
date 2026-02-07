@@ -20,15 +20,11 @@ const ServiceHero = ({ tagline, title, description, image }) => (
     </div>
     <div className="container mx-auto px-6 lg:px-12 relative z-10">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">
             {tagline}
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif leading-tight text-white">
             {title}
           </h1>
           <p className="text-xl text-white/80 leading-relaxed">
@@ -48,16 +44,11 @@ const ServiceHero = ({ tagline, title, description, image }) => (
               View Case Studies
             </Link>
           </div>
-        </motion.div>
+        </div>
         {image && (
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="hidden lg:block"
-          >
+          <div className="hidden lg:block">
             <img src={image} alt="" className="rounded-lg shadow-2xl" />
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
