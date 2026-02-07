@@ -230,6 +230,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [practiceAreasOpen, setPracticeAreasOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -242,7 +243,6 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
-    { name: 'Practice Areas', path: '/practice-areas' },
     { name: 'Projects', path: '/projects' },
     { name: 'News', path: '/news' },
     { name: 'Contact', path: '/contact' },
@@ -258,7 +258,19 @@ const Navbar = () => {
     { name: 'Technical Advisory', path: '/services/technical-advisory', icon: Compass, description: 'Strategic guidance & consultation' },
   ];
 
+  const practiceAreaLinks = [
+    { name: 'All Practice Areas', path: '/practice-areas', icon: Globe, description: 'Our sector expertise' },
+    { name: 'Agriculture & Food Security', path: '/practice-areas/agriculture', icon: Sprout, description: 'Food security & farming research' },
+    { name: 'Education', path: '/practice-areas/education', icon: BookOpen, description: 'Learning & school assessments' },
+    { name: 'Health', path: '/practice-areas/health', icon: Heart, description: 'Health systems & facilities' },
+    { name: 'WASH', path: '/practice-areas/wash', icon: Droplets, description: 'Water, sanitation & hygiene' },
+    { name: 'Governance', path: '/practice-areas/governance', icon: Scale, description: 'Public finance & accountability' },
+    { name: 'Economic Development', path: '/practice-areas/economic-development', icon: TrendingUp, description: 'Enterprise & employment' },
+    { name: 'Environment & Climate', path: '/practice-areas/environment', icon: Globe, description: 'Climate & natural resources' },
+  ];
+
   const isServicesActive = location.pathname.startsWith('/services');
+  const isPracticeAreasActive = location.pathname.startsWith('/practice-areas');
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
