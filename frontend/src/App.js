@@ -10,7 +10,6 @@ import {
   Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass
 } from 'lucide-react';
 import {
-  ServicesHubPage,
   ResearchStatisticsPage,
   MonitoringEvaluationPage,
   DataCollectionPage,
@@ -18,6 +17,7 @@ import {
   CapacityBuildingPage,
   TechnicalAdvisoryPage
 } from './pages/ServicePages';
+import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
