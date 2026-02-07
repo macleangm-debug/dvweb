@@ -94,28 +94,32 @@ const ServicesHubPageRedesigned = () => {
       title: "National Literacy Assessment Program",
       description: "Comprehensive evaluation of early grade reading skills across 1,200+ schools in rural and urban Tanzania, informing national education policy.",
       metrics: ["1,200 Schools", "50,000 Students", "85 Enumerators"],
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80"
+      icon: BookOpen,
+      color: "#e63946"
     },
     {
       sector: "WASH",
       title: "Rural Water Infrastructure Verification",
       description: "Four-year data verification project mapping and assessing water points across all regions of Tanzania for improved water sector governance.",
       metrics: ["129,949 Water Points", "124 Enumerators", "26 Regions"],
-      image: "https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?w=600&q=80"
+      icon: Droplets,
+      color: "#2a9d8f"
     },
     {
       sector: "Health",
       title: "Healthcare Access Impact Study",
       description: "Mixed-methods evaluation of community health worker programs measuring service delivery improvements and health outcomes.",
       metrics: ["5,000 Households", "200 Facilities", "12 Districts"],
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&q=80"
+      icon: Heart,
+      color: "#8b5cf6"
     },
     {
       sector: "Agriculture",
       title: "Food Security Monitoring System",
       description: "Longitudinal survey tracking agricultural productivity, market access, and household food security indicators across farming communities.",
       metrics: ["8,000 Farmers", "6 Growing Seasons", "18 Districts"],
-      image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80"
+      icon: Sprout,
+      color: "#f59e0b"
     }
   ];
 
