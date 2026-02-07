@@ -2024,7 +2024,14 @@ function App() {
                   <Route path="/services/technical-advisory" element={<TechnicalAdvisoryPage />} />
                   <Route path="/research" element={<ResearchStatisticsPage />} />
                   <Route path="/research-statistics" element={<ResearchStatisticsPage />} />
-                  <Route path="/practice-areas" element={<PracticeAreasPage />} />
+                  <Route path="/practice-areas" element={<PracticeAreasHubPage />} />
+                  <Route path="/practice-areas/agriculture" element={<AgriculturePage />} />
+                  <Route path="/practice-areas/education" element={<EducationPage />} />
+                  <Route path="/practice-areas/health" element={<HealthPage />} />
+                  <Route path="/practice-areas/wash" element={<WASHPage />} />
+                  <Route path="/practice-areas/governance" element={<GovernancePage />} />
+                  <Route path="/practice-areas/economic-development" element={<EconomicDevelopmentPage />} />
+                  <Route path="/practice-areas/environment" element={<EnvironmentPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
