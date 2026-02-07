@@ -509,24 +509,45 @@ const ServicesHubPageRedesigned = () => {
                 transition={{ delay: index * 0.1 }}
                 className="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#e63946]/50 transition-all"
               >
-                <div className="grid md:grid-cols-2">
-                  {/* Image */}
-                  <div className="relative h-64 md:h-full overflow-hidden">
-                    <img 
-                      src={study.image} 
-                      alt={study.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a1628]/80 md:block hidden" />
+                <div className="grid md:grid-cols-5">
+                  {/* Icon Section */}
+                  <div 
+                    className="relative md:col-span-2 h-48 md:h-full overflow-hidden flex items-center justify-center"
+                    style={{ backgroundColor: study.color + '15' }}
+                  >
+                    {/* Decorative circles */}
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div 
+                        className="absolute -top-10 -left-10 w-40 h-40 rounded-full opacity-20"
+                        style={{ backgroundColor: study.color }}
+                      />
+                      <div 
+                        className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full opacity-10"
+                        style={{ backgroundColor: study.color }}
+                      />
+                    </div>
+                    
+                    {/* Main icon */}
+                    <motion.div 
+                      className="relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+                      style={{ backgroundColor: study.color + '30' }}
+                    >
+                      <study.icon className="w-10 h-10" style={{ color: study.color }} />
+                    </motion.div>
+                    
+                    {/* Sector badge */}
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-[#e63946] text-white text-xs font-semibold uppercase tracking-wider rounded-full">
+                      <span 
+                        className="px-3 py-1 text-white text-xs font-semibold uppercase tracking-wider rounded-full"
+                        style={{ backgroundColor: study.color }}
+                      >
                         {study.sector}
                       </span>
                     </div>
                   </div>
                   
                   {/* Content */}
-                  <div className="p-6 md:p-8 flex flex-col justify-center">
+                  <div className="md:col-span-3 p-6 md:p-8 flex flex-col justify-center">
                     <h3 className="text-xl font-bold mb-3 font-serif group-hover:text-[#e63946] transition-colors">
                       {study.title}
                     </h3>
@@ -541,7 +562,7 @@ const ServicesHubPageRedesigned = () => {
                           key={i}
                           className="px-3 py-2 bg-white/5 rounded-lg text-sm"
                         >
-                          <span className="text-[#2a9d8f] font-semibold">{metric.split(' ')[0]}</span>
+                          <span className="font-semibold" style={{ color: study.color }}>{metric.split(' ')[0]}</span>
                           <span className="text-white/60 ml-1">{metric.split(' ').slice(1).join(' ')}</span>
                         </div>
                       ))}
