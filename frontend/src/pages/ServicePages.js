@@ -980,6 +980,958 @@ export const TechnicalAdvisoryPage = () => {
   );
 };
 
+// 7. Knowledge Management Page
+export const KnowledgeManagementPage = () => {
+  const challenges = [
+    {
+      title: "Information Silos",
+      description: "Critical knowledge trapped in documents, emails, and individual minds, inaccessible when needed for decision-making."
+    },
+    {
+      title: "Learning Loss",
+      description: "Institutional memory disappears with staff turnover, forcing organizations to repeatedly relearn lessons."
+    },
+    {
+      title: "Evidence Gaps",
+      description: "Difficulty synthesizing findings across multiple studies to understand what works and what doesn't."
+    },
+    {
+      title: "Dissemination Challenges",
+      description: "Research findings fail to reach intended audiences in accessible, actionable formats."
+    },
+    {
+      title: "Documentation Burden",
+      description: "Creating quality documentation competes with implementation priorities and often gets neglected."
+    },
+    {
+      title: "Adaptation Barriers",
+      description: "Organizations struggle to systematically capture and apply lessons for program improvement."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Knowledge Audit",
+      description: "We assess your current knowledge assets, flows, and gaps to understand what exists and what's needed."
+    },
+    {
+      title: "System Design",
+      description: "We design knowledge management systems, taxonomies, and processes tailored to your organizational context."
+    },
+    {
+      title: "Content Development",
+      description: "We create evidence syntheses, learning products, and documentation that capture critical knowledge."
+    },
+    {
+      title: "Platform Implementation",
+      description: "We support implementation of knowledge sharing platforms and collaborative learning tools."
+    },
+    {
+      title: "Capacity Building",
+      description: "We train staff on knowledge management practices and embed learning routines in organizational processes."
+    }
+  ];
+
+  const deliverables = [
+    { icon: FolderOpen, title: "Knowledge Audits", description: "Assessment of knowledge assets and gaps" },
+    { icon: Database, title: "Evidence Syntheses", description: "Systematic reviews and meta-analyses" },
+    { icon: BookOpen, title: "Learning Products", description: "Case studies, lessons learned, best practices" },
+    { icon: Share2, title: "KM Platforms", description: "Knowledge sharing system design" },
+    { icon: FileText, title: "Documentation", description: "Process documentation and manuals" },
+    { icon: Presentation, title: "Learning Events", description: "Facilitation of learning workshops" },
+    { icon: Network, title: "Communities of Practice", description: "Design and facilitation support" },
+    { icon: Lightbulb, title: "Innovation Capture", description: "Systematic innovation documentation" }
+  ];
+
+  const insights = [
+    {
+      stat: "60%",
+      title: "Knowledge Retention",
+      description: "Effective KM systems can retain up to 60% more institutional knowledge during staff transitions."
+    },
+    {
+      stat: "3x",
+      title: "Learning Application",
+      description: "Organizations with strong KM practices are three times more likely to apply lessons from past projects."
+    },
+    {
+      stat: "40%",
+      title: "Efficiency Gains",
+      description: "Proper knowledge management reduces time spent searching for information by up to 40%."
+    }
+  ];
+
+  const whyUsPoints = [
+    "Evidence synthesis expertise",
+    "Learning system design",
+    "Documentation specialists",
+    "Platform implementation",
+    "Facilitation experience",
+    "Organizational learning focus",
+    "Multi-format products",
+    "Sustainability emphasis"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Learning & Documentation"
+        title="Knowledge Management"
+        description="Capture, organize, and share organizational knowledge effectively. We help you build systems that preserve institutional memory and accelerate learning across your organization."
+      />
+      <ChallengeSection
+        title="The Knowledge Challenge"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Building Learning Organizations"
+        subtitle="Our approach integrates knowledge management best practices with practical organizational realities, creating systems that people actually use."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Capture and Share Knowledge?"
+        description="Let us help you build knowledge management systems that preserve learning and drive continuous improvement."
+      />
+    </div>
+  );
+};
+
+// 8. Digital Data Solutions Page
+export const DigitalDataSolutionsPage = () => {
+  const challenges = [
+    {
+      title: "Paper-Based Inefficiency",
+      description: "Manual data collection processes are slow, error-prone, and create delays in data availability."
+    },
+    {
+      title: "System Fragmentation",
+      description: "Multiple disconnected systems and spreadsheets make it difficult to get a unified view of program data."
+    },
+    {
+      title: "Real-Time Visibility",
+      description: "Decision-makers lack access to current data, relying on periodic reports that may be outdated."
+    },
+    {
+      title: "Technical Capacity",
+      description: "Organizations lack in-house expertise to design, build, and maintain custom data systems."
+    },
+    {
+      title: "Scalability Concerns",
+      description: "Solutions that work for pilot projects often fail to scale for larger implementations."
+    },
+    {
+      title: "Sustainability Questions",
+      description: "Externally-built systems become unusable when technical support ends."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Requirements Analysis",
+      description: "We work with stakeholders to understand data needs, workflows, and technical constraints."
+    },
+    {
+      title: "Solution Design",
+      description: "We design appropriate technical solutions balancing functionality, usability, and sustainability."
+    },
+    {
+      title: "Development & Testing",
+      description: "We build and rigorously test solutions using agile methodologies with continuous user feedback."
+    },
+    {
+      title: "Deployment & Training",
+      description: "We deploy solutions with comprehensive training and documentation for end users."
+    },
+    {
+      title: "Support & Iteration",
+      description: "We provide ongoing technical support and iterative improvements based on user experience."
+    }
+  ];
+
+  const deliverables = [
+    { icon: Smartphone, title: "Mobile Apps", description: "Custom CAPI/CATI data collection applications" },
+    { icon: Database, title: "Database Systems", description: "Custom MIS and database development" },
+    { icon: PieChart, title: "Dashboards", description: "Real-time monitoring dashboards" },
+    { icon: Code, title: "API Integration", description: "System integration and data exchange" },
+    { icon: Layers, title: "Data Pipelines", description: "Automated data processing workflows" },
+    { icon: Shield, title: "Data Security", description: "Security protocols and compliance" },
+    { icon: Users, title: "User Training", description: "Comprehensive system training" },
+    { icon: FileText, title: "Documentation", description: "Technical and user documentation" }
+  ];
+
+  const insights = [
+    {
+      stat: "80%",
+      title: "Error Reduction",
+      description: "Digital data collection reduces data entry errors by up to 80% compared to paper-based methods."
+    },
+    {
+      stat: "5x",
+      title: "Faster Processing",
+      description: "Automated data pipelines deliver clean datasets five times faster than manual processing."
+    },
+    {
+      stat: "Real-Time",
+      title: "Decision Support",
+      description: "Live dashboards enable immediate visibility into program performance for adaptive management."
+    }
+  ];
+
+  const whyUsPoints = [
+    "ODK/Kobo expertise",
+    "Custom app development",
+    "Dashboard design",
+    "Database architecture",
+    "API integration",
+    "Field-tested solutions",
+    "Offline-capable systems",
+    "Sustainability focus"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Technology Solutions"
+        title="Digital Data Solutions"
+        description="Custom digital tools for data collection, management, and visualization. From mobile apps to real-time dashboards, we build technology that works in the field."
+      />
+      <ChallengeSection
+        title="The Digital Imperative"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Technology That Works"
+        subtitle="We design digital solutions for real-world conditions—low connectivity, diverse users, and long-term sustainability."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Go Digital?"
+        description="Let us build digital data solutions that streamline your data collection and put insights at your fingertips."
+      />
+    </div>
+  );
+};
+
+// 9. GIS & Geospatial Analysis Page
+export const GISGeospatialPage = () => {
+  const challenges = [
+    {
+      title: "Location Intelligence",
+      description: "Understanding spatial patterns and geographic relationships is essential but technically demanding."
+    },
+    {
+      title: "Asset Mapping",
+      description: "Maintaining accurate inventories of infrastructure, facilities, and resources requires systematic approaches."
+    },
+    {
+      title: "Coverage Analysis",
+      description: "Identifying service gaps and planning optimal coverage requires sophisticated spatial analysis."
+    },
+    {
+      title: "Remote Monitoring",
+      description: "Tracking changes in land use, vegetation, or infrastructure over time requires specialized expertise."
+    },
+    {
+      title: "Data Integration",
+      description: "Combining spatial data with other data sources to generate comprehensive insights is complex."
+    },
+    {
+      title: "Visualization Challenges",
+      description: "Communicating spatial findings effectively requires specialized mapping and visualization skills."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Spatial Assessment",
+      description: "We assess your geospatial needs, existing data, and analytical requirements."
+    },
+    {
+      title: "Data Collection",
+      description: "We conduct GPS-based field data collection with standardized protocols and quality controls."
+    },
+    {
+      title: "Spatial Analysis",
+      description: "We apply GIS techniques including proximity analysis, spatial statistics, and coverage modeling."
+    },
+    {
+      title: "Remote Sensing",
+      description: "We analyze satellite imagery for land use, environmental monitoring, and change detection."
+    },
+    {
+      title: "Visualization & Reporting",
+      description: "We create interactive maps, spatial dashboards, and clear visualizations of findings."
+    }
+  ];
+
+  const deliverables = [
+    { icon: Map, title: "Interactive Maps", description: "Web-based and print-ready maps" },
+    { icon: Satellite, title: "Remote Sensing", description: "Satellite imagery analysis" },
+    { icon: MapPin, title: "Asset Inventories", description: "GPS-based facility mapping" },
+    { icon: Target, title: "Coverage Analysis", description: "Service area and gap analysis" },
+    { icon: Layers, title: "Spatial Databases", description: "GIS database development" },
+    { icon: TrendingUp, title: "Change Detection", description: "Temporal change analysis" },
+    { icon: PieChart, title: "Spatial Dashboards", description: "Interactive mapping platforms" },
+    { icon: FileText, title: "Map Products", description: "Atlas and cartographic outputs" }
+  ];
+
+  const insights = [
+    {
+      stat: "130K+",
+      title: "Points Mapped",
+      description: "Our water point mapping project created Tanzania's most comprehensive infrastructure database."
+    },
+    {
+      stat: "95%",
+      title: "Location Accuracy",
+      description: "Our GPS protocols ensure high-precision location data suitable for planning and navigation."
+    },
+    {
+      stat: "50+",
+      title: "GIS Projects",
+      description: "Decades of geospatial experience across infrastructure, environment, and social sectors."
+    }
+  ];
+
+  const whyUsPoints = [
+    "High-precision GPS collection",
+    "ArcGIS and QGIS expertise",
+    "Remote sensing analysis",
+    "Spatial statistics",
+    "Interactive web mapping",
+    "National-scale experience",
+    "Infrastructure inventories",
+    "Environmental monitoring"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Spatial Intelligence"
+        title="GIS & Geospatial Analysis"
+        description="Harness the power of location data. From GPS mapping to satellite imagery analysis, we help you understand spatial patterns and make location-informed decisions."
+      />
+      <ChallengeSection
+        title="The Spatial Dimension"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Mapping Insights"
+        subtitle="We combine field-based GPS data collection with advanced spatial analysis to reveal patterns invisible in tabular data."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Map Your Data?"
+        description="Let us help you leverage geospatial analysis to understand patterns, plan interventions, and monitor change."
+      />
+    </div>
+  );
+};
+
+// 10. Qualitative Research Page
+export const QualitativeResearchPage = () => {
+  const challenges = [
+    {
+      title: "Understanding 'Why'",
+      description: "Quantitative data shows what's happening but often can't explain why—requiring deeper qualitative exploration."
+    },
+    {
+      title: "Context Sensitivity",
+      description: "Local contexts, cultural factors, and social dynamics require nuanced understanding beyond numbers."
+    },
+    {
+      title: "Stakeholder Perspectives",
+      description: "Capturing diverse viewpoints from beneficiaries, implementers, and other stakeholders requires skilled facilitation."
+    },
+    {
+      title: "Complexity Navigation",
+      description: "Complex social issues don't fit neatly into survey questions—they require open-ended exploration."
+    },
+    {
+      title: "Analysis Rigor",
+      description: "Maintaining analytical rigor while working with narrative data requires systematic approaches."
+    },
+    {
+      title: "Credibility Concerns",
+      description: "Qualitative findings must be presented credibly to stakeholders who may favor quantitative evidence."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Design & Sampling",
+      description: "We develop research questions, sampling strategies, and protocols tailored to your qualitative inquiry."
+    },
+    {
+      title: "Instrument Development",
+      description: "We create interview guides, focus group protocols, and observation frameworks."
+    },
+    {
+      title: "Field Research",
+      description: "Skilled researchers conduct interviews, focus groups, and observations with cultural sensitivity."
+    },
+    {
+      title: "Systematic Analysis",
+      description: "We apply rigorous coding and thematic analysis using established qualitative methods."
+    },
+    {
+      title: "Synthesis & Reporting",
+      description: "We synthesize findings into compelling narratives with clear implications for action."
+    }
+  ];
+
+  const deliverables = [
+    { icon: MessageCircle, title: "In-Depth Interviews", description: "Key informant and life history interviews" },
+    { icon: Users, title: "Focus Groups", description: "Facilitated group discussions" },
+    { icon: Search, title: "Ethnographic Studies", description: "Observational and immersive research" },
+    { icon: FileQuestion, title: "Case Studies", description: "Detailed case study development" },
+    { icon: Layers, title: "Thematic Analysis", description: "Systematic coding and analysis" },
+    { icon: BookOpen, title: "Narrative Reports", description: "Rich qualitative findings" },
+    { icon: Lightbulb, title: "Participatory Methods", description: "Community-engaged approaches" },
+    { icon: Presentation, title: "Stakeholder Stories", description: "Beneficiary voice documentation" }
+  ];
+
+  const insights = [
+    {
+      stat: "500+",
+      title: "FGDs Conducted",
+      description: "Extensive experience facilitating focus group discussions across diverse communities and contexts."
+    },
+    {
+      stat: "1,000+",
+      title: "Interviews Completed",
+      description: "Deep expertise in key informant and in-depth interviewing across multiple sectors."
+    },
+    {
+      stat: "20+",
+      title: "Languages",
+      description: "Multilingual research teams enabling direct engagement with diverse populations."
+    }
+  ];
+
+  const whyUsPoints = [
+    "Experienced qualitative researchers",
+    "Multilingual capabilities",
+    "Cultural sensitivity",
+    "Systematic analysis",
+    "Mixed-methods integration",
+    "Participatory approaches",
+    "Ethical protocols",
+    "Compelling storytelling"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Deep Understanding"
+        title="Qualitative Research"
+        description="Go beyond the numbers to understand context, meaning, and lived experience. Our qualitative research reveals the 'why' behind the 'what'."
+      />
+      <ChallengeSection
+        title="The Depth Imperative"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Understanding Through Dialogue"
+        subtitle="We combine methodological rigor with cultural sensitivity, creating space for authentic voices while maintaining analytical discipline."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Understand the Full Story?"
+        description="Let us help you explore complex questions through rigorous qualitative research that captures authentic perspectives."
+      />
+    </div>
+  );
+};
+
+// 11. Survey Design & Methodology Page
+export const SurveyDesignPage = () => {
+  const challenges = [
+    {
+      title: "Sampling Complexity",
+      description: "Designing samples that are representative, feasible, and appropriate for research questions requires statistical expertise."
+    },
+    {
+      title: "Questionnaire Quality",
+      description: "Poorly designed questions lead to unreliable data—good questionnaire design is both art and science."
+    },
+    {
+      title: "Measurement Validity",
+      description: "Ensuring instruments actually measure what they're intended to measure requires careful validation."
+    },
+    {
+      title: "Local Adaptation",
+      description: "International instruments need thoughtful adaptation for local contexts without losing comparability."
+    },
+    {
+      title: "Response Bias",
+      description: "Survey design must anticipate and mitigate various forms of response bias that can distort findings."
+    },
+    {
+      title: "Ethical Considerations",
+      description: "Surveys must be designed to protect respondent welfare and comply with ethical standards."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Conceptualization",
+      description: "We work with you to clarify research questions and identify the constructs to be measured."
+    },
+    {
+      title: "Sampling Design",
+      description: "We develop sampling strategies that balance statistical rigor with practical constraints."
+    },
+    {
+      title: "Instrument Development",
+      description: "We design questionnaires using best practices in question wording, response options, and flow."
+    },
+    {
+      title: "Translation & Adaptation",
+      description: "We manage translation processes and cultural adaptation with cognitive testing."
+    },
+    {
+      title: "Pilot Testing",
+      description: "We conduct pilots to test instruments, refine questions, and finalize protocols before full deployment."
+    }
+  ];
+
+  const deliverables = [
+    { icon: Target, title: "Sampling Designs", description: "Probability and purposive sampling plans" },
+    { icon: PenTool, title: "Questionnaires", description: "Survey instruments and guides" },
+    { icon: FileText, title: "Protocols", description: "Field manuals and procedures" },
+    { icon: Globe, title: "Translations", description: "Multi-language instrument versions" },
+    { icon: ClipboardCheck, title: "Pilot Reports", description: "Testing results and recommendations" },
+    { icon: BarChart3, title: "Power Calculations", description: "Sample size determination" },
+    { icon: Shield, title: "Ethics Packages", description: "IRB applications and consent forms" },
+    { icon: Layers, title: "Codebooks", description: "Variable documentation" }
+  ];
+
+  const insights = [
+    {
+      stat: "1,000+",
+      title: "Surveys Designed",
+      description: "Extensive experience designing surveys across all development sectors and methodological approaches."
+    },
+    {
+      stat: "50+",
+      title: "Countries",
+      description: "Survey design expertise adapted for diverse cultural and operational contexts globally."
+    },
+    {
+      stat: "100%",
+      title: "Pilot Tested",
+      description: "We pilot test every instrument to ensure quality before full-scale deployment."
+    }
+  ];
+
+  const whyUsPoints = [
+    "Statistical sampling expertise",
+    "Questionnaire design specialists",
+    "Cognitive testing experience",
+    "Translation management",
+    "Pilot testing protocols",
+    "Power analysis capabilities",
+    "Ethics compliance",
+    "Sector-specific knowledge"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Methodological Excellence"
+        title="Survey Design & Methodology"
+        description="Get the foundation right. Our survey design expertise ensures your research is built on solid methodological ground, from sampling to questionnaire development."
+      />
+      <ChallengeSection
+        title="Design Determines Quality"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Rigorous by Design"
+        subtitle="We apply survey methodology best practices while adapting to local contexts and practical constraints."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Design Your Survey?"
+        description="Let our methodology experts help you design research that generates reliable, actionable data."
+      />
+    </div>
+  );
+};
+
+// 12. Program Design Support Page
+export const ProgramDesignPage = () => {
+  const challenges = [
+    {
+      title: "Theory Gaps",
+      description: "Programs launch without clear articulation of how activities lead to intended outcomes."
+    },
+    {
+      title: "Indicator Selection",
+      description: "Choosing meaningful, measurable indicators that actually reflect program success is challenging."
+    },
+    {
+      title: "Baseline Absence",
+      description: "Programs begin without baseline data, making it impossible to measure change later."
+    },
+    {
+      title: "Assumption Testing",
+      description: "Critical assumptions underlying program logic often go unexamined until problems emerge."
+    },
+    {
+      title: "Stakeholder Alignment",
+      description: "Different stakeholders may have conflicting views on program priorities and success measures."
+    },
+    {
+      title: "Adaptive Capacity",
+      description: "Rigid program designs fail to build in learning and adaptation mechanisms."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Context Analysis",
+      description: "We analyze the problem context, stakeholder landscape, and evidence base to inform design."
+    },
+    {
+      title: "Theory of Change",
+      description: "We facilitate participatory ToC development, articulating causal pathways and assumptions."
+    },
+    {
+      title: "Results Framework",
+      description: "We develop logical frameworks with SMART indicators aligned to program theory."
+    },
+    {
+      title: "M&E Planning",
+      description: "We design M&E systems that will generate the evidence needed to assess progress and impact."
+    },
+    {
+      title: "Learning Integration",
+      description: "We build in mechanisms for ongoing learning, adaptation, and course correction."
+    }
+  ];
+
+  const deliverables = [
+    { icon: Workflow, title: "Theory of Change", description: "Visual causal pathway maps" },
+    { icon: Target, title: "Results Frameworks", description: "Logframes and indicator matrices" },
+    { icon: BarChart3, title: "M&E Plans", description: "Comprehensive monitoring designs" },
+    { icon: ClipboardCheck, title: "Indicator Definitions", description: "SMART indicator reference sheets" },
+    { icon: Users, title: "Stakeholder Maps", description: "Power and interest analysis" },
+    { icon: Search, title: "Context Assessments", description: "Situational analysis reports" },
+    { icon: Lightbulb, title: "Assumption Logs", description: "Critical assumption documentation" },
+    { icon: Layers, title: "Learning Agendas", description: "Research and learning priorities" }
+  ];
+
+  const insights = [
+    {
+      stat: "2x",
+      title: "Impact Achievement",
+      description: "Programs with clear theories of change are twice as likely to achieve intended impacts."
+    },
+    {
+      stat: "50+",
+      title: "ToCs Developed",
+      description: "Extensive experience facilitating theory of change processes across sectors and contexts."
+    },
+    {
+      stat: "100%",
+      title: "Evaluability",
+      description: "Our program designs build in the data and systems needed for rigorous evaluation."
+    }
+  ];
+
+  const whyUsPoints = [
+    "ToC facilitation expertise",
+    "Results-based management",
+    "Indicator development",
+    "M&E system design",
+    "Participatory approaches",
+    "Sector expertise",
+    "Donor requirements knowledge",
+    "Adaptive management"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Strategic Foundation"
+        title="Program Design Support"
+        description="Start with clarity. We help you build programs on solid foundations—clear theories of change, meaningful indicators, and robust M&E systems."
+      />
+      <ChallengeSection
+        title="Design for Impact"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Evidence-Informed Design"
+        subtitle="We bring research rigor to program design, ensuring interventions are grounded in evidence and designed for measurable impact."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Design for Results?"
+        description="Let us help you develop program designs that are clear, measurable, and positioned for impact."
+      />
+    </div>
+  );
+};
+
+// 13. Policy Research & Analysis Page
+export const PolicyResearchPage = () => {
+  const challenges = [
+    {
+      title: "Evidence-Policy Gap",
+      description: "Research findings often fail to reach policymakers in timely, accessible, actionable formats."
+    },
+    {
+      title: "Political Economy",
+      description: "Understanding the interests, incentives, and dynamics shaping policy requires specialized analysis."
+    },
+    {
+      title: "Stakeholder Complexity",
+      description: "Multiple actors with varying influence and interests complicate policy engagement strategies."
+    },
+    {
+      title: "Implementation Realities",
+      description: "Well-designed policies fail when implementation capacity and constraints aren't considered."
+    },
+    {
+      title: "Regulatory Burden",
+      description: "Understanding regulatory environments and their impacts requires systematic assessment."
+    },
+    {
+      title: "Communication Barriers",
+      description: "Technical research must be translated into language and formats that resonate with policy audiences."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Policy Landscape",
+      description: "We map the policy environment, key actors, and decision-making processes relevant to your issue."
+    },
+    {
+      title: "Evidence Synthesis",
+      description: "We compile and synthesize relevant evidence to inform policy positions and recommendations."
+    },
+    {
+      title: "Stakeholder Analysis",
+      description: "We analyze stakeholder interests, influence, and positions to inform engagement strategies."
+    },
+    {
+      title: "Policy Products",
+      description: "We develop briefs, presentations, and other products tailored to policy audiences."
+    },
+    {
+      title: "Engagement Support",
+      description: "We support policy dialogue, advocacy efforts, and strategic communications."
+    }
+  ];
+
+  const deliverables = [
+    { icon: ScrollText, title: "Policy Briefs", description: "Concise evidence summaries for policymakers" },
+    { icon: Users, title: "Stakeholder Maps", description: "Actor analysis and engagement strategies" },
+    { icon: Search, title: "Regulatory Analysis", description: "Policy and regulatory environment assessment" },
+    { icon: TrendingUp, title: "Impact Assessment", description: "Policy impact and cost analysis" },
+    { icon: Presentation, title: "Policy Presentations", description: "Materials for policy engagement" },
+    { icon: Network, title: "Political Economy", description: "Political economy analysis" },
+    { icon: FileText, title: "Position Papers", description: "Evidence-based policy positions" },
+    { icon: Lightbulb, title: "Recommendations", description: "Actionable policy recommendations" }
+  ];
+
+  const insights = [
+    {
+      stat: "30+",
+      title: "Policy Briefs",
+      description: "Track record of producing policy products that influence decision-making."
+    },
+    {
+      stat: "5",
+      title: "Policy Reforms",
+      description: "Our research has directly contributed to policy changes at national and local levels."
+    },
+    {
+      stat: "100+",
+      title: "Stakeholder Engagements",
+      description: "Extensive experience engaging with government, donors, and civil society on policy issues."
+    }
+  ];
+
+  const whyUsPoints = [
+    "Policy brief expertise",
+    "Stakeholder engagement",
+    "Political economy analysis",
+    "Regulatory assessment",
+    "Evidence synthesis",
+    "Government relationships",
+    "Communications expertise",
+    "Advocacy support"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Evidence to Action"
+        title="Policy Research & Analysis"
+        description="Bridge the gap between evidence and policy. We help translate research into actionable recommendations that influence decision-making."
+      />
+      <ChallengeSection
+        title="The Policy Challenge"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Research for Influence"
+        subtitle="We combine rigorous analysis with strategic communications to ensure evidence reaches and resonates with decision-makers."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Influence Policy?"
+        description="Let us help you develop evidence-based policy recommendations and engagement strategies."
+      />
+    </div>
+  );
+};
+
+// 14. Cost-Benefit & Economic Analysis Page
+export const EconomicAnalysisPage = () => {
+  const challenges = [
+    {
+      title: "Value Demonstration",
+      description: "Funders increasingly demand evidence that investments deliver value for money."
+    },
+    {
+      title: "Comparison Complexity",
+      description: "Comparing costs and benefits across different interventions requires standardized approaches."
+    },
+    {
+      title: "Data Limitations",
+      description: "Cost data is often incomplete, inconsistent, or unavailable, complicating economic analysis."
+    },
+    {
+      title: "Benefit Quantification",
+      description: "Putting monetary values on social outcomes like health or education improvements is challenging."
+    },
+    {
+      title: "Time Horizons",
+      description: "Benefits may accrue over long periods while costs are immediate—requiring appropriate discounting."
+    },
+    {
+      title: "Uncertainty Management",
+      description: "Economic projections involve uncertainty that must be acknowledged and managed."
+    }
+  ];
+
+  const approachSteps = [
+    {
+      title: "Scoping & Framework",
+      description: "We define the analysis scope, perspective, and appropriate economic framework."
+    },
+    {
+      title: "Cost Analysis",
+      description: "We systematically collect and analyze program costs using activity-based costing methods."
+    },
+    {
+      title: "Benefit Valuation",
+      description: "We quantify and monetize benefits using established valuation techniques."
+    },
+    {
+      title: "Economic Modeling",
+      description: "We build economic models calculating ROI, cost-effectiveness ratios, and net present values."
+    },
+    {
+      title: "Sensitivity Analysis",
+      description: "We test assumptions and present results with appropriate uncertainty ranges."
+    }
+  ];
+
+  const deliverables = [
+    { icon: Calculator, title: "Cost Analysis", description: "Detailed program cost breakdowns" },
+    { icon: TrendingUp, title: "Cost-Effectiveness", description: "Cost per outcome calculations" },
+    { icon: BarChart3, title: "Cost-Benefit Analysis", description: "Full economic CBA with NPV/BCR" },
+    { icon: PieChart, title: "ROI Calculations", description: "Return on investment analysis" },
+    { icon: LineChart, title: "Economic Models", description: "Custom economic projection models" },
+    { icon: Target, title: "Value for Money", description: "VfM assessments and frameworks" },
+    { icon: Layers, title: "Sensitivity Analysis", description: "Uncertainty and scenario testing" },
+    { icon: FileText, title: "Investment Cases", description: "Business cases for funding" }
+  ];
+
+  const insights = [
+    {
+      stat: "15:1",
+      title: "Average BCR",
+      description: "Development programs we've evaluated average benefit-cost ratios of 15 to 1."
+    },
+    {
+      stat: "25+",
+      title: "Economic Analyses",
+      description: "Track record of rigorous economic analysis across diverse program types."
+    },
+    {
+      stat: "$500M+",
+      title: "Investments Analyzed",
+      description: "Economic analysis supporting major investment decisions and funding allocations."
+    }
+  ];
+
+  const whyUsPoints = [
+    "Cost accounting expertise",
+    "Benefit valuation methods",
+    "Economic modeling",
+    "Sensitivity analysis",
+    "VfM frameworks",
+    "Investment case development",
+    "Donor requirements knowledge",
+    "Clear communication"
+  ];
+
+  return (
+    <div className="pt-20">
+      <ServiceHero
+        tagline="Value Demonstration"
+        title="Cost-Benefit & Economic Analysis"
+        description="Demonstrate the value of your investments. We provide rigorous economic analysis showing whether programs deliver returns that justify their costs."
+      />
+      <ChallengeSection
+        title="The Value Question"
+        challenges={challenges}
+      />
+      <ApproachSection
+        title="Rigorous Economic Evidence"
+        subtitle="We apply established economic methods while communicating findings clearly to non-technical audiences."
+        steps={approachSteps}
+      />
+      <DeliverablesSection deliverables={deliverables} />
+      <InsightsSection insights={insights} />
+      <WhyUsSection points={whyUsPoints} />
+      <ServiceCTA
+        title="Ready to Demonstrate Value?"
+        description="Let us help you build the economic case for your programs and investments."
+      />
+    </div>
+  );
+};
+
 // Services Overview/Hub Page
 export const ServicesHubPage = () => {
   const services = [
