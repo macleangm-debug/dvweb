@@ -1035,22 +1035,18 @@ export const ServicesHubPage = () => {
           }} />
         </div>
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl"
-          >
+          <div className="max-w-3xl">
             <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">
               Our Services
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif text-white">
               Comprehensive Research & Evidence Solutions
             </h1>
             <p className="text-xl text-white/80 leading-relaxed">
               From initial research design through data collection, analysis, and strategic application—we provide 
               end-to-end support for organizations seeking to understand and improve their impact across Africa.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
