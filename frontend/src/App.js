@@ -2127,6 +2127,14 @@ function App() {
                   <Route path="/services/data-analytics" element={<DataAnalyticsPage />} />
                   <Route path="/services/capacity-building" element={<CapacityBuildingPage />} />
                   <Route path="/services/technical-advisory" element={<TechnicalAdvisoryPage />} />
+                  <Route path="/services/knowledge-management" element={<KnowledgeManagementPage />} />
+                  <Route path="/services/digital-solutions" element={<DigitalDataSolutionsPage />} />
+                  <Route path="/services/gis-geospatial" element={<GISGeospatialPage />} />
+                  <Route path="/services/qualitative-research" element={<QualitativeResearchPage />} />
+                  <Route path="/services/survey-design" element={<SurveyDesignPage />} />
+                  <Route path="/services/program-design" element={<ProgramDesignPage />} />
+                  <Route path="/services/policy-research" element={<PolicyResearchPage />} />
+                  <Route path="/services/economic-analysis" element={<EconomicAnalysisPage />} />
                   <Route path="/research" element={<ResearchStatisticsPage />} />
                   <Route path="/research-statistics" element={<ResearchStatisticsPage />} />
                   <Route path="/practice-areas" element={<PracticeAreasHubPage />} />
