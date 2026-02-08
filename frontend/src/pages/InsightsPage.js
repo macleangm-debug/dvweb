@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, FileText, Download, BookOpen, BarChart3, 
   Calendar, Clock, User, Search, Filter, ChevronRight,
   Lightbulb, TrendingUp, Globe, Target, Layers, Award,
-  ExternalLink, BookMarked, GraduationCap, PieChart
+  ExternalLink, BookMarked, GraduationCap, PieChart, Bookmark, X, Trash2
 } from 'lucide-react';
 
 const InsightsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [savedArticles, setSavedArticles] = useState([]);
+  const [showSavedSection, setShowSavedSection] = useState(false);
+
+  // Load saved articles from localStorage
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem('datavision_saved_articles') || '[]');
+    setSavedArticles(saved);
+    if (saved.length > 0) {
+      setShowSavedSection(true);
+    }
+  }, []);
+
+  // Remove article from saved
+  const removeFromSaved = (articleId) => {
+    const updated = savedArticles.filter(a => a.id !== articleId);
+    localStorage.setItem('datavision_saved_articles', JSON.stringify(updated));
+    setSavedArticles(updated);
+    if (updated.length === 0) {
+      setShowSavedSection(false);
+    }
+  };
 
   const categories = [
     { id: 'all', name: 'All Insights', icon: Layers },
