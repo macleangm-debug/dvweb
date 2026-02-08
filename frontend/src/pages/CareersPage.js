@@ -920,7 +920,7 @@ const JobsTab = ({ jobs, searchTerm, setSearchTerm, selectedDepartment, setSelec
 );
 
 // ==================== EXPERTS TAB ====================
-const ExpertsTab = () => {
+const ExpertsTab = ({ setActiveTab }) => {
   const [selectedSector, setSelectedSector] = useState(null);
 
   return (
@@ -948,6 +948,20 @@ const ExpertsTab = () => {
                 Join Our Network of<br />Sector Experts
               </h1>
               <p className="text-xl text-white/80 leading-relaxed mb-8">
+                Are you a seasoned professional with deep expertise in a specific sector? 
+                Join our network of consultants and contribute to impactful projects 
+                across Africa on a flexible, project-by-project basis.
+              </p>
+              <div className="flex flex-wrap gap-4 mb-8">
+                <button
+                  onClick={() => setActiveTab('register')}
+                  className="inline-flex items-center gap-2 bg-[#f59e0b] text-[#0a1628] px-6 py-3 font-semibold hover:bg-white transition-all"
+                  data-testid="register-expert-hero-btn"
+                >
+                  Register Now <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-6 text-sm">
                 Are you a seasoned professional with deep expertise in a specific sector? 
                 Join our network of consultants and contribute to impactful projects 
                 across Africa on a flexible, project-by-project basis.
