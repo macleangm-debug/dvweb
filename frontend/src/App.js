@@ -2512,6 +2512,7 @@ const AdminDashboard = () => {
 
   const tabs = [
     { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
+    { id: 'experts', label: 'Expert Network', icon: Users },
     { id: 'projects', label: 'Projects', icon: FileText },
     { id: 'statistics', label: 'Statistics', icon: BarChart3 },
   ];
