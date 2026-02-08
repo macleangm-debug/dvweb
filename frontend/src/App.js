@@ -516,86 +516,178 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Slide-Out Panel Design */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t overflow-y-auto max-h-[80vh]"
+            className="lg:hidden bg-white border-t overflow-hidden"
           >
-            <div className="container mx-auto px-6 py-4">
-              {navLinks.slice(0, 2).map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`block py-3 text-sm font-medium ${
-                    location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              
-              {/* Services Section in Mobile */}
-              <div className="py-3 border-t border-[#e2e8f0] my-2">
-                <p className="text-sm font-semibold text-[#0a1628] mb-2">Services</p>
-                <div className="pl-4 space-y-2">
-                  {serviceLinks.map((service) => (
-                    <Link
-                      key={service.path}
-                      to={service.path}
-                      onClick={() => setIsOpen(false)}
-                      className={`block py-2 text-sm ${
-                        location.pathname === service.path ? 'text-[#e63946]' : 'text-[#64748b]'
-                      }`}
-                    >
-                      {service.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Practice Areas Section in Mobile */}
-              <div className="py-3 border-t border-b border-[#e2e8f0] my-2">
-                <p className="text-sm font-semibold text-[#0a1628] mb-2">Practice Areas</p>
-                <div className="pl-4 space-y-2">
-                  {practiceAreaLinks.map((area) => (
-                    <Link
-                      key={area.path}
-                      to={area.path}
-                      onClick={() => setIsOpen(false)}
-                      className={`block py-2 text-sm ${
-                        location.pathname === area.path ? 'text-[#e63946]' : 'text-[#64748b]'
-                      }`}
-                    >
-                      {area.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              
-              {navLinks.slice(2).map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`block py-3 text-sm font-medium ${
-                    location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link 
-                to="/contact" 
-                onClick={() => setIsOpen(false)}
-                className="block mt-4 bg-[#e63946] text-white px-6 py-3 text-sm font-semibold uppercase tracking-wider text-center"
+            <div className="relative" style={{ minHeight: '400px' }}>
+              {/* Main Menu Panel */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu ? '-100%' : '0%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white"
               >
-                Partner With Us
-              </Link>
+                <div className="px-6 py-4">
+                  {/* Home & About */}
+                  {navLinks.slice(0, 2).map((link) => (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                        location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                  
+                  {/* Services - Opens Sub Panel */}
+                  <button
+                    onClick={() => setMobileSubMenu('services')}
+                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname.startsWith('/services') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                    }`}
+                  >
+                    <span>Services</span>
+                    <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                  </button>
+                  
+                  {/* Practice Areas - Opens Sub Panel */}
+                  <button
+                    onClick={() => setMobileSubMenu('practice-areas')}
+                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname.startsWith('/practice-areas') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                    }`}
+                  >
+                    <span>Practice Areas</span>
+                    <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                  </button>
+                  
+                  {/* Projects, News, Contact */}
+                  {navLinks.slice(2).map((link) => (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                        location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                  
+                  {/* CTA Button */}
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setIsOpen(false)}
+                    className="block mt-6 bg-[#e63946] text-white px-6 py-4 text-sm font-semibold uppercase tracking-wider text-center rounded-lg"
+                  >
+                    Partner With Us
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* Services Sub Panel */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu === 'services' ? '0%' : '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white overflow-y-auto"
+              >
+                <div className="px-6 py-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => setMobileSubMenu(null)}
+                    className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-180" />
+                    <span>Back</span>
+                  </button>
+                  
+                  {/* Section Title */}
+                  <div className="py-4 border-b border-[#e63946]">
+                    <h3 className="text-lg font-bold text-[#0a1628]">Services</h3>
+                    <p className="text-sm text-[#64748b]">Our comprehensive offerings</p>
+                  </div>
+                  
+                  {/* Service Links */}
+                  <div className="py-2">
+                    {serviceLinks.map((service, index) => (
+                      <Link
+                        key={service.path}
+                        to={service.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 py-3 ${
+                          index !== serviceLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
+                        } ${location.pathname === service.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
+                      >
+                        <service.icon className={`w-5 h-5 ${
+                          location.pathname === service.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
+                        }`} />
+                        <div>
+                          <span className="text-sm font-medium">{service.name}</span>
+                          <p className="text-xs text-[#64748b]">{service.description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Practice Areas Sub Panel */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu === 'practice-areas' ? '0%' : '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white overflow-y-auto"
+              >
+                <div className="px-6 py-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => setMobileSubMenu(null)}
+                    className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-180" />
+                    <span>Back</span>
+                  </button>
+                  
+                  {/* Section Title */}
+                  <div className="py-4 border-b border-[#e63946]">
+                    <h3 className="text-lg font-bold text-[#0a1628]">Practice Areas</h3>
+                    <p className="text-sm text-[#64748b]">Our sector expertise</p>
+                  </div>
+                  
+                  {/* Practice Area Links */}
+                  <div className="py-2">
+                    {practiceAreaLinks.map((area, index) => (
+                      <Link
+                        key={area.path}
+                        to={area.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 py-3 ${
+                          index !== practiceAreaLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
+                        } ${location.pathname === area.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
+                      >
+                        <area.icon className={`w-5 h-5 ${
+                          location.pathname === area.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
+                        }`} />
+                        <div>
+                          <span className="text-sm font-medium">{area.name}</span>
+                          <p className="text-xs text-[#64748b]">{area.description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
