@@ -8,28 +8,24 @@ User requested restructuring of the DataVision website navigation and services:
 ### December 2025 - CareersPage.js Tab Components Refactoring (COMPLETED)
 
 **Frontend Tab Components Extracted:**
-CareersPage.js was 1805 lines. Tab components have been extracted to separate files:
-- `/app/frontend/src/components/careers/OverviewTab.js` - Main landing view
-- `/app/frontend/src/components/careers/WhyUsTab.js` - Company values and impact
-- `/app/frontend/src/components/careers/JobsTab.js` - Job listings with search/filter
-- `/app/frontend/src/components/careers/ProcessTab.js` - Hiring process stages
-- `/app/frontend/src/components/careers/StudentsTab.js` - Graduate programs
-- `/app/frontend/src/components/careers/LifeTab.js` - Culture and benefits
-- `/app/frontend/src/components/careers/careersData.js` - Static data (positions, benefits, sectors)
-- `/app/frontend/src/components/careers/index.js` - Unified exports
+CareersPage.js reduced from 1805 lines to 215 lines (88% reduction!)
+Tab components extracted to separate files:
+- `/app/frontend/src/components/careers/OverviewTab.js` - 330 lines
+- `/app/frontend/src/components/careers/WhyUsTab.js` - 176 lines
+- `/app/frontend/src/components/careers/JobsTab.js` - 166 lines
+- `/app/frontend/src/components/careers/ProcessTab.js` - 130 lines
+- `/app/frontend/src/components/careers/StudentsTab.js` - 168 lines
+- `/app/frontend/src/components/careers/LifeTab.js` - 144 lines
+- `/app/frontend/src/components/careers/ExpertsTab.js` - 316 lines
+- `/app/frontend/src/components/careers/RegisterTab.js` - 38 lines
+- `/app/frontend/src/components/careers/careersData.js` - 227 lines (static data)
+- `/app/frontend/src/components/careers/index.js` - 57 lines (exports)
 
-**Updated Structure:**
-```
-/app/frontend/src/components/careers/
-├── index.js           # Unified exports
-├── careersData.js     # Static data (openPositions, benefits, etc.)
-├── OverviewTab.js     # ~250 lines
-├── WhyUsTab.js        # ~150 lines
-├── JobsTab.js         # ~160 lines
-├── ProcessTab.js      # ~140 lines
-├── StudentsTab.js     # ~170 lines
-└── LifeTab.js         # ~140 lines
-```
+**CareersPage.js now only handles:**
+- Navigation state management
+- Dropdown menu logic
+- Tab routing
+- Importing and rendering tab components
 
 ---
 
