@@ -129,6 +129,14 @@ const industriesData = [
     icon: Factory,
     color: '#84cc16',
     stats: { projects: '15+', factories: '30+', efficiency: '+25%' }
+  },
+  {
+    id: 'retail',
+    name: 'Retail & Consumer Goods',
+    shortDesc: 'Consumer insights and retail analytics for data-driven business decisions',
+    icon: ShoppingCart,
+    color: '#f43f5e',
+    stats: { projects: '40+', stores: '500+', consumers: '2M+' }
   }
 ];
 
