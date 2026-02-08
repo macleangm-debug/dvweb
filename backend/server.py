@@ -1969,6 +1969,222 @@ async def seed_database():
     
     return {"message": "Database seeded successfully"}
 
+# ==================== STRIPE PAYMENT INTEGRATION ====================
+from typing import Dict
+from fastapi import Request
+
+# Software Product Packages - defined server-side for security
+SOFTWARE_PACKAGES = {
+    # Survey360 - Subscription
+    "survey360_monthly": {"name": "Survey360 Monthly", "amount": 99.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_annual": {"name": "Survey360 Annual", "amount": 990.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_enterprise": {"name": "Survey360 Enterprise", "amount": 0.00, "type": "enterprise", "product_id": "survey360"},
+    
+    # DataViz Studio - Subscription
+    "dataviz_monthly": {"name": "DataViz Studio Monthly", "amount": 79.00, "type": "subscription", "product_id": "dataviz-studio"},
+    "dataviz_annual": {"name": "DataViz Studio Annual", "amount": 790.00, "type": "subscription", "product_id": "dataviz-studio"},
+    
+    # M&E Tracker - Subscription
+    "me_tracker_monthly": {"name": "M&E Tracker Monthly", "amount": 149.00, "type": "subscription", "product_id": "me-tracker"},
+    "me_tracker_annual": {"name": "M&E Tracker Annual", "amount": 1490.00, "type": "subscription", "product_id": "me-tracker"},
+    
+    # FieldForce - Per-seat licensing
+    "fieldforce_10seats": {"name": "FieldForce (10 seats)", "amount": 499.00, "type": "package", "product_id": "fieldforce"},
+    "fieldforce_50seats": {"name": "FieldForce (50 seats)", "amount": 1999.00, "type": "package", "product_id": "fieldforce"},
+    "fieldforce_unlimited": {"name": "FieldForce Unlimited", "amount": 4999.00, "type": "package", "product_id": "fieldforce"},
+    
+    # Sectoral Solutions - Annual license
+    "agridata_annual": {"name": "AgriData Pro Annual", "amount": 1999.00, "type": "subscription", "product_id": "agridata-pro"},
+    "eduinsights_annual": {"name": "EduInsights Annual", "amount": 1499.00, "type": "subscription", "product_id": "eduinsights"},
+    "healthpulse_annual": {"name": "HealthPulse Annual", "amount": 1799.00, "type": "subscription", "product_id": "healthpulse"},
+    "wash_monitor_annual": {"name": "WASH Monitor Annual", "amount": 1299.00, "type": "subscription", "product_id": "wash-monitor"},
+}
+
+class CheckoutRequest(BaseModel):
+    package_id: str
+    origin_url: str
+    user_email: Optional[str] = None
+    metadata: Optional[Dict[str, str]] = None
+
+class CheckoutResponse(BaseModel):
+    url: str
+    session_id: str
+
+@api_router.post("/payments/checkout", response_model=CheckoutResponse)
+async def create_checkout_session(request: CheckoutRequest, http_request: Request):
+    """Create a Stripe checkout session for a software package"""
+    from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionRequest
+    
+    # Validate package exists
+    if request.package_id not in SOFTWARE_PACKAGES:
+        raise HTTPException(status_code=400, detail=f"Invalid package: {request.package_id}")
+    
+    package = SOFTWARE_PACKAGES[request.package_id]
+    
+    # Enterprise packages require contact
+    if package["type"] == "enterprise":
+        raise HTTPException(status_code=400, detail="Enterprise packages require direct contact. Please reach out to sales.")
+    
+    # Get amount from server-side definition (security)
+    amount = package["amount"]
+    
+    # Build dynamic URLs from frontend origin
+    success_url = f"{request.origin_url}/payment/success?session_id={{CHECKOUT_SESSION_ID}}"
+    cancel_url = f"{request.origin_url}/solutions"
+    
+    # Initialize Stripe
+    api_key = os.environ.get("STRIPE_API_KEY")
+    host_url = str(http_request.base_url)
+    webhook_url = f"{host_url}api/webhook/stripe"
+    stripe_checkout = StripeCheckout(api_key=api_key, webhook_url=webhook_url)
+    
+    # Prepare metadata
+    checkout_metadata = {
+        "package_id": request.package_id,
+        "product_id": package["product_id"],
+        "package_name": package["name"],
+        "package_type": package["type"],
+        "user_email": request.user_email or "anonymous"
+    }
+    if request.metadata:
+        checkout_metadata.update(request.metadata)
+    
+    # Create checkout session
+    checkout_request = CheckoutSessionRequest(
+        amount=amount,
+        currency="usd",
+        success_url=success_url,
+        cancel_url=cancel_url,
+        metadata=checkout_metadata
+    )
+    
+    session = await stripe_checkout.create_checkout_session(checkout_request)
+    
+    # Store transaction in database
+    transaction = {
+        "id": str(uuid.uuid4()),
+        "session_id": session.session_id,
+        "package_id": request.package_id,
+        "product_id": package["product_id"],
+        "package_name": package["name"],
+        "amount": amount,
+        "currency": "usd",
+        "user_email": request.user_email,
+        "payment_status": "pending",
+        "status": "initiated",
+        "metadata": checkout_metadata,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.payment_transactions.insert_one(transaction)
+    
+    return CheckoutResponse(url=session.url, session_id=session.session_id)
+
+@api_router.get("/payments/status/{session_id}")
+async def get_payment_status(session_id: str, http_request: Request):
+    """Get the status of a payment session"""
+    from emergentintegrations.payments.stripe.checkout import StripeCheckout
+    
+    api_key = os.environ.get("STRIPE_API_KEY")
+    host_url = str(http_request.base_url)
+    webhook_url = f"{host_url}api/webhook/stripe"
+    stripe_checkout = StripeCheckout(api_key=api_key, webhook_url=webhook_url)
+    
+    # Get status from Stripe
+    status = await stripe_checkout.get_checkout_status(session_id)
+    
+    # Update transaction in database
+    update_data = {
+        "payment_status": status.payment_status,
+        "status": status.status,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    # If payment is successful, grant product access
+    if status.payment_status == "paid":
+        transaction = await db.payment_transactions.find_one({"session_id": session_id})
+        if transaction and transaction.get("payment_status") != "paid":
+            # First time marking as paid - create product access
+            access_record = {
+                "id": str(uuid.uuid4()),
+                "user_email": transaction.get("user_email"),
+                "product_id": transaction.get("product_id"),
+                "package_id": transaction.get("package_id"),
+                "transaction_id": transaction.get("id"),
+                "granted_at": datetime.now(timezone.utc).isoformat(),
+                "expires_at": None,  # Will be set based on package type
+                "status": "active"
+            }
+            await db.product_access.insert_one(access_record)
+    
+    await db.payment_transactions.update_one(
+        {"session_id": session_id},
+        {"$set": update_data}
+    )
+    
+    return {
+        "status": status.status,
+        "payment_status": status.payment_status,
+        "amount_total": status.amount_total,
+        "currency": status.currency,
+        "metadata": status.metadata
+    }
+
+@api_router.post("/webhook/stripe")
+async def stripe_webhook(request: Request):
+    """Handle Stripe webhook events"""
+    from emergentintegrations.payments.stripe.checkout import StripeCheckout
+    
+    api_key = os.environ.get("STRIPE_API_KEY")
+    host_url = str(request.base_url)
+    webhook_url = f"{host_url}api/webhook/stripe"
+    stripe_checkout = StripeCheckout(api_key=api_key, webhook_url=webhook_url)
+    
+    body = await request.body()
+    signature = request.headers.get("Stripe-Signature")
+    
+    try:
+        webhook_response = await stripe_checkout.handle_webhook(body, signature)
+        
+        # Update transaction based on webhook event
+        if webhook_response.session_id:
+            await db.payment_transactions.update_one(
+                {"session_id": webhook_response.session_id},
+                {"$set": {
+                    "payment_status": webhook_response.payment_status,
+                    "webhook_event_id": webhook_response.event_id,
+                    "webhook_event_type": webhook_response.event_type,
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+        
+        return {"status": "success", "event_id": webhook_response.event_id}
+    except Exception as e:
+        logger.error(f"Webhook error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.get("/payments/packages")
+async def get_available_packages():
+    """Get all available software packages for purchase"""
+    packages = []
+    for pkg_id, pkg_data in SOFTWARE_PACKAGES.items():
+        packages.append({
+            "id": pkg_id,
+            "name": pkg_data["name"],
+            "amount": pkg_data["amount"],
+            "type": pkg_data["type"],
+            "product_id": pkg_data["product_id"]
+        })
+    return {"packages": packages}
+
+@api_router.get("/user/products")
+async def get_user_products(email: str):
+    """Get products a user has access to"""
+    access_records = await db.product_access.find(
+        {"user_email": email, "status": "active"},
+        {"_id": 0}
+    ).to_list(100)
+    return {"products": access_records}
+
 # Include router and middleware
 app.include_router(api_router)
 
