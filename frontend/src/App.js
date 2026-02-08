@@ -2515,6 +2515,7 @@ const AdminDashboard = () => {
   const tabs = [
     { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
     { id: 'experts', label: 'Expert Network', icon: Users },
+    { id: 'verification', label: 'Verification', icon: Shield },
     { id: 'matching', label: 'Project Matching', icon: Target },
     { id: 'projects', label: 'Projects', icon: FileText },
     { id: 'statistics', label: 'Statistics', icon: BarChart3 },
