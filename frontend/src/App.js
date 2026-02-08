@@ -2616,6 +2616,10 @@ const AdminDashboard = () => {
             <AdminExpertManagement token={localStorage.getItem('dv_token')} />
           )}
 
+          {activeTab === 'matching' && (
+            <AdminProjectMatching token={localStorage.getItem('dv_token')} />
+          )}
+
           {activeTab === 'projects' && (
             <div>
               <div className="flex items-center justify-between mb-6">
