@@ -5,6 +5,44 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### December 2025 - Code Refactoring (COMPLETED)
+
+**Backend MVC Structure:**
+- Created `/app/backend/models/__init__.py` - All Pydantic models extracted
+- Created `/app/backend/services/__init__.py` - Business logic (matching algorithms, verification scoring)
+- Created `/app/backend/routes/` - Route modules:
+  - `auth.py` - Authentication routes and helpers
+  - `public.py` - Public content endpoints
+  - `admin_content.py` - Admin CRUD operations
+- Updated `server.py` with imports from new modules (backward compatible)
+
+**Frontend Component Organization:**
+- Created `/app/frontend/src/components/careers/` directory:
+  - `careersData.js` - Static data (positions, benefits, sectors)
+  - `index.js` - Re-exports and navigation structure
+
+**Structure Overview:**
+```
+/app/backend/
+├── models/__init__.py      # Pydantic models
+├── services/__init__.py    # Business logic
+├── routes/
+│   ├── __init__.py
+│   ├── auth.py            # Authentication
+│   ├── public.py          # Public endpoints
+│   └── admin_content.py   # Admin CRUD
+└── server.py              # Main application (uses refactored modules)
+
+/app/frontend/src/components/
+├── careers/
+│   ├── index.js           # Exports
+│   └── careersData.js     # Static data
+├── AdminExpertManagement.js
+└── AdminProjectMatching.js
+```
+
+---
+
 ### December 2025 - Automated Project Matching UI (COMPLETED)
 
 **P2: UI for Automated Project Matching:**
