@@ -174,6 +174,175 @@ class PartnerCreate(BaseModel):
     website_url: Optional[str] = None
     order: int = 0
 
+# ==================== EXPERT NETWORK MODELS ====================
+
+class ExpertSkill(BaseModel):
+    name: str
+    years_experience: int = 0
+    proficiency: str = "intermediate"  # beginner, intermediate, advanced, expert
+
+class ExpertEducation(BaseModel):
+    degree: str
+    field: str
+    institution: str
+    year: int
+
+class ExpertRegistration(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    # Personal Information
+    full_name: str
+    email: EmailStr
+    phone: str
+    location_country: str
+    location_city: str
+    nationality: str
+    languages: List[str] = []
+    
+    # Professional Information
+    current_title: str
+    current_organization: Optional[str] = None
+    years_experience: int
+    education: List[ExpertEducation] = []
+    certifications: List[str] = []
+    
+    # Expertise Areas (sectors)
+    primary_sectors: List[str] = []  # agriculture, health, education, wash, etc.
+    secondary_sectors: List[str] = []
+    skills: List[ExpertSkill] = []
+    
+    # Geographic Expertise
+    countries_experience: List[str] = []  # Countries they've worked in
+    regional_expertise: List[str] = []  # East Africa, West Africa, etc.
+    
+    # Availability & Preferences
+    availability: str = "available"  # available, limited, unavailable
+    availability_start_date: Optional[str] = None
+    engagement_type: List[str] = []  # short-term, long-term, remote, on-site
+    daily_rate_min: Optional[float] = None
+    daily_rate_max: Optional[float] = None
+    rate_currency: str = "USD"
+    willing_to_travel: bool = True
+    
+    # Portfolio
+    cv_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    portfolio_url: Optional[str] = None
+    notable_projects: List[str] = []
+    publications: List[str] = []
+    
+    # References
+    references: List[str] = []
+    
+    # Administrative
+    status: str = "pending"  # pending, approved, rejected, active, inactive, engaged
+    match_score: float = 0.0  # Calculated matching score for projects
+    last_engagement_date: Optional[str] = None
+    total_engagements: int = 0
+    rating: float = 0.0
+    notes: str = ""
+    
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class ExpertRegistrationCreate(BaseModel):
+    # Personal Information
+    full_name: str
+    email: EmailStr
+    phone: str
+    location_country: str
+    location_city: str
+    nationality: str
+    languages: List[str] = []
+    
+    # Professional Information
+    current_title: str
+    current_organization: Optional[str] = None
+    years_experience: int
+    education: List[ExpertEducation] = []
+    certifications: List[str] = []
+    
+    # Expertise Areas
+    primary_sectors: List[str] = []
+    secondary_sectors: List[str] = []
+    skills: List[ExpertSkill] = []
+    
+    # Geographic Expertise
+    countries_experience: List[str] = []
+    regional_expertise: List[str] = []
+    
+    # Availability & Preferences
+    availability: str = "available"
+    availability_start_date: Optional[str] = None
+    engagement_type: List[str] = []
+    daily_rate_min: Optional[float] = None
+    daily_rate_max: Optional[float] = None
+    rate_currency: str = "USD"
+    willing_to_travel: bool = True
+    
+    # Portfolio
+    cv_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    portfolio_url: Optional[str] = None
+    notable_projects: List[str] = []
+    publications: List[str] = []
+    
+    # References
+    references: List[str] = []
+
+class ExpertSearchQuery(BaseModel):
+    sectors: List[str] = []
+    skills: List[str] = []
+    min_experience: int = 0
+    countries: List[str] = []
+    availability: List[str] = []
+    engagement_type: List[str] = []
+    max_daily_rate: Optional[float] = None
+    willing_to_travel: Optional[bool] = None
+    status: List[str] = ["approved", "active"]
+
+class ProjectRequirement(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    sectors: List[str] = []
+    required_skills: List[str] = []
+    preferred_skills: List[str] = []
+    min_experience: int = 0
+    countries: List[str] = []
+    start_date: Optional[str] = None
+    duration_months: int = 1
+    engagement_type: str = "short-term"
+    budget_max: Optional[float] = None
+    positions_needed: int = 1
+    status: str = "open"  # open, filled, cancelled
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class ProjectRequirementCreate(BaseModel):
+    title: str
+    description: str
+    sectors: List[str] = []
+    required_skills: List[str] = []
+    preferred_skills: List[str] = []
+    min_experience: int = 0
+    countries: List[str] = []
+    start_date: Optional[str] = None
+    duration_months: int = 1
+    engagement_type: str = "short-term"
+    budget_max: Optional[float] = None
+    positions_needed: int = 1
+
+class ExpertMatch(BaseModel):
+    expert_id: str
+    expert_name: str
+    expert_email: str
+    match_score: float
+    matching_sectors: List[str]
+    matching_skills: List[str]
+    years_experience: int
+    availability: str
+    daily_rate_min: Optional[float]
+    daily_rate_max: Optional[float]
+
 # ==================== AUTH HELPERS ====================
 
 def create_access_token(data: dict):
