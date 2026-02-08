@@ -2735,6 +2735,7 @@ function App() {
                   <Route path="/solutions/wash-monitor" element={<WASHMonitorPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
+                  <Route path="/careers" element={<CareersPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
