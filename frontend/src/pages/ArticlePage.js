@@ -215,6 +215,7 @@ const ArticlePage = () => {
   const { articleId } = useParams();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showSaveNotification, setShowSaveNotification] = useState(false);
   
   const currentArticle = articlesData.find(a => a.id === articleId) || articlesData[0];
   const currentIndex = articlesData.findIndex(a => a.id === articleId);
@@ -225,6 +226,44 @@ const ArticlePage = () => {
   const relatedArticles = articlesData
     .filter(a => a.id !== articleId)
     .slice(0, 3);
+
+  // Check if article is saved on load
+  useEffect(() => {
+    const savedArticles = JSON.parse(localStorage.getItem('datavision_saved_articles') || '[]');
+    setIsBookmarked(savedArticles.some(a => a.id === articleId));
+  }, [articleId]);
+
+  // Handle save/unsave
+  const handleSaveToggle = () => {
+    const savedArticles = JSON.parse(localStorage.getItem('datavision_saved_articles') || '[]');
+    
+    if (isBookmarked) {
+      // Remove from saved
+      const updatedArticles = savedArticles.filter(a => a.id !== articleId);
+      localStorage.setItem('datavision_saved_articles', JSON.stringify(updatedArticles));
+      setIsBookmarked(false);
+      setShowSaveNotification(true);
+      setTimeout(() => setShowSaveNotification(false), 2000);
+    } else {
+      // Add to saved
+      const articleToSave = {
+        id: currentArticle.id,
+        title: currentArticle.title,
+        excerpt: currentArticle.excerpt,
+        category: currentArticle.category,
+        author: currentArticle.author,
+        date: currentArticle.date,
+        readTime: currentArticle.readTime,
+        color: currentArticle.color,
+        savedAt: new Date().toISOString()
+      };
+      savedArticles.push(articleToSave);
+      localStorage.setItem('datavision_saved_articles', JSON.stringify(savedArticles));
+      setIsBookmarked(true);
+      setShowSaveNotification(true);
+      setTimeout(() => setShowSaveNotification(false), 2000);
+    }
+  };
 
   const serviceNames = {
     'data-collection': 'Data Collection',
