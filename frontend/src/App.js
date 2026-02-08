@@ -2273,6 +2273,7 @@ function App() {
                   <Route path="/practice-areas/infrastructure" element={<InfrastructurePage />} />
                   <Route path="/practice-areas/private-sector" element={<PrivateSectorPage />} />
                   <Route path="/practice-areas/environment" element={<EnvironmentPage />} />
+                  <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
