@@ -660,7 +660,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* Mobile Menu - Slide-Out Panel Design */}
+      {/* Mobile Menu - What We Do Unified Design (Matches Desktop Mega Menu) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -669,7 +669,7 @@ const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden bg-white border-t overflow-hidden"
           >
-            <div className="relative" style={{ minHeight: '400px' }}>
+            <div className="relative" style={{ minHeight: '450px' }}>
               {/* Main Menu Panel */}
               <motion.div
                 initial={false}
@@ -678,75 +678,168 @@ const Navbar = () => {
                 className="absolute inset-0 bg-white"
               >
                 <div className="px-6 py-4">
-                  {/* Home & About */}
-                  {navLinks.slice(0, 2).map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setIsOpen(false)}
-                      className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                        location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                  
-                  {/* Services - Opens Sub Panel */}
-                  <button
-                    onClick={() => setMobileSubMenu('services')}
-                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                      location.pathname.startsWith('/services') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                  {/* Home */}
+                  <Link
+                    to="/"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname === '/' ? 'text-[#e63946]' : 'text-[#0a1628]'
                     }`}
                   >
-                    <span>Services</span>
+                    Home
+                  </Link>
+                  
+                  {/* About */}
+                  <Link
+                    to="/about"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname === '/about' ? 'text-[#e63946]' : 'text-[#0a1628]'
+                    }`}
+                  >
+                    About
+                  </Link>
+                  
+                  {/* What We Do - Opens Sub Panel (Unified like desktop) */}
+                  <button
+                    onClick={() => setMobileSubMenu('what-we-do')}
+                    className={`flex items-center justify-between w-full py-4 text-base font-semibold border-b border-[#f1f5f9] ${
+                      isWhatWeDoActive ? 'text-[#e63946]' : 'text-[#0a1628]'
+                    }`}
+                    data-testid="mobile-what-we-do-btn"
+                  >
+                    <span>What We Do</span>
                     <ChevronRight className="w-5 h-5 text-[#64748b]" />
                   </button>
                   
-                  {/* Practice Areas - Opens Sub Panel */}
-                  <button
-                    onClick={() => setMobileSubMenu('practice-areas')}
-                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                      location.pathname.startsWith('/practice-areas') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                  {/* Insights */}
+                  <Link
+                    to="/insights"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname.startsWith('/insights') ? 'text-[#e63946]' : 'text-[#0a1628]'
                     }`}
                   >
-                    <span>Practice Areas</span>
-                    <ChevronRight className="w-5 h-5 text-[#64748b]" />
-                  </button>
+                    Insights
+                  </Link>
                   
-                  {/* Industries - Opens Sub Panel */}
-                  <button
-                    onClick={() => setMobileSubMenu('industries')}
-                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                      location.pathname.startsWith('/industries') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                  {/* Contact */}
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname === '/contact' ? 'text-[#e63946]' : 'text-[#0a1628]'
                     }`}
                   >
-                    <span>Industries</span>
-                    <ChevronRight className="w-5 h-5 text-[#64748b]" />
-                  </button>
-                  
-                  {/* Projects, News, Contact */}
-                  {navLinks.slice(2).map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setIsOpen(false)}
-                      className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                        location.pathname === link.path ? 'text-[#e63946]' : 'text-[#0a1628]'
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
+                    Contact
+                  </Link>
                   
                   {/* CTA Button */}
                   <Link 
                     to="/contact" 
                     onClick={() => setIsOpen(false)}
-                    className="block mt-6 bg-[#e63946] text-white px-6 py-4 text-sm font-semibold uppercase tracking-wider text-center rounded-lg"
+                    className="block mt-6 bg-[#e63946] text-white px-6 py-4 text-sm font-semibold uppercase tracking-wider text-center"
+                    data-testid="mobile-cta-btn"
                   >
                     Partner With Us
                   </Link>
+                </div>
+              </motion.div>
+
+              {/* What We Do Sub Panel - Category Selection */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu === 'what-we-do' ? '0%' : '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white overflow-y-auto"
+              >
+                <div className="px-6 py-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => setMobileSubMenu(null)}
+                    className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
+                    data-testid="mobile-back-btn"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-180" />
+                    <span>Back</span>
+                  </button>
+                  
+                  {/* Section Title */}
+                  <div className="py-4 border-b border-[#e63946]">
+                    <h3 className="text-lg font-bold text-[#0a1628]">What We Do</h3>
+                    <p className="text-sm text-[#64748b]">Explore our offerings</p>
+                  </div>
+                  
+                  {/* Category Cards */}
+                  <div className="py-4 space-y-3">
+                    <button
+                      onClick={() => setMobileSubMenu('services')}
+                      className={`flex items-center gap-4 w-full p-4 rounded-xl border-2 transition-all ${
+                        isServicesActive ? 'border-[#e63946] bg-[#e63946]/5' : 'border-[#e2e8f0] hover:border-[#e63946]'
+                      }`}
+                      data-testid="mobile-services-btn"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-[#0a1628] flex items-center justify-center">
+                        <Target className="w-6 h-6 text-[#e63946]" />
+                      </div>
+                      <div className="text-left flex-1">
+                        <span className="text-base font-semibold text-[#0a1628]">Services</span>
+                        <p className="text-xs text-[#64748b]">Our consulting offerings</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                    </button>
+                    
+                    <button
+                      onClick={() => setMobileSubMenu('solutions')}
+                      className={`flex items-center gap-4 w-full p-4 rounded-xl border-2 transition-all ${
+                        isSolutionsActive ? 'border-[#8b5cf6] bg-[#8b5cf6]/5' : 'border-[#e2e8f0] hover:border-[#8b5cf6]'
+                      }`}
+                      data-testid="mobile-solutions-btn"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-[#0a1628] flex items-center justify-center">
+                        <Layers className="w-6 h-6 text-[#8b5cf6]" />
+                      </div>
+                      <div className="text-left flex-1">
+                        <span className="text-base font-semibold text-[#0a1628]">Solutions</span>
+                        <p className="text-xs text-[#64748b]">Software products</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                    </button>
+                    
+                    <button
+                      onClick={() => setMobileSubMenu('industries')}
+                      className={`flex items-center gap-4 w-full p-4 rounded-xl border-2 transition-all ${
+                        isIndustriesActive ? 'border-[#2a9d8f] bg-[#2a9d8f]/5' : 'border-[#e2e8f0] hover:border-[#2a9d8f]'
+                      }`}
+                      data-testid="mobile-industries-btn"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-[#0a1628] flex items-center justify-center">
+                        <Building2 className="w-6 h-6 text-[#2a9d8f]" />
+                      </div>
+                      <div className="text-left flex-1">
+                        <span className="text-base font-semibold text-[#0a1628]">Industries</span>
+                        <p className="text-xs text-[#64748b]">Sectors we serve</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                    </button>
+                    
+                    <button
+                      onClick={() => setMobileSubMenu('practice-areas')}
+                      className={`flex items-center gap-4 w-full p-4 rounded-xl border-2 transition-all ${
+                        isPracticeAreasActive ? 'border-[#f59e0b] bg-[#f59e0b]/5' : 'border-[#e2e8f0] hover:border-[#f59e0b]'
+                      }`}
+                      data-testid="mobile-practice-areas-btn"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-[#0a1628] flex items-center justify-center">
+                        <Globe className="w-6 h-6 text-[#f59e0b]" />
+                      </div>
+                      <div className="text-left flex-1">
+                        <span className="text-base font-semibold text-[#0a1628]">Practice Areas</span>
+                        <p className="text-xs text-[#64748b]">Our sector expertise</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
 
@@ -760,17 +853,22 @@ const Navbar = () => {
                 <div className="px-6 py-4">
                   {/* Back Button */}
                   <button
-                    onClick={() => setMobileSubMenu(null)}
+                    onClick={() => setMobileSubMenu('what-we-do')}
                     className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
                   >
                     <ChevronRight className="w-5 h-5 rotate-180" />
-                    <span>Back</span>
+                    <span>Back to What We Do</span>
                   </button>
                   
                   {/* Section Title */}
                   <div className="py-4 border-b border-[#e63946]">
-                    <h3 className="text-lg font-bold text-[#0a1628]">Services</h3>
-                    <p className="text-sm text-[#64748b]">Our comprehensive offerings</p>
+                    <div className="flex items-center gap-3">
+                      <Target className="w-6 h-6 text-[#e63946]" />
+                      <div>
+                        <h3 className="text-lg font-bold text-[#0a1628]">Services</h3>
+                        <p className="text-sm text-[#64748b]">Our comprehensive offerings</p>
+                      </div>
+                    </div>
                   </div>
                   
                   {/* Service Links */}
@@ -784,12 +882,12 @@ const Navbar = () => {
                           index !== serviceLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
                         } ${location.pathname === service.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
                       >
-                        <service.icon className={`w-5 h-5 ${
+                        <service.icon className={`w-5 h-5 flex-shrink-0 ${
                           location.pathname === service.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
                         }`} />
-                        <div>
-                          <span className="text-sm font-medium">{service.name}</span>
-                          <p className="text-xs text-[#64748b]">{service.description}</p>
+                        <div className="min-w-0">
+                          <span className="text-sm font-medium block truncate">{service.name}</span>
+                          <p className="text-xs text-[#64748b] truncate">{service.description}</p>
                         </div>
                       </Link>
                     ))}
@@ -797,46 +895,51 @@ const Navbar = () => {
                 </div>
               </motion.div>
 
-              {/* Practice Areas Sub Panel */}
+              {/* Solutions Sub Panel */}
               <motion.div
                 initial={false}
-                animate={{ x: mobileSubMenu === 'practice-areas' ? '0%' : '100%' }}
+                animate={{ x: mobileSubMenu === 'solutions' ? '0%' : '100%' }}
                 transition={{ type: 'tween', duration: 0.3 }}
                 className="absolute inset-0 bg-white overflow-y-auto"
               >
                 <div className="px-6 py-4">
                   {/* Back Button */}
                   <button
-                    onClick={() => setMobileSubMenu(null)}
+                    onClick={() => setMobileSubMenu('what-we-do')}
                     className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
                   >
                     <ChevronRight className="w-5 h-5 rotate-180" />
-                    <span>Back</span>
+                    <span>Back to What We Do</span>
                   </button>
                   
                   {/* Section Title */}
-                  <div className="py-4 border-b border-[#e63946]">
-                    <h3 className="text-lg font-bold text-[#0a1628]">Practice Areas</h3>
-                    <p className="text-sm text-[#64748b]">Our sector expertise</p>
+                  <div className="py-4 border-b border-[#8b5cf6]">
+                    <div className="flex items-center gap-3">
+                      <Layers className="w-6 h-6 text-[#8b5cf6]" />
+                      <div>
+                        <h3 className="text-lg font-bold text-[#0a1628]">Solutions</h3>
+                        <p className="text-sm text-[#64748b]">Software products</p>
+                      </div>
+                    </div>
                   </div>
                   
-                  {/* Practice Area Links */}
+                  {/* Solution Links */}
                   <div className="py-2">
-                    {practiceAreaLinks.map((area, index) => (
+                    {solutionLinks.map((solution, index) => (
                       <Link
-                        key={area.path}
-                        to={area.path}
+                        key={solution.path}
+                        to={solution.path}
                         onClick={() => setIsOpen(false)}
                         className={`flex items-center gap-3 py-3 ${
-                          index !== practiceAreaLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
-                        } ${location.pathname === area.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
+                          index !== solutionLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
+                        } ${location.pathname === solution.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
                       >
-                        <area.icon className={`w-5 h-5 ${
-                          location.pathname === area.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
+                        <solution.icon className={`w-5 h-5 flex-shrink-0 ${
+                          location.pathname === solution.path ? 'text-[#e63946]' : 'text-[#8b5cf6]'
                         }`} />
-                        <div>
-                          <span className="text-sm font-medium">{area.name}</span>
-                          <p className="text-xs text-[#64748b]">{area.description}</p>
+                        <div className="min-w-0">
+                          <span className="text-sm font-medium block truncate">{solution.name}</span>
+                          <p className="text-xs text-[#64748b] truncate">{solution.description}</p>
                         </div>
                       </Link>
                     ))}
@@ -854,17 +957,22 @@ const Navbar = () => {
                 <div className="px-6 py-4">
                   {/* Back Button */}
                   <button
-                    onClick={() => setMobileSubMenu(null)}
+                    onClick={() => setMobileSubMenu('what-we-do')}
                     className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
                   >
                     <ChevronRight className="w-5 h-5 rotate-180" />
-                    <span>Back</span>
+                    <span>Back to What We Do</span>
                   </button>
                   
                   {/* Section Title */}
-                  <div className="py-4 border-b border-[#e63946]">
-                    <h3 className="text-lg font-bold text-[#0a1628]">Industries</h3>
-                    <p className="text-sm text-[#64748b]">Our industry expertise</p>
+                  <div className="py-4 border-b border-[#2a9d8f]">
+                    <div className="flex items-center gap-3">
+                      <Building2 className="w-6 h-6 text-[#2a9d8f]" />
+                      <div>
+                        <h3 className="text-lg font-bold text-[#0a1628]">Industries</h3>
+                        <p className="text-sm text-[#64748b]">Sectors we serve</p>
+                      </div>
+                    </div>
                   </div>
                   
                   {/* Industry Links */}
@@ -878,12 +986,64 @@ const Navbar = () => {
                           index !== industryLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
                         } ${location.pathname === industry.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
                       >
-                        <industry.icon className={`w-5 h-5 ${
+                        <industry.icon className={`w-5 h-5 flex-shrink-0 ${
                           location.pathname === industry.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
                         }`} />
-                        <div>
-                          <span className="text-sm font-medium">{industry.name}</span>
-                          <p className="text-xs text-[#64748b]">{industry.description}</p>
+                        <div className="min-w-0">
+                          <span className="text-sm font-medium block truncate">{industry.name}</span>
+                          <p className="text-xs text-[#64748b] truncate">{industry.description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Practice Areas Sub Panel */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu === 'practice-areas' ? '0%' : '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white overflow-y-auto"
+              >
+                <div className="px-6 py-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => setMobileSubMenu('what-we-do')}
+                    className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-180" />
+                    <span>Back to What We Do</span>
+                  </button>
+                  
+                  {/* Section Title */}
+                  <div className="py-4 border-b border-[#f59e0b]">
+                    <div className="flex items-center gap-3">
+                      <Globe className="w-6 h-6 text-[#f59e0b]" />
+                      <div>
+                        <h3 className="text-lg font-bold text-[#0a1628]">Practice Areas</h3>
+                        <p className="text-sm text-[#64748b]">Our sector expertise</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Practice Area Links */}
+                  <div className="py-2">
+                    {practiceAreaLinks.map((area, index) => (
+                      <Link
+                        key={area.path}
+                        to={area.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 py-3 ${
+                          index !== practiceAreaLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
+                        } ${location.pathname === area.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
+                      >
+                        <area.icon className={`w-5 h-5 flex-shrink-0 ${
+                          location.pathname === area.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
+                        }`} />
+                        <div className="min-w-0">
+                          <span className="text-sm font-medium block truncate">{area.name}</span>
+                          <p className="text-xs text-[#64748b] truncate">{area.description}</p>
                         </div>
                       </Link>
                     ))}
