@@ -361,7 +361,7 @@ const ArticlePage = () => {
                 Share
               </button>
               <button 
-                onClick={() => setIsBookmarked(!isBookmarked)}
+                onClick={handleSaveToggle}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all ${
                   isBookmarked ? 'bg-[#e63946] text-white' : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
@@ -372,6 +372,21 @@ const ArticlePage = () => {
             </div>
           </div>
         </div>
+
+        {/* Save Notification */}
+        <AnimatePresence>
+          {showSaveNotification && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-[#0a1628] text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3"
+            >
+              <CheckCircle2 className="w-5 h-5 text-[#2a9d8f]" />
+              <span>{isBookmarked ? 'Article saved to your reading list' : 'Article removed from reading list'}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* Main Content */}
