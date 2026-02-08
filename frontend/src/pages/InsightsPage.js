@@ -35,6 +35,7 @@ const InsightsPage = () => {
   const insights = [
     {
       id: 1,
+      slug: "household-survey-design-tanzania",
       title: "Best Practices for Household Survey Design in Rural Tanzania",
       excerpt: "A comprehensive guide to designing effective household surveys that account for local context, cultural factors, and logistical challenges.",
       category: "guides",
@@ -48,6 +49,7 @@ const InsightsPage = () => {
     },
     {
       id: 2,
+      slug: "impact-evaluation-framework",
       title: "Impact Evaluation Methods: A Practical Framework",
       excerpt: "Understanding when and how to apply different impact evaluation methodologies for development programs.",
       category: "guides",
@@ -61,6 +63,7 @@ const InsightsPage = () => {
     },
     {
       id: 3,
+      slug: "education-sector-findings-2024",
       title: "Tanzania Education Sector: Key Findings from 2024",
       excerpt: "Summary of major research findings and trends in Tanzania's education sector based on our extensive fieldwork.",
       category: "briefs",
@@ -74,6 +77,7 @@ const InsightsPage = () => {
     },
     {
       id: 4,
+      slug: "remote-data-collection-lessons",
       title: "Remote Data Collection: Lessons from COVID-19 Adaptations",
       excerpt: "How we adapted our data collection methodologies during the pandemic and what we learned for future resilience.",
       category: "articles",
