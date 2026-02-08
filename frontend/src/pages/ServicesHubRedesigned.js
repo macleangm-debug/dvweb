@@ -22,8 +22,7 @@ const ServicesHubPageRedesigned = () => {
       color: "#e63946",
       stat: "1M+",
       statLabel: "Interviews Conducted",
-      highlights: ["Survey Design", "Statistical Analysis", "Mixed-Methods", "Policy Research"],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+      highlights: ["Survey Design", "Statistical Analysis", "Mixed-Methods", "Policy Research"]
     },
     {
       title: "Monitoring & Evaluation",
@@ -33,8 +32,7 @@ const ServicesHubPageRedesigned = () => {
       color: "#2a9d8f",
       stat: "200+",
       statLabel: "Evaluations Completed",
-      highlights: ["Theory of Change", "Baseline Studies", "Impact Evaluations", "M&E Frameworks"],
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+      highlights: ["Theory of Change", "Baseline Studies", "Impact Evaluations", "M&E Frameworks"]
     },
     {
       title: "Data Collection",
@@ -44,8 +42,7 @@ const ServicesHubPageRedesigned = () => {
       color: "#f59e0b",
       stat: "500+",
       statLabel: "Trained Enumerators",
-      highlights: ["Household Surveys", "Facility Assessments", "Remote Collection", "Quality Assurance"],
-      image: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=800&q=80"
+      highlights: ["Household Surveys", "Facility Assessments", "Remote Collection", "Quality Assurance"]
     },
     {
       title: "Data Analytics",
@@ -55,8 +52,87 @@ const ServicesHubPageRedesigned = () => {
       color: "#8b5cf6",
       stat: "50+",
       statLabel: "Dashboards Built",
-      highlights: ["Statistical Modeling", "Dashboards", "GIS Analysis", "Predictive Analytics"],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+      highlights: ["Statistical Modeling", "Dashboards", "GIS Analysis", "Predictive Analytics"]
+    },
+    {
+      title: "Survey Design",
+      path: "/services/survey-design",
+      description: "Expert survey methodology development ensuring valid, reliable, and actionable data collection instruments.",
+      icon: PenTool,
+      color: "#10b981",
+      stat: "300+",
+      statLabel: "Surveys Designed",
+      highlights: ["Questionnaire Design", "Sampling Strategy", "Piloting", "Translation"]
+    },
+    {
+      title: "Qualitative Research",
+      path: "/services/qualitative-research",
+      description: "In-depth exploration of complex social phenomena through interviews, focus groups, and ethnographic methods.",
+      icon: MessageCircle,
+      color: "#f97316",
+      stat: "150+",
+      statLabel: "Qualitative Studies",
+      highlights: ["In-Depth Interviews", "Focus Groups", "Case Studies", "Thematic Analysis"]
+    },
+    {
+      title: "GIS & Geospatial",
+      path: "/services/gis-geospatial",
+      description: "Spatial analysis and mapping solutions for location-based insights and geographic planning.",
+      icon: Map,
+      color: "#0ea5e9",
+      stat: "75+",
+      statLabel: "Mapping Projects",
+      highlights: ["Spatial Analysis", "Mapping", "GPS Data", "Remote Sensing"]
+    },
+    {
+      title: "Digital Data Solutions",
+      path: "/services/digital-solutions",
+      description: "Technology-enabled data collection and management systems for modern research operations.",
+      icon: Smartphone,
+      color: "#6366f1",
+      stat: "100+",
+      statLabel: "Digital Projects",
+      highlights: ["Mobile Data Collection", "ODK/KoboToolbox", "Data Systems", "Automation"]
+    },
+    {
+      title: "Program Design",
+      path: "/services/program-design",
+      description: "Strategic program development grounded in evidence, theory of change, and measurable outcomes.",
+      icon: Workflow,
+      color: "#a855f7",
+      stat: "45+",
+      statLabel: "Programs Designed",
+      highlights: ["Theory of Change", "Logic Models", "Results Frameworks", "Indicators"]
+    },
+    {
+      title: "Policy Research",
+      path: "/services/policy-research",
+      description: "Evidence-based policy analysis translating research findings into actionable recommendations.",
+      icon: FileText,
+      color: "#14b8a6",
+      stat: "60+",
+      statLabel: "Policy Studies",
+      highlights: ["Policy Analysis", "Stakeholder Mapping", "Advocacy Support", "Briefs"]
+    },
+    {
+      title: "Economic Analysis",
+      path: "/services/economic-analysis",
+      description: "Cost-effectiveness, cost-benefit, and economic impact assessments for informed resource allocation.",
+      icon: Calculator,
+      color: "#eab308",
+      stat: "40+",
+      statLabel: "Economic Analyses",
+      highlights: ["Cost-Benefit", "ROI Analysis", "Value for Money", "Impact Assessment"]
+    },
+    {
+      title: "Knowledge Management",
+      path: "/services/knowledge-management",
+      description: "Systems and processes that capture, organize, and share organizational learning effectively.",
+      icon: FolderOpen,
+      color: "#84cc16",
+      stat: "35+",
+      statLabel: "KM Systems Built",
+      highlights: ["Learning Systems", "Documentation", "Knowledge Sharing", "Best Practices"]
     },
     {
       title: "Capacity Building",
@@ -66,8 +142,7 @@ const ServicesHubPageRedesigned = () => {
       color: "#06b6d4",
       stat: "2,000+",
       statLabel: "Professionals Trained",
-      highlights: ["Custom Training", "Enumerator Training", "M&E Skills", "Mentorship"],
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80"
+      highlights: ["Custom Training", "Enumerator Training", "M&E Skills", "Mentorship"]
     },
     {
       title: "Technical Advisory",
@@ -77,8 +152,7 @@ const ServicesHubPageRedesigned = () => {
       color: "#ec4899",
       stat: "30+",
       statLabel: "Advisory Engagements",
-      highlights: ["Evidence Strategies", "Methodology Review", "Stakeholder Facilitation", "Policy Translation"],
-      image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80"
+      highlights: ["Evidence Strategies", "Methodology Review", "Stakeholder Facilitation", "Policy Translation"]
     }
   ];
 
