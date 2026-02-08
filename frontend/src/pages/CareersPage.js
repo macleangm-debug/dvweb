@@ -1250,18 +1250,46 @@ const ExpertsTab = ({ setActiveTab }) => {
             Join our network of 150+ sector experts and contribute to projects that 
             shape development outcomes across Africa.
           </p>
-          <Link
-            to="/contact"
+          <button
+            onClick={() => setActiveTab('register')}
             className="inline-flex items-center gap-2 bg-[#0a1628] text-white px-8 py-4 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
             data-testid="register-expert-btn"
           >
             Register as an Expert <ArrowRight className="w-5 h-5" />
-          </Link>
+          </button>
         </div>
       </section>
     </motion.div>
   );
 };
+
+// ==================== REGISTER TAB ====================
+const RegisterTab = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
+    <section className="py-12 bg-[#f8fafc]">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 bg-[#f59e0b]/10 text-[#f59e0b] px-4 py-2 rounded-full mb-4">
+            <Users className="w-4 h-4" />
+            <span className="text-sm font-semibold">Expert Registration</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-4">
+            Join Our Expert Network
+          </h1>
+          <p className="text-[#64748b] max-w-2xl mx-auto">
+            Complete the form below to register as a sector expert. Our team will review 
+            your profile and match you with relevant project opportunities.
+          </p>
+        </div>
+        <ExpertRegistrationForm />
+      </div>
+    </section>
+  </motion.div>
+);
 
 // ==================== PROCESS TAB ====================
 const ProcessTab = () => (
