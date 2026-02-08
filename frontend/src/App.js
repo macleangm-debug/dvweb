@@ -249,6 +249,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [practiceAreasOpen, setPracticeAreasOpen] = useState(false);
+  const [mobileSubMenu, setMobileSubMenu] = useState(null); // null, 'services', 'practice-areas'
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -257,6 +258,13 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Reset mobile submenu when menu closes
+  useEffect(() => {
+    if (!isOpen) {
+      setMobileSubMenu(null);
+    }
+  }, [isOpen]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
