@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, FileText, Download, BookOpen, BarChart3, 
   Calendar, Clock, User, Search, Filter, ChevronRight, ChevronLeft,
