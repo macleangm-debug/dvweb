@@ -9,7 +9,8 @@ import {
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
   Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
   Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
-  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb
+  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb,
+  Zap, Pickaxe, Plane, Landmark
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
@@ -48,6 +49,25 @@ import {
   InfrastructurePage,
   PrivateSectorPage
 } from './pages/PracticeAreaPages';
+import {
+  IndustriesHubPage,
+  AgricultureIndustryPage,
+  EducationIndustryPage,
+  HealthIndustryPage,
+  WASHIndustryPage,
+  PublicSectorIndustryPage,
+  EnergyIndustryPage,
+  FinancialServicesIndustryPage,
+  InfrastructureIndustryPage,
+  TransportIndustryPage,
+  TourismIndustryPage,
+  TechnologyIndustryPage,
+  MiningIndustryPage,
+  NutritionIndustryPage,
+  NGOsIndustryPage,
+  ManufacturingIndustryPage,
+  industriesData
+} from './pages/IndustriesPages';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
