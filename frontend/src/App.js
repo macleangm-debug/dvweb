@@ -2721,6 +2721,7 @@ function App() {
                   <Route path="/industries/nutrition" element={<NutritionIndustryPage />} />
                   <Route path="/industries/ngos" element={<NGOsIndustryPage />} />
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
+                  <Route path="/industries/retail" element={<RetailIndustryPage />} />
                   <Route path="/solutions" element={<SolutionsHubPage />} />
                   <Route path="/solutions/survey360" element={<Survey360Page />} />
                   <Route path="/solutions/dataviz-studio" element={<DataVizStudioPage />} />
