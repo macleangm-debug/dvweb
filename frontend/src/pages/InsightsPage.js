@@ -41,17 +41,87 @@ const InsightsPage = () => {
     { id: 'briefs', name: 'Sector Briefs', icon: PieChart },
   ];
 
-  const featuredInsight = {
-    title: "The Future of Data Collection in East Africa: Trends and Innovations for 2025",
-    excerpt: "Exploring how mobile technology, AI-assisted quality assurance, and remote supervision are transforming large-scale data collection across Tanzania and the region.",
-    category: "articles",
-    author: "DataVision Research Team",
-    date: "January 2025",
-    readTime: "12 min read",
-    image: null,
-    icon: TrendingUp,
-    color: "#e63946"
+  // Featured articles for carousel
+  const featuredInsights = [
+    {
+      id: "future-data-collection-2025",
+      title: "The Future of Data Collection in East Africa: Trends and Innovations for 2025",
+      excerpt: "Exploring how mobile technology, AI-assisted quality assurance, and remote supervision are transforming large-scale data collection across Tanzania and the region.",
+      category: "articles",
+      author: "DataVision Research Team",
+      date: "January 2025",
+      readTime: "12 min read",
+      icon: TrendingUp,
+      color: "#e63946"
+    },
+    {
+      id: "household-survey-design-tanzania",
+      title: "Best Practices for Household Survey Design in Rural Tanzania",
+      excerpt: "A comprehensive guide to designing effective household surveys that account for local context, cultural factors, and logistical challenges.",
+      category: "guides",
+      author: "Dr. Sarah Mkumba",
+      date: "December 2024",
+      readTime: "15 min read",
+      icon: Target,
+      color: "#2a9d8f"
+    },
+    {
+      id: "impact-evaluation-framework",
+      title: "Impact Evaluation Methods: A Practical Framework",
+      excerpt: "Understanding when and how to apply different impact evaluation methodologies for development programs.",
+      category: "guides",
+      author: "M&E Division",
+      date: "November 2024",
+      readTime: "20 min read",
+      icon: BarChart3,
+      color: "#8b5cf6"
+    },
+    {
+      id: "education-sector-findings-2024",
+      title: "Tanzania Education Sector: Key Findings from 2024",
+      excerpt: "Summary of major research findings and trends in Tanzania's education sector based on our extensive fieldwork.",
+      category: "briefs",
+      author: "Education Practice Team",
+      date: "October 2024",
+      readTime: "8 min read",
+      icon: GraduationCap,
+      color: "#f59e0b"
+    }
+  ];
+
+  // Carousel state
+  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Auto-rotate featured articles
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentFeaturedIndex((prev) => (prev + 1) % featuredInsights.length);
+    }, 6000); // Change every 6 seconds
+    
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, featuredInsights.length]);
+
+  // Pause auto-play on hover
+  const handleCarouselHover = (isHovering) => {
+    setIsAutoPlaying(!isHovering);
   };
+
+  const goToSlide = (index) => {
+    setCurrentFeaturedIndex(index);
+  };
+
+  const goToPrevious = () => {
+    setCurrentFeaturedIndex((prev) => (prev - 1 + featuredInsights.length) % featuredInsights.length);
+  };
+
+  const goToNext = () => {
+    setCurrentFeaturedIndex((prev) => (prev + 1) % featuredInsights.length);
+  };
+
+  const currentFeatured = featuredInsights[currentFeaturedIndex];
 
   const insights = [
     {
