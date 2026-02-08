@@ -300,7 +300,7 @@ const InsightsPage = () => {
         </div>
       </section>
 
-      {/* Featured Insight */}
+      {/* Featured Insight Carousel */}
       <section className="py-16 bg-white border-b">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
@@ -308,49 +308,132 @@ const InsightsPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1628] to-[#1e293b] text-white"
+            onMouseEnter={() => handleCarouselHover(true)}
+            onMouseLeave={() => handleCarouselHover(false)}
           >
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-[#e63946] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            {/* Dynamic background based on current article color */}
+            <div className="absolute inset-0 opacity-20 transition-all duration-700">
+              <div 
+                className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-colors duration-700" 
+                style={{ backgroundColor: currentFeatured.color }}
+              />
             </div>
             
             <div className="relative z-10 p-8 md:p-12 lg:p-16">
               <div className="flex flex-col lg:flex-row gap-8 items-center">
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 bg-[#e63946] px-3 py-1 rounded-full text-sm font-semibold mb-4 text-white">
-                    <TrendingUp className="w-4 h-4" />
-                    Featured Insight
-                  </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white">
-                    {featuredInsight.title}
-                  </h2>
-                  <p className="text-white/70 mb-6 text-lg">
-                    {featuredInsight.excerpt}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-white/60 mb-6">
-                    <span className="flex items-center gap-1">
-                      <User className="w-4 h-4" />
-                      {featuredInsight.author}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {featuredInsight.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {featuredInsight.readTime}
-                    </span>
-                  </div>
-                  <Link 
-                    to="/insights/future-data-collection-2025"
-                    className="inline-flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 font-semibold hover:bg-[#e63946] hover:text-white transition-all"
-                  >
-                    Read Full Article
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  {/* Animated content */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentFeaturedIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <div 
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold mb-4 text-white transition-colors duration-300"
+                        style={{ backgroundColor: currentFeatured.color }}
+                      >
+                        <currentFeatured.icon className="w-4 h-4" />
+                        {currentFeatured.category === 'articles' ? 'Featured Article' : 
+                         currentFeatured.category === 'guides' ? 'Featured Guide' : 'Featured Brief'}
+                      </div>
+                      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white">
+                        {currentFeatured.title}
+                      </h2>
+                      <p className="text-white/70 mb-6 text-lg">
+                        {currentFeatured.excerpt}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-white/60 mb-6">
+                        <span className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          {currentFeatured.author}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {currentFeatured.date}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {currentFeatured.readTime}
+                        </span>
+                      </div>
+                      <Link 
+                        to={`/insights/${currentFeatured.id}`}
+                        className="inline-flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 font-semibold hover:bg-[#e63946] hover:text-white transition-all"
+                      >
+                        Read Full Article
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
                 
+                {/* Animated icon */}
                 <div className="hidden lg:flex items-center justify-center w-64 h-64 rounded-2xl bg-white/10 backdrop-blur-sm">
-                  <featuredInsight.icon className="w-32 h-32 text-[#e63946] opacity-80" />
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentFeaturedIndex}
+                      initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <currentFeatured.icon 
+                        className="w-32 h-32 opacity-80 transition-colors duration-300" 
+                        style={{ color: currentFeatured.color }}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Carousel Controls */}
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
+                {/* Navigation Arrows */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={goToPrevious}
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Dots Indicator */}
+                <div className="flex items-center gap-2">
+                  {featuredInsights.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToSlide(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentFeaturedIndex 
+                          ? 'w-8 bg-white' 
+                          : 'w-2 bg-white/40 hover:bg-white/60'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Play/Pause & Counter */}
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                    title={isAutoPlaying ? 'Pause auto-play' : 'Resume auto-play'}
+                  >
+                    {isAutoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  </button>
+                  <span className="text-white/60 text-sm">
+                    {currentFeaturedIndex + 1} / {featuredInsights.length}
+                  </span>
                 </div>
               </div>
             </div>
