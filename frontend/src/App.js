@@ -310,7 +310,7 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Insights', path: '/insights' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Careers', path: '/careers' },
   ];
 
   const serviceLinks = [
