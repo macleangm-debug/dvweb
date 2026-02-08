@@ -31,6 +31,7 @@ import {
 import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
 import InsightsPage from './pages/InsightsPage';
 import ArticlePage from './pages/ArticlePage';
+import CareersPage from './pages/CareersPage';
 import {
   PracticeAreasHubPage,
   AgriculturePage,
