@@ -32,6 +32,7 @@ import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
 import InsightsPage from './pages/InsightsPage';
 import ArticlePage from './pages/ArticlePage';
 import CareersPage from './pages/CareersPage';
+import AdminExpertManagement from './components/AdminExpertManagement';
 import {
   PracticeAreasHubPage,
   AgriculturePage,
