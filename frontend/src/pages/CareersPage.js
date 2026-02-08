@@ -962,11 +962,6 @@ const ExpertsTab = ({ setActiveTab }) => {
                 </button>
               </div>
               <div className="flex flex-wrap gap-6 text-sm">
-                Are you a seasoned professional with deep expertise in a specific sector? 
-                Join our network of consultants and contribute to impactful projects 
-                across Africa on a flexible, project-by-project basis.
-              </p>
-              <div className="flex flex-wrap gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-[#f59e0b]" />
                   <span>Flexible engagements</span>
