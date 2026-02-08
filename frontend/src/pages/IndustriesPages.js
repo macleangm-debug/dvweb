@@ -355,8 +355,11 @@ export const IndustriesHubPage = () => {
 
 // ==================== INDUSTRY DETAIL PAGE TEMPLATE ====================
 const IndustryDetailPage = ({ industry }) => {
-  // Generate solutions based on industry
-  const solutions = [
+  // Use custom solutions if available, otherwise generate generic ones
+  const solutions = industry.customSolutions ? industry.customSolutions.map(s => ({
+    ...s,
+    icon: s.icon === 'Users' ? Users : s.icon === 'TrendingUp' ? TrendingUp : s.icon === 'PieChart' ? PieChart : Target
+  })) : [
     {
       title: 'Market Intelligence & Analytics',
       desc: `Comprehensive market research and competitive analysis for the ${industry.name.toLowerCase()} sector to identify growth opportunities.`,
@@ -379,7 +382,17 @@ const IndustryDetailPage = ({ industry }) => {
     }
   ];
 
-  const capabilities = [
+  // Use custom challenges if available
+  const challenges = industry.customChallenges || [
+    'Limited access to reliable, actionable data',
+    'Difficulty measuring program impact and ROI',
+    'Complex stakeholder environments',
+    'Rapidly evolving regulatory landscape',
+    'Need for strategic foresight and planning'
+  ];
+
+  // Use custom capabilities if available
+  const capabilities = industry.customCapabilities || [
     'Large-scale survey design and implementation',
     'Real-time data collection and quality assurance',
     'Advanced statistical modeling and analysis',
