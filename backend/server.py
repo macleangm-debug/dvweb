@@ -13,6 +13,10 @@ from datetime import datetime, timezone, timedelta
 import jwt
 import bcrypt
 
+# Import from refactored modules (for future migration)
+# from models import *  # Models are still defined below for now
+# from services import calculate_match_score, calculate_verification_score
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -35,6 +39,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # ==================== MODELS ====================
+# Note: Models are also available in /models/__init__.py for future refactoring
 
 class AdminLogin(BaseModel):
     email: str
