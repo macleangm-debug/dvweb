@@ -220,11 +220,11 @@ const InsightsPage = () => {
             <div className="relative z-10 p-8 md:p-12 lg:p-16">
               <div className="flex flex-col lg:flex-row gap-8 items-center">
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 bg-[#e63946] px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                  <div className="inline-flex items-center gap-2 bg-[#e63946] px-3 py-1 rounded-full text-sm font-semibold mb-4 text-white">
                     <TrendingUp className="w-4 h-4" />
                     Featured Insight
                   </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white">
                     {featuredInsight.title}
                   </h2>
                   <p className="text-white/70 mb-6 text-lg">
