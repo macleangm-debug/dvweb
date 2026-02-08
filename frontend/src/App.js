@@ -9,7 +9,7 @@ import {
   LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
   Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
   Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
-  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator
+  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
@@ -28,6 +28,7 @@ import {
   EconomicAnalysisPage
 } from './pages/ServicePages';
 import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
+import InsightsPage from './pages/InsightsPage';
 import {
   PracticeAreasHubPage,
   AgriculturePage,
