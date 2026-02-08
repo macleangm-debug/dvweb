@@ -21,6 +21,8 @@ export { default as JobsTab } from './JobsTab';
 export { default as ProcessTab } from './ProcessTab';
 export { default as StudentsTab } from './StudentsTab';
 export { default as LifeTab } from './LifeTab';
+export { default as ExpertsTab } from './ExpertsTab';
+export { default as RegisterTab } from './RegisterTab';
 
 // Navigation structure for the careers page
 export const careerNavItems = [
