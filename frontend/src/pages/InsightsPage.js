@@ -287,6 +287,70 @@ const InsightsPage = () => {
         </div>
       </section>
 
+      {/* Saved Articles Section */}
+      {showSavedSection && savedArticles.length > 0 && (
+        <section className="py-8 bg-gradient-to-r from-[#0a1628] to-[#1e293b]">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-[#e63946] flex items-center justify-center">
+                  <Bookmark className="w-5 h-5 text-white fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg">Your Reading List</h3>
+                  <p className="text-white/60 text-sm">{savedArticles.length} saved article{savedArticles.length !== 1 ? 's' : ''}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowSavedSection(false)}
+                className="text-white/60 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+              {savedArticles.map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex-shrink-0 w-80 bg-white/10 backdrop-blur-sm rounded-xl p-5 group hover:bg-white/20 transition-all"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <span 
+                      className="px-2 py-1 rounded text-xs font-semibold text-white"
+                      style={{ backgroundColor: article.color }}
+                    >
+                      {article.category === 'articles' ? 'Article' : article.category === 'guides' ? 'Guide' : 'Brief'}
+                    </span>
+                    <button
+                      onClick={() => removeFromSaved(article.id)}
+                      className="text-white/40 hover:text-[#e63946] transition-colors"
+                      title="Remove from reading list"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <Link to={`/insights/${article.id}`}>
+                    <h4 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-[#e63946] transition-colors">
+                      {article.title}
+                    </h4>
+                    <p className="text-white/60 text-sm mb-3 line-clamp-2">{article.excerpt}</p>
+                    <div className="flex items-center gap-3 text-white/50 text-xs">
+                      <span>{article.date}</span>
+                      <span>•</span>
+                      <span>{article.readTime}</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Search and Filter */}
       <section className="py-8 bg-[#f8fafc] border-b sticky top-20 z-30">
         <div className="container mx-auto px-6 lg:px-12">
