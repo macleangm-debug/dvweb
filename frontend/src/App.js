@@ -68,6 +68,18 @@ import {
   ManufacturingIndustryPage,
   industriesData
 } from './pages/IndustriesPages';
+import {
+  SolutionsHubPage,
+  Survey360Page,
+  DataVizStudioPage,
+  METrackerPage,
+  FieldForcePage,
+  AgriDataProPage,
+  EduInsightsPage,
+  HealthPulsePage,
+  WASHMonitorPage,
+  softwareSolutions
+} from './pages/SolutionsPages';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
