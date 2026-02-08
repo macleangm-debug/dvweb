@@ -281,9 +281,9 @@ const AfricaMap = ({ onCountryClick }) => {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [practiceAreasOpen, setPracticeAreasOpen] = useState(false);
-  const [mobileSubMenu, setMobileSubMenu] = useState(null); // null, 'services', 'practice-areas'
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [megaMenuTab, setMegaMenuTab] = useState('services');
+  const [mobileSubMenu, setMobileSubMenu] = useState(null);
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -293,18 +293,21 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Reset mobile submenu when menu closes
   useEffect(() => {
     if (!isOpen) {
       setMobileSubMenu(null);
     }
   }, [isOpen]);
 
+  // Close mega menu on route change
+  useEffect(() => {
+    setMegaMenuOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Insights', path: '/insights' },
-    { name: 'News', path: '/news' },
     { name: 'Contact', path: '/contact' },
   ];
 
