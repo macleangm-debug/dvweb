@@ -2275,6 +2275,7 @@ function App() {
                   <Route path="/practice-areas/private-sector" element={<PrivateSectorPage />} />
                   <Route path="/practice-areas/environment" element={<EnvironmentPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
+                  <Route path="/insights/:articleId" element={<ArticlePage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
