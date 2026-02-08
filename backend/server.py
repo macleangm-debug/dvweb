@@ -356,6 +356,118 @@ class ExpertMatch(BaseModel):
     availability: str
     daily_rate_min: Optional[float]
     daily_rate_max: Optional[float]
+    verification_score: float = 0.0
+    trust_tier: str = "bronze"
+
+# ==================== VERIFICATION MODELS ====================
+
+class SkillsAssessmentQuestion(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    sector: str
+    skill: str
+    question: str
+    options: List[str]
+    correct_answer: int  # Index of correct option
+    difficulty: str = "medium"  # easy, medium, hard
+    points: int = 10
+
+class SkillsAssessment(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    sector: str
+    title: str
+    description: str
+    questions: List[SkillsAssessmentQuestion] = []
+    time_limit_minutes: int = 30
+    passing_score: int = 70
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class AssessmentSubmission(BaseModel):
+    expert_id: str
+    assessment_id: str
+    answers: List[int]  # Index of selected answers
+
+class AssessmentResult(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    expert_id: str
+    assessment_id: str
+    sector: str
+    score: float
+    passed: bool
+    answers: List[int]
+    correct_answers: int
+    total_questions: int
+    time_taken_seconds: int = 0
+    submitted_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class ReferenceRequest(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    expert_id: str
+    expert_name: str
+    reference_name: str
+    reference_email: str
+    reference_organization: Optional[str] = None
+    status: str = "pending"  # pending, sent, completed, expired
+    token: str = Field(default_factory=lambda: str(uuid.uuid4()))  # Unique token for reference to respond
+    sent_at: Optional[str] = None
+    completed_at: Optional[str] = None
+    reminder_count: int = 0
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class ReferenceResponse(BaseModel):
+    # Verification questions
+    knows_expert: bool = True
+    relationship: str = ""  # colleague, supervisor, client, etc.
+    years_known: int = 0
+    
+    # Competency ratings (1-5 scale)
+    technical_skills: int = 0
+    communication: int = 0
+    reliability: int = 0
+    quality_of_work: int = 0
+    professionalism: int = 0
+    
+    # Verification of claims
+    confirms_role: bool = False
+    confirms_experience: bool = False
+    confirms_skills: List[str] = []  # Skills they can vouch for
+    
+    # Open feedback
+    strengths: str = ""
+    areas_for_improvement: str = ""
+    would_recommend: bool = True
+    recommendation_level: int = 0  # 1-10 scale
+    additional_comments: str = ""
+
+class ReferenceSubmission(BaseModel):
+    token: str
+    response: ReferenceResponse
+
+class DocumentVerification(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    expert_id: str
+    document_type: str  # cv, degree, certificate, id
+    document_url: str
+    status: str = "pending"  # pending, verified, rejected, needs_review
+    verification_notes: str = ""
+    verified_claims: List[str] = []  # What the document verifies
+    score: float = 0.0
+    verified_at: Optional[str] = None
+    verified_by: Optional[str] = None  # admin email or "system"
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class VerificationSummary(BaseModel):
+    expert_id: str
+    expert_name: str
+    verification_status: str
+    verification_score: float
+    trust_tier: str
+    components: dict  # Breakdown of scores
+    assessments_completed: int
+    assessments_passed: int
+    references_requested: int
+    references_verified: int
+    documents_submitted: int
+    documents_verified: int
 
 # ==================== AUTH HELPERS ====================
 
