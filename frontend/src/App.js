@@ -609,14 +609,14 @@ const Navbar = () => {
             </Link>
             
             <Link
-              to="/contact"
+              to="/careers"
               className={`text-sm font-medium transition-colors ${
-                location.pathname === '/contact' 
+                location.pathname.startsWith('/careers') 
                   ? 'text-[#e63946]' 
                   : 'text-[#64748b] hover:text-[#0a1628]'
               }`}
             >
-              Contact
+              Careers
             </Link>
           </div>
 
