@@ -706,6 +706,7 @@ export const MiningIndustryPage = () => <IndustryDetailPage industry={industries
 export const NutritionIndustryPage = () => <IndustryDetailPage industry={industriesData.find(i => i.id === 'nutrition')} />;
 export const NGOsIndustryPage = () => <IndustryDetailPage industry={industriesData.find(i => i.id === 'ngos')} />;
 export const ManufacturingIndustryPage = () => <IndustryDetailPage industry={industriesData.find(i => i.id === 'manufacturing')} />;
+export const RetailIndustryPage = () => <IndustryDetailPage industry={industriesData.find(i => i.id === 'retail')} />;
 
 // Export industries data for navigation
 export { industriesData };
