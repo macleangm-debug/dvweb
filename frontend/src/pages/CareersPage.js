@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -6,7 +6,7 @@ import {
   MapPin, Clock, Building2, ChevronRight, Search,
   Star, Award, TrendingUp, BookOpen, Lightbulb, Target,
   CheckCircle2, Play, Quote, Calendar, DollarSign,
-  Smile, Coffee, Zap, Brain, BarChart3, Plane
+  Smile, Coffee, Zap, Brain, BarChart3, Plane, ChevronDown
 } from 'lucide-react';
 import ExpertRegistrationForm from '../components/ExpertRegistrationForm';
 
