@@ -825,7 +825,7 @@ const ProcessTab = () => (
               step: 5,
               title: 'Offer & Onboarding',
               duration: '1-2 weeks',
-              desc: 'Successful candidates receive a detailed offer. Our comprehensive onboarding ensures you're set up for success from day one.',
+              desc: 'Successful candidates receive a detailed offer. Our comprehensive onboarding ensures you are set up for success from day one.',
               tips: ['Review the offer carefully', 'Ask about growth opportunities', 'Prepare for an exciting journey!']
             }
           ].map((stage, index) => (
