@@ -316,67 +316,69 @@ const InsightsPage = () => {
                 transition={{ delay: index * 0.05 }}
                 className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
               >
-                {/* Icon Header */}
-                <div 
-                  className="h-40 flex items-center justify-center relative overflow-hidden"
-                  style={{ backgroundColor: insight.color + '10' }}
-                >
-                  <div className="absolute inset-0 opacity-20" style={{
-                    backgroundImage: `radial-gradient(circle at 80% 20%, ${insight.color}40 0%, transparent 50%)`
-                  }} />
-                  <insight.icon 
-                    className="w-16 h-16 transition-transform group-hover:scale-110" 
-                    style={{ color: insight.color }}
-                  />
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span 
-                      className="px-3 py-1 rounded-full text-xs font-semibold text-white"
-                      style={{ backgroundColor: insight.color }}
-                    >
-                      {categories.find(c => c.id === insight.category)?.name}
-                    </span>
-                  </div>
-                  
-                  {/* Download Badge */}
-                  {insight.downloadable && (
-                    <div className="absolute top-4 right-4">
-                      <span className="flex items-center gap-1 px-2 py-1 rounded bg-white/90 text-xs font-medium text-[#0a1628]">
-                        <Download className="w-3 h-3" />
-                        {insight.fileType}
+                <Link to={`/insights/${insight.slug}`}>
+                  {/* Icon Header */}
+                  <div 
+                    className="h-40 flex items-center justify-center relative overflow-hidden"
+                    style={{ backgroundColor: insight.color + '10' }}
+                  >
+                    <div className="absolute inset-0 opacity-20" style={{
+                      backgroundImage: `radial-gradient(circle at 80% 20%, ${insight.color}40 0%, transparent 50%)`
+                    }} />
+                    <insight.icon 
+                      className="w-16 h-16 transition-transform group-hover:scale-110" 
+                      style={{ color: insight.color }}
+                    />
+                    
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span 
+                        className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                        style={{ backgroundColor: insight.color }}
+                      >
+                        {categories.find(c => c.id === insight.category)?.name}
                       </span>
                     </div>
-                  )}
-                </div>
-                
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-[#0a1628] mb-2 line-clamp-2 group-hover:text-[#e63946] transition-colors">
-                    {insight.title}
-                  </h3>
-                  <p className="text-[#64748b] text-sm mb-4 line-clamp-2">
-                    {insight.excerpt}
-                  </p>
-                  
-                  {/* Meta */}
-                  <div className="flex items-center justify-between text-xs text-[#64748b] mb-4">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {insight.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {insight.readTime}
-                    </span>
+                    
+                    {/* Download Badge */}
+                    {insight.downloadable && (
+                      <div className="absolute top-4 right-4">
+                        <span className="flex items-center gap-1 px-2 py-1 rounded bg-white/90 text-xs font-medium text-[#0a1628]">
+                          <Download className="w-3 h-3" />
+                          {insight.fileType}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   
-                  {/* CTA */}
-                  <button className="flex items-center gap-2 text-sm font-semibold text-[#0a1628] group-hover:text-[#e63946] transition-colors">
-                    {insight.downloadable ? 'Download' : 'Read More'}
-                    {insight.downloadable ? <Download className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
-                  </button>
-                </div>
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-[#0a1628] mb-2 line-clamp-2 group-hover:text-[#e63946] transition-colors">
+                      {insight.title}
+                    </h3>
+                    <p className="text-[#64748b] text-sm mb-4 line-clamp-2">
+                      {insight.excerpt}
+                    </p>
+                    
+                    {/* Meta */}
+                    <div className="flex items-center justify-between text-xs text-[#64748b] mb-4">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {insight.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {insight.readTime}
+                      </span>
+                    </div>
+                    
+                    {/* CTA */}
+                    <span className="flex items-center gap-2 text-sm font-semibold text-[#0a1628] group-hover:text-[#e63946] transition-colors">
+                      {insight.downloadable ? 'Download' : 'Read More'}
+                      {insight.downloadable ? <Download className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                    </span>
+                  </div>
+                </Link>
               </motion.article>
             ))}
           </div>
