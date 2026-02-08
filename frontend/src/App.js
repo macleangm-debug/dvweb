@@ -33,6 +33,7 @@ import InsightsPage from './pages/InsightsPage';
 import ArticlePage from './pages/ArticlePage';
 import CareersPage from './pages/CareersPage';
 import AdminExpertManagement from './components/AdminExpertManagement';
+import AdminProjectMatching from './components/AdminProjectMatching';
 import {
   PracticeAreasHubPage,
   AgriculturePage,
