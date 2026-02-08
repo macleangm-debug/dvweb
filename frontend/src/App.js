@@ -673,6 +673,17 @@ const Navbar = () => {
                     <ChevronRight className="w-5 h-5 text-[#64748b]" />
                   </button>
                   
+                  {/* Industries - Opens Sub Panel */}
+                  <button
+                    onClick={() => setMobileSubMenu('industries')}
+                    className={`flex items-center justify-between w-full py-4 text-base font-medium border-b border-[#f1f5f9] ${
+                      location.pathname.startsWith('/industries') ? 'text-[#e63946]' : 'text-[#0a1628]'
+                    }`}
+                  >
+                    <span>Industries</span>
+                    <ChevronRight className="w-5 h-5 text-[#64748b]" />
+                  </button>
+                  
                   {/* Projects, News, Contact */}
                   {navLinks.slice(2).map((link) => (
                     <Link
