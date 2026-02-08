@@ -517,13 +517,7 @@ const IndustryDetailPage = ({ industry }) => {
                 rapidly changing market dynamics, organizations need reliable data to stay competitive.
               </p>
               <div className="space-y-4">
-                {[
-                  'Limited access to reliable, actionable data',
-                  'Difficulty measuring program impact and ROI',
-                  'Complex stakeholder environments',
-                  'Rapidly evolving regulatory landscape',
-                  'Need for strategic foresight and planning'
-                ].map((challenge, i) => (
+                {challenges.map((challenge, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div 
                       className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
