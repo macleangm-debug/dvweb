@@ -1089,7 +1089,7 @@ const Footer = () => {
 
   const footerCompany = [
     { name: 'About Us', path: '/about' },
-    { name: 'Practice Areas', path: '/practice-areas' },
+    { name: 'Careers', path: '/careers' },
     { name: 'Insights', path: '/insights' },
     { name: 'Contact', path: '/contact' },
   ];
