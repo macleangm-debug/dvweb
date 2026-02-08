@@ -136,7 +136,46 @@ const industriesData = [
     shortDesc: 'Consumer insights and retail analytics for data-driven business decisions',
     icon: ShoppingCart,
     color: '#f43f5e',
-    stats: { projects: '40+', stores: '500+', consumers: '2M+' }
+    stats: { projects: '40+', stores: '500+', consumers: '2M+' },
+    customSolutions: [
+      {
+        title: 'Consumer Behavior Analytics',
+        desc: 'Deep understanding of shopper behavior, preferences, and purchase patterns through advanced analytics and ethnographic research.',
+        icon: 'Users'
+      },
+      {
+        title: 'Retail Performance Optimization',
+        desc: 'Store-level performance benchmarking, foot traffic analysis, and conversion rate optimization strategies.',
+        icon: 'TrendingUp'
+      },
+      {
+        title: 'Pricing & Promotion Insights',
+        desc: 'Data-driven pricing strategies and promotion effectiveness analysis to maximize revenue and margins.',
+        icon: 'PieChart'
+      },
+      {
+        title: 'Market Expansion Research',
+        desc: 'Location intelligence and market sizing studies to identify high-potential areas for new store openings.',
+        icon: 'Target'
+      }
+    ],
+    customChallenges: [
+      'Understanding rapidly evolving consumer preferences',
+      'Optimizing product assortment and inventory levels',
+      'Measuring marketing ROI across channels',
+      'Competing with e-commerce disruption',
+      'Improving customer loyalty and retention'
+    ],
+    customCapabilities: [
+      'Mystery shopping and retail audits',
+      'Customer satisfaction (CSAT) and NPS surveys',
+      'Point-of-sale data analysis',
+      'Shopper journey mapping',
+      'Product placement and merchandising optimization',
+      'Price elasticity modeling',
+      'Competitor benchmarking studies',
+      'Consumer panel research'
+    ]
   }
 ];
 
