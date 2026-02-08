@@ -367,11 +367,23 @@ const Navbar = () => {
     { name: 'Manufacturing', path: '/industries/manufacturing', icon: Factory, description: 'Industrial analytics' },
   ];
 
-  const [industriesOpen, setIndustriesOpen] = useState(false);
+  const solutionLinks = [
+    { name: 'All Solutions', path: '/solutions', icon: Layers, description: 'Software products overview' },
+    { name: 'Survey360', path: '/solutions/survey360', icon: Target, description: 'Survey management platform' },
+    { name: 'DataViz Studio', path: '/solutions/dataviz-studio', icon: PieChart, description: 'Analytics & visualization' },
+    { name: 'M&E Tracker', path: '/solutions/me-tracker', icon: TrendingUp, description: 'M&E management system' },
+    { name: 'FieldForce', path: '/solutions/fieldforce', icon: Smartphone, description: 'Mobile data collection' },
+    { name: 'AgriData Pro', path: '/solutions/agridata-pro', icon: Sprout, description: 'Agricultural intelligence' },
+    { name: 'EduInsights', path: '/solutions/eduinsights', icon: GraduationCap, description: 'Education analytics' },
+    { name: 'HealthPulse', path: '/solutions/healthpulse', icon: Heart, description: 'Healthcare analytics' },
+    { name: 'WASH Monitor', path: '/solutions/wash-monitor', icon: Droplets, description: 'WASH tracking system' },
+  ];
 
   const isServicesActive = location.pathname.startsWith('/services');
   const isPracticeAreasActive = location.pathname.startsWith('/practice-areas');
   const isIndustriesActive = location.pathname.startsWith('/industries');
+  const isSolutionsActive = location.pathname.startsWith('/solutions');
+  const isWhatWeDoActive = isServicesActive || isPracticeAreasActive || isIndustriesActive || isSolutionsActive;
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -390,34 +402,264 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
-            {navLinks.slice(0, 2).map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-sm font-medium transition-colors ${
-                  location.pathname === link.path 
-                    ? 'text-[#e63946]' 
-                    : 'text-[#64748b] hover:text-[#0a1628]'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* Desktop Navigation - Simplified */}
+          <div className="hidden lg:flex items-center gap-8">
+            <Link
+              to="/"
+              className={`text-sm font-medium transition-colors ${
+                location.pathname === '/' 
+                  ? 'text-[#e63946]' 
+                  : 'text-[#64748b] hover:text-[#0a1628]'
+              }`}
+            >
+              Home
+            </Link>
             
-            {/* Services Dropdown */}
+            <Link
+              to="/about"
+              className={`text-sm font-medium transition-colors ${
+                location.pathname === '/about' 
+                  ? 'text-[#e63946]' 
+                  : 'text-[#64748b] hover:text-[#0a1628]'
+              }`}
+            >
+              About
+            </Link>
+            
+            {/* MEGA MENU - What We Do */}
             <div 
               className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
+              onMouseEnter={() => setMegaMenuOpen(true)}
+              onMouseLeave={() => setMegaMenuOpen(false)}
             >
               <button 
                 className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
-                  isServicesActive ? 'text-[#e63946]' : 'text-[#0a1628] hover:text-[#e63946]'
+                  isWhatWeDoActive ? 'text-[#e63946]' : 'text-[#0a1628] hover:text-[#e63946]'
                 }`}
-                data-testid="services-dropdown-btn"
+                data-testid="mega-menu-btn"
               >
+                What We Do <ChevronDown className={`w-4 h-4 transition-transform ${megaMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {megaMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[900px]"
+                  >
+                    <div className="bg-white shadow-2xl border border-[#e2e8f0] rounded-lg overflow-hidden">
+                      {/* Tabs */}
+                      <div className="flex border-b border-[#e2e8f0] bg-[#f8fafc]">
+                        {[
+                          { id: 'services', label: 'Services', icon: Target },
+                          { id: 'solutions', label: 'Solutions', icon: Layers },
+                          { id: 'industries', label: 'Industries', icon: Building2 },
+                          { id: 'practice-areas', label: 'Practice Areas', icon: Globe },
+                        ].map((tab) => (
+                          <button
+                            key={tab.id}
+                            onClick={() => setMegaMenuTab(tab.id)}
+                            className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all ${
+                              megaMenuTab === tab.id 
+                                ? 'text-[#e63946] border-b-2 border-[#e63946] bg-white' 
+                                : 'text-[#64748b] hover:text-[#0a1628]'
+                            }`}
+                          >
+                            <tab.icon className="w-4 h-4" />
+                            {tab.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6">
+                        {megaMenuTab === 'services' && (
+                          <div className="grid grid-cols-3 gap-3">
+                            {serviceLinks.slice(0, 9).map((service, index) => (
+                              <Link
+                                key={service.path}
+                                to={service.path}
+                                className={`flex items-start gap-3 p-3 rounded-lg hover:bg-[#f8fafc] transition-colors group ${
+                                  index === 0 ? 'col-span-3 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                                }`}
+                              >
+                                <service.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                                  index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                                } transition-colors`} />
+                                <div>
+                                  <span className={`text-sm font-semibold block ${
+                                    index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                                  } transition-colors`}>
+                                    {service.name}
+                                  </span>
+                                  <span className={`text-xs ${index === 0 ? 'text-white/70' : 'text-[#64748b]'}`}>
+                                    {service.description}
+                                  </span>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+
+                        {megaMenuTab === 'solutions' && (
+                          <div className="grid grid-cols-3 gap-3">
+                            {solutionLinks.map((solution, index) => (
+                              <Link
+                                key={solution.path}
+                                to={solution.path}
+                                className={`flex items-start gap-3 p-3 rounded-lg hover:bg-[#f8fafc] transition-colors group ${
+                                  index === 0 ? 'col-span-3 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                                }`}
+                              >
+                                <solution.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                                  index === 0 ? 'text-[#e63946]' : 'text-[#8b5cf6] group-hover:text-[#e63946]'
+                                } transition-colors`} />
+                                <div>
+                                  <span className={`text-sm font-semibold block ${
+                                    index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                                  } transition-colors`}>
+                                    {solution.name}
+                                  </span>
+                                  <span className={`text-xs ${index === 0 ? 'text-white/70' : 'text-[#64748b]'}`}>
+                                    {solution.description}
+                                  </span>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+
+                        {megaMenuTab === 'industries' && (
+                          <div className="grid grid-cols-3 gap-3">
+                            {industryLinks.slice(0, 10).map((industry, index) => (
+                              <Link
+                                key={industry.path}
+                                to={industry.path}
+                                className={`flex items-start gap-3 p-3 rounded-lg hover:bg-[#f8fafc] transition-colors group ${
+                                  index === 0 ? 'col-span-3 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                                }`}
+                              >
+                                <industry.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                                  index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                                } transition-colors`} />
+                                <div>
+                                  <span className={`text-sm font-semibold block ${
+                                    index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                                  } transition-colors`}>
+                                    {industry.name}
+                                  </span>
+                                  <span className={`text-xs ${index === 0 ? 'text-white/70' : 'text-[#64748b]'}`}>
+                                    {industry.description}
+                                  </span>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+
+                        {megaMenuTab === 'practice-areas' && (
+                          <div className="grid grid-cols-3 gap-3">
+                            {practiceAreaLinks.slice(0, 10).map((area, index) => (
+                              <Link
+                                key={area.path}
+                                to={area.path}
+                                className={`flex items-start gap-3 p-3 rounded-lg hover:bg-[#f8fafc] transition-colors group ${
+                                  index === 0 ? 'col-span-3 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                                }`}
+                              >
+                                <area.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                                  index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                                } transition-colors`} />
+                                <div>
+                                  <span className={`text-sm font-semibold block ${
+                                    index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                                  } transition-colors`}>
+                                    {area.name}
+                                  </span>
+                                  <span className={`text-xs ${index === 0 ? 'text-white/70' : 'text-[#64748b]'}`}>
+                                    {area.description}
+                                  </span>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
+            <Link
+              to="/insights"
+              className={`text-sm font-medium transition-colors ${
+                location.pathname.startsWith('/insights') 
+                  ? 'text-[#e63946]' 
+                  : 'text-[#64748b] hover:text-[#0a1628]'
+              }`}
+            >
+              Insights
+            </Link>
+            
+            <Link
+              to="/contact"
+              className={`text-sm font-medium transition-colors ${
+                location.pathname === '/contact' 
+                  ? 'text-[#e63946]' 
+                  : 'text-[#64748b] hover:text-[#0a1628]'
+              }`}
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* CTA and Mobile Menu */}
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <Link
+                  to="/admin"
+                  className="hidden lg:flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#0a1628]"
+                >
+                  <Settings className="w-4 h-4" />
+                  Admin
+                </Link>
+                <button
+                  onClick={logout}
+                  className="hidden lg:flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#e63946]"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/admin"
+                className="hidden lg:flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#0a1628]"
+              >
+                <LogIn className="w-4 h-4" />
+                Admin
+              </Link>
+            )}
+            <Link 
+              to="/contact"
+              className="hidden md:block bg-[#e63946] text-white px-6 py-2.5 text-sm font-semibold uppercase tracking-wider hover:bg-[#0a1628] transition-colors"
+            >
+              Partner With Us
+            </Link>
+            <button 
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden p-2"
+              data-testid="mobile-menu-btn"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
                 Services <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
               </button>
               
