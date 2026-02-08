@@ -366,6 +366,7 @@ const Navbar = () => {
     { name: 'Food & Nutrition', path: '/industries/nutrition', icon: Utensils, description: 'Food systems' },
     { name: 'NGOs & Development', path: '/industries/ngos', icon: Globe, description: 'Impact measurement' },
     { name: 'Manufacturing', path: '/industries/manufacturing', icon: Factory, description: 'Industrial analytics' },
+    { name: 'Retail & Consumer Goods', path: '/industries/retail', icon: ShoppingCart, description: 'Consumer insights' },
   ];
 
   const solutionLinks = [
