@@ -222,33 +222,34 @@ const OverviewTab = ({ setActiveTab }) => (
     exit={{ opacity: 0 }}
   >
     {/* Hero Section */}
-    <section className="relative bg-[#0a1628] text-white py-32 overflow-hidden">
+    <section className="relative bg-[#0a1628] text-white py-24 overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, #e63946 0%, transparent 50%),
-                            radial-gradient(circle at 80% 50%, #2a9d8f 0%, transparent 50%)`
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `radial-gradient(circle at 20% 30%, #e63946 0%, transparent 40%),
+                            radial-gradient(circle at 80% 70%, #2a9d8f 0%, transparent 40%)`
         }} />
+        {/* Grid pattern */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
+          backgroundSize: '50px 50px'
         }} />
       </div>
       
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="max-w-3xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
           >
-            <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4">
-              Careers at DataVision
-            </p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <div className="inline-flex items-center gap-2 bg-[#e63946] px-4 py-2 rounded-full mb-6">
+              <Briefcase className="w-4 h-4" />
+              <span className="text-sm font-semibold">Join Our Team</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Big Challenges.<br />
-              <span className="text-[#e63946]">Bigger Impact.</span>
+              Bigger Impact.
             </h1>
-            <p className="text-xl text-white/80 mb-8 leading-relaxed max-w-2xl">
+            <p className="text-xl text-white/80 leading-relaxed mb-8">
               Join Africa's leading research consultancy and shape the future of 
               data-driven development. Your work here will influence policies and 
               programs affecting millions of lives.
@@ -256,19 +257,50 @@ const OverviewTab = ({ setActiveTab }) => (
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => setActiveTab('jobs')}
-                className="inline-flex items-center gap-2 bg-[#e63946] text-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-white hover:text-[#0a1628] transition-all"
+                className="inline-flex items-center gap-2 bg-[#e63946] text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
                 data-testid="search-jobs-btn"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4" />
                 Search Jobs
               </button>
               <button 
                 onClick={() => setActiveTab('why-us')}
-                className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-white hover:text-[#0a1628] transition-all"
+                className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
               >
-                <Play className="w-5 h-5" />
+                <Play className="w-4 h-4" />
                 Why DataVision
               </button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="hidden lg:block"
+          >
+            <div className="relative">
+              {/* Floating stat cards */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: '200+', label: 'Team Members', icon: Users },
+                  { value: '25+', label: 'Years of Excellence', icon: Award },
+                  { value: '15+', label: 'Countries Served', icon: Globe },
+                  { value: '95%', label: 'Employee Retention', icon: Heart }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/20 transition-all"
+                  >
+                    <stat.icon className="w-8 h-8 mb-2 text-[#e63946]" />
+                    <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
+                    <p className="text-white/60 text-sm">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
