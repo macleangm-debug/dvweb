@@ -509,6 +509,65 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
+            {/* Industries Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIndustriesOpen(true)}
+              onMouseLeave={() => setIndustriesOpen(false)}
+            >
+              <button 
+                className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
+                  isIndustriesActive ? 'text-[#e63946]' : 'text-[#0a1628] hover:text-[#e63946]'
+                }`}
+                data-testid="industries-dropdown-btn"
+              >
+                Industries <ChevronDown className={`w-4 h-4 transition-transform ${industriesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {industriesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[520px]"
+                  >
+                    <div className="bg-white shadow-xl border border-[#e2e8f0] p-6">
+                      <div className="grid grid-cols-2 gap-2">
+                        {industryLinks.map((industry, index) => (
+                          <Link
+                            key={industry.path}
+                            to={industry.path}
+                            onClick={() => setIndustriesOpen(false)}
+                            className={`flex items-start gap-3 p-3 hover:bg-[#f8fafc] transition-colors group ${
+                              index === 0 ? 'col-span-2 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
+                            }`}
+                          >
+                            <industry.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                              index === 0 ? 'text-[#e63946]' : 'text-[#2a9d8f] group-hover:text-[#e63946]'
+                            } transition-colors`} />
+                            <div>
+                              <span className={`text-sm font-semibold block ${
+                                index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
+                              } transition-colors`}>
+                                {industry.name}
+                              </span>
+                              <span className={`text-xs ${
+                                index === 0 ? 'text-white/70' : 'text-[#64748b]'
+                              }`}>
+                                {industry.description}
+                              </span>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {navLinks.slice(2).map((link) => (
               <Link
                 key={link.path}
