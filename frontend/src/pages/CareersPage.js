@@ -201,16 +201,36 @@ const expertSectors = [
   }
 ];
 
-const careerTabs = [
-  { id: 'overview', label: 'Overview', icon: Building2 },
-  { id: 'why-us', label: 'Why Work Here', icon: Heart },
-  { id: 'jobs', label: 'Open Positions', icon: Briefcase },
-  { id: 'experts', label: 'Expert Network', icon: Star },
-  { id: 'register', label: 'Register as Expert', icon: Users },
-  { id: 'process', label: 'How We Hire', icon: Target },
-  { id: 'students', label: 'Students & Graduates', icon: GraduationCap },
-  { id: 'life', label: 'Life at DataVision', icon: Smile }
+// Grouped navigation structure for cleaner UX
+const careerNavItems = [
+  { id: 'overview', label: 'Overview', icon: Building2, type: 'single' },
+  { 
+    id: 'culture', 
+    label: 'Our Culture', 
+    icon: Heart, 
+    type: 'dropdown',
+    items: [
+      { id: 'why-us', label: 'Why Work Here', icon: Heart, desc: 'Our mission and values' },
+      { id: 'life', label: 'Life at DataVision', icon: Smile, desc: 'Team culture and benefits' },
+      { id: 'process', label: 'How We Hire', icon: Target, desc: 'Our hiring process' }
+    ]
+  },
+  { 
+    id: 'opportunities', 
+    label: 'Find Your Role', 
+    icon: Briefcase, 
+    type: 'dropdown',
+    items: [
+      { id: 'jobs', label: 'Open Positions', icon: Briefcase, desc: 'Current job openings' },
+      { id: 'students', label: 'Students & Graduates', icon: GraduationCap, desc: 'Early career programs' },
+      { id: 'experts', label: 'Expert Network', icon: Star, desc: 'Join as a consultant' },
+      { id: 'register', label: 'Register as Expert', icon: Users, desc: 'Submit your profile' }
+    ]
+  }
 ];
+
+// Flat list of all valid tab IDs for routing
+const validTabIds = ['overview', 'why-us', 'life', 'process', 'jobs', 'students', 'experts', 'register'];
 
 // ==================== CAREERS PAGE ====================
 const CareersPage = () => {
