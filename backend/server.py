@@ -1137,6 +1137,642 @@ async def get_expert_stats(_: dict = Depends(verify_token)):
         "by_availability": {item["_id"]: item["count"] for item in avail_counts}
     }
 
+# ==================== VERIFICATION SYSTEM ====================
+
+# Skills Assessment Questions Bank (Auto-generated per sector)
+ASSESSMENT_QUESTIONS = {
+    "agriculture": [
+        {"question": "What is the primary purpose of a value chain analysis in agriculture?", 
+         "options": ["To identify pest control methods", "To map production to consumption flow and identify bottlenecks", "To measure soil quality", "To calculate crop yields"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "Which sampling method is most appropriate for a large-scale agricultural household survey?",
+         "options": ["Convenience sampling", "Stratified random sampling", "Snowball sampling", "Purposive sampling"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What does GAP stand for in agricultural certification?",
+         "options": ["General Agricultural Products", "Good Agricultural Practices", "Global Agriculture Protocol", "Growth Assessment Program"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "In agricultural impact evaluation, what is a 'counterfactual'?",
+         "options": ["A measure of crop failure", "What would have happened without the intervention", "A type of fertilizer analysis", "A farming technique"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "Which indicator is most relevant for measuring food security at household level?",
+         "options": ["GDP per capita", "Household Dietary Diversity Score (HDDS)", "Total crop production", "Market prices"],
+         "correct": 1, "difficulty": "medium"},
+    ],
+    "health": [
+        {"question": "What does HMIS stand for in health systems?",
+         "options": ["Health Medical Insurance System", "Health Management Information System", "Hospital Monitoring Integration Service", "Healthcare Medicine Inventory System"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "Which study design provides the strongest evidence for causal inference?",
+         "options": ["Cross-sectional survey", "Case-control study", "Randomized controlled trial", "Cohort study"],
+         "correct": 2, "difficulty": "medium"},
+        {"question": "What is the primary purpose of a health facility assessment?",
+         "options": ["To count patients", "To evaluate service readiness and quality of care", "To distribute medicines", "To train doctors"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "In disease surveillance, what is a 'sentinel site'?",
+         "options": ["A quarantine facility", "A selected location for systematic data collection", "A hospital emergency room", "A vaccination center"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What is the WHO's recommended method for assessing healthcare quality?",
+         "options": ["Patient satisfaction only", "Donabedian's structure-process-outcome framework", "Cost analysis", "Staff interviews"],
+         "correct": 1, "difficulty": "hard"},
+    ],
+    "education": [
+        {"question": "What does EMIS stand for in education systems?",
+         "options": ["Educational Management Information System", "Elementary Monitoring Integration Service", "Education Ministry Information Service", "E-learning Management Integration System"],
+         "correct": 0, "difficulty": "easy"},
+        {"question": "Which assessment measures learning outcomes at system level?",
+         "options": ["Teacher evaluation", "National Learning Assessment (NLA)", "Attendance records", "Textbook distribution"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is the 'learning poverty' indicator measuring?",
+         "options": ["School fees affordability", "Percentage of children unable to read by age 10", "Teacher salaries", "Classroom infrastructure"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "In education research, what is 'test-retest reliability'?",
+         "options": ["Testing different students", "Consistency of results when same test is administered twice", "Comparing two different tests", "Testing at different schools"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "Which framework is commonly used for teacher effectiveness evaluation?",
+         "options": ["Bloom's Taxonomy", "Danielson Framework", "SWOT Analysis", "Theory of Change"],
+         "correct": 1, "difficulty": "hard"},
+    ],
+    "wash": [
+        {"question": "What does JMP stand for in WASH sector?",
+         "options": ["Joint Management Program", "Joint Monitoring Programme", "Junior Management Protocol", "Jurisdictional Monitoring Plan"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "What is 'safely managed drinking water' according to SDG 6?",
+         "options": ["Any piped water", "Water from improved source, on premises, available when needed, free from contamination", "Bottled water only", "Water from public taps"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "Which indicator measures sanitation access at household level?",
+         "options": ["Water quality index", "Proportion using safely managed sanitation services", "Number of latrines built", "Distance to water source"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is the 'sanitation ladder' in JMP classification?",
+         "options": ["Physical ladder for pit latrines", "Hierarchy of sanitation service levels from open defecation to safely managed", "Steps for building toilets", "Ladder for water tanks"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "In WASH surveys, what does 'E. coli presence' indicate?",
+         "options": ["Safe water", "Fecal contamination", "Mineral content", "Water hardness"],
+         "correct": 1, "difficulty": "medium"},
+    ],
+    "me": [
+        {"question": "What is a 'Theory of Change' in M&E?",
+         "options": ["A financial audit method", "A logical framework showing how activities lead to outcomes", "A change management process", "A type of survey"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is the difference between outputs and outcomes in M&E?",
+         "options": ["They are the same", "Outputs are immediate products, outcomes are changes resulting from outputs", "Outputs are long-term, outcomes are short-term", "Outputs are qualitative, outcomes are quantitative"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is 'contribution analysis' in impact evaluation?",
+         "options": ["Calculating project costs", "Assessing causal contribution when experimental designs aren't possible", "Measuring donor contributions", "Analyzing team member contributions"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "In Results-Based Management, what does 'SMART' indicators mean?",
+         "options": ["Strategic, Measured, Accurate, Reliable, Timely", "Specific, Measurable, Achievable, Relevant, Time-bound", "Simple, Managed, Appropriate, Responsive, Targeted", "Standard, Monitored, Assessed, Reviewed, Tested"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "What is the purpose of a 'baseline study'?",
+         "options": ["To evaluate project completion", "To establish reference point before intervention for comparison", "To design project activities", "To train staff"],
+         "correct": 1, "difficulty": "easy"},
+    ],
+    "data": [
+        {"question": "What is the primary purpose of data normalization?",
+         "options": ["To make data larger", "To organize data to reduce redundancy and improve integrity", "To visualize data", "To delete duplicates"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "Which statistical test is appropriate for comparing means of two independent groups?",
+         "options": ["Chi-square test", "Independent samples t-test", "ANOVA", "Correlation analysis"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What does 'p-value < 0.05' indicate in statistical analysis?",
+         "options": ["The result is meaningless", "Statistical significance at 95% confidence level", "The sample size is too small", "The data is normally distributed"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "In machine learning, what is 'overfitting'?",
+         "options": ["Model performs well on all data", "Model performs well on training data but poorly on new data", "Model takes too long to train", "Model uses too little data"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What is the purpose of 'cross-validation' in model development?",
+         "options": ["To increase training speed", "To assess model performance on unseen data", "To visualize results", "To clean data"],
+         "correct": 1, "difficulty": "hard"},
+    ],
+    "governance": [
+        {"question": "What is 'Public Expenditure Review' (PER)?",
+         "options": ["Personal expense tracking", "Systematic analysis of government spending patterns and efficiency", "Private sector audit", "Employee performance review"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What does PEFA stand for in public finance?",
+         "options": ["Public Economic Financial Analysis", "Public Expenditure and Financial Accountability", "Private Enterprise Funding Assessment", "Public Education Finance Authority"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is 'citizen report card' in governance research?",
+         "options": ["National ID system", "Tool to gather citizen feedback on public services", "Government report to citizens", "Voting registration card"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "In governance indicators, what does 'voice and accountability' measure?",
+         "options": ["Audio quality in meetings", "Citizens' ability to participate in governance and hold leaders accountable", "Government announcements", "Financial accountability"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is 'devolution' in governance context?",
+         "options": ["Economic decline", "Transfer of powers from central to local government", "Political revolution", "Government dissolution"],
+         "correct": 1, "difficulty": "easy"},
+    ],
+    "finance": [
+        {"question": "What is 'financial inclusion'?",
+         "options": ["Including financial data in reports", "Access to useful and affordable financial services", "Tax inclusion policies", "Financial literacy training"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "What is a 'financial diary' methodology?",
+         "options": ["Bank account statement", "Longitudinal tracking of household financial transactions", "Business accounting ledger", "Personal finance app"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What does 'FinScope' survey measure?",
+         "options": ["Bank profits", "Financial sector development and inclusion levels", "Investment returns", "Currency exchange rates"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "In microfinance, what is 'PAR30' indicator?",
+         "options": ["Interest rate", "Portfolio at Risk - loans overdue by 30+ days", "Profit margin", "Number of borrowers"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What is 'mobile money' in financial services context?",
+         "options": ["Online banking only", "Financial transactions via mobile phones without bank accounts", "Money for mobile phones", "Banking apps"],
+         "correct": 1, "difficulty": "easy"},
+    ],
+    "gender": [
+        {"question": "What is 'gender mainstreaming'?",
+         "options": ["Hiring more women", "Integrating gender perspective into all policies and programs", "Separate programs for women", "Gender-specific marketing"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What does GBV stand for in development context?",
+         "options": ["Government Budget Variance", "Gender-Based Violence", "General Business Value", "Global Business Venture"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "What is the 'Gender Inequality Index' (GII)?",
+         "options": ["Women's salary comparison", "Composite measure of gender-based disadvantage across health, empowerment, labor", "Female education rates", "Women in parliament"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "In gender analysis, what is 'intersectionality'?",
+         "options": ["Road traffic analysis", "How multiple identities (gender, race, class) combine to create unique experiences", "International relations", "Sector coordination"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What is 'unpaid care work' in gender economics?",
+         "options": ["Volunteer work", "Domestic and caregiving work typically done by women without pay", "Part-time employment", "Internships"],
+         "correct": 1, "difficulty": "medium"},
+    ],
+    "energy": [
+        {"question": "What does SDG 7 focus on?",
+         "options": ["Clean water", "Affordable and clean energy", "Quality education", "Good health"],
+         "correct": 1, "difficulty": "easy"},
+        {"question": "What is 'energy poverty'?",
+         "options": ["Low energy production", "Lack of access to modern energy services", "High energy prices", "Energy inefficiency"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "In energy surveys, what does 'MTF' stand for?",
+         "options": ["Mobile Transfer Facility", "Multi-Tier Framework for measuring energy access", "Main Transmission Frequency", "Metric Ton Factor"],
+         "correct": 1, "difficulty": "hard"},
+        {"question": "What is 'clean cooking' in energy context?",
+         "options": ["Kitchen hygiene", "Use of fuels and technologies that produce low household air pollution", "Food safety", "Restaurant management"],
+         "correct": 1, "difficulty": "medium"},
+        {"question": "What is the primary challenge of renewable energy in rural Africa?",
+         "options": ["Too much sunshine", "High upfront costs and limited financing", "Excess wind", "Over-supply of energy"],
+         "correct": 1, "difficulty": "medium"},
+    ]
+}
+
+def generate_assessment_questions(sector: str, num_questions: int = 5) -> List[dict]:
+    """Generate assessment questions for a sector"""
+    import random
+    questions = ASSESSMENT_QUESTIONS.get(sector, [])
+    if len(questions) < num_questions:
+        return questions
+    return random.sample(questions, num_questions)
+
+def calculate_verification_score(expert: dict) -> tuple:
+    """Calculate composite verification score and trust tier"""
+    # Component weights
+    weights = {
+        "skills": 40,      # 40% weight for skills assessment
+        "references": 35,  # 35% weight for reference verification
+        "documents": 25    # 25% weight for document verification
+    }
+    
+    skills_score = expert.get("skills_assessment_score", 0)
+    reference_score = expert.get("reference_verification_score", 0)
+    document_score = expert.get("document_verification_score", 0)
+    
+    # Calculate weighted score
+    composite_score = (
+        skills_score * weights["skills"] / 100 +
+        reference_score * weights["references"] / 100 +
+        document_score * weights["documents"] / 100
+    )
+    
+    # Determine trust tier
+    if composite_score >= 85:
+        tier = "platinum"
+    elif composite_score >= 70:
+        tier = "gold"
+    elif composite_score >= 50:
+        tier = "silver"
+    else:
+        tier = "bronze"
+    
+    # Determine verification status
+    if composite_score >= 70:
+        status = "verified"
+    elif composite_score >= 40:
+        status = "partially_verified"
+    elif skills_score > 0 or reference_score > 0 or document_score > 0:
+        status = "pending_verification"
+    else:
+        status = "unverified"
+    
+    return composite_score, tier, status
+
+async def update_expert_verification(expert_id: str):
+    """Recalculate and update expert's verification score"""
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        return None
+    
+    score, tier, status = calculate_verification_score(expert)
+    
+    await db.experts.update_one(
+        {"id": expert_id},
+        {"$set": {
+            "verification_score": score,
+            "trust_tier": tier,
+            "verification_status": status,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"score": score, "tier": tier, "status": status}
+
+# Admin: Get available assessments for a sector
+@api_router.get("/admin/assessments/sectors")
+async def get_assessment_sectors(_: dict = Depends(verify_token)):
+    """Get sectors with available assessments"""
+    return {
+        "sectors": list(ASSESSMENT_QUESTIONS.keys()),
+        "questions_per_sector": {k: len(v) for k, v in ASSESSMENT_QUESTIONS.items()}
+    }
+
+# Public: Get skills assessment for expert
+@api_router.get("/experts/{expert_id}/assessment/{sector}")
+async def get_skills_assessment(expert_id: str, sector: str):
+    """Get a skills assessment test for an expert"""
+    # Verify expert exists
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    # Check if already completed this sector
+    completed = expert.get("skills_assessments_completed", [])
+    if sector in completed:
+        raise HTTPException(status_code=400, detail="Assessment already completed for this sector")
+    
+    # Generate assessment
+    questions = generate_assessment_questions(sector, 5)
+    if not questions:
+        raise HTTPException(status_code=404, detail="No assessment available for this sector")
+    
+    # Create assessment record
+    assessment = {
+        "id": str(uuid.uuid4()),
+        "expert_id": expert_id,
+        "sector": sector,
+        "questions": [
+            {
+                "id": str(uuid.uuid4()),
+                "question": q["question"],
+                "options": q["options"],
+                "difficulty": q["difficulty"]
+            }
+            for q in questions
+        ],
+        "_correct_answers": [q["correct"] for q in questions],  # Hidden from response
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "expires_at": (datetime.now(timezone.utc) + timedelta(hours=24)).isoformat()
+    }
+    
+    await db.assessments.insert_one(assessment)
+    
+    # Return without correct answers
+    return {
+        "assessment_id": assessment["id"],
+        "sector": sector,
+        "time_limit_minutes": 30,
+        "questions": assessment["questions"]
+    }
+
+# Public: Submit assessment answers
+@api_router.post("/experts/{expert_id}/assessment/submit")
+async def submit_assessment(expert_id: str, submission: AssessmentSubmission):
+    """Submit answers for a skills assessment"""
+    # Get assessment
+    assessment = await db.assessments.find_one({"id": submission.assessment_id})
+    if not assessment:
+        raise HTTPException(status_code=404, detail="Assessment not found")
+    
+    if assessment["expert_id"] != expert_id:
+        raise HTTPException(status_code=403, detail="Assessment not for this expert")
+    
+    # Check if already submitted
+    existing_result = await db.assessment_results.find_one({
+        "expert_id": expert_id,
+        "assessment_id": submission.assessment_id
+    })
+    if existing_result:
+        raise HTTPException(status_code=400, detail="Assessment already submitted")
+    
+    # Calculate score
+    correct_answers = assessment["_correct_answers"]
+    num_correct = sum(1 for i, ans in enumerate(submission.answers) if i < len(correct_answers) and ans == correct_answers[i])
+    total = len(correct_answers)
+    score = (num_correct / total) * 100 if total > 0 else 0
+    passed = score >= 70
+    
+    # Save result
+    result = {
+        "id": str(uuid.uuid4()),
+        "expert_id": expert_id,
+        "assessment_id": submission.assessment_id,
+        "sector": assessment["sector"],
+        "score": score,
+        "passed": passed,
+        "correct_answers": num_correct,
+        "total_questions": total,
+        "submitted_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.assessment_results.insert_one(result)
+    
+    # Update expert's assessment score
+    all_results = await db.assessment_results.find({"expert_id": expert_id}).to_list(100)
+    avg_score = sum(r["score"] for r in all_results) / len(all_results) if all_results else 0
+    
+    await db.experts.update_one(
+        {"id": expert_id},
+        {"$set": {
+            "skills_assessment_score": avg_score,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        "$addToSet": {"skills_assessments_completed": assessment["sector"]}}
+    )
+    
+    # Recalculate verification score
+    await update_expert_verification(expert_id)
+    
+    return {
+        "score": score,
+        "passed": passed,
+        "correct_answers": num_correct,
+        "total_questions": total,
+        "message": "Congratulations! You passed." if passed else "You did not reach the passing score of 70%."
+    }
+
+# Admin: Request reference verification
+@api_router.post("/admin/experts/{expert_id}/request-reference")
+async def request_reference_verification(
+    expert_id: str, 
+    reference_name: str, 
+    reference_email: str, 
+    reference_organization: Optional[str] = None,
+    _: dict = Depends(verify_token)
+):
+    """Send reference verification request"""
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    # Create reference request
+    ref_request = ReferenceRequest(
+        expert_id=expert_id,
+        expert_name=expert["full_name"],
+        reference_name=reference_name,
+        reference_email=reference_email,
+        reference_organization=reference_organization,
+        status="sent",
+        sent_at=datetime.now(timezone.utc).isoformat()
+    )
+    
+    await db.reference_requests.insert_one(ref_request.model_dump())
+    
+    # In production, send email here
+    # For now, return the verification link
+    verification_link = f"/verify-reference/{ref_request.token}"
+    
+    logger.info(f"Reference request created for expert {expert_id}: {reference_email}")
+    
+    return {
+        "message": "Reference request created",
+        "request_id": ref_request.id,
+        "verification_link": verification_link,
+        "note": "In production, an email would be sent to the reference"
+    }
+
+# Public: Submit reference response (accessed via unique token)
+@api_router.post("/verify-reference/{token}")
+async def submit_reference_response(token: str, response: ReferenceResponse):
+    """Submit reference verification response"""
+    ref_request = await db.reference_requests.find_one({"token": token})
+    if not ref_request:
+        raise HTTPException(status_code=404, detail="Invalid verification link")
+    
+    if ref_request["status"] == "completed":
+        raise HTTPException(status_code=400, detail="Reference already submitted")
+    
+    # Calculate reference score (1-5 ratings averaged and normalized to 0-100)
+    ratings = [
+        response.technical_skills,
+        response.communication,
+        response.reliability,
+        response.quality_of_work,
+        response.professionalism
+    ]
+    avg_rating = sum(r for r in ratings if r > 0) / len([r for r in ratings if r > 0]) if any(r > 0 for r in ratings) else 0
+    normalized_score = (avg_rating / 5) * 100
+    
+    # Add recommendation bonus
+    if response.would_recommend:
+        normalized_score = min(100, normalized_score + 10)
+    
+    # Update reference request
+    await db.reference_requests.update_one(
+        {"token": token},
+        {"$set": {
+            "status": "completed",
+            "response": response.model_dump(),
+            "score": normalized_score,
+            "completed_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    # Update expert's reference score
+    expert_id = ref_request["expert_id"]
+    all_refs = await db.reference_requests.find({
+        "expert_id": expert_id, 
+        "status": "completed"
+    }).to_list(100)
+    
+    avg_ref_score = sum(r.get("score", 0) for r in all_refs) / len(all_refs) if all_refs else 0
+    
+    await db.experts.update_one(
+        {"id": expert_id},
+        {"$set": {
+            "reference_verification_score": avg_ref_score,
+            "references_verified": len(all_refs),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    # Recalculate verification score
+    await update_expert_verification(expert_id)
+    
+    return {"message": "Thank you for your feedback!", "score": normalized_score}
+
+# Public: Get reference request details (for reference to fill)
+@api_router.get("/verify-reference/{token}")
+async def get_reference_request(token: str):
+    """Get reference request details for the reference to review"""
+    ref_request = await db.reference_requests.find_one({"token": token}, {"_id": 0})
+    if not ref_request:
+        raise HTTPException(status_code=404, detail="Invalid verification link")
+    
+    if ref_request["status"] == "completed":
+        return {"message": "This reference has already been submitted", "completed": True}
+    
+    # Get expert info for context
+    expert = await db.experts.find_one({"id": ref_request["expert_id"]}, {"_id": 0})
+    
+    return {
+        "expert_name": ref_request["expert_name"],
+        "expert_title": expert.get("current_title", "") if expert else "",
+        "expert_sectors": expert.get("primary_sectors", []) if expert else [],
+        "expert_skills": [s.get("name", "") for s in expert.get("skills", [])] if expert else [],
+        "reference_name": ref_request["reference_name"],
+        "completed": False
+    }
+
+# Admin: Get expert verification summary
+@api_router.get("/admin/experts/{expert_id}/verification", response_model=VerificationSummary)
+async def get_expert_verification(expert_id: str, _: dict = Depends(verify_token)):
+    """Get detailed verification status for an expert"""
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    # Get assessment results
+    assessments = await db.assessment_results.find({"expert_id": expert_id}).to_list(100)
+    passed_assessments = [a for a in assessments if a.get("passed", False)]
+    
+    # Get reference requests
+    ref_requests = await db.reference_requests.find({"expert_id": expert_id}).to_list(100)
+    completed_refs = [r for r in ref_requests if r.get("status") == "completed"]
+    
+    # Get document verifications
+    documents = await db.document_verifications.find({"expert_id": expert_id}).to_list(100)
+    verified_docs = [d for d in documents if d.get("status") == "verified"]
+    
+    return VerificationSummary(
+        expert_id=expert_id,
+        expert_name=expert["full_name"],
+        verification_status=expert.get("verification_status", "unverified"),
+        verification_score=expert.get("verification_score", 0),
+        trust_tier=expert.get("trust_tier", "bronze"),
+        components={
+            "skills_assessment": {
+                "score": expert.get("skills_assessment_score", 0),
+                "weight": 40,
+                "sectors_completed": expert.get("skills_assessments_completed", [])
+            },
+            "references": {
+                "score": expert.get("reference_verification_score", 0),
+                "weight": 35,
+                "verified_count": len(completed_refs)
+            },
+            "documents": {
+                "score": expert.get("document_verification_score", 0),
+                "weight": 25,
+                "verified_count": len(verified_docs)
+            }
+        },
+        assessments_completed=len(assessments),
+        assessments_passed=len(passed_assessments),
+        references_requested=len(ref_requests),
+        references_verified=len(completed_refs),
+        documents_submitted=len(documents),
+        documents_verified=len(verified_docs)
+    )
+
+# Admin: Get all experts ranked by verification score
+@api_router.get("/admin/experts/verified/ranked")
+async def get_ranked_verified_experts(
+    sector: Optional[str] = None,
+    min_score: float = 0,
+    tier: Optional[str] = None,
+    _: dict = Depends(verify_token)
+):
+    """Get experts ranked by verification score - filtered by top talent"""
+    query = {"verification_score": {"$gte": min_score}}
+    
+    if sector:
+        query["$or"] = [
+            {"primary_sectors": sector},
+            {"secondary_sectors": sector}
+        ]
+    
+    if tier:
+        query["trust_tier"] = tier
+    
+    experts = await db.experts.find(query, {"_id": 0}).sort("verification_score", -1).to_list(100)
+    
+    return {
+        "total": len(experts),
+        "experts": [
+            {
+                "id": e["id"],
+                "name": e["full_name"],
+                "email": e["email"],
+                "title": e.get("current_title", ""),
+                "sectors": e.get("primary_sectors", []),
+                "years_experience": e.get("years_experience", 0),
+                "verification_score": e.get("verification_score", 0),
+                "trust_tier": e.get("trust_tier", "bronze"),
+                "verification_status": e.get("verification_status", "unverified"),
+                "skills_score": e.get("skills_assessment_score", 0),
+                "reference_score": e.get("reference_verification_score", 0),
+                "availability": e.get("availability", "unknown")
+            }
+            for e in experts
+        ]
+    }
+
+# Admin: Bulk send reference requests
+@api_router.post("/admin/experts/{expert_id}/request-all-references")
+async def request_all_references(expert_id: str, _: dict = Depends(verify_token)):
+    """Parse expert's references and send verification requests to all"""
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    references = expert.get("references", [])
+    if not references:
+        raise HTTPException(status_code=400, detail="No references provided by expert")
+    
+    created_requests = []
+    for ref_str in references:
+        # Parse reference string (expected format: "Name, Organization, email@example.com")
+        parts = [p.strip() for p in ref_str.split(",")]
+        if len(parts) >= 3:
+            name = parts[0]
+            org = parts[1] if len(parts) > 2 else None
+            email = parts[-1]  # Email should be last
+            
+            # Check if already requested
+            existing = await db.reference_requests.find_one({
+                "expert_id": expert_id,
+                "reference_email": email
+            })
+            if existing:
+                continue
+            
+            # Create request
+            ref_request = ReferenceRequest(
+                expert_id=expert_id,
+                expert_name=expert["full_name"],
+                reference_name=name,
+                reference_email=email,
+                reference_organization=org,
+                status="sent",
+                sent_at=datetime.now(timezone.utc).isoformat()
+            )
+            await db.reference_requests.insert_one(ref_request.model_dump())
+            created_requests.append({
+                "name": name,
+                "email": email,
+                "token": ref_request.token
+            })
+    
+    return {
+        "message": f"Created {len(created_requests)} reference requests",
+        "requests": created_requests
+    }
+
 # ==================== SEED DATA ====================
 
 @api_router.post("/seed")
