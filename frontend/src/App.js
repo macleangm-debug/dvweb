@@ -29,6 +29,7 @@ import {
 } from './pages/ServicePages';
 import ServicesHubPageRedesigned from './pages/ServicesHubRedesigned';
 import InsightsPage from './pages/InsightsPage';
+import ArticlePage from './pages/ArticlePage';
 import {
   PracticeAreasHubPage,
   AgriculturePage,
