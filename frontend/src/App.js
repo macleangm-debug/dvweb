@@ -532,7 +532,7 @@ const Navbar = () => {
               ))}
               
               {/* Services Section in Mobile */}
-              <div className="py-3 border-t border-b border-[#e2e8f0] my-2">
+              <div className="py-3 border-t border-[#e2e8f0] my-2">
                 <p className="text-sm font-semibold text-[#0a1628] mb-2">Services</p>
                 <div className="pl-4 space-y-2">
                   {serviceLinks.map((service) => (
@@ -545,6 +545,25 @@ const Navbar = () => {
                       }`}
                     >
                       {service.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Practice Areas Section in Mobile */}
+              <div className="py-3 border-t border-b border-[#e2e8f0] my-2">
+                <p className="text-sm font-semibold text-[#0a1628] mb-2">Practice Areas</p>
+                <div className="pl-4 space-y-2">
+                  {practiceAreaLinks.map((area) => (
+                    <Link
+                      key={area.path}
+                      to={area.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`block py-2 text-sm ${
+                        location.pathname === area.path ? 'text-[#e63946]' : 'text-[#64748b]'
+                      }`}
+                    >
+                      {area.name}
                     </Link>
                   ))}
                 </div>
