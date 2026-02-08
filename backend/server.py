@@ -241,6 +241,20 @@ class ExpertRegistration(BaseModel):
     rating: float = 0.0
     notes: str = ""
     
+    # Verification System
+    verification_status: str = "unverified"  # unverified, pending_verification, partially_verified, verified, trusted
+    verification_score: float = 0.0  # 0-100 composite score
+    trust_tier: str = "bronze"  # bronze, silver, gold, platinum
+    
+    # Verification Components
+    skills_assessment_score: float = 0.0  # Score from skills tests
+    skills_assessments_completed: List[str] = []  # List of completed assessment IDs
+    reference_verification_score: float = 0.0  # Average score from references
+    references_verified: int = 0  # Number of verified references
+    document_verification_score: float = 0.0  # Score from document analysis
+    documents_verified: List[str] = []  # List of verified document types
+    linkedin_verified: bool = False
+    
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
