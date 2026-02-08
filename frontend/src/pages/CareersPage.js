@@ -206,6 +206,7 @@ const careerTabs = [
   { id: 'why-us', label: 'Why Work Here', icon: Heart },
   { id: 'jobs', label: 'Open Positions', icon: Briefcase },
   { id: 'experts', label: 'Expert Network', icon: Star },
+  { id: 'register', label: 'Register as Expert', icon: Users },
   { id: 'process', label: 'How We Hire', icon: Target },
   { id: 'students', label: 'Students & Graduates', icon: GraduationCap },
   { id: 'life', label: 'Life at DataVision', icon: Smile }
