@@ -1060,58 +1060,128 @@ const Navbar = () => {
 
 // Footer Component
 const Footer = () => {
+  const footerServices = [
+    { name: 'Research & Statistics', path: '/services/research-statistics' },
+    { name: 'Monitoring & Evaluation', path: '/services/monitoring-evaluation' },
+    { name: 'Data Collection', path: '/services/data-collection' },
+    { name: 'Data Analytics', path: '/services/data-analytics' },
+    { name: 'View All Services', path: '/services' },
+  ];
+
+  const footerSolutions = [
+    { name: 'Survey360', path: '/solutions/survey360' },
+    { name: 'DataViz Studio', path: '/solutions/dataviz-studio' },
+    { name: 'M&E Tracker', path: '/solutions/me-tracker' },
+    { name: 'FieldForce', path: '/solutions/fieldforce' },
+    { name: 'View All Solutions', path: '/solutions' },
+  ];
+
+  const footerIndustries = [
+    { name: 'Agriculture', path: '/industries/agriculture' },
+    { name: 'Education', path: '/industries/education' },
+    { name: 'Health', path: '/industries/health' },
+    { name: 'Public Sector', path: '/industries/public-sector' },
+    { name: 'View All Industries', path: '/industries' },
+  ];
+
+  const footerCompany = [
+    { name: 'About Us', path: '/about' },
+    { name: 'Practice Areas', path: '/practice-areas' },
+    { name: 'Insights', path: '/insights' },
+    { name: 'Contact', path: '/contact' },
+  ];
+
   return (
-    <footer className="bg-[#0a1628] text-white relative noise-overlay">
+    <footer className="bg-[#0a1628] text-white relative noise-overlay" data-testid="footer">
       <div className="container mx-auto px-6 lg:px-12 py-16">
-        <div className="grid md:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
+          {/* Brand - Takes 2 columns on large screens */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-2xl font-bold font-serif">Data</span>
               <span className="text-2xl font-bold text-[#e63946] font-serif">Vision</span>
               <span className="text-xs font-semibold tracking-wider ml-2 border-l border-white/30 pl-2">INTERNATIONAL</span>
             </div>
-            <p className="text-white/70 mb-6 max-w-md">
+            <p className="text-white/70 mb-6 max-w-md text-sm leading-relaxed">
               Africa's trusted partner in research and statistics. Over 25 years of experience 
               delivering data-driven insights that shape policy and drive development across the continent.
             </p>
-            <div className="flex gap-4">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 flex items-center justify-center hover:bg-[#e63946] transition-colors">
+            <div className="flex gap-3">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 flex items-center justify-center hover:bg-[#e63946] transition-colors" data-testid="footer-linkedin">
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
+            
+            {/* Contact Info */}
+            <div className="mt-6 space-y-2 text-sm text-white/70">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5 text-[#e63946] flex-shrink-0" />
+                <span>Garden Road, Mikocheni Area, Dar es Salaam</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-[#e63946] flex-shrink-0" />
+                <span>+255 754 869 302</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-[#e63946] flex-shrink-0" />
+                <a href="mailto:info@datavision.co.tz" className="hover:text-[#e63946]">info@datavision.co.tz</a>
+              </div>
+            </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-white" data-testid="footer-services-title">Services</h4>
             <ul className="space-y-2">
-              {['About Us', 'Research & Statistics', 'Practice Areas', 'Projects', 'Contact'].map((link) => (
-                <li key={link}>
-                  <Link to={`/${link.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`} className="text-white/70 hover:text-[#e63946] transition-colors text-sm">
-                    {link}
+              {footerServices.map((link) => (
+                <li key={link.path}>
+                  <Link to={link.path} className="text-white/70 hover:text-[#e63946] transition-colors text-sm">
+                    {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Solutions */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
-            <ul className="space-y-3 text-sm text-white/70">
-              <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 mt-0.5 text-[#e63946]" />
-                <span>Garden Road, Mikocheni Area<br />Dar es Salaam, Tanzania</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#e63946]" />
-                <span>+255 754 869 302</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#e63946]" />
-                <a href="mailto:info@datavision.co.tz" className="hover:text-[#e63946]">info@datavision.co.tz</a>
-              </li>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-white" data-testid="footer-solutions-title">Solutions</h4>
+            <ul className="space-y-2">
+              {footerSolutions.map((link) => (
+                <li key={link.path}>
+                  <Link to={link.path} className="text-white/70 hover:text-[#e63946] transition-colors text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industries */}
+          <div>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-white" data-testid="footer-industries-title">Industries</h4>
+            <ul className="space-y-2">
+              {footerIndustries.map((link) => (
+                <li key={link.path}>
+                  <Link to={link.path} className="text-white/70 hover:text-[#e63946] transition-colors text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-white" data-testid="footer-company-title">Company</h4>
+            <ul className="space-y-2">
+              {footerCompany.map((link) => (
+                <li key={link.path}>
+                  <Link to={link.path} className="text-white/70 hover:text-[#e63946] transition-colors text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
