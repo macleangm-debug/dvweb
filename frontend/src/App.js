@@ -802,6 +802,53 @@ const Navbar = () => {
                   </div>
                 </div>
               </motion.div>
+
+              {/* Industries Sub Panel */}
+              <motion.div
+                initial={false}
+                animate={{ x: mobileSubMenu === 'industries' ? '0%' : '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="absolute inset-0 bg-white overflow-y-auto"
+              >
+                <div className="px-6 py-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => setMobileSubMenu(null)}
+                    className="flex items-center gap-2 py-4 text-[#64748b] font-medium border-b border-[#f1f5f9] w-full"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-180" />
+                    <span>Back</span>
+                  </button>
+                  
+                  {/* Section Title */}
+                  <div className="py-4 border-b border-[#e63946]">
+                    <h3 className="text-lg font-bold text-[#0a1628]">Industries</h3>
+                    <p className="text-sm text-[#64748b]">Our industry expertise</p>
+                  </div>
+                  
+                  {/* Industry Links */}
+                  <div className="py-2">
+                    {industryLinks.map((industry, index) => (
+                      <Link
+                        key={industry.path}
+                        to={industry.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 py-3 ${
+                          index !== industryLinks.length - 1 ? 'border-b border-[#f1f5f9]' : ''
+                        } ${location.pathname === industry.path ? 'text-[#e63946]' : 'text-[#0a1628]'}`}
+                      >
+                        <industry.icon className={`w-5 h-5 ${
+                          location.pathname === industry.path ? 'text-[#e63946]' : 'text-[#2a9d8f]'
+                        }`} />
+                        <div>
+                          <span className="text-sm font-medium">{industry.name}</span>
+                          <p className="text-xs text-[#64748b]">{industry.description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
