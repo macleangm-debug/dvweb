@@ -281,6 +281,7 @@ const CareersPage = () => {
             departments={departments}
           />
         )}
+        {activeTab === 'experts' && <ExpertsTab key="experts" />}
         {activeTab === 'process' && <ProcessTab key="process" />}
         {activeTab === 'students' && <StudentsTab key="students" />}
         {activeTab === 'life' && <LifeTab key="life" teamMembers={teamMembers} benefits={benefits} />}
