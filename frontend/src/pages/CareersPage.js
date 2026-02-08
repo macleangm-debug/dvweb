@@ -506,6 +506,71 @@ const OverviewTab = ({ setActiveTab }) => (
       </div>
     </section>
 
+    {/* Expert Network Preview */}
+    <section className="py-24 bg-[#f8fafc]">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 bg-[#f59e0b]/10 text-[#f59e0b] px-4 py-2 rounded-full mb-4">
+              <Star className="w-4 h-4" />
+              <span className="text-sm font-semibold">Expert Network</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-6">
+              Are You a Sector Expert?
+            </h2>
+            <p className="text-[#64748b] mb-6 leading-relaxed">
+              We're always looking for experienced consultants to join our network of sector 
+              specialists. If you have deep expertise in agriculture, health, education, WASH, 
+              or other development sectors, we'd love to hear from you.
+            </p>
+            <ul className="space-y-3 mb-8">
+              {[
+                'Flexible, project-based engagements',
+                'Competitive daily rates',
+                'Work on meaningful development projects',
+                'Collaborate with leading organizations'
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-[#64748b]">
+                  <CheckCircle2 className="w-5 h-5 text-[#f59e0b]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <button 
+              onClick={() => setActiveTab('experts')}
+              className="inline-flex items-center gap-2 bg-[#f59e0b] text-white px-6 py-3 font-semibold hover:bg-[#0a1628] transition-all"
+            >
+              Join Expert Network <ArrowRight className="w-4 h-4" />
+            </button>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 gap-4"
+          >
+            {[
+              { icon: '🌾', label: 'Agriculture' },
+              { icon: '🏥', label: 'Health' },
+              { icon: '📚', label: 'Education' },
+              { icon: '💧', label: 'WASH' },
+              { icon: '📊', label: 'Data Science' },
+              { icon: '📈', label: 'M&E' }
+            ].map((sector, i) => (
+              <div key={i} className="bg-white rounded-xl p-4 border border-[#e2e8f0] text-center hover:border-[#f59e0b] transition-all">
+                <span className="text-3xl mb-2 block">{sector.icon}</span>
+                <span className="text-sm font-medium text-[#0a1628]">{sector.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
     {/* CTA Section */}
     <section className="py-24 bg-[#e63946] text-white">
       <div className="container mx-auto px-6 lg:px-12 text-center">
@@ -524,17 +589,17 @@ const OverviewTab = ({ setActiveTab }) => (
           <div className="flex flex-wrap justify-center gap-4">
             <button 
               onClick={() => setActiveTab('jobs')}
-              className="inline-flex items-center gap-2 bg-white text-[#e63946] px-8 py-4 font-semibold uppercase tracking-wider hover:bg-[#0a1628] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 bg-white text-[#e63946] px-8 py-4 font-semibold hover:bg-[#0a1628] hover:text-white transition-all"
             >
               <Search className="w-5 h-5" />
               Browse Opportunities
             </button>
             <button 
-              onClick={() => setActiveTab('students')}
-              className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-white hover:text-[#e63946] transition-all"
+              onClick={() => setActiveTab('experts')}
+              className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 font-semibold hover:bg-white hover:text-[#e63946] transition-all"
             >
-              <GraduationCap className="w-5 h-5" />
-              Student Programs
+              <Star className="w-5 h-5" />
+              Expert Network
             </button>
           </div>
         </motion.div>
