@@ -5,7 +5,7 @@ import {
   ArrowRight, Sprout, GraduationCap, Heart, Droplets, Building2,
   Zap, Factory, Truck, Globe, Pickaxe, Utensils, Landmark, Plane,
   Smartphone, ChevronRight, BarChart3, Target, Lightbulb, TrendingUp,
-  CheckCircle2, Users, Database, PieChart, LineChart, Brain
+  CheckCircle2, Users, Database, PieChart, LineChart, Brain, ShoppingCart
 } from 'lucide-react';
 
 // ==================== INDUSTRIES DATA ====================
