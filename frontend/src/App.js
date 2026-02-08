@@ -2433,6 +2433,22 @@ function App() {
                   <Route path="/practice-areas/infrastructure" element={<InfrastructurePage />} />
                   <Route path="/practice-areas/private-sector" element={<PrivateSectorPage />} />
                   <Route path="/practice-areas/environment" element={<EnvironmentPage />} />
+                  <Route path="/industries" element={<IndustriesHubPage />} />
+                  <Route path="/industries/agriculture" element={<AgricultureIndustryPage />} />
+                  <Route path="/industries/education" element={<EducationIndustryPage />} />
+                  <Route path="/industries/health" element={<HealthIndustryPage />} />
+                  <Route path="/industries/wash" element={<WASHIndustryPage />} />
+                  <Route path="/industries/public-sector" element={<PublicSectorIndustryPage />} />
+                  <Route path="/industries/energy" element={<EnergyIndustryPage />} />
+                  <Route path="/industries/financial-services" element={<FinancialServicesIndustryPage />} />
+                  <Route path="/industries/infrastructure" element={<InfrastructureIndustryPage />} />
+                  <Route path="/industries/transport" element={<TransportIndustryPage />} />
+                  <Route path="/industries/tourism" element={<TourismIndustryPage />} />
+                  <Route path="/industries/technology" element={<TechnologyIndustryPage />} />
+                  <Route path="/industries/mining" element={<MiningIndustryPage />} />
+                  <Route path="/industries/nutrition" element={<NutritionIndustryPage />} />
+                  <Route path="/industries/ngos" element={<NGOsIndustryPage />} />
+                  <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
