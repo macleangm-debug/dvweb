@@ -2490,6 +2490,15 @@ function App() {
                   <Route path="/industries/nutrition" element={<NutritionIndustryPage />} />
                   <Route path="/industries/ngos" element={<NGOsIndustryPage />} />
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
+                  <Route path="/solutions" element={<SolutionsHubPage />} />
+                  <Route path="/solutions/survey360" element={<Survey360Page />} />
+                  <Route path="/solutions/dataviz-studio" element={<DataVizStudioPage />} />
+                  <Route path="/solutions/me-tracker" element={<METrackerPage />} />
+                  <Route path="/solutions/fieldforce" element={<FieldForcePage />} />
+                  <Route path="/solutions/agridata-pro" element={<AgriDataProPage />} />
+                  <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
+                  <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
+                  <Route path="/solutions/wash-monitor" element={<WASHMonitorPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
