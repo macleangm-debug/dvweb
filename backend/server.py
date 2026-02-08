@@ -1004,11 +1004,13 @@ async def get_expert_matches(req_id: str, _: dict = Depends(verify_token)):
                 years_experience=expert.get("years_experience", 0),
                 availability=expert.get("availability", "unknown"),
                 daily_rate_min=expert.get("daily_rate_min"),
-                daily_rate_max=expert.get("daily_rate_max")
+                daily_rate_max=expert.get("daily_rate_max"),
+                verification_score=expert.get("verification_score", 0),
+                trust_tier=expert.get("trust_tier", "bronze")
             ))
     
-    # Sort by match score (highest first)
-    matches.sort(key=lambda x: x.match_score, reverse=True)
+    # Sort by combined score: match_score (70%) + verification_score (30%)
+    matches.sort(key=lambda x: (x.match_score * 0.7 + x.verification_score * 0.3), reverse=True)
     return matches[:20]  # Return top 20 matches
 
 def calculate_match_score(expert: dict, requirement: dict) -> float:
