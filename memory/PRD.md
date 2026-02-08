@@ -25,6 +25,45 @@ DataVision International is a research and statistics consultancy based in Tanza
 
 ## What's Been Implemented
 
+### February 8, 2026 - Automated Expert Verification System (COMPLETED)
+
+**Skills Assessment Engine:**
+- 10 sector-specific assessments (agriculture, health, education, WASH, M&E, data, governance, finance, gender, energy)
+- 5 questions per sector with multiple difficulty levels (easy/medium/hard)
+- Auto-scoring with 70% passing threshold
+- Questions cover real-world sector knowledge (JMP, HMIS, GAP, counterfactuals, etc.)
+
+**Reference Verification Workflow:**
+- Automated reference request generation with unique tokens
+- Structured feedback form (5 competency ratings 1-5 scale)
+- Verification of claims (role, experience, specific skills)
+- Recommendation level (1-10)
+- Auto-scoring based on responses
+
+**Verification Scoring Algorithm:**
+- Skills Assessment: 40% weight
+- Reference Verification: 35% weight  
+- Document Verification: 25% weight
+- Composite score 0-100
+
+**Trust Tiers (Auto-calculated):**
+- Platinum: 85+ score
+- Gold: 70-84 score
+- Silver: 50-69 score
+- Bronze: <50 score
+
+**Expert Matching Enhancement:**
+- Matching now factors in verification score (30%) alongside match score (70%)
+- Verified experts ranked higher for project opportunities
+
+**API Endpoints:**
+- `GET /api/experts/{id}/assessment/{sector}` - Get skills test
+- `POST /api/experts/{id}/assessment/submit` - Submit answers
+- `POST /api/admin/experts/{id}/request-reference` - Send reference request
+- `POST /api/verify-reference/{token}` - Submit reference feedback (public)
+- `GET /api/admin/experts/{id}/verification` - Get verification summary
+- `GET /api/admin/experts/verified/ranked` - Get experts ranked by verification
+
 ### February 8, 2026 - Expert Network Backend System (COMPLETED)
 
 **Expert Registration System:**
