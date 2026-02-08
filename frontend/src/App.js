@@ -66,6 +66,7 @@ import {
   NutritionIndustryPage,
   NGOsIndustryPage,
   ManufacturingIndustryPage,
+  RetailIndustryPage,
   industriesData
 } from './pages/IndustriesPages';
 import {
