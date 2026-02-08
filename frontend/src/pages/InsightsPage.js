@@ -191,9 +191,9 @@ const InsightsPage = () => {
           >
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
               <Lightbulb className="w-4 h-4 text-[#e63946]" />
-              <span className="text-sm font-medium">Knowledge Hub</span>
+              <span className="text-sm font-medium text-white">Knowledge Hub</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Insights & Resources
             </h1>
             <p className="text-xl text-white/80 leading-relaxed">
