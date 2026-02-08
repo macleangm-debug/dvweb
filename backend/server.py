@@ -613,6 +613,404 @@ async def delete_partner(partner_id: str, _: dict = Depends(verify_token)):
         raise HTTPException(status_code=404, detail="Partner not found")
     return {"message": "Partner deleted"}
 
+# ==================== EXPERT NETWORK ROUTES ====================
+
+# Public: Register as an expert
+@api_router.post("/experts/register", response_model=ExpertRegistration)
+async def register_expert(expert: ExpertRegistrationCreate):
+    """Public endpoint for experts to register"""
+    # Check if email already exists
+    existing = await db.experts.find_one({"email": expert.email})
+    if existing:
+        raise HTTPException(status_code=400, detail="An expert with this email already exists")
+    
+    expert_obj = ExpertRegistration(**expert.model_dump())
+    doc = expert_obj.model_dump()
+    await db.experts.insert_one(doc)
+    logger.info(f"New expert registration: {expert.full_name} ({expert.email})")
+    return expert_obj
+
+# Public: Get expert sectors and skills options
+@api_router.get("/experts/options")
+async def get_expert_options():
+    """Get available options for expert registration form"""
+    return {
+        "sectors": [
+            {"id": "agriculture", "name": "Agriculture & Food Security"},
+            {"id": "health", "name": "Health & Pharmaceuticals"},
+            {"id": "education", "name": "Education & Training"},
+            {"id": "wash", "name": "Water, Sanitation & Hygiene"},
+            {"id": "governance", "name": "Governance & Public Policy"},
+            {"id": "energy", "name": "Energy & Environment"},
+            {"id": "finance", "name": "Financial Services & Inclusion"},
+            {"id": "gender", "name": "Gender & Social Development"},
+            {"id": "data", "name": "Data Science & Analytics"},
+            {"id": "me", "name": "Monitoring & Evaluation"},
+            {"id": "nutrition", "name": "Food & Nutrition"},
+            {"id": "infrastructure", "name": "Infrastructure & Construction"},
+            {"id": "transport", "name": "Transport & Logistics"},
+            {"id": "technology", "name": "Technology & Telecommunications"},
+            {"id": "retail", "name": "Retail & Consumer Goods"}
+        ],
+        "skills": [
+            "Survey Design", "Data Collection", "Statistical Analysis", "Qualitative Research",
+            "Focus Group Facilitation", "Key Informant Interviews", "GIS Mapping", "Data Visualization",
+            "M&E Framework Design", "Impact Evaluation", "Cost-Benefit Analysis", "Policy Analysis",
+            "Program Evaluation", "Baseline Studies", "Endline Studies", "Household Surveys",
+            "Mobile Data Collection", "CAPI/CATI", "Stata", "SPSS", "R", "Python",
+            "Power BI", "Tableau", "Excel Advanced", "Report Writing", "Proposal Writing",
+            "Project Management", "Team Leadership", "Training Facilitation", "Capacity Building"
+        ],
+        "engagement_types": [
+            {"id": "short-term", "name": "Short-term (< 3 months)"},
+            {"id": "long-term", "name": "Long-term (3+ months)"},
+            {"id": "remote", "name": "Remote Work"},
+            {"id": "on-site", "name": "On-site"},
+            {"id": "hybrid", "name": "Hybrid"}
+        ],
+        "regions": [
+            "East Africa", "West Africa", "Southern Africa", "Central Africa", "North Africa",
+            "Sub-Saharan Africa", "Global"
+        ],
+        "countries": [
+            "Tanzania", "Kenya", "Uganda", "Rwanda", "Burundi", "Ethiopia", "Somalia",
+            "South Sudan", "DRC", "Mozambique", "Malawi", "Zambia", "Zimbabwe",
+            "South Africa", "Nigeria", "Ghana", "Senegal", "Mali", "Burkina Faso",
+            "Cameroon", "Ivory Coast", "Other"
+        ],
+        "proficiency_levels": ["beginner", "intermediate", "advanced", "expert"],
+        "availability_status": ["available", "limited", "unavailable"]
+    }
+
+# Admin: Get all experts with filtering
+@api_router.get("/admin/experts", response_model=List[ExpertRegistration])
+async def get_experts(
+    sector: Optional[str] = None,
+    status: Optional[str] = None,
+    min_experience: Optional[int] = None,
+    country: Optional[str] = None,
+    availability: Optional[str] = None,
+    search: Optional[str] = None,
+    _: dict = Depends(verify_token)
+):
+    """Get all experts with optional filtering"""
+    query = {}
+    
+    if sector:
+        query["$or"] = [
+            {"primary_sectors": sector},
+            {"secondary_sectors": sector}
+        ]
+    if status:
+        query["status"] = status
+    if min_experience:
+        query["years_experience"] = {"$gte": min_experience}
+    if country:
+        query["countries_experience"] = country
+    if availability:
+        query["availability"] = availability
+    if search:
+        query["$or"] = [
+            {"full_name": {"$regex": search, "$options": "i"}},
+            {"email": {"$regex": search, "$options": "i"}},
+            {"current_title": {"$regex": search, "$options": "i"}}
+        ]
+    
+    experts = await db.experts.find(query, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return experts
+
+# Admin: Get single expert
+@api_router.get("/admin/experts/{expert_id}", response_model=ExpertRegistration)
+async def get_expert(expert_id: str, _: dict = Depends(verify_token)):
+    expert = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    if not expert:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    return expert
+
+# Admin: Update expert status
+@api_router.put("/admin/experts/{expert_id}/status")
+async def update_expert_status(expert_id: str, status: str, notes: Optional[str] = None, _: dict = Depends(verify_token)):
+    """Update expert status (approve, reject, etc.)"""
+    valid_statuses = ["pending", "approved", "rejected", "active", "inactive", "engaged"]
+    if status not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+    
+    update_data = {
+        "status": status,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    if notes:
+        update_data["notes"] = notes
+    
+    result = await db.experts.update_one(
+        {"id": expert_id},
+        {"$set": update_data}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    logger.info(f"Expert {expert_id} status updated to {status}")
+    return {"message": f"Expert status updated to {status}"}
+
+# Admin: Update expert details
+@api_router.put("/admin/experts/{expert_id}", response_model=ExpertRegistration)
+async def update_expert(expert_id: str, expert: ExpertRegistrationCreate, _: dict = Depends(verify_token)):
+    update_data = expert.model_dump()
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.experts.update_one(
+        {"id": expert_id},
+        {"$set": update_data}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    
+    updated = await db.experts.find_one({"id": expert_id}, {"_id": 0})
+    return ExpertRegistration(**updated)
+
+# Admin: Delete expert
+@api_router.delete("/admin/experts/{expert_id}")
+async def delete_expert(expert_id: str, _: dict = Depends(verify_token)):
+    result = await db.experts.delete_one({"id": expert_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Expert not found")
+    return {"message": "Expert deleted"}
+
+# Admin: Search experts with advanced criteria
+@api_router.post("/admin/experts/search", response_model=List[ExpertRegistration])
+async def search_experts(query: ExpertSearchQuery, _: dict = Depends(verify_token)):
+    """Advanced search for experts"""
+    mongo_query = {}
+    
+    if query.sectors:
+        mongo_query["$or"] = [
+            {"primary_sectors": {"$in": query.sectors}},
+            {"secondary_sectors": {"$in": query.sectors}}
+        ]
+    
+    if query.skills:
+        mongo_query["skills.name"] = {"$in": query.skills}
+    
+    if query.min_experience > 0:
+        mongo_query["years_experience"] = {"$gte": query.min_experience}
+    
+    if query.countries:
+        mongo_query["countries_experience"] = {"$in": query.countries}
+    
+    if query.availability:
+        mongo_query["availability"] = {"$in": query.availability}
+    
+    if query.engagement_type:
+        mongo_query["engagement_type"] = {"$in": query.engagement_type}
+    
+    if query.max_daily_rate:
+        mongo_query["daily_rate_min"] = {"$lte": query.max_daily_rate}
+    
+    if query.willing_to_travel is not None:
+        mongo_query["willing_to_travel"] = query.willing_to_travel
+    
+    if query.status:
+        mongo_query["status"] = {"$in": query.status}
+    
+    experts = await db.experts.find(mongo_query, {"_id": 0}).to_list(500)
+    return experts
+
+# ==================== PROJECT REQUIREMENTS & MATCHING ====================
+
+# Admin: Create project requirement
+@api_router.post("/admin/project-requirements", response_model=ProjectRequirement)
+async def create_project_requirement(req: ProjectRequirementCreate, _: dict = Depends(verify_token)):
+    req_obj = ProjectRequirement(**req.model_dump())
+    doc = req_obj.model_dump()
+    await db.project_requirements.insert_one(doc)
+    return req_obj
+
+# Admin: Get all project requirements
+@api_router.get("/admin/project-requirements", response_model=List[ProjectRequirement])
+async def get_project_requirements(status: Optional[str] = None, _: dict = Depends(verify_token)):
+    query = {}
+    if status:
+        query["status"] = status
+    reqs = await db.project_requirements.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return reqs
+
+# Admin: Get matched experts for a project requirement
+@api_router.get("/admin/project-requirements/{req_id}/matches", response_model=List[ExpertMatch])
+async def get_expert_matches(req_id: str, _: dict = Depends(verify_token)):
+    """Find and rank experts matching a project requirement"""
+    # Get the project requirement
+    req = await db.project_requirements.find_one({"id": req_id}, {"_id": 0})
+    if not req:
+        raise HTTPException(status_code=404, detail="Project requirement not found")
+    
+    # Find experts with matching criteria
+    experts = await db.experts.find(
+        {"status": {"$in": ["approved", "active"]}},
+        {"_id": 0}
+    ).to_list(500)
+    
+    matches = []
+    for expert in experts:
+        score = calculate_match_score(expert, req)
+        if score > 0:
+            # Find matching sectors
+            matching_sectors = []
+            for sector in req.get("sectors", []):
+                if sector in expert.get("primary_sectors", []):
+                    matching_sectors.append(sector)
+                elif sector in expert.get("secondary_sectors", []):
+                    matching_sectors.append(sector)
+            
+            # Find matching skills
+            expert_skill_names = [s.get("name", "") for s in expert.get("skills", [])]
+            matching_skills = []
+            for skill in req.get("required_skills", []) + req.get("preferred_skills", []):
+                if skill in expert_skill_names:
+                    matching_skills.append(skill)
+            
+            matches.append(ExpertMatch(
+                expert_id=expert["id"],
+                expert_name=expert["full_name"],
+                expert_email=expert["email"],
+                match_score=score,
+                matching_sectors=matching_sectors,
+                matching_skills=matching_skills,
+                years_experience=expert.get("years_experience", 0),
+                availability=expert.get("availability", "unknown"),
+                daily_rate_min=expert.get("daily_rate_min"),
+                daily_rate_max=expert.get("daily_rate_max")
+            ))
+    
+    # Sort by match score (highest first)
+    matches.sort(key=lambda x: x.match_score, reverse=True)
+    return matches[:20]  # Return top 20 matches
+
+def calculate_match_score(expert: dict, requirement: dict) -> float:
+    """Calculate matching score between an expert and project requirement"""
+    score = 0.0
+    max_score = 100.0
+    
+    # Sector match (30 points)
+    req_sectors = set(requirement.get("sectors", []))
+    expert_primary = set(expert.get("primary_sectors", []))
+    expert_secondary = set(expert.get("secondary_sectors", []))
+    
+    primary_matches = len(req_sectors & expert_primary)
+    secondary_matches = len(req_sectors & expert_secondary)
+    
+    if req_sectors:
+        sector_score = (primary_matches * 30 + secondary_matches * 15) / len(req_sectors)
+        score += min(sector_score, 30)
+    
+    # Skills match (30 points)
+    required_skills = set(requirement.get("required_skills", []))
+    preferred_skills = set(requirement.get("preferred_skills", []))
+    expert_skills = set([s.get("name", "") for s in expert.get("skills", [])])
+    
+    required_matches = len(required_skills & expert_skills)
+    preferred_matches = len(preferred_skills & expert_skills)
+    
+    if required_skills:
+        req_skill_score = (required_matches / len(required_skills)) * 20
+        score += req_skill_score
+    
+    if preferred_skills:
+        pref_skill_score = (preferred_matches / len(preferred_skills)) * 10
+        score += pref_skill_score
+    
+    # Experience match (20 points)
+    min_exp = requirement.get("min_experience", 0)
+    expert_exp = expert.get("years_experience", 0)
+    
+    if expert_exp >= min_exp:
+        exp_bonus = min((expert_exp - min_exp) * 2, 10)  # Bonus for extra experience
+        score += 10 + exp_bonus
+    elif min_exp > 0:
+        score += max(0, 10 - (min_exp - expert_exp) * 2)  # Partial credit
+    else:
+        score += 10  # Full points if no minimum specified
+    
+    # Country/regional match (10 points)
+    req_countries = set(requirement.get("countries", []))
+    expert_countries = set(expert.get("countries_experience", []))
+    
+    if req_countries:
+        country_matches = len(req_countries & expert_countries)
+        score += (country_matches / len(req_countries)) * 10
+    else:
+        score += 10  # Full points if no specific country required
+    
+    # Availability match (10 points)
+    if expert.get("availability") == "available":
+        score += 10
+    elif expert.get("availability") == "limited":
+        score += 5
+    
+    # Engagement type match (bonus)
+    req_type = requirement.get("engagement_type", "")
+    expert_types = expert.get("engagement_type", [])
+    if req_type in expert_types:
+        score += 5
+    
+    # Budget match (bonus/penalty)
+    budget_max = requirement.get("budget_max")
+    expert_rate_min = expert.get("daily_rate_min")
+    
+    if budget_max and expert_rate_min:
+        if expert_rate_min <= budget_max:
+            score += 5
+        else:
+            score -= 10
+    
+    return min(max(score, 0), max_score + 10)  # Allow up to 110 with bonuses
+
+# Admin: Get expert statistics
+@api_router.get("/admin/experts/stats/summary")
+async def get_expert_stats(_: dict = Depends(verify_token)):
+    """Get summary statistics for expert network"""
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$status",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    status_counts = await db.experts.aggregate(pipeline).to_list(10)
+    
+    # Get sector distribution
+    sector_pipeline = [
+        {"$unwind": "$primary_sectors"},
+        {"$group": {"_id": "$primary_sectors", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    sector_counts = await db.experts.aggregate(sector_pipeline).to_list(20)
+    
+    # Get country distribution
+    country_pipeline = [
+        {"$unwind": "$countries_experience"},
+        {"$group": {"_id": "$countries_experience", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 10}
+    ]
+    country_counts = await db.experts.aggregate(country_pipeline).to_list(10)
+    
+    # Get availability distribution
+    avail_pipeline = [
+        {"$group": {"_id": "$availability", "count": {"$sum": 1}}}
+    ]
+    avail_counts = await db.experts.aggregate(avail_pipeline).to_list(5)
+    
+    total = await db.experts.count_documents({})
+    
+    return {
+        "total_experts": total,
+        "by_status": {item["_id"]: item["count"] for item in status_counts},
+        "by_sector": {item["_id"]: item["count"] for item in sector_counts},
+        "by_country": {item["_id"]: item["count"] for item in country_counts},
+        "by_availability": {item["_id"]: item["count"] for item in avail_counts}
+    }
+
 # ==================== SEED DATA ====================
 
 @api_router.post("/seed")
