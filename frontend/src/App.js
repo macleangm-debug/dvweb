@@ -2618,6 +2618,10 @@ const AdminDashboard = () => {
             <AdminExpertManagement token={localStorage.getItem('dv_token')} />
           )}
 
+          {activeTab === 'verification' && (
+            <AdminVerificationDashboard token={localStorage.getItem('dv_token')} />
+          )}
+
           {activeTab === 'matching' && (
             <AdminProjectMatching token={localStorage.getItem('dv_token')} />
           )}
