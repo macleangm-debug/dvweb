@@ -726,15 +726,15 @@ const Navbar = () => {
                     Insights
                   </Link>
                   
-                  {/* Contact */}
+                  {/* Careers */}
                   <Link
-                    to="/contact"
+                    to="/careers"
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center justify-between py-4 text-base font-medium border-b border-[#f1f5f9] ${
-                      location.pathname === '/contact' ? 'text-[#e63946]' : 'text-[#0a1628]'
+                      location.pathname.startsWith('/careers') ? 'text-[#e63946]' : 'text-[#0a1628]'
                     }`}
                   >
-                    Contact
+                    Careers
                   </Link>
                   
                   {/* CTA Button */}
