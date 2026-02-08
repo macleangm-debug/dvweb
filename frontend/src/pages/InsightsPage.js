@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, FileText, Download, BookOpen, BarChart3, 
-  Calendar, Clock, User, Search, Filter, ChevronRight,
+  Calendar, Clock, User, Search, Filter, ChevronRight, ChevronLeft,
   Lightbulb, TrendingUp, Globe, Target, Layers, Award,
-  ExternalLink, BookMarked, GraduationCap, PieChart, Bookmark, X, Trash2
+  ExternalLink, BookMarked, GraduationCap, PieChart, Bookmark, X, Trash2,
+  Play, Pause
 } from 'lucide-react';
 
 const InsightsPage = () => {
