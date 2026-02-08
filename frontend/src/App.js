@@ -333,8 +333,30 @@ const Navbar = () => {
     { name: 'Environment & Climate', path: '/practice-areas/environment', icon: Globe, description: 'Climate resilience' },
   ];
 
+  const industryLinks = [
+    { name: 'All Industries', path: '/industries', icon: Globe, description: 'Our industry expertise' },
+    { name: 'Agriculture & Agribusiness', path: '/industries/agriculture', icon: Sprout, description: 'Food security solutions' },
+    { name: 'Education & Training', path: '/industries/education', icon: GraduationCap, description: 'Learning outcomes' },
+    { name: 'Health & Pharmaceuticals', path: '/industries/health', icon: Heart, description: 'Healthcare analytics' },
+    { name: 'Water & Sanitation', path: '/industries/wash', icon: Droplets, description: 'WASH sector solutions' },
+    { name: 'Public Sector & Government', path: '/industries/public-sector', icon: Landmark, description: 'Policy research' },
+    { name: 'Energy & Utilities', path: '/industries/energy', icon: Zap, description: 'Energy access' },
+    { name: 'Financial Services', path: '/industries/financial-services', icon: Building2, description: 'Financial inclusion' },
+    { name: 'Infrastructure & Construction', path: '/industries/infrastructure', icon: Factory, description: 'Project assessments' },
+    { name: 'Transport & Logistics', path: '/industries/transport', icon: Truck, description: 'Mobility analytics' },
+    { name: 'Tourism & Hospitality', path: '/industries/tourism', icon: Plane, description: 'Destination analytics' },
+    { name: 'Technology & Telecom', path: '/industries/technology', icon: Smartphone, description: 'Digital transformation' },
+    { name: 'Mining & Extractives', path: '/industries/mining', icon: Pickaxe, description: 'ESG assessments' },
+    { name: 'Food & Nutrition', path: '/industries/nutrition', icon: Utensils, description: 'Food systems' },
+    { name: 'NGOs & Development', path: '/industries/ngos', icon: Globe, description: 'Impact measurement' },
+    { name: 'Manufacturing', path: '/industries/manufacturing', icon: Factory, description: 'Industrial analytics' },
+  ];
+
+  const [industriesOpen, setIndustriesOpen] = useState(false);
+
   const isServicesActive = location.pathname.startsWith('/services');
   const isPracticeAreasActive = location.pathname.startsWith('/practice-areas');
+  const isIndustriesActive = location.pathname.startsWith('/industries');
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
