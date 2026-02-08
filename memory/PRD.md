@@ -25,6 +25,25 @@ DataVision International is a research and statistics consultancy based in Tanza
 
 ## What's Been Implemented
 
+### February 8, 2026 - McKinsey-Style Careers Section (COMPLETED)
+
+**New Careers Page (`/careers`):**
+- Comprehensive careers section with dedicated sub-navigation
+- 6 tabs: Overview, Why Work Here, Open Positions, How We Hire, Students & Graduates, Life at DataVision
+- McKinsey-inspired design with compelling hero ("Big Challenges. Bigger Impact.")
+- Featured positions showcase on overview tab
+- Job search with filters (department, search term)
+- 6 sample job listings with expandable details
+- Students & Graduates section with 3 programs (Graduate Associate, Summer Internship, Research Fellowship)
+- 5-step hiring process with tips for each stage
+- Team testimonials and benefits showcase
+- Company values and impact sections
+
+**Navigation Changes:**
+- Replaced "Contact" with "Careers" in main navigation (desktop & mobile)
+- Contact remains accessible via footer and "Partner With Us" CTA
+- Footer Company column: About Us, Careers, Insights, Contact
+
 ### February 8, 2026 - Retail Industry Addition (COMPLETED)
 
 **New Retail Industry:**
