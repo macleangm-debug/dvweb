@@ -239,10 +239,38 @@ const CareersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
   const [expandedJob, setExpandedJob] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const dropdownRef = useRef(null);
 
   const setActiveTab = (tab) => {
     setSearchParams({ tab });
+    setOpenDropdown(null);
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Determine which dropdown contains the active tab
+  const getActiveDropdown = () => {
+    for (const nav of careerNavItems) {
+      if (nav.type === 'dropdown') {
+        if (nav.items.some(item => item.id === activeTab)) {
+          return nav.id;
+        }
+      }
+    }
+    return null;
+  };
+
+  const activeDropdownId = getActiveDropdown();
 
   const filteredJobs = openPositions.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -264,24 +292,80 @@ const CareersPage = () => {
               <span className="text-sm text-[#64748b]">Join Our Team</span>
             </div>
             
-            {/* Tab Navigation */}
-            <div className="flex items-center overflow-x-auto scrollbar-hide py-1">
-              {careerTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all border-b-2 ${
-                    activeTab === tab.id
-                      ? 'text-[#e63946] border-[#e63946]'
-                      : 'text-[#64748b] border-transparent hover:text-[#0a1628] hover:border-[#e2e8f0]'
-                  }`}
-                  data-testid={`careers-tab-${tab.id}`}
-                >
-                  <tab.icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
+            {/* Tab Navigation with Dropdowns */}
+            <nav ref={dropdownRef} className="flex items-center gap-1 py-1" data-testid="careers-nav">
+              {careerNavItems.map((navItem) => (
+                navItem.type === 'single' ? (
+                  // Single item - Overview
+                  <button
+                    key={navItem.id}
+                    onClick={() => setActiveTab(navItem.id)}
+                    className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all border-b-2 ${
+                      activeTab === navItem.id
+                        ? 'text-[#e63946] border-[#e63946]'
+                        : 'text-[#64748b] border-transparent hover:text-[#0a1628] hover:border-[#e2e8f0]'
+                    }`}
+                    data-testid={`careers-tab-${navItem.id}`}
+                  >
+                    <navItem.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{navItem.label}</span>
+                  </button>
+                ) : (
+                  // Dropdown item
+                  <div key={navItem.id} className="relative">
+                    <button
+                      onClick={() => setOpenDropdown(openDropdown === navItem.id ? null : navItem.id)}
+                      className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all border-b-2 ${
+                        activeDropdownId === navItem.id
+                          ? 'text-[#e63946] border-[#e63946]'
+                          : 'text-[#64748b] border-transparent hover:text-[#0a1628] hover:border-[#e2e8f0]'
+                      }`}
+                      data-testid={`careers-dropdown-${navItem.id}`}
+                    >
+                      <navItem.icon className="w-4 h-4" />
+                      <span className="hidden sm:inline">{navItem.label}</span>
+                      <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === navItem.id ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    <AnimatePresence>
+                      {openDropdown === navItem.id && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-[#e2e8f0] py-2 min-w-[240px] z-50"
+                        >
+                          {navItem.items.map((item) => (
+                            <button
+                              key={item.id}
+                              onClick={() => setActiveTab(item.id)}
+                              className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-all hover:bg-[#f8fafc] ${
+                                activeTab === item.id ? 'bg-[#e63946]/5' : ''
+                              }`}
+                              data-testid={`careers-tab-${item.id}`}
+                            >
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                activeTab === item.id ? 'bg-[#e63946]/10 text-[#e63946]' : 'bg-[#f8fafc] text-[#64748b]'
+                              }`}>
+                                <item.icon className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <div className={`text-sm font-medium ${activeTab === item.id ? 'text-[#e63946]' : 'text-[#0a1628]'}`}>
+                                  {item.label}
+                                </div>
+                                <div className="text-xs text-[#64748b]">{item.desc}</div>
+                              </div>
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
               ))}
-            </div>
+            </nav>
           </div>
         </div>
       </div>
