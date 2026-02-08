@@ -126,10 +126,85 @@ const benefits = [
   { icon: Users, title: 'Collaborative Culture', desc: 'Supportive team environment and mentorship' }
 ];
 
+// Expert sectors for consultant network
+const expertSectors = [
+  { 
+    id: 'agriculture',
+    name: 'Agriculture & Food Security',
+    icon: '🌾',
+    description: 'Agricultural economics, value chain analysis, food systems, climate-smart agriculture',
+    skills: ['Agricultural surveys', 'Value chain analysis', 'Food security assessments', 'Agri-finance research']
+  },
+  { 
+    id: 'health',
+    name: 'Health & Pharmaceuticals',
+    icon: '🏥',
+    description: 'Public health, healthcare systems, pharmaceutical research, health economics',
+    skills: ['Health facility assessments', 'Disease surveillance', 'Health economics', 'Clinical research']
+  },
+  { 
+    id: 'education',
+    name: 'Education & Training',
+    icon: '📚',
+    description: 'Education policy, curriculum development, learning outcomes, EdTech',
+    skills: ['Learning assessments', 'Teacher training evaluation', 'Education policy analysis', 'School surveys']
+  },
+  { 
+    id: 'wash',
+    name: 'Water, Sanitation & Hygiene',
+    icon: '💧',
+    description: 'WASH infrastructure, water quality, sanitation programs, hygiene behavior',
+    skills: ['WASH surveys', 'Water quality testing', 'Sanitation mapping', 'Behavior change research']
+  },
+  { 
+    id: 'governance',
+    name: 'Governance & Public Policy',
+    icon: '🏛️',
+    description: 'Public administration, policy analysis, institutional assessments, governance reforms',
+    skills: ['Policy analysis', 'Institutional assessments', 'Public expenditure reviews', 'Governance indicators']
+  },
+  { 
+    id: 'energy',
+    name: 'Energy & Environment',
+    icon: '⚡',
+    description: 'Renewable energy, environmental impact, climate change, natural resources',
+    skills: ['Energy access surveys', 'Environmental assessments', 'Climate vulnerability', 'Resource mapping']
+  },
+  { 
+    id: 'finance',
+    name: 'Financial Services & Inclusion',
+    icon: '💰',
+    description: 'Financial inclusion, microfinance, banking, fintech, economic development',
+    skills: ['Financial diaries', 'Market research', 'Impact evaluation', 'Fintech assessments']
+  },
+  { 
+    id: 'gender',
+    name: 'Gender & Social Development',
+    icon: '⚖️',
+    description: 'Gender analysis, social protection, youth development, vulnerable populations',
+    skills: ['Gender assessments', 'Social protection surveys', 'Youth studies', 'Inclusion research']
+  },
+  { 
+    id: 'data',
+    name: 'Data Science & Analytics',
+    icon: '📊',
+    description: 'Statistical modeling, machine learning, data visualization, big data',
+    skills: ['Statistical analysis', 'Machine learning', 'GIS & mapping', 'Dashboard development']
+  },
+  { 
+    id: 'me',
+    name: 'Monitoring & Evaluation',
+    icon: '📈',
+    description: 'M&E frameworks, impact evaluation, theory of change, results measurement',
+    skills: ['M&E design', 'Impact evaluation', 'Logical frameworks', 'Results-based management']
+  }
+];
+
 const careerTabs = [
   { id: 'overview', label: 'Overview', icon: Building2 },
   { id: 'why-us', label: 'Why Work Here', icon: Heart },
   { id: 'jobs', label: 'Open Positions', icon: Briefcase },
+  { id: 'experts', label: 'Expert Network', icon: Star },
   { id: 'process', label: 'How We Hire', icon: Target },
   { id: 'students', label: 'Students & Graduates', icon: GraduationCap },
   { id: 'life', label: 'Life at DataVision', icon: Smile }
