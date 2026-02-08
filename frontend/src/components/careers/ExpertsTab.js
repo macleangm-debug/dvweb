@@ -35,7 +35,7 @@ const ExpertsTab = ({ setActiveTab }) => {
                 <Star className="w-4 h-4" />
                 <span className="text-sm font-semibold">Expert Network</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Join Our Network of<br />Sector Experts
               </h1>
               <p className="text-xl text-white/80 leading-relaxed mb-8">
@@ -52,7 +52,7 @@ const ExpertsTab = ({ setActiveTab }) => {
                   Register Now <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex flex-wrap gap-6 text-sm">
+              <div className="flex flex-wrap gap-6 text-sm text-white">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-[#f59e0b]" />
                   <span>Flexible engagements</span>
