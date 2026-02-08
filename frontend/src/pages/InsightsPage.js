@@ -244,10 +244,13 @@ const InsightsPage = () => {
                       {featuredInsight.readTime}
                     </span>
                   </div>
-                  <button className="inline-flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 font-semibold hover:bg-[#e63946] hover:text-white transition-all">
+                  <Link 
+                    to="/insights/future-data-collection-2025"
+                    className="inline-flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 font-semibold hover:bg-[#e63946] hover:text-white transition-all"
+                  >
                     Read Full Article
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
                 
                 <div className="hidden lg:flex items-center justify-center w-64 h-64 rounded-2xl bg-white/10 backdrop-blur-sm">
