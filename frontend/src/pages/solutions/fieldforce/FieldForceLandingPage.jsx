@@ -193,7 +193,7 @@ export const FieldForceLandingPage = () => {
                 <span className="text-teal-400 font-semibold uppercase tracking-wider text-sm">FieldForce</span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6" data-testid="fieldforce-hero-title">
+              <h1 className="font-barlow text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight" data-testid="fieldforce-hero-title">
                 Mobile Data Collection
                 <span className="text-teal-400"> Built for the Field</span>
               </h1>
