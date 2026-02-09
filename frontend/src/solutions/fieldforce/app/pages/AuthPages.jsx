@@ -10,6 +10,7 @@ import { Separator } from '../components/ui/separator';
 import { useAuthStore } from '../store';
 import { authAPI } from '../lib/api';
 import { toast } from 'sonner';
+import '../App.css'; // Import FieldForce dark theme styles
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
