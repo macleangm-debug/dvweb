@@ -251,8 +251,8 @@ async def get_survey360_user(authorization: Optional[str] = Header(None)):
                     "created_at": datetime.now(timezone.utc).isoformat()
                 }
                 await db.survey360_users.insert_one(new_user)
-                del new_user["password_hash"]
-                del new_user["_id"] if "_id" in new_user else None
+                new_user.pop("password_hash", None)
+                new_user.pop("_id", None)
                 return new_user
         
         raise HTTPException(status_code=401, detail="User not found")
