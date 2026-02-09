@@ -398,11 +398,11 @@ export function DashboardPage() {
               <CardTitle className="text-slate-900">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/projects/new')}>
+              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/solutions/fieldforce/app/projects/new')}>
                 <FolderKanban className="w-4 h-4 mr-2" />
                 New Project
               </Button>
-              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/forms/new')}>
+              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/solutions/fieldforce/app/forms/new')}>
                 <FileText className="w-4 h-4 mr-2" />
                 New Form
               </Button>
