@@ -358,7 +358,7 @@ export function DashboardPage() {
                 <CardTitle className="text-slate-900">Recent Activity</CardTitle>
                 <CardDescription className="text-slate-500">Latest submissions</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/submissions')}>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/solutions/fieldforce/app/submissions')}>
                 View all
                 <ArrowUpRight className="w-4 h-4 ml-1" />
               </Button>
