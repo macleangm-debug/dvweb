@@ -188,7 +188,7 @@ def create_survey360_token(user_id: str) -> str:
     )
 
 async def get_survey360_user(authorization: Optional[str] = Header(None)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     if not authorization or not authorization.startswith("Bearer "):
@@ -209,7 +209,7 @@ async def get_survey360_user(authorization: Optional[str] = Header(None)):
 # Auth routes
 @router.post("/auth/login", response_model=Survey360AuthResponse)
 async def survey360_login(request: Survey360LoginRequest):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     user = await db.survey360_users.find_one({"email": request.email}, {"_id": 0})
@@ -233,7 +233,7 @@ async def survey360_login(request: Survey360LoginRequest):
 
 @router.post("/auth/register", response_model=Survey360AuthResponse)
 async def survey360_register(request: Survey360RegisterRequest):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     existing = await db.survey360_users.find_one({"email": request.email})
@@ -274,7 +274,7 @@ async def survey360_get_me(user=Depends(get_survey360_user)):
 # Organization routes
 @router.get("/organizations", response_model=List[Survey360OrgResponse])
 async def survey360_list_organizations(user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     orgs = await db.survey360_orgs.find(
@@ -285,7 +285,7 @@ async def survey360_list_organizations(user=Depends(get_survey360_user)):
 
 @router.post("/organizations", response_model=Survey360OrgResponse)
 async def survey360_create_organization(data: Survey360OrgCreate, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     org_id = str(uuid.uuid4())
@@ -303,7 +303,7 @@ async def survey360_create_organization(data: Survey360OrgCreate, user=Depends(g
 @router.get("/usage", response_model=Survey360UsageResponse)
 async def survey360_get_usage(user=Depends(get_survey360_user)):
     """Get current usage and limits for the organization"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     org_id = user.get("org_id")
@@ -340,7 +340,7 @@ async def survey360_get_usage(user=Depends(get_survey360_user)):
 # Survey routes
 @router.get("/surveys", response_model=List[Survey360SurveyResponse])
 async def survey360_list_surveys(org_id: Optional[str] = None, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     query = {"org_id": org_id or user.get("org_id")}
@@ -358,7 +358,7 @@ async def survey360_list_surveys(org_id: Optional[str] = None, user=Depends(get_
 
 @router.get("/surveys/{survey_id}", response_model=Survey360SurveyResponse)
 async def survey360_get_survey(survey_id: str, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
@@ -374,7 +374,7 @@ async def survey360_get_survey(survey_id: str, user=Depends(get_survey360_user))
 
 @router.post("/surveys", response_model=Survey360SurveyResponse)
 async def survey360_create_survey(data: Survey360SurveyCreate, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     # Check survey limits
@@ -412,7 +412,7 @@ async def survey360_create_survey(data: Survey360SurveyCreate, user=Depends(get_
 
 @router.put("/surveys/{survey_id}", response_model=Survey360SurveyResponse)
 async def survey360_update_survey(survey_id: str, data: Survey360SurveyUpdate, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
@@ -456,7 +456,7 @@ async def survey360_update_survey(survey_id: str, data: Survey360SurveyUpdate, u
 
 @router.delete("/surveys/{survey_id}")
 async def survey360_delete_survey(survey_id: str, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     result = await db.survey360_surveys.delete_one({"id": survey_id})
@@ -467,7 +467,7 @@ async def survey360_delete_survey(survey_id: str, user=Depends(get_survey360_use
 @router.post("/surveys/{survey_id}/logo")
 async def survey360_upload_logo(survey_id: str, file: UploadFile = File(...), user=Depends(get_survey360_user)):
     """Upload a logo for a survey - stored as base64 data URL"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     # Verify survey exists
@@ -502,7 +502,7 @@ async def survey360_upload_logo(survey_id: str, file: UploadFile = File(...), us
 @router.delete("/surveys/{survey_id}/logo")
 async def survey360_delete_logo(survey_id: str, user=Depends(get_survey360_user)):
     """Remove the logo from a survey"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
@@ -518,7 +518,7 @@ async def survey360_delete_logo(survey_id: str, user=Depends(get_survey360_user)
 
 @router.post("/surveys/{survey_id}/publish", response_model=Survey360SurveyResponse)
 async def survey360_publish_survey(survey_id: str, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
@@ -541,7 +541,7 @@ async def survey360_publish_survey(survey_id: str, user=Depends(get_survey360_us
 
 @router.post("/surveys/{survey_id}/duplicate", response_model=Survey360SurveyResponse)
 async def survey360_duplicate_survey(survey_id: str, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
@@ -580,7 +580,7 @@ class Survey360ResponseItem(BaseModel):
 
 @router.get("/surveys/{survey_id}/responses", response_model=List[Survey360ResponseItem])
 async def survey360_list_responses(survey_id: str, page: int = 1, limit: int = 50, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     skip = (page - 1) * limit
@@ -593,7 +593,7 @@ async def survey360_list_responses(survey_id: str, page: int = 1, limit: int = 5
 
 @router.get("/surveys/{survey_id}/responses/{response_id}")
 async def survey360_get_response(survey_id: str, response_id: str, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     response = await db.survey360_responses.find_one(
@@ -608,7 +608,7 @@ async def survey360_get_response(survey_id: str, response_id: str, user=Depends(
 # Dashboard routes
 @router.get("/dashboard/stats")
 async def survey360_get_dashboard_stats(org_id: Optional[str] = None, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     org = org_id or user.get("org_id")
@@ -630,7 +630,7 @@ async def survey360_get_dashboard_stats(org_id: Optional[str] = None, user=Depen
 
 @router.get("/dashboard/activity")
 async def survey360_get_recent_activity(org_id: Optional[str] = None, limit: int = 10, user=Depends(get_survey360_user)):
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     org = org_id or user.get("org_id")
@@ -688,7 +688,7 @@ class PublicResponseSubmit(BaseModel):
 @router.get("/public/surveys/{survey_id}")
 async def public_get_survey(survey_id: str):
     """Public endpoint to get a published survey for respondents"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one(
@@ -707,7 +707,7 @@ async def public_get_survey(survey_id: str):
 @router.post("/public/surveys/{survey_id}/responses")
 async def public_submit_response(survey_id: str, data: PublicResponseSubmit):
     """Public endpoint to submit a survey response"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     # Verify survey exists and is published
@@ -758,7 +758,7 @@ async def public_submit_response(survey_id: str, data: PublicResponseSubmit):
 @router.get("/surveys/{survey_id}/analytics")
 async def survey360_get_analytics(survey_id: str, user=Depends(get_survey360_user)):
     """Get basic analytics for a survey - pie/bar chart data"""
-    from server import app
+    from fastapi import Request
     db = app.state.db
     
     survey = await db.survey360_surveys.find_one({"id": survey_id}, {"_id": 0})
