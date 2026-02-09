@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, Reorder } from 'framer-motion';
+import '../App.css'; // Import FieldForce dark theme styles
 import {
   Save,
   Play,
