@@ -2745,7 +2745,9 @@ function App() {
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
                   <Route path="/industries/retail" element={<RetailIndustryPage />} />
                   <Route path="/solutions" element={<SolutionsHubPage />} />
-                  <Route path="/solutions/survey360" element={<Survey360Page />} />
+                  <Route path="/solutions/survey360" element={<Survey360ProductPage />} />
+                  <Route path="/solutions/survey360/app/*" element={<Survey360ProductPage />} />
+                  <Route path="/solutions/survey360/login" element={<Survey360ProductPage />} />
                   <Route path="/solutions/dataviz-studio" element={<DataVizStudioPage />} />
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
                   <Route path="/solutions/fieldforce" element={<FieldForcePage />} />
