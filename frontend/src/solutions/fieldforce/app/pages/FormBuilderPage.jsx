@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, Reorder } from 'framer-motion';
-import '../App.css'; // Import FieldForce dark theme styles
 import {
   Save,
   Play,
@@ -105,15 +104,10 @@ const fieldTypes = [
 const FieldTypeButton = ({ type, label, icon: Icon, onClick }) => (
   <button
     onClick={onClick}
-    style={{
-      backgroundColor: '#0f172a',
-      borderColor: '#334155',
-      color: '#e2e8f0'
-    }}
-    className="flex flex-col items-center gap-2 p-3 rounded-sm border transition-all text-center hover:border-sky-500"
+    className="flex flex-col items-center gap-2 p-3 rounded-sm border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all text-center"
     data-testid={`add-field-${type}`}
   >
-    <Icon className="w-5 h-5" style={{ color: '#94a3b8' }} />
+    <Icon className="w-5 h-5 text-muted-foreground" />
     <span className="text-xs">{label}</span>
   </button>
 );
@@ -674,24 +668,15 @@ export function FormBuilderPage() {
       setFormDescription(response.data.description || '');
     } catch (error) {
       toast.error('Failed to load form');
-      navigate('/solutions/fieldforce/app/forms');
+      navigate('/forms');
     } finally {
       setLoading(false);
     }
   }, [formId, navigate, setForm]);
 
   useEffect(() => {
-    if (formId) {
-      loadForm();
-    } else {
-      // New form - reset state
-      setFormName('');
-      setFormDescription('');
-      setForm(null);
-      setFields([]);
-      setLoading(false);
-    }
-  }, [formId, loadForm, setForm, setFields]);
+    loadForm();
+  }, [loadForm]);
 
   const handleAddField = (type) => {
     const newField = {
@@ -740,7 +725,7 @@ export function FormBuilderPage() {
       await handleSave();
       await formAPI.publish(formId);
       toast.success('Form published!');
-      navigate('/solutions/fieldforce/app/forms');
+      navigate('/forms');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Failed to publish');
     }
@@ -777,7 +762,7 @@ export function FormBuilderPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/solutions/fieldforce/app/forms')}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/forms')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
@@ -842,7 +827,7 @@ export function FormBuilderPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Field Types Palette */}
-          <Card style={{ backgroundColor: '#1e293b', borderColor: '#334155' }} className="border">
+          <Card className="bg-card border border-border">
             <CardHeader>
               <CardTitle className="font-barlow text-lg text-white">Add Fields</CardTitle>
             </CardHeader>
@@ -863,7 +848,7 @@ export function FormBuilderPage() {
 
           {/* Form Canvas */}
           <div className="lg:col-span-3">
-            <Card style={{ backgroundColor: '#1e293b', borderColor: '#334155' }} className="border min-h-[60vh]">
+            <Card className="bg-card border border-border min-h-[60vh]">
               <CardHeader className="border-b border-border/50">
                 <div className="flex items-center justify-between">
                   <CardTitle className="font-barlow text-lg text-white">Form Fields</CardTitle>
