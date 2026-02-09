@@ -762,7 +762,7 @@ export function FormBuilderPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/forms')}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/solutions/fieldforce/app/forms')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
