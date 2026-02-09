@@ -25,15 +25,55 @@
   --ring: 199 89% 48%;
   --radius: 0.5rem;
   color-scheme: dark;
+  background-color: hsl(222 47% 11%) !important;
 }
 
+.fieldforce-app,
 .fieldforce-app * {
   border-color: hsl(var(--border));
 }
 
-.fieldforce-app body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+.fieldforce-app .bg-background {
+  background-color: hsl(222 47% 11%) !important;
+}
+
+.fieldforce-app .bg-card {
+  background-color: hsl(222 47% 14%) !important;
+}
+
+.fieldforce-app .text-foreground,
+.fieldforce-app h1,
+.fieldforce-app h2,
+.fieldforce-app h3,
+.fieldforce-app h4 {
+  color: hsl(210 40% 98%) !important;
+}
+
+.fieldforce-app .text-muted-foreground {
+  color: hsl(215 20% 65%) !important;
+}
+
+/* Override slate colors to use theme colors */
+.fieldforce-app .text-slate-900,
+.fieldforce-app .text-slate-800,
+.fieldforce-app .text-slate-700 {
+  color: hsl(210 40% 98%) !important;
+}
+
+.fieldforce-app .text-slate-600,
+.fieldforce-app .text-slate-500,
+.fieldforce-app .text-slate-400 {
+  color: hsl(215 20% 65%) !important;
+}
+
+.fieldforce-app .bg-white,
+.fieldforce-app .bg-slate-50 {
+  background-color: hsl(222 47% 14%) !important;
+}
+
+.fieldforce-app .border-slate-200,
+.fieldforce-app .border-slate-100 {
+  border-color: hsl(217 33% 20%) !important;
 }
 
 /* Font families */
