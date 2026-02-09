@@ -201,7 +201,7 @@ export function CanvaLayout({ children }) {
 
           {/* Create Button */}
           <Button
-            onClick={() => navigate('/forms/new')}
+            onClick={() => navigate('/solutions/fieldforce/app/forms/new')}
             className="w-12 h-12 rounded-xl bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-500/20 mb-6"
             size="icon"
           >
