@@ -8,7 +8,7 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://fieldforce-replica.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://branding-complete.preview.emergentagent.com').rstrip('/')
 
 # Admin credentials provided
 ADMIN_EMAIL = "info@datavision.co.tz"
