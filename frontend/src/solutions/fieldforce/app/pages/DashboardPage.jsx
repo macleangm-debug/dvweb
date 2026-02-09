@@ -43,7 +43,7 @@ const StatCard = ({ title, value, icon: Icon, trend, description, onClick }) => 
     transition={{ duration: 0.2 }}
   >
     <Card 
-      className="bg-slate-800 hover:bg-slate-700 transition-all cursor-pointer h-full border border-slate-700"
+      className="bg-white hover:shadow-md transition-all cursor-pointer h-full border border-slate-200"
       onClick={onClick}
       data-testid={`stat-card-${title.toLowerCase().replace(/\s/g, '-')}`}
     >
@@ -163,7 +163,7 @@ export function DashboardPage() {
           <p className="text-muted-foreground mb-6 text-center max-w-md">
             Create your first organization to start collecting data
           </p>
-          <Button onClick={() => navigate('/organizations/new')} data-testid="create-org-btn">
+          <Button onClick={() => navigate('/solutions/fieldforce/app/organizations/new')} data-testid="create-org-btn">
             <Plus className="w-4 h-4 mr-2" />
             Create Organization
           </Button>
@@ -178,7 +178,8 @@ export function DashboardPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">{currentOrg.name} overview</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
+            <p className="text-slate-500">{currentOrg.name} overview</p>
           </div>
           <div className="flex gap-2 items-center">
             <Tabs value={viewMode} onValueChange={setViewMode} className="mr-4">
@@ -197,7 +198,7 @@ export function DashboardPage() {
               <FolderKanban className="w-4 h-4 mr-2" />
               Projects
             </Button>
-            <Button onClick={() => navigate('/solutions/fieldforce/app/forms/new')} data-testid="new-form-btn">
+            <Button onClick={() => navigate('/forms/new')} data-testid="new-form-btn">
               <Plus className="w-4 h-4 mr-2" />
               New Form
             </Button>
@@ -248,7 +249,7 @@ export function DashboardPage() {
                 title="Pending Reviews"
                 value={stats?.pending_reviews || 0}
                 icon={AlertCircle}
-                onClick={() => navigate('/solutions/fieldforce/app/submissions?status=pending')}
+                onClick={() => navigate('/submissions?status=pending')}
               />
             </>
           )}
@@ -257,7 +258,7 @@ export function DashboardPage() {
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Submission Trends */}
-          <Card className="lg:col-span-2 bg-slate-800 border border-slate-700">
+          <Card className="lg:col-span-2 bg-white border border-slate-200">
             <CardHeader>
               <CardTitle className="text-slate-900">Submission Trends</CardTitle>
               <CardDescription className="text-slate-500">Last 14 days</CardDescription>
@@ -304,7 +305,7 @@ export function DashboardPage() {
           </Card>
 
           {/* Data Quality */}
-          <Card className="bg-slate-800 border border-slate-700">
+          <Card className="bg-white border border-slate-200">
             <CardHeader>
               <CardTitle className="text-slate-900">Data Quality</CardTitle>
               <CardDescription className="text-slate-500">Overall quality metrics</CardDescription>
@@ -352,7 +353,7 @@ export function DashboardPage() {
         {/* Recent Activity & Quick Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Recent Activity */}
-          <Card className="lg:col-span-2 bg-slate-800 border border-slate-700">
+          <Card className="lg:col-span-2 bg-white border border-slate-200">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-slate-900">Recent Activity</CardTitle>
@@ -392,16 +393,16 @@ export function DashboardPage() {
           </Card>
 
           {/* Quick Actions */}
-          <Card className="bg-slate-800 border border-slate-700">
+          <Card className="bg-white border border-slate-200">
             <CardHeader>
               <CardTitle className="text-slate-900">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/solutions/fieldforce/app/projects')}>
+              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/projects/new')}>
                 <FolderKanban className="w-4 h-4 mr-2" />
                 New Project
               </Button>
-              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/solutions/fieldforce/app/forms/new')}>
+              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/forms/new')}>
                 <FileText className="w-4 h-4 mr-2" />
                 New Form
               </Button>
@@ -409,7 +410,7 @@ export function DashboardPage() {
                 <Users className="w-4 h-4 mr-2" />
                 Manage Team
               </Button>
-              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/solutions/fieldforce/app/datasets')}>
+              <Button variant="outline" className="w-full justify-start hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200" onClick={() => navigate('/exports')}>
                 <Activity className="w-4 h-4 mr-2" />
                 Export Data
               </Button>
