@@ -57,7 +57,7 @@ const NAVIGATION = [
     id: 'home',
     label: 'Home',
     icon: House,
-    path: '/dashboard',
+    path: '/solutions/fieldforce/app/dashboard',
     items: []
   },
   {
@@ -65,10 +65,10 @@ const NAVIGATION = [
     label: 'Projects',
     icon: Folder,
     items: [
-      { label: 'All Projects', path: '/projects', icon: Folder },
-      { label: 'Forms', path: '/forms', icon: FileText },
-      { label: 'Templates', path: '/templates', icon: Layout },
-      { label: 'Submissions', path: '/submissions', icon: ClipboardList }
+      { label: 'All Projects', path: '/solutions/fieldforce/app/projects', icon: Folder },
+      { label: 'Forms', path: '/solutions/fieldforce/app/forms', icon: FileText },
+      { label: 'Templates', path: '/solutions/fieldforce/app/templates', icon: Layout },
+      { label: 'Submissions', path: '/solutions/fieldforce/app/submissions', icon: ClipboardList }
     ]
   },
   {
@@ -76,10 +76,10 @@ const NAVIGATION = [
     label: 'Data',
     icon: Database,
     items: [
-      { label: 'Cases', path: '/cases', icon: Briefcase },
-      { label: 'Import Cases', path: '/cases/import', icon: Plus },
-      { label: 'Datasets', path: '/datasets', icon: Table2 },
-      { label: 'Exports', path: '/exports', icon: Download }
+      { label: 'Cases', path: '/solutions/fieldforce/app/cases', icon: Briefcase },
+      { label: 'Import Cases', path: '/solutions/fieldforce/app/cases/import', icon: Plus },
+      { label: 'Datasets', path: '/solutions/fieldforce/app/datasets', icon: Table2 },
+      { label: 'Exports', path: '/solutions/fieldforce/app/exports', icon: Download }
     ]
   },
   {
@@ -87,10 +87,10 @@ const NAVIGATION = [
     label: 'Field',
     icon: MapPin,
     items: [
-      { label: 'GPS Map', path: '/map', icon: MapPin },
-      { label: 'Devices', path: '/devices', icon: Smartphone },
-      { label: 'Quality', path: '/quality', icon: Zap },
-      { label: 'Analytics', path: '/analytics', icon: BarChart3 }
+      { label: 'GPS Map', path: '/solutions/fieldforce/app/map', icon: MapPin },
+      { label: 'Devices', path: '/solutions/fieldforce/app/devices', icon: Smartphone },
+      { label: 'Quality', path: '/solutions/fieldforce/app/quality', icon: Zap },
+      { label: 'Analytics', path: '/solutions/fieldforce/app/analytics', icon: BarChart3 }
     ]
   },
   {
@@ -98,10 +98,10 @@ const NAVIGATION = [
     label: 'Settings',
     icon: Settings,
     items: [
-      { label: 'Team', path: '/team', icon: Users },
-      { label: 'Roles', path: '/rbac', icon: Shield },
-      { label: 'Translations', path: '/translations', icon: Languages },
-      { label: 'Settings', path: '/settings', icon: Settings }
+      { label: 'Team', path: '/solutions/fieldforce/app/team', icon: Users },
+      { label: 'Roles', path: '/solutions/fieldforce/app/rbac', icon: Shield },
+      { label: 'Translations', path: '/solutions/fieldforce/app/translations', icon: Languages },
+      { label: 'Settings', path: '/solutions/fieldforce/app/settings', icon: Settings }
     ]
   }
 ];
