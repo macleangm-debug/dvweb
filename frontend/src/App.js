@@ -472,11 +472,12 @@ const Navbar = () => {
   const isInProductApp = location.pathname.includes('/app/');
 
   // Hide navbar completely when inside product apps (login, dashboard, etc.)
-  if (isOnProductPage && isInProductApp) {
+  // Also hide on FieldForce landing page since it has its own dark-themed header
+  if (isOnProductPage && (isInProductApp || location.pathname === '/solutions/fieldforce')) {
     return null;
   }
 
-  // Minimal navbar for product landing pages only
+  // Minimal navbar for product landing pages only (Survey360, DataPulse - not FieldForce)
   if (isOnProductPage) {
     return (
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
