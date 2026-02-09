@@ -174,33 +174,33 @@ export function DashboardLayout({ children }) {
               <div className="px-3 py-2 border-b border-border">
                 <p className="text-xs font-medium text-muted-foreground">Quick Links</p>
               </div>
-              <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/dashboard')}>
                 <House className="w-4 h-4 mr-2" />
                 Dashboard
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/projects')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/projects')}>
                 <Folder className="w-4 h-4 mr-2" />
                 Projects
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/forms')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/forms')}>
                 <FileText className="w-4 h-4 mr-2" />
                 Forms
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/forms/new')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/forms/new')}>
                 <Plus className="w-4 h-4 mr-2" />
                 New Form
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/submissions')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/submissions')}>
                 <ClipboardList className="w-4 h-4 mr-2" />
                 Submissions
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/map')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/map')}>
                 <MapPin className="w-4 h-4 mr-2" />
                 GPS Map
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/settings')}>
+              <DropdownMenuItem onClick={() => navigate('/solutions/fieldforce/app/settings')}>
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
               </DropdownMenuItem>
