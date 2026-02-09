@@ -249,7 +249,7 @@ export function DashboardPage() {
                 title="Pending Reviews"
                 value={stats?.pending_reviews || 0}
                 icon={AlertCircle}
-                onClick={() => navigate('/submissions?status=pending')}
+                onClick={() => navigate('/solutions/fieldforce/app/submissions?status=pending')}
               />
             </>
           )}
