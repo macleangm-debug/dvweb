@@ -542,7 +542,11 @@ const PricingTab = () => {
                   {plan.name}
                 </h3>
                 <div className="flex items-baseline justify-center gap-1">
-                  {plan.price ? (
+                  {plan.price === 0 ? (
+                    <span className={`text-4xl font-bold ${plan.popular ? 'text-white' : 'text-gray-900'}`}>
+                      Free
+                    </span>
+                  ) : plan.price ? (
                     <>
                       <span className={`text-4xl font-bold ${plan.popular ? 'text-white' : 'text-gray-900'}`}>
                         ${plan.price.toLocaleString()}
@@ -578,7 +582,16 @@ const PricingTab = () => {
                 ))}
               </ul>
               
-              {plan.price ? (
+              {plan.price === 0 ? (
+                <Link
+                  to="/solutions/survey360/app"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-all bg-teal-600 text-white hover:bg-teal-700"
+                  data-testid="start-free-btn"
+                >
+                  Start Free
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : plan.price ? (
                 <button
                   onClick={() => handlePurchase(plan.id)}
                   disabled={purchaseLoading === plan.id}
