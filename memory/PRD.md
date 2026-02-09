@@ -69,6 +69,12 @@ User requested restructuring of the DataVision website navigation and services:
 
 **Note:** Disabled babel-metadata-plugin in craco.config.js to fix compilation issues. Can be re-enabled later.
 
+**Known Issues (P1):**
+- `/api/fieldforce/dashboard/submission-trends` returns 404
+- `/api/fieldforce/dashboard/quality-metrics` returns 404
+- `AdminVerificationDashboard.js` and `ServicesHubRedesigned.js` files stubbed/moved
+- `visual-edits` babel plugin disabled in `craco.config.js`
+
 ---
 
 ### February 2026 - Survey360 Tabbed Product Page (COMPLETED)
