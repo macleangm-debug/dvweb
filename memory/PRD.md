@@ -25,9 +25,13 @@ User requested restructuring of the DataVision website navigation and services:
 - analytics_routes, translation_routes, paradata_routes, revision_routes
 - dataset_routes, cawi_routes, quality_ai_routes, dashboard_routes
 
-**Frontend Fixes:**
-- Added `/solutions/fieldforce/app/organizations/new` route for CreateOrganizationPage
-- Fixed navigation after organization creation to go to FieldForce dashboard
+**Frontend Navigation Fixes (Feb 9, 2026):**
+- Fixed all navigation paths to use `/solutions/fieldforce/app` prefix
+- Fixed Form Builder to handle undefined formId for new forms
+- Fixed DashboardLayout logo link
+- Fixed FormsPage navigation for form cards and dropdowns
+- Fixed DashboardPage Quick Actions navigation
+- Test report: `/app/test_reports/iteration_16.json` - 100% frontend success
 
 **Dark Theme Fix Verified (Feb 9, 2026):**
 - Confirmed dark theme working on ALL FieldForce pages via testing agent
