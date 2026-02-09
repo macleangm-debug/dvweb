@@ -2930,6 +2930,7 @@ function App() {
                   <Route path="/solutions/fieldforce/app/quality" element={<FFQualityPage />} />
                   <Route path="/solutions/fieldforce/app/analytics" element={<FFAnalyticsPage />} />
                   <Route path="/solutions/fieldforce/app/team" element={<FFTeamPage />} />
+                  <Route path="/solutions/fieldforce/app/organizations/new" element={<FFCreateOrganizationPage />} />
                   <Route path="/solutions/fieldforce/app/rbac" element={<FFRBACPage />} />
                   <Route path="/solutions/fieldforce/app/translations" element={<FFTranslationsPage />} />
                   <Route path="/solutions/fieldforce/app/settings" element={<FFSettingsPage />} />
