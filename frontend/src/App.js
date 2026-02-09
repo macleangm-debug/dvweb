@@ -1365,8 +1365,8 @@ const HomePage = () => {
   }, [testimonials]);
 
   const heroMessages = [
-    "Data-Driven Insights Shaping Africa's Future",
-    "Africa's Trusted Partner in Research & Statistics"
+    "Data-Driven Insights Driving Global Impact",
+    "Your Trusted Partner in Data, Research & Development"
   ];
   const [heroIndex, setHeroIndex] = useState(0);
 
