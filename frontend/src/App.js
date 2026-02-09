@@ -102,6 +102,14 @@ import {
   PublicSurveyPage
 } from './pages/solutions/survey360';
 
+// FieldForce App Pages
+import {
+  FieldForceLandingPage,
+  FieldForceLoginPage,
+  FieldForceRegisterPage,
+  FieldForceDashboardPage
+} from './pages/solutions/fieldforce';
+
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // ==================== CONTEXT ====================
