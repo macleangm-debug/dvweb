@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../store';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API_BASE = `${BACKEND_URL}/api`;
+const API_BASE = `${BACKEND_URL}/api/fieldforce`;
 
 // Create axios instance
 const api = axios.create({
@@ -27,7 +27,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
-      window.location.href = '/login';
+      window.location.href = '/solutions/fieldforce/app/login';
     }
     return Promise.reject(error);
   }
