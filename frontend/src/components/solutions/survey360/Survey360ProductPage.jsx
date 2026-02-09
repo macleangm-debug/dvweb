@@ -848,16 +848,6 @@ const Survey360ProductPage = () => {
                 </div>
               </motion.div>
             )}
-                          ? 'bg-teal-100 text-teal-700'
-                          : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
           </AnimatePresence>
         </div>
       </div>
