@@ -178,8 +178,7 @@ export function DashboardPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
-            <p className="text-slate-500">{currentOrg.name} overview</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">{currentOrg.name} overview</h1>
           </div>
           <div className="flex gap-2 items-center">
             <Tabs value={viewMode} onValueChange={setViewMode} className="mr-4">
@@ -194,11 +193,11 @@ export function DashboardPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button variant="outline" onClick={() => navigate('/projects')}>
+            <Button variant="outline" onClick={() => navigate('/solutions/fieldforce/app/projects')}>
               <FolderKanban className="w-4 h-4 mr-2" />
               Projects
             </Button>
-            <Button onClick={() => navigate('/forms/new')} data-testid="new-form-btn">
+            <Button onClick={() => navigate('/solutions/fieldforce/app/forms/new')} data-testid="new-form-btn">
               <Plus className="w-4 h-4 mr-2" />
               New Form
             </Button>
