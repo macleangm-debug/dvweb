@@ -17,21 +17,21 @@ import {
   Sun,
   CreditCard
 } from 'lucide-react';
-import { Button } from '../../components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Button } from '../../../components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../components/ui/dropdown-menu';
+} from '../../../components/ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../../components/ui/tooltip';
+} from '../../../components/ui/tooltip';
 import { useAuthStore, useOrgStore, useUIStore } from '../../store';
 import { cn } from '../../lib/utils';
 

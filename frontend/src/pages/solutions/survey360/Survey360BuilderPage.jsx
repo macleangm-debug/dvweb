@@ -27,22 +27,22 @@ import {
   Image,
   X
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Textarea } from '../../components/ui/textarea';
-import { Switch } from '../../components/ui/switch';
-import { Badge } from '../../components/ui/badge';
-import { Separator } from '../../components/ui/separator';
-import { Skeleton } from '../../components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Textarea } from '../../../components/ui/textarea';
+import { Switch } from '../../../components/ui/switch';
+import { Badge } from '../../../components/ui/badge';
+import { Separator } from '../../../components/ui/separator';
+import { Skeleton } from '../../../components/ui/skeleton';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../components/ui/select';
+} from '../../../components/ui/select';
 import {
   Sheet,
   SheetContent,
@@ -50,20 +50,20 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '../../components/ui/sheet';
+} from '../../../components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../components/ui/dropdown-menu';
+} from '../../../components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../../components/ui/dialog';
+} from '../../../components/ui/dialog';
 import survey360Api from '../../lib/survey360Api';
 import { toast } from 'sonner';
 import { cn } from '../../lib/utils';

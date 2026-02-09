@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { User, Bell, Palette, Shield, Save, Moon, Sun, Monitor } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Switch } from '../../components/ui/switch';
-import { Separator } from '../../components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Switch } from '../../../components/ui/switch';
+import { Separator } from '../../../components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
 import { useAuthStore, useUIStore } from '../../store';
 import { toast } from 'sonner';
 

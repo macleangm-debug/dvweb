@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ClipboardList, CheckCircle, Star, Send, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Textarea } from '../../components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '../../components/ui/radio-group';
-import { Checkbox } from '../../components/ui/checkbox';
-import { Skeleton } from '../../components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Textarea } from '../../../components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '../../../components/ui/radio-group';
+import { Checkbox } from '../../../components/ui/checkbox';
+import { Skeleton } from '../../../components/ui/skeleton';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../components/ui/select';
-import { Progress } from '../../components/ui/progress';
+} from '../../../components/ui/select';
+import { Progress } from '../../../components/ui/progress';
 import { cn } from '../../lib/utils';
 
 // Public API without auth
