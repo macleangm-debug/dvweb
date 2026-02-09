@@ -501,15 +501,115 @@ def verify_password(password: str, hashed: str) -> bool:
 
 @api_router.post("/auth/login", response_model=TokenResponse)
 async def login(credentials: AdminLogin):
+    """
+    Unified login - checks DataVision admins and linked Survey360 users
+    """
+    # First check DataVision admins
     admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
-    if not admin or not verify_password(credentials.password, admin["password"]):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+    if admin and verify_password(credentials.password, admin["password"]):
+        token = create_access_token({"sub": admin["email"], "id": admin["id"]})
+        return TokenResponse(
+            access_token=token,
+            user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
+        )
     
-    token = create_access_token({"sub": admin["email"], "id": admin["id"]})
-    return TokenResponse(
-        access_token=token,
-        user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
-    )
+    # Check Survey360 users (reverse SSO) - only if they have admin link
+    survey360_user = await db.survey360_users.find_one({"email": credentials.email}, {"_id": 0})
+    if survey360_user and survey360_user.get("sso_linked"):
+        # This is a Survey360 user linked to DataVision - verify password
+        password_hash = hashlib.sha256(credentials.password.encode()).hexdigest()
+        if survey360_user.get("password_hash") == password_hash:
+            # Create or get DataVision admin account for this user
+            admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
+            if not admin:
+                # Auto-create admin account for linked Survey360 user
+                admin_id = str(uuid.uuid4())
+                admin = {
+                    "id": admin_id,
+                    "email": credentials.email,
+                    "name": survey360_user.get("name", "Survey360 User"),
+                    "password": hash_password(credentials.password),
+                    "sso_linked": True,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.admins.insert_one(admin)
+            
+            token = create_access_token({"sub": admin["email"], "id": admin["id"]})
+            return TokenResponse(
+                access_token=token,
+                user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
+            )
+    
+    raise HTTPException(status_code=401, detail="Invalid credentials")
+
+@api_router.post("/auth/sso-exchange")
+async def datavision_sso_exchange(authorization: str = Header(None)):
+    """
+    Exchange a Survey360 token for DataVision admin access.
+    This enables reverse SSO from Survey360 to DataVision admin.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        
+        # Check if this is a Survey360 token (has user_id) or DataVision token (has sub)
+        user_email = None
+        
+        if "user_id" in payload:
+            # This is a Survey360 token - get the user
+            survey360_user = await db.survey360_users.find_one({"id": payload["user_id"]}, {"_id": 0})
+            if survey360_user:
+                user_email = survey360_user.get("email")
+        elif "sub" in payload:
+            # This is already a DataVision token
+            user_email = payload["sub"]
+        
+        if not user_email:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Get or create DataVision admin account
+        admin = await db.admins.find_one({"email": user_email}, {"_id": 0})
+        
+        if not admin:
+            # Check if this Survey360 user should have admin access
+            survey360_user = await db.survey360_users.find_one({"email": user_email}, {"_id": 0})
+            if not survey360_user:
+                raise HTTPException(status_code=401, detail="Not authorized for admin access")
+            
+            # Auto-create admin account for Survey360 user
+            admin_id = str(uuid.uuid4())
+            admin = {
+                "id": admin_id,
+                "email": user_email,
+                "name": survey360_user.get("name", "Survey360 User"),
+                "password": "",  # SSO user, no password
+                "password_hash": "",
+                "sso_linked": True,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.admins.insert_one(admin)
+        
+        # Generate DataVision token
+        dv_token = create_access_token({"sub": admin["email"], "id": admin["id"]})
+        
+        return {
+            "access_token": dv_token,
+            "token_type": "bearer",
+            "user": {
+                "id": admin["id"],
+                "email": admin["email"],
+                "name": admin.get("name", "Administrator")
+            },
+            "sso": True
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 @api_router.get("/auth/me", response_model=AdminUser)
 async def get_current_user(payload: dict = Depends(verify_token)):
