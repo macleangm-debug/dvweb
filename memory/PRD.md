@@ -8,6 +8,32 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 9, 2026 - Global Branding & Partner Logo Update (COMPLETED)
+
+**Partner Logo Updates:**
+- Removed UK Aid logo from partners
+- Added WHO (World Health Organization) logo
+- Added RTI International logo
+- Added Ecorys logo
+- Final partner list: World Bank, USAID, UNICEF, WHO, RTI International, Ecorys
+- Local logo files stored in `/app/frontend/public/` (usaid-logo.png, rti-logo.png, ecorys-logo.png)
+
+**Global Content Updates (Feb 9, 2026):**
+- Homepage: Updated hero messaging to "Data-Driven Insights Driving Global Impact"
+- About page: Updated to "headquartered in Dar es Salaam with a global reach"
+- Services Hub: Changed "Our Impact in Tanzania" to "Our Global Impact"
+- Services Hub: Changed CTA text from "needs in Tanzania" to "needs globally"
+- Services Hub: Changed WASH case study from "regions of Tanzania" to "multiple regions"
+- FieldForce Landing: Uses global messaging "Trusted by organizations globally"
+- Footer: Global messaging "delivering data-driven insights across Africa and beyond"
+
+**Test Reports:**
+- `/app/test_reports/iteration_17.json` - 90% pass rate (100% after fixes)
+- All pages verified with correct global messaging
+- Partner logos displaying correctly
+
+---
+
 ### February 9, 2026 - FieldForce GitHub Backend Integration (COMPLETED)
 
 **Major Change: Replaced custom backend with EXACT GitHub routes**
