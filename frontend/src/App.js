@@ -86,6 +86,7 @@ import {
   softwareSolutions
 } from './pages/SolutionsPages';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import { Survey360ProductPage } from './components/solutions/survey360';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
