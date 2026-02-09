@@ -1609,18 +1609,18 @@ const HomePage = () => {
 
       {/* Partners */}
       {partners.length > 0 && (
-        <section className="py-16 bg-white border-t">
+        <section className="py-12 bg-white border-t">
           <div className="container mx-auto px-6 lg:px-12">
             <p className="text-center text-sm uppercase tracking-wider text-[#64748b] mb-8">
               Trusted by Leading Organizations
             </p>
-            <div className="flex flex-wrap justify-center items-center gap-12">
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
               {partners.map((partner) => (
                 <img 
                   key={partner.id}
                   src={partner.logo_url} 
                   alt={partner.name}
-                  className="h-12 object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+                  className="h-16 md:h-20 object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
                 />
               ))}
             </div>
