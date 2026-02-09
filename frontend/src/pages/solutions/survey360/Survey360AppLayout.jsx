@@ -32,7 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../../../components/ui/tooltip';
-import { useAuthStore, useOrgStore, useUIStore } from '../../store';
+import { useAuthStore, useOrgStore, useUIStore } from '../../../store';
 import { cn } from '../../lib/utils';
 
 const NAVIGATION = [
