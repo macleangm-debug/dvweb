@@ -85,6 +85,7 @@ import {
   WASHMonitorPage,
   softwareSolutions
 } from './pages/SolutionsPages';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
