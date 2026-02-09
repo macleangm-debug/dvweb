@@ -154,7 +154,8 @@ export const FieldForceLandingPage = () => {
               <img 
                 src="/datavision-logo-cropped.png" 
                 alt="DataVision International" 
-                className="h-8 w-auto brightness-0 invert"
+                className="h-8 w-auto"
+                style={{ filter: 'brightness(0) invert(1)' }}
               />
             </Link>
 
