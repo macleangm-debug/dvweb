@@ -366,6 +366,75 @@ async def survey360_register(request: Survey360RegisterRequest):
 async def survey360_get_me(user=Depends(get_survey360_user)):
     return Survey360UserResponse(**user)
 
+@router.post("/auth/sso-exchange")
+async def sso_token_exchange(authorization: Optional[str] = Header(None)):
+    """
+    Exchange a DataVision admin token for Survey360 access.
+    This enables seamless SSO from the main DataVision site.
+    """
+    db = get_db()
+    
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+        
+        # This should be a DataVision admin token with "sub" claim
+        if "sub" not in payload:
+            raise HTTPException(status_code=401, detail="Invalid token format")
+        
+        admin_email = payload["sub"]
+        
+        # Get or create Survey360 user for admin
+        user = await db.survey360_users.find_one({"email": admin_email}, {"_id": 0})
+        
+        if not user:
+            # Check if this is actually a DataVision admin
+            admin = await db.admins.find_one({"email": admin_email}, {"_id": 0})
+            if not admin:
+                raise HTTPException(status_code=401, detail="Not authorized")
+            
+            # Create Survey360 account for admin
+            user_id = str(uuid.uuid4())
+            org_id = str(uuid.uuid4())
+            
+            await db.survey360_orgs.insert_one({
+                "id": org_id,
+                "name": f"{admin.get('name', 'Admin')}'s Organization",
+                "created_at": datetime.now(timezone.utc).isoformat()
+            })
+            
+            user = {
+                "id": user_id,
+                "email": admin_email,
+                "name": admin.get("name", "Admin User"),
+                "org_id": org_id,
+                "sso_linked": True,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.survey360_users.insert_one({**user, "password_hash": ""})
+        
+        # Generate Survey360-specific token
+        survey360_token = create_survey360_token(user["id"])
+        
+        return {
+            "user": Survey360UserResponse(
+                id=user["id"],
+                email=user["email"],
+                name=user["name"],
+                org_id=user.get("org_id")
+            ),
+            "access_token": survey360_token,
+            "sso": True
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
 # Organization routes
 @router.get("/organizations", response_model=List[Survey360OrgResponse])
 async def survey360_list_organizations(user=Depends(get_survey360_user)):
