@@ -45,7 +45,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="fieldforce-app min-h-screen bg-background flex">
       {/* Left side - Clean branding */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/10">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
