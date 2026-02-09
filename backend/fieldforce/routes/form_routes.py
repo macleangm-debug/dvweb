@@ -4,8 +4,8 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone
 from pydantic import BaseModel
 
-from models import Form, FormCreate, FormOut, FormDetailOut, FormField
-from auth import get_current_user
+from fieldforce.models import Form, FormCreate, FormOut, FormDetailOut, FormField
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/forms", tags=["Forms"])
 

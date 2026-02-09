@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from bson import ObjectId
 import json
 
-from auth import get_current_user
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/translations", tags=["Translations"])
 

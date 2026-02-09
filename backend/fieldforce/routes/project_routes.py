@@ -3,8 +3,8 @@ from fastapi import APIRouter, HTTPException, status, Request, Depends
 from typing import List, Optional
 from datetime import datetime, timezone
 
-from models import Project, ProjectCreate, ProjectOut
-from auth import get_current_user
+from fieldforce.models import Project, ProjectCreate, ProjectOut
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/projects", tags=["Projects"])
 

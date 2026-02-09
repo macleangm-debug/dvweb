@@ -4,8 +4,8 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime, timezone
 import secrets
 
-from models import User, UserCreate, UserOut, TokenResponse
-from auth import (
+from fieldforce.models import User, UserCreate, UserOut, TokenResponse
+from fieldforce.auth import (
     get_password_hash, verify_password, create_access_token,
     get_sso_authorization_url, exchange_sso_code, get_sso_userinfo
 )

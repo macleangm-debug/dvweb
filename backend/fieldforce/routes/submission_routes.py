@@ -4,8 +4,8 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel
 
-from models import Submission, SubmissionCreate, SubmissionOut
-from auth import get_current_user
+from fieldforce.models import Submission, SubmissionCreate, SubmissionOut
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/submissions", tags=["Submissions"])
 

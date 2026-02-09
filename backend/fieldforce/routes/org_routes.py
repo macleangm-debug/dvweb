@@ -4,11 +4,11 @@ from typing import List, Optional
 from datetime import datetime, timezone
 import re
 
-from models import (
+from fieldforce.models import (
     Organization, OrganizationCreate, OrganizationOut,
     OrgMember, OrgMemberOut, UserOut
 )
-from auth import get_current_user
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/organizations", tags=["Organizations"])
 

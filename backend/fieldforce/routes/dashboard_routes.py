@@ -4,8 +4,8 @@ from typing import List, Optional
 from datetime import datetime, timezone, timedelta
 from collections import defaultdict
 
-from models import DashboardStats, SubmissionTrend, QualityMetrics
-from auth import get_current_user
+from fieldforce.models import DashboardStats, SubmissionTrend, QualityMetrics
+from fieldforce.auth import get_current_user
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
