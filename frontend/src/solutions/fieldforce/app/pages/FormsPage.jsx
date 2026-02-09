@@ -90,11 +90,11 @@ const FormCard = ({ form, onPublish, onDuplicate, onArchive }) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/forms/${form.id}/edit`); }}>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/solutions/fieldforce/app/forms/${form.id}/edit`); }}>
                   <Edit3 className="w-4 h-4 mr-2" />
                   Edit Form
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/forms/${form.id}/preview`); }}>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/solutions/fieldforce/app/forms/${form.id}/preview`); }}>
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </DropdownMenuItem>
