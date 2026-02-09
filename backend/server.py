@@ -547,7 +547,8 @@ async def login(credentials: AdminLogin):
 async def datavision_sso_exchange(authorization: str = Header(None)):
     """
     Exchange a Survey360 token for DataVision admin access.
-    This enables reverse SSO from Survey360 to DataVision admin.
+    ONLY works if the user is already a DataVision admin.
+    Regular Survey360 customers cannot access admin panel.
     """
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -560,7 +561,7 @@ async def datavision_sso_exchange(authorization: str = Header(None)):
         user_email = None
         
         if "user_id" in payload:
-            # This is a Survey360 token - get the user
+            # This is a Survey360 token - get the user email
             survey360_user = await db.survey360_users.find_one({"id": payload["user_id"]}, {"_id": 0})
             if survey360_user:
                 user_email = survey360_user.get("email")
@@ -571,29 +572,18 @@ async def datavision_sso_exchange(authorization: str = Header(None)):
         if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token")
         
-        # Get or create DataVision admin account
+        # IMPORTANT: Only allow access if user is ALREADY a DataVision admin
+        # Regular Survey360 customers should NOT get admin access
         admin = await db.admins.find_one({"email": user_email}, {"_id": 0})
         
         if not admin:
-            # Check if this Survey360 user should have admin access
-            survey360_user = await db.survey360_users.find_one({"email": user_email}, {"_id": 0})
-            if not survey360_user:
-                raise HTTPException(status_code=401, detail="Not authorized for admin access")
-            
-            # Auto-create admin account for Survey360 user
-            admin_id = str(uuid.uuid4())
-            admin = {
-                "id": admin_id,
-                "email": user_email,
-                "name": survey360_user.get("name", "Survey360 User"),
-                "password": "",  # SSO user, no password
-                "password_hash": "",
-                "sso_linked": True,
-                "created_at": datetime.now(timezone.utc).isoformat()
-            }
-            await db.admins.insert_one(admin)
+            # User is not a DataVision admin - deny access
+            raise HTTPException(
+                status_code=403, 
+                detail="Access denied. Only DataVision administrators can access the admin panel."
+            )
         
-        # Generate DataVision token
+        # Generate DataVision token for existing admin
         dv_token = create_access_token({"sub": admin["email"], "id": admin["id"]})
         
         return {
