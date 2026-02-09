@@ -159,7 +159,7 @@ const ServicesHubPageRedesigned = () => {
   const stats = [
     { value: "25+", label: "Years of Excellence", icon: Award },
     { value: "1,000+", label: "Projects Delivered", icon: CheckCircle2 },
-    { value: "15+", label: "Regions Covered", icon: Globe },
+    { value: "30+", label: "Countries Served", icon: Globe },
     { value: "50+", label: "Partner Organizations", icon: Users }
   ];
 
@@ -167,7 +167,7 @@ const ServicesHubPageRedesigned = () => {
     {
       sector: "Education",
       title: "National Literacy Assessment Program",
-      description: "Comprehensive evaluation of early grade reading skills across 1,200+ schools in rural and urban Tanzania, informing national education policy.",
+      description: "Comprehensive evaluation of early grade reading skills across 1,200+ schools in multiple countries, informing national education policy.",
       metrics: ["1,200 Schools", "50,000 Students", "85 Enumerators"],
       icon: BookOpen,
       color: "#e63946"
