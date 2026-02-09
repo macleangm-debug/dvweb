@@ -438,6 +438,44 @@ const Navbar = () => {
   const isIndustriesActive = location.pathname.startsWith('/industries');
   const isSolutionsActive = location.pathname.startsWith('/solutions');
   const isWhatWeDoActive = isServicesActive || isPracticeAreasActive || isIndustriesActive || isSolutionsActive;
+  
+  // Check if we're on a specific product page (Survey360, DataPulse, etc.)
+  const isOnProductPage = location.pathname.startsWith('/solutions/survey360') || 
+                          location.pathname.startsWith('/solutions/datapulse');
+
+  // Minimal navbar for product pages
+  if (isOnProductPage) {
+    return (
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white shadow-md' : 'bg-white/95 backdrop-blur-sm'
+      }`}>
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold text-[#0a1628] font-serif">Data</span>
+                <span className="text-2xl font-bold text-[#e63946] font-serif">Vision</span>
+              </div>
+              <div className="hidden sm:block border-l-2 border-[#0a1628] pl-3">
+                <span className="text-xs font-semibold text-[#0a1628] tracking-wider">25 YEARS</span>
+              </div>
+            </Link>
+
+            {/* Back to Solutions link */}
+            <Link 
+              to="/solutions" 
+              className="flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#0a1628] transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Back to Solutions</span>
+              <span className="sm:hidden">Back</span>
+            </Link>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
