@@ -308,7 +308,7 @@ const ServicesHubPageRedesigned = () => {
                 transition={{ delay: 0.2 }}
               >
                 <span className="w-2 h-2 bg-[#e63946] rounded-full animate-pulse" />
-                <span className="text-sm font-medium">Tanzania's Leading Research Partner</span>
+                <span className="text-sm font-medium">Your Global Partner in Data & Development</span>
               </motion.div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
@@ -317,8 +317,8 @@ const ServicesHubPageRedesigned = () => {
               </h1>
               
               <p className="text-xl text-white/80 leading-relaxed mb-8 max-w-lg">
-                From research design to actionable insights—comprehensive services 
-                that help organizations understand and improve their impact across Tanzania.
+                From data analytics to actionable insights—comprehensive services 
+                that help organizations understand and improve their impact globally.
               </p>
 
               <div className="flex flex-wrap gap-4">
