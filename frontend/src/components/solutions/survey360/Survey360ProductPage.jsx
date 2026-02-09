@@ -765,28 +765,28 @@ const Survey360ProductPage = () => {
 
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
-      {/* Product Navigation Bar */}
-      <div className="sticky top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
+      {/* Product Navigation Bar - Compact & Integrated */}
+      <div className="sticky top-20 z-40 bg-[#0a1628] border-b border-[#1e3a5f]">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo & Brand */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center">
-                <Target className="w-5 h-5 text-white" />
+          <div className="flex items-center justify-between h-12">
+            {/* Logo & Brand - Compact */}
+            <Link to="/solutions/survey360" className="flex items-center gap-2 group">
+              <div className="w-7 h-7 bg-teal-500 rounded flex items-center justify-center">
+                <Target className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-xl text-gray-900">Survey360</span>
-            </div>
+              <span className="font-semibold text-white text-sm">Survey360</span>
+            </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            {/* Desktop Navigation - Inline */}
+            <nav className="hidden md:flex items-center">
               {survey360NavItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-3 py-1.5 text-sm font-medium transition-colors border-b-2 ${
                     activeTab === item.id
-                      ? 'bg-teal-100 text-teal-700'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'text-teal-400 border-teal-400'
+                      : 'text-white/70 border-transparent hover:text-white hover:border-white/30'
                   }`}
                   data-testid={`nav-${item.id}`}
                 >
@@ -795,29 +795,29 @@ const Survey360ProductPage = () => {
               ))}
             </nav>
 
-            {/* CTA Buttons */}
-            <div className="flex items-center gap-3">
+            {/* CTA Buttons - Compact */}
+            <div className="flex items-center gap-2">
               <Link
                 to="/solutions/survey360/login"
-                className="hidden sm:inline-flex text-sm font-medium text-gray-700 hover:text-teal-600"
+                className="hidden sm:inline-flex text-xs font-medium text-white/70 hover:text-white px-2 py-1"
               >
                 Sign In
               </Link>
               <Link
                 to="/solutions/survey360/app"
-                className="inline-flex items-center gap-2 bg-teal-600 text-white px-4 py-2 text-sm font-semibold hover:bg-teal-700 transition-all rounded-lg"
+                className="inline-flex items-center gap-1.5 bg-teal-500 text-white px-3 py-1.5 text-xs font-semibold hover:bg-teal-400 transition-all rounded"
                 data-testid="get-started-btn"
               >
                 Get Started
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3 h-3" />
               </Link>
               
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-gray-600"
+                className="md:hidden p-1.5 text-white/70 hover:text-white"
               >
-                <ChevronDown className={`w-5 h-5 transition-transform ${mobileMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${mobileMenuOpen ? 'rotate-180' : ''}`} />
               </button>
             </div>
           </div>
@@ -829,15 +829,25 @@ const Survey360ProductPage = () => {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="md:hidden overflow-hidden border-t border-gray-100"
+                className="md:hidden overflow-hidden border-t border-white/10"
               >
-                <div className="py-4 space-y-1">
+                <div className="py-3 space-y-1">
                   {survey360NavItems.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => handleTabChange(item.id)}
-                      className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      className={`w-full text-left px-3 py-2 text-sm font-medium transition-colors ${
                         activeTab === item.id
+                          ? 'text-teal-400 bg-white/5'
+                          : 'text-white/70 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
                           ? 'bg-teal-100 text-teal-700'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
