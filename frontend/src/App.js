@@ -1187,9 +1187,9 @@ const Footer = () => {
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <div className="mb-4">
               <img 
-                src="/datavision-logo.png" 
+                src="/datavision-logo-cropped.png" 
                 alt="DataVision International" 
-                className="h-10 w-auto brightness-0 invert"
+                className="h-8 w-auto brightness-0 invert"
               />
             </div>
             <p className="text-white/70 mb-6 max-w-md text-sm leading-relaxed">
