@@ -43,7 +43,7 @@ const StatCard = ({ title, value, icon: Icon, trend, description, onClick }) => 
     transition={{ duration: 0.2 }}
   >
     <Card 
-      className="bg-white hover:shadow-md transition-all cursor-pointer h-full border border-slate-200"
+      className="bg-slate-800 hover:bg-slate-700 transition-all cursor-pointer h-full border border-slate-700"
       onClick={onClick}
       data-testid={`stat-card-${title.toLowerCase().replace(/\s/g, '-')}`}
     >
