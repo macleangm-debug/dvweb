@@ -25,7 +25,7 @@ export function LoginPage() {
       const response = await authAPI.login(email, password);
       setAuth(response.data.user, response.data.access_token);
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      navigate('/solutions/fieldforce/app/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Invalid credentials');
     } finally {
@@ -35,7 +35,7 @@ export function LoginPage() {
 
   const handleSSOLogin = async () => {
     try {
-      const redirectUri = `${window.location.origin}/auth/callback`;
+      const redirectUri = `${window.location.origin}/solutions/fieldforce/app/auth/callback`;
       const response = await authAPI.getSSOUrl(redirectUri);
       window.location.href = response.data.auth_url;
     } catch (error) {
