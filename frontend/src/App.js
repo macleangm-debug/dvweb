@@ -447,8 +447,9 @@ const Navbar = () => {
   const isSolutionsActive = location.pathname.startsWith('/solutions');
   const isWhatWeDoActive = isServicesActive || isPracticeAreasActive || isIndustriesActive || isSolutionsActive;
   
-  // Check if we're on a specific product page (Survey360, DataPulse, etc.)
+  // Check if we're on a specific product page (Survey360, FieldForce, etc.)
   const isOnProductPage = location.pathname.startsWith('/solutions/survey360') || 
+                          location.pathname.startsWith('/solutions/fieldforce') ||
                           location.pathname.startsWith('/solutions/datapulse');
 
   // Minimal navbar for product pages
