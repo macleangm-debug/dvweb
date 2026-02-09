@@ -1681,9 +1681,9 @@ const AboutPage = () => {
               Going the Extra Mile Since 1998
             </h1>
             <p className="text-white/80 max-w-2xl">
-              DataVision International has its headquarters in Dar es Salaam, Tanzania, 
-              offering professional consulting services in Research & Statistics, ICT, 
-              Payments & Cards, and Professional Training.
+              DataVision International is headquartered in Dar es Salaam with a global reach, 
+              offering professional consulting services in Data Analytics, Research & Statistics, 
+              Technology Solutions, and Professional Training.
             </p>
           </motion.div>
         </div>
@@ -1696,13 +1696,12 @@ const AboutPage = () => {
             <div>
               <h2 className="text-3xl font-bold text-[#0a1628] mb-6 font-serif">Our Story</h2>
               <p className="text-[#64748b] mb-4">
-                Founded and registered under the companies' law of the United Republic of Tanzania 
-                in 1998, DataVision International is an outcome of the recognition that sustainable 
-                development can be accelerated by providing requirement-driven solutions.
+                Founded in 1998, DataVision International is an outcome of the recognition that sustainable 
+                development can be accelerated by providing requirement-driven, data-focused solutions.
               </p>
               <p className="text-[#64748b] mb-4">
                 Since its establishment, the company has been fast growing in terms of delivery of 
-                services and customer base. The best part of our history includes our ability to 
+                services and customer base across Africa and globally. The best part of our history includes our ability to 
                 adapt to the fast-changing demands of our clients.
               </p>
               <p className="text-[#64748b]">
