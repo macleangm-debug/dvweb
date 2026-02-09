@@ -37,7 +37,7 @@ const ServicesHubPageRedesigned = () => {
     {
       title: "Data Collection",
       path: "/services/data-collection",
-      description: "Large-scale, high-quality data collection across Tanzania's most challenging environments.",
+      description: "Large-scale, high-quality data collection across Africa and globally in challenging environments.",
       icon: Users,
       color: "#f59e0b",
       stat: "500+",
