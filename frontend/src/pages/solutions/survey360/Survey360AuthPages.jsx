@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ClipboardList, Mail, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ClipboardList, Mail, Lock, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
@@ -10,13 +10,75 @@ import { useAuthStore, useOrgStore } from '../../../store';
 import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
+// Check for DataVision auth token in localStorage
+const getDataVisionToken = () => {
+  try {
+    const token = localStorage.getItem('datavision_token') || localStorage.getItem('token');
+    return token;
+  } catch {
+    return null;
+  }
+};
+
 export function Survey360LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { setAuth } = useAuthStore();
+  const [ssoLoading, setSsoLoading] = useState(true);
+  const { setAuth, isAuthenticated } = useAuthStore();
   const { setOrganizations, setCurrentOrg } = useOrgStore();
   const navigate = useNavigate();
+
+  // Check for existing DataVision SSO on mount
+  useEffect(() => {
+    const checkSSO = async () => {
+      // If already authenticated in Survey360, redirect
+      if (isAuthenticated) {
+        navigate('/solutions/survey360/app/dashboard');
+        return;
+      }
+
+      // Check for DataVision token
+      const dvToken = getDataVisionToken();
+      if (dvToken) {
+        try {
+          // Exchange DataVision token for Survey360 access
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/survey360/auth/sso-exchange`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${dvToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            setAuth(data.user, data.access_token);
+            
+            // Load organizations
+            try {
+              const orgsRes = await survey360Api.get('/organizations');
+              setOrganizations(orgsRes.data);
+              if (orgsRes.data.length > 0) {
+                setCurrentOrg(orgsRes.data[0]);
+              }
+            } catch (e) {
+              console.error('Failed to load orgs:', e);
+            }
+            
+            toast.success('Logged in via DataVision SSO!');
+            navigate('/solutions/survey360/app/dashboard');
+            return;
+          }
+        } catch (error) {
+          console.log('SSO exchange failed, falling back to manual login');
+        }
+      }
+      setSsoLoading(false);
+    };
+
+    checkSSO();
+  }, [navigate, setAuth, setOrganizations, setCurrentOrg, isAuthenticated]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -50,6 +112,18 @@ export function Survey360LoginPage() {
       setLoading(false);
     }
   };
+
+  // Show loading while checking SSO
+  if (ssoLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a1628] flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-teal-500 animate-spin mx-auto mb-4" />
+          <p className="text-white/70">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a1628] flex">
