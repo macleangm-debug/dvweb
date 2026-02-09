@@ -1215,7 +1215,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#0a1628] text-white relative noise-overlay" data-testid="footer">
-      <div className="container mx-auto px-6 lg:px-12 pt-20 pb-16">
+      <div className="container mx-auto px-6 lg:px-12 pt-24 pb-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10">
           {/* Brand - Takes 2 columns on large screens */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
