@@ -69,11 +69,12 @@ User requested restructuring of the DataVision website navigation and services:
 
 **Note:** Disabled babel-metadata-plugin in craco.config.js to fix compilation issues. Can be re-enabled later.
 
-**Known Issues (P1):**
-- `/api/fieldforce/dashboard/submission-trends` returns 404
-- `/api/fieldforce/dashboard/quality-metrics` returns 404
-- `AdminVerificationDashboard.js` and `ServicesHubRedesigned.js` files stubbed/moved
-- `visual-edits` babel plugin disabled in `craco.config.js`
+**Known Issues (P1) - RESOLVED:**
+- ~~`/api/fieldforce/dashboard/submission-trends` returns 404~~ ✅ FIXED
+- ~~`/api/fieldforce/dashboard/quality-metrics` returns 404~~ ✅ FIXED
+- ~~`AdminVerificationDashboard.js` stubbed~~ ✅ RESTORED
+- ~~`ServicesHubRedesigned.js` stubbed~~ ✅ RESTORED
+- `visual-edits` babel plugin disabled in `craco.config.js` (kept disabled to prevent compilation issues)
 
 ---
 
