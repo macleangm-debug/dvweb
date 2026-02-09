@@ -145,6 +145,31 @@ export const FieldForceLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/datavision-logo-cropped.png" 
+                alt="DataVision International" 
+                className="h-8 w-auto brightness-0 invert"
+              />
+            </Link>
+
+            {/* Back to Solutions link */}
+            <Link 
+              to="/solutions" 
+              className="flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              <span>Back to Solutions</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#0a1628] via-[#1e293b] to-[#0f172a] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
