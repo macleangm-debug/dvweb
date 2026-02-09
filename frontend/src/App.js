@@ -1406,9 +1406,9 @@ const HomePage = () => {
                 </motion.h1>
               </AnimatePresence>
               <p className="text-lg text-white/80 mb-8 max-w-lg">
-                Leading research and statistics consultancy with deep expertise across 
+                Leading data analytics, research, and development consultancy with deep expertise across 
                 agriculture, education, health, and WASH sectors. Trusted by World Bank, 
-                USAID, and development partners across Africa.
+                USAID, and development partners globally.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link 
