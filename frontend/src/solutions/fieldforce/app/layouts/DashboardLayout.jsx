@@ -139,7 +139,7 @@ export function DashboardLayout({ children }) {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/solutions/fieldforce/app/login');
   };
 
   const handleRailClick = (group) => {
