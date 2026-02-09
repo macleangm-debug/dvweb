@@ -102,13 +102,29 @@ import {
   PublicSurveyPage
 } from './pages/solutions/survey360';
 
-// FieldForce Pages (simplified integration)
-import {
-  FieldForceLandingPage,
-  FieldForceLoginPage,
-  FieldForceRegisterPage,
-  FieldForceDashboardPage
-} from './pages/solutions/fieldforce';
+// FieldForce Landing Page
+import { FieldForceLandingPage } from './pages/solutions/fieldforce';
+
+// FieldForce Original Pages (from GitHub repo - FULL functionality)
+import { LoginPage as FFLoginPage, RegisterPage as FFRegisterPage } from './solutions/fieldforce/app/pages/AuthPages';
+import { DashboardPage as FFDashboardPage } from './solutions/fieldforce/app/pages/DashboardPage';
+import { ProjectsPage as FFProjectsPage } from './solutions/fieldforce/app/pages/ProjectsPage';
+import { FormsPage as FFFormsPage } from './solutions/fieldforce/app/pages/FormsPage';
+import { FormBuilderPage as FFFormBuilderPage } from './solutions/fieldforce/app/pages/FormBuilderPage';
+import { FormTemplatesPage as FFFormTemplatesPage } from './solutions/fieldforce/app/pages/FormTemplatesPage';
+import { FormPreviewPage as FFFormPreviewPage } from './solutions/fieldforce/app/pages/FormPreviewPage';
+import { SubmissionsPage as FFSubmissionsPage } from './solutions/fieldforce/app/pages/SubmissionsPage';
+import { CasesPage as FFCasesPage } from './solutions/fieldforce/app/pages/CasesPage';
+import { CaseImportPage as FFCaseImportPage } from './solutions/fieldforce/app/pages/CaseImportPage';
+import { DatasetsPage as FFDatasetsPage } from './solutions/fieldforce/app/pages/DatasetsPage';
+import { GPSMapPage as FFGPSMapPage } from './solutions/fieldforce/app/pages/GPSMapPage';
+import { DeviceManagementPage as FFDeviceManagementPage } from './solutions/fieldforce/app/pages/DeviceManagementPage';
+import { QualityPage as FFQualityPage } from './solutions/fieldforce/app/pages/QualityPage';
+import { AnalyticsPage as FFAnalyticsPage } from './solutions/fieldforce/app/pages/AnalyticsPage';
+import { TeamPage as FFTeamPage } from './solutions/fieldforce/app/pages/TeamPage';
+import { RBACPage as FFRBACPage } from './solutions/fieldforce/app/pages/RBACPage';
+import { TranslationsPage as FFTranslationsPage } from './solutions/fieldforce/app/pages/TranslationsPage';
+import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages/SettingsPage';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
