@@ -60,6 +60,25 @@ div.fieldforce-app .bg-card,
   border-color: hsl(217, 33%, 20%);
 }
 
+/* Apply Manrope font to all FieldForce text */
+.fieldforce-app,
+.fieldforce-app p,
+.fieldforce-app span,
+.fieldforce-app div,
+.fieldforce-app label,
+.fieldforce-app button,
+.fieldforce-app input,
+.fieldforce-app textarea,
+.fieldforce-app select {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Code elements use JetBrains Mono */
+.fieldforce-app code,
+.fieldforce-app pre {
+  font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, monospace;
+}
+
 .fieldforce-app .bg-background {
   background-color: hsl(222, 47%, 11%) !important;
 }
