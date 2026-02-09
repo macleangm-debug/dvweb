@@ -149,10 +149,15 @@ export const FieldForceLandingPage = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <span className="text-xl font-bold text-white">DataVision</span>
-              <span className="text-xl font-light text-white/70">International</span>
+            {/* Logo on white background */}
+            <Link to="/" className="flex items-center">
+              <div className="bg-white rounded px-3 py-2">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision International" 
+                  className="h-8 w-auto"
+                />
+              </div>
             </Link>
 
             {/* Back to Solutions link */}
