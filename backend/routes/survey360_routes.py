@@ -1,5 +1,5 @@
 """Survey360 - API Routes for the Survey360 Product"""
-from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Request
 from typing import Optional, List
 from pydantic import BaseModel, EmailStr
 from datetime import datetime, timezone
@@ -8,11 +8,24 @@ import hashlib
 import jwt
 import os
 import base64
+from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/survey360", tags=["Survey360"])
 
 # JWT settings
 JWT_SECRET = os.environ.get("JWT_SECRET", "survey360-secret-key-change-in-production")
+
+# Database connection - initialized on startup
+_db = None
+
+def get_db():
+    global _db
+    if _db is None:
+        mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+        db_name = os.environ.get('DB_NAME', 'test_database')
+        client = AsyncIOMotorClient(mongo_url)
+        _db = client[db_name]
+    return _db
 
 # Helper function to check if survey is closed
 def check_survey_closed(survey: dict, response_count: int) -> bool:
