@@ -33,7 +33,7 @@ import {
   TooltipTrigger,
 } from '../../../components/ui/tooltip';
 import { useAuthStore, useOrgStore, useUIStore } from '../../../store';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 const NAVIGATION = [
   { id: 'home', label: 'Home', icon: Home, path: '/solutions/survey360/app/dashboard' },

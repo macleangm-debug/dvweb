@@ -44,7 +44,7 @@ import {
   DialogTitle,
 } from '../../../components/ui/dialog';
 import { useOrgStore } from '../../../store';
-import survey360Api from '../../lib/survey360Api';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
 // Simple Bar Chart Component

@@ -14,7 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
 import { useOrgStore } from '../../../store';
-import survey360Api from '../../lib/survey360Api';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
 // Share Modal Component

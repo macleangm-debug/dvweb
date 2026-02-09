@@ -64,9 +64,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../../../components/ui/dialog';
-import survey360Api from '../../lib/survey360Api';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 const QUESTION_TYPES = [
   { type: 'short_text', label: 'Short Text', icon: Type, description: 'Single line text input' },

@@ -7,7 +7,7 @@ import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { useAuthStore, useOrgStore } from '../../../store';
-import survey360Api from '../../lib/survey360Api';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
 export function Survey360LoginPage() {

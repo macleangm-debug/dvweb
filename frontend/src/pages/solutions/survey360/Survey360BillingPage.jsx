@@ -29,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../../../components/ui/dialog';
-import survey360Api from '../../lib/survey360Api';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
 const PLANS = [

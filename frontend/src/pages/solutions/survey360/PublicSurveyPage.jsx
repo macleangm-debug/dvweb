@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '../../../components/ui/select';
 import { Progress } from '../../../components/ui/progress';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 // Public API without auth
 const publicApi = {
