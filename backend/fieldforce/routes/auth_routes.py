@@ -222,8 +222,7 @@ async def sso_callback(request: Request, data: SSOCallbackRequest):
 @router.get("/me", response_model=UserOut)
 async def get_current_user_info(request: Request):
     """Get current user info"""
-    from auth import get_current_user
-    from fastapi import Depends
+    from fieldforce.auth import decode_token
     
     # Manual token extraction for this endpoint
     auth_header = request.headers.get("Authorization")
@@ -231,7 +230,6 @@ async def get_current_user_info(request: Request):
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     token = auth_header.split(" ")[1]
-    from auth import decode_token
     payload = decode_token(token)
     
     db = request.app.state.db
