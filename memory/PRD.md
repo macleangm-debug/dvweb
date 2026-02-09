@@ -371,17 +371,25 @@ DataVision International is a research and statistics consultancy based in Tanza
 - Frontend: React.js with Tailwind CSS, Framer Motion
 - Backend: FastAPI (Python)
 - Database: MongoDB
+- Payments: Stripe (via emergentintegrations library)
 - Font: Ubuntu Light (Google Fonts)
 - Icons: Lucide React
 
 ## Key Files
 - `/app/frontend/src/App.js` - Main app with Navbar, Footer, routes
-- `/app/frontend/src/pages/SolutionsPages.js` - Software solutions
+- `/app/frontend/src/pages/SolutionsPages.js` - Software solutions with pricing
+- `/app/frontend/src/pages/PaymentSuccessPage.js` - Payment result handling
 - `/app/frontend/src/pages/IndustriesPages.js` - Industries hub and detail pages
 - `/app/frontend/src/pages/InsightsPage.js` - Insights hub
 - `/app/frontend/src/pages/ArticlePage.js` - Article detail page
 - `/app/frontend/src/pages/ServicesHubRedesigned.js` - Services hub
 - `/app/frontend/src/pages/PracticeAreaPages.js` - Practice areas
+- `/app/backend/server.py` - Main API with payment routes
+
+## Key API Endpoints
+- `POST /api/payments/checkout` - Create Stripe checkout session
+- `GET /api/payments/status/{session_id}` - Get payment status
+- `POST /api/webhook/stripe` - Stripe webhook handler
 
 ## Test IDs Available
 - `mobile-menu-btn` - Hamburger menu button
@@ -389,13 +397,17 @@ DataVision International is a research and statistics consultancy based in Tanza
 - `mobile-what-we-do-btn` - Mobile What We Do button
 - `mobile-services-btn`, `mobile-solutions-btn`, `mobile-industries-btn`, `mobile-practice-areas-btn`
 - `footer`, `footer-services-title`, `footer-solutions-title`, `footer-industries-title`, `footer-company-title`
+- `buy-monthly-btn`, `buy-annual-btn`, `buy-small-btn`, `buy-medium-btn` - Payment buttons
+- `view-pricing-btn`, `contact-enterprise-btn` - Pricing navigation
 
 ## Upcoming Tasks (P1)
-1. **Custom CMS Admin Panel** - Content management system for managing services, solutions, industries content
-2. **Individual Solution Demo Pages** - Add demo videos/screenshots to solution detail pages
+1. **Auth0 SSO Integration** - Single Sign-On across all software products (WAITING FOR USER CREDENTIALS)
+2. **User Dashboard** - Authenticated page for users to view/access purchased products
+3. **Product Access Management** - Sync purchased products with user accounts
 
 ## Future Tasks (P2)
-1. Code refactoring - Split large App.js into smaller component files
-2. SEO optimizations - Meta tags, structured data
-3. User accounts for cross-device saved articles sync
-4. Centralize hardcoded content into JSON data files
+1. **Custom CMS Admin Panel** - Content management system for managing services, solutions, industries content
+2. **Individual Solution Demo Pages** - Add demo videos/screenshots to solution detail pages
+3. Code refactoring - Split large App.js into smaller component files
+4. SEO optimizations - Meta tags, structured data
+5. Complete Backend MVC Refactoring - Move routes from server.py to /routes/ directory
