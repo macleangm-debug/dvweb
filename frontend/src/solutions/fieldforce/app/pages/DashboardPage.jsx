@@ -198,7 +198,7 @@ export function DashboardPage() {
               <FolderKanban className="w-4 h-4 mr-2" />
               Projects
             </Button>
-            <Button onClick={() => navigate('/forms/new')} data-testid="new-form-btn">
+            <Button onClick={() => navigate('/solutions/fieldforce/app/forms/new')} data-testid="new-form-btn">
               <Plus className="w-4 h-4 mr-2" />
               New Form
             </Button>
