@@ -172,24 +172,41 @@ export const testimonials = [
 // Pricing plans
 export const pricingPlans = [
   {
+    id: 'survey360_free',
+    name: 'Free',
+    price: 0,
+    period: 'forever',
+    description: 'Get started at no cost',
+    features: [
+      '1 active survey',
+      '100 responses/month',
+      'Basic question types',
+      '7-day data retention',
+      'Community support',
+      'Survey360 branding'
+    ],
+    popular: false
+  },
+  {
     id: 'survey360_monthly',
-    name: 'Monthly',
+    name: 'Pro Monthly',
     price: 99,
     period: '/month',
-    description: 'Perfect for getting started',
+    description: 'Perfect for growing teams',
     features: [
-      'Up to 5 active surveys',
-      '1,000 responses/month',
-      'Basic analytics',
-      '10 question types',
+      'Up to 10 active surveys',
+      '2,500 responses/month',
+      'All 10 question types',
+      'Skip logic & branching',
       'Email support',
-      'CSV export'
+      'CSV export',
+      'Remove branding'
     ],
     popular: false
   },
   {
     id: 'survey360_annual',
-    name: 'Annual',
+    name: 'Pro Annual',
     price: 990,
     period: '/year',
     description: 'Best value for teams',
