@@ -668,7 +668,7 @@ export function FormBuilderPage() {
       setFormDescription(response.data.description || '');
     } catch (error) {
       toast.error('Failed to load form');
-      navigate('/forms');
+      navigate('/solutions/fieldforce/app/forms');
     } finally {
       setLoading(false);
     }
@@ -725,7 +725,7 @@ export function FormBuilderPage() {
       await handleSave();
       await formAPI.publish(formId);
       toast.success('Form published!');
-      navigate('/forms');
+      navigate('/solutions/fieldforce/app/forms');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Failed to publish');
     }
@@ -762,7 +762,7 @@ export function FormBuilderPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/forms')}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/solutions/fieldforce/app/forms')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
