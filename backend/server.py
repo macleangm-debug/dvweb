@@ -503,9 +503,10 @@ def verify_password(password: str, hashed: str) -> bool:
 @api_router.post("/auth/login", response_model=TokenResponse)
 async def login(credentials: AdminLogin):
     """
-    Unified login - checks DataVision admins and linked Survey360 users
+    Admin login - only for DataVision administrators.
+    Regular Survey360 customers cannot login here.
     """
-    # First check DataVision admins
+    # Only check DataVision admins
     admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
     if admin and verify_password(credentials.password, admin["password"]):
         token = create_access_token({"sub": admin["email"], "id": admin["id"]})
@@ -513,33 +514,6 @@ async def login(credentials: AdminLogin):
             access_token=token,
             user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
         )
-    
-    # Check Survey360 users (reverse SSO) - only if they have admin link
-    survey360_user = await db.survey360_users.find_one({"email": credentials.email}, {"_id": 0})
-    if survey360_user and survey360_user.get("sso_linked"):
-        # This is a Survey360 user linked to DataVision - verify password
-        password_hash = hashlib.sha256(credentials.password.encode()).hexdigest()
-        if survey360_user.get("password_hash") == password_hash:
-            # Create or get DataVision admin account for this user
-            admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
-            if not admin:
-                # Auto-create admin account for linked Survey360 user
-                admin_id = str(uuid.uuid4())
-                admin = {
-                    "id": admin_id,
-                    "email": credentials.email,
-                    "name": survey360_user.get("name", "Survey360 User"),
-                    "password": hash_password(credentials.password),
-                    "sso_linked": True,
-                    "created_at": datetime.now(timezone.utc).isoformat()
-                }
-                await db.admins.insert_one(admin)
-            
-            token = create_access_token({"sub": admin["email"], "id": admin["id"]})
-            return TokenResponse(
-                access_token=token,
-                user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
-            )
     
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
