@@ -2253,13 +2253,13 @@ async def get_user_products(email: str):
 # Import and include Survey360 routes
 from routes.survey360_routes import router as survey360_router, create_survey360_demo_user
 
-# Import and include FieldForce routes
-from routes.fieldforce_routes import router as fieldforce_router, create_fieldforce_demo_user
+# Import and include FieldForce routes (original GitHub code)
+from fieldforce.fieldforce_main import fieldforce_router
 
 # Include Survey360 router into api_router FIRST
 api_router.include_router(survey360_router)
 
-# Include FieldForce router
+# Include FieldForce router (all original routes from GitHub)
 api_router.include_router(fieldforce_router)
 
 # Then include api_router in app
