@@ -725,7 +725,7 @@ export function FormBuilderPage() {
       await handleSave();
       await formAPI.publish(formId);
       toast.success('Form published!');
-      navigate('/forms');
+      navigate('/solutions/fieldforce/app/forms');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Failed to publish');
     }
