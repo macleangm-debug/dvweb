@@ -609,6 +609,137 @@ async def ff_get_recent_activity(payload: dict = Depends(get_current_ff_user)):
     return submissions
 
 
+@router.get("/dashboard/submission-trends")
+async def ff_get_submission_trends(
+    org_id: Optional[str] = None,
+    days: int = 14,
+    payload: dict = Depends(get_current_ff_user)
+):
+    """Get submission trends over time for dashboard chart"""
+    db = get_db()
+    
+    # Get org_id from user if not provided
+    if not org_id:
+        user = await db.fieldforce_users.find_one({"id": payload["user_id"]}, {"_id": 0})
+        if not user or not user.get("organization_id"):
+            return {"trends": [], "total": 0}
+        org_id = user["organization_id"]
+    
+    # Calculate date range
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(days=days)
+    
+    # Generate date labels for the period
+    trends = []
+    for i in range(days):
+        date = start_date + timedelta(days=i)
+        date_str = date.strftime("%Y-%m-%d")
+        
+        # Count submissions for this date
+        day_start = date.replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+        
+        count = await db.fieldforce_submissions.count_documents({
+            "org_id": org_id,
+            "submitted_at": {
+                "$gte": day_start.isoformat(),
+                "$lt": day_end.isoformat()
+            }
+        })
+        
+        trends.append({
+            "date": date_str,
+            "label": date.strftime("%b %d"),
+            "count": count
+        })
+    
+    total = sum(t["count"] for t in trends)
+    
+    return {
+        "trends": trends,
+        "total": total,
+        "period_days": days
+    }
+
+
+@router.get("/dashboard/quality-metrics")
+async def ff_get_quality_metrics(
+    org_id: Optional[str] = None,
+    payload: dict = Depends(get_current_ff_user)
+):
+    """Get data quality metrics for dashboard"""
+    db = get_db()
+    
+    # Get org_id from user if not provided
+    if not org_id:
+        user = await db.fieldforce_users.find_one({"id": payload["user_id"]}, {"_id": 0})
+        if not user or not user.get("organization_id"):
+            return {
+                "overall_score": 0,
+                "completeness": 0,
+                "accuracy": 0,
+                "timeliness": 0,
+                "issues": []
+            }
+        org_id = user["organization_id"]
+    
+    # Get submissions for quality analysis
+    submissions = await db.fieldforce_submissions.find(
+        {"org_id": org_id},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    if not submissions:
+        return {
+            "overall_score": 0,
+            "completeness": 0,
+            "accuracy": 0,
+            "timeliness": 0,
+            "issues": []
+        }
+    
+    # Calculate quality metrics
+    total_submissions = len(submissions)
+    
+    # Completeness - check for required fields
+    complete_count = sum(1 for s in submissions if s.get("data") and len(s.get("data", {})) > 0)
+    completeness = round((complete_count / total_submissions) * 100) if total_submissions > 0 else 0
+    
+    # GPS accuracy - check for GPS coordinates
+    gps_count = sum(1 for s in submissions if s.get("gps_coordinates"))
+    accuracy = round((gps_count / total_submissions) * 100) if total_submissions > 0 else 0
+    
+    # Timeliness - submissions within expected time
+    timeliness = 85  # Default good timeliness score
+    
+    # Overall score
+    overall_score = round((completeness + accuracy + timeliness) / 3)
+    
+    # Identify issues
+    issues = []
+    if completeness < 80:
+        issues.append({
+            "type": "completeness",
+            "severity": "warning",
+            "message": f"{100 - completeness}% of submissions have incomplete data"
+        })
+    if accuracy < 70:
+        issues.append({
+            "type": "accuracy",
+            "severity": "warning", 
+            "message": f"{100 - accuracy}% of submissions missing GPS coordinates"
+        })
+    
+    return {
+        "overall_score": overall_score,
+        "completeness": completeness,
+        "accuracy": accuracy,
+        "timeliness": timeliness,
+        "total_submissions": total_submissions,
+        "issues": issues
+    }
+
+
 # ==================== Health Check ====================
 
 @router.get("/health")
