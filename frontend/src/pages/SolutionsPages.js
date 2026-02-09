@@ -6,8 +6,47 @@ import {
   Sprout, GraduationCap, Heart, Droplets, Building2, Factory,
   CheckCircle2, Play, Monitor, Cloud, Shield, Zap, Users,
   PieChart, LineChart, TrendingUp, Layers, Settings, ChevronRight,
-  Workflow, FileText, Map, Clock, Award, Headphones
+  Workflow, FileText, Map, Clock, Award, Headphones, CreditCard,
+  Loader2, ShoppingCart, Tag
 } from 'lucide-react';
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Pricing packages mapping to backend packages
+const PRICING_DATA = {
+  'survey360': {
+    starter: { id: 'survey360_starter', price: 99, period: '/month', features: ['Up to 5 surveys', '1,000 responses/month', 'Basic analytics', 'Email support'] },
+    professional: { id: 'survey360_pro', price: 299, period: '/month', features: ['Unlimited surveys', '10,000 responses/month', 'Advanced analytics', 'Priority support', 'API access'] },
+    enterprise: { id: 'survey360_enterprise', price: null, period: 'Custom', features: ['Unlimited everything', 'Dedicated account manager', 'Custom integrations', 'On-premise option', 'SLA guarantee'] }
+  },
+  'dataviz-studio': {
+    starter: { id: 'dataviz_starter', price: 79, period: '/month', features: ['5 dashboards', '10 data sources', 'Basic charts', 'Export to PDF'] },
+    professional: { id: 'dataviz_pro', price: 249, period: '/month', features: ['Unlimited dashboards', 'Unlimited data sources', 'Advanced visualizations', 'White labeling', 'Team collaboration'] },
+    enterprise: { id: 'dataviz_enterprise', price: null, period: 'Custom', features: ['Everything in Pro', 'Custom branding', 'API access', 'Dedicated support', 'Custom training'] }
+  },
+  'me-tracker': {
+    starter: { id: 'metracker_starter', price: 149, period: '/month', features: ['5 programs', '50 indicators', 'Basic reports', 'Email support'] },
+    professional: { id: 'metracker_pro', price: 399, period: '/month', features: ['25 programs', '500 indicators', 'Advanced reports', 'Donor templates', 'API access'] },
+    enterprise: { id: 'metracker_enterprise', price: null, period: 'Custom', features: ['Unlimited programs', 'Custom indicators', 'Impact evaluation tools', 'Dedicated success manager'] }
+  },
+  'fieldforce': {
+    small: { id: 'fieldforce_10seats', price: 499, period: 'one-time', features: ['10 user seats', 'iOS & Android apps', 'Offline mode', '1 year support'] },
+    medium: { id: 'fieldforce_50seats', price: 1999, period: 'one-time', features: ['50 user seats', 'All mobile features', 'Supervisor dashboard', '2 years support'] },
+    unlimited: { id: 'fieldforce_unlimited', price: 4999, period: 'one-time', features: ['Unlimited seats', 'All features', 'Priority support', 'Lifetime updates'] }
+  },
+  'agridata-pro': {
+    annual: { id: 'agridata_annual', price: 1999, period: '/year', features: ['Full platform access', 'Weather integration', 'Market analytics', 'Farmer registry', 'Priority support'] }
+  },
+  'eduinsights': {
+    annual: { id: 'eduinsights_annual', price: 1499, period: '/year', features: ['Full platform access', 'Learning assessments', 'Teacher analytics', 'Early warning system', 'Priority support'] }
+  },
+  'healthpulse': {
+    annual: { id: 'healthpulse_annual', price: 1799, period: '/year', features: ['Full platform access', 'Disease surveillance', 'Supply chain tracking', 'Quality metrics', 'Priority support'] }
+  },
+  'wash-monitor': {
+    annual: { id: 'wash_monitor_annual', price: 1299, period: '/year', features: ['Full platform access', 'Water point mapping', 'SDG 6 tracking', 'Community feedback', 'Priority support'] }
+  }
+};
 
 // ==================== SOFTWARE SOLUTIONS DATA ====================
 const softwareSolutions = [
