@@ -200,7 +200,7 @@ export const FieldForceLandingPage = () => {
               
               <p className="text-lg text-white/80 mb-8 max-w-lg">
                 Enterprise-grade mobile data collection platform with offline capability, 
-                GPS tracking, and real-time analytics. Trusted by organizations across Africa.
+                GPS tracking, and real-time analytics. Trusted by organizations globally.
               </p>
               
               <div className="flex flex-wrap gap-4">
