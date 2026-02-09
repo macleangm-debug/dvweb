@@ -2279,8 +2279,58 @@ async def startup_db_client():
     app.state.db = db
     # Create demo user for Survey360
     await create_survey360_demo_user(db)
-    # Create demo user for FieldForce
-    await create_fieldforce_demo_user(db)
+    
+    # Create FieldForce database indexes (from original GitHub code)
+    try:
+        # Users
+        await db.users.create_index("email", unique=True)
+        await db.users.create_index("id", unique=True)
+        
+        # Organizations
+        await db.organizations.create_index("slug", unique=True)
+        await db.organizations.create_index("id", unique=True)
+        
+        # Org Members
+        await db.org_members.create_index([("org_id", 1), ("user_id", 1)], unique=True)
+        
+        # Projects
+        await db.projects.create_index("id", unique=True)
+        await db.projects.create_index([("org_id", 1), ("status", 1)])
+        
+        # Forms
+        await db.forms.create_index("id", unique=True)
+        await db.forms.create_index([("project_id", 1), ("status", 1)])
+        
+        # Submissions
+        await db.submissions.create_index("id", unique=True)
+        await db.submissions.create_index([("form_id", 1), ("submitted_at", -1)])
+        await db.submissions.create_index([("org_id", 1), ("submitted_at", -1)])
+        await db.submissions.create_index([("project_id", 1), ("status", 1)])
+        
+        # Cases
+        await db.cases.create_index("id", unique=True)
+        await db.cases.create_index([("project_id", 1), ("respondent_id", 1)], unique=True)
+        
+        # Lookup Datasets
+        await db.lookup_datasets.create_index("id", unique=True)
+        await db.lookup_datasets.create_index([("org_id", 1), ("is_active", 1)])
+        
+        # Device Management
+        await db.devices.create_index("id", unique=True)
+        await db.devices.create_index([("org_id", 1), ("user_id", 1)])
+        await db.devices.create_index([("org_id", 1), ("status", 1)])
+        await db.device_activity_logs.create_index([("device_id", 1), ("timestamp", -1)])
+        
+        # Paradata Sessions
+        await db.paradata_sessions.create_index("id", unique=True)
+        await db.paradata_sessions.create_index([("submission_id", 1)])
+        
+        # Quality Alerts
+        await db.quality_alerts.create_index("id", unique=True)
+        await db.quality_alerts.create_index([("org_id", 1), ("status", 1)])
+        
+    except Exception as e:
+        print(f"Error creating FieldForce indexes: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
