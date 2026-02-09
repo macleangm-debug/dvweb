@@ -2279,6 +2279,8 @@ async def startup_db_client():
     app.state.db = db
     # Create demo user for Survey360
     await create_survey360_demo_user(db)
+    # Create demo user for FieldForce
+    await create_fieldforce_demo_user(db)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
