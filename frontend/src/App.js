@@ -488,10 +488,6 @@ const Navbar = () => {
               alt="DataVision International" 
               className="h-12 w-auto"
             />
-            </div>
-            <div className="hidden sm:block border-l-2 border-[#0a1628] pl-3">
-              <span className="text-xs font-semibold text-[#0a1628] tracking-wider">25 YEARS</span>
-            </div>
           </Link>
 
           {/* Desktop Navigation - Simplified */}
