@@ -153,7 +153,7 @@ export function DashboardLayout({ children }) {
 
   return (
     <TooltipProvider>
-      <div className="flex h-screen bg-background">
+      <div className="fieldforce-app flex h-screen bg-background">
         {/* Rail - Thin icon sidebar with labels */}
         <aside className="hidden lg:flex flex-col items-center w-[80px] bg-card border-r border-border py-4">
           {/* Logo - FieldForce */}
