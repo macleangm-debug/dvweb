@@ -2,7 +2,8 @@
 
 /* FieldForce - Canva-inspired Styles with DARK Theme */
 
-/* Force dark mode for FieldForce app */
+/* Force dark mode for FieldForce app with high specificity */
+div.fieldforce-app,
 .fieldforce-app {
   --background: 222 47% 11%;
   --foreground: 210 40% 98%;
@@ -25,20 +26,24 @@
   --ring: 199 89% 48%;
   --radius: 0.5rem;
   color-scheme: dark;
-  background-color: hsl(222 47% 11%) !important;
+  background-color: hsl(222, 47%, 11%) !important;
+}
+
+/* Override bg-card for Shadcn Card components */
+div.fieldforce-app .bg-card,
+.fieldforce-app .bg-card,
+.fieldforce-app .rounded-xl.border {
+  background-color: hsl(222, 47%, 14%) !important;
+  border-color: hsl(217, 33%, 20%) !important;
 }
 
 .fieldforce-app,
 .fieldforce-app * {
-  border-color: hsl(var(--border));
+  border-color: hsl(217, 33%, 20%);
 }
 
 .fieldforce-app .bg-background {
-  background-color: hsl(222 47% 11%) !important;
-}
-
-.fieldforce-app .bg-card {
-  background-color: hsl(222 47% 14%) !important;
+  background-color: hsl(222, 47%, 11%) !important;
 }
 
 .fieldforce-app .text-foreground,
