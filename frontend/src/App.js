@@ -486,7 +486,7 @@ const Navbar = () => {
             <img 
               src="/datavision-logo.png" 
               alt="DataVision International" 
-              className="h-12 w-auto"
+              className="h-14 w-auto"
             />
           </Link>
 
