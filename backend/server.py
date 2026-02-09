@@ -2188,9 +2188,11 @@ async def get_user_products(email: str):
 # Import and include Survey360 routes
 from routes.survey360_routes import router as survey360_router, create_survey360_demo_user
 
-# Include router and middleware
-app.include_router(api_router)
+# Include Survey360 router into api_router FIRST
 api_router.include_router(survey360_router)
+
+# Then include api_router in app
+app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
