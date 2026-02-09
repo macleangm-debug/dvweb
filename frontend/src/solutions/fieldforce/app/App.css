@@ -1,6 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* DataPulse - Canva-inspired Styles with Original Theme */
+/* FieldForce - Canva-inspired Styles with DARK Theme */
+
+/* Force dark mode for FieldForce app */
+.fieldforce-app {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 14%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 14%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 199 89% 48%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 20%;
+  --input: 217 33% 17%;
+  --ring: 199 89% 48%;
+  --radius: 0.5rem;
+  color-scheme: dark;
+}
+
+.fieldforce-app * {
+  border-color: hsl(var(--border));
+}
+
+.fieldforce-app body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
 
 /* Font families */
 .font-heading {
@@ -20,10 +54,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Root color overrides - Original DataPulse Theme */
+/* Root color overrides - Original FieldForce Dark Theme */
 :root {
-  --primary: 199 89% 48%;
-  --primary-foreground: 0 0% 100%;
   --dp-primary: #0ea5e9;
   --dp-primary-dark: #0284c7;
   --dp-primary-light: #38bdf8;
