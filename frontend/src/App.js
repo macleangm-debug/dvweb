@@ -467,8 +467,16 @@ const Navbar = () => {
   const isOnProductPage = location.pathname.startsWith('/solutions/survey360') || 
                           location.pathname.startsWith('/solutions/fieldforce') ||
                           location.pathname.startsWith('/solutions/datapulse');
+  
+  // Check if we're inside a product's app (full-screen experience - hide navbar completely)
+  const isInProductApp = location.pathname.includes('/app/');
 
-  // Minimal navbar for product pages
+  // Hide navbar completely when inside product apps (login, dashboard, etc.)
+  if (isOnProductPage && isInProductApp) {
+    return null;
+  }
+
+  // Minimal navbar for product landing pages only
   if (isOnProductPage) {
     return (
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
