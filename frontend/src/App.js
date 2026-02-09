@@ -1470,16 +1470,16 @@ const HomePage = () => {
             <div>
               <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4">About Us</p>
               <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-6 font-serif">
-                Delivering Excellence in Research Since 1998
+                Delivering Excellence in Data & Development Since 1998
               </h2>
               <p className="text-[#64748b] mb-6">
-                DataVision International is a leading research and statistics consultancy 
-                headquartered in Dar es Salaam, Tanzania. With over 25 years of experience, 
-                we specialize in complex quantitative and qualitative surveys, monitoring 
+                DataVision International is a leading data analytics, research, and development consultancy 
+                headquartered in Dar es Salaam with a global reach. With over 25 years of experience, 
+                we specialize in data-driven solutions, complex surveys, monitoring 
                 and evaluation studies across diverse sectors.
               </p>
               <p className="text-[#64748b] mb-8">
-                Our expertise spans hypothesis and concept development, designing, and 
+                Our expertise spans data analytics, technology solutions, research design, and 
                 implementation including planning, sampling, recruitment, training, field 
                 and remote data collection, data processing and analysis, report writing, 
                 and dissemination.
