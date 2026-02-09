@@ -104,11 +104,11 @@ const fieldTypes = [
 const FieldTypeButton = ({ type, label, icon: Icon, onClick }) => (
   <button
     onClick={onClick}
-    className="flex flex-col items-center gap-2 p-3 rounded-sm border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all text-center"
+    className="flex flex-col items-center gap-2 p-3 rounded-sm border border-border/50 hover:border-primary/50 bg-secondary/50 hover:bg-primary/10 transition-all text-center"
     data-testid={`add-field-${type}`}
   >
     <Icon className="w-5 h-5 text-muted-foreground" />
-    <span className="text-xs">{label}</span>
+    <span className="text-xs text-foreground">{label}</span>
   </button>
 );
 
