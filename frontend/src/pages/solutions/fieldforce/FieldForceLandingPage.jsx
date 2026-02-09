@@ -150,13 +150,9 @@ export const FieldForceLandingPage = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
-              <img 
-                src="/datavision-logo-cropped.png" 
-                alt="DataVision International" 
-                className="h-8 w-auto"
-                style={{ filter: 'brightness(0) invert(1)' }}
-              />
+            <Link to="/" className="flex items-center gap-2">
+              <span className="text-xl font-bold text-white">DataVision</span>
+              <span className="text-xl font-light text-white/70">International</span>
             </Link>
 
             {/* Back to Solutions link */}
