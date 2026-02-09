@@ -9,11 +9,16 @@ export const useAuthStore = create(
       token: null,
       isAuthenticated: false,
       
-      setAuth: (user, token) => set({ user, token, isAuthenticated: true }),
+      setAuth: (user, token) => {
+        // Also store token for cross-app SSO (DataVision can read this)
+        localStorage.setItem('survey360_token', token);
+        set({ user, token, isAuthenticated: true });
+      },
       
       logout: () => {
-        set({ user: null, token: null, isAuthenticated: false });
+        localStorage.removeItem('survey360_token');
         localStorage.removeItem('auth-storage');
+        set({ user: null, token: null, isAuthenticated: false });
       },
       
       getToken: () => get().token,
