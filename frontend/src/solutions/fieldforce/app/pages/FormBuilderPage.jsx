@@ -668,7 +668,7 @@ export function FormBuilderPage() {
       setFormDescription(response.data.description || '');
     } catch (error) {
       toast.error('Failed to load form');
-      navigate('/forms');
+      navigate('/solutions/fieldforce/app/forms');
     } finally {
       setLoading(false);
     }
