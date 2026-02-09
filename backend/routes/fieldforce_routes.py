@@ -669,11 +669,10 @@ async def ff_get_quality_metrics(
         user = await db.fieldforce_users.find_one({"id": payload["user_id"]}, {"_id": 0})
         if not user or not user.get("organization_id"):
             return {
-                "overall_score": 0,
-                "completeness": 0,
-                "accuracy": 0,
-                "timeliness": 0,
-                "issues": []
+                "avg_quality_score": 0,
+                "approved_count": 0,
+                "rejected_count": 0,
+                "flagged_count": 0
             }
         org_id = user["organization_id"]
     
@@ -685,52 +684,43 @@ async def ff_get_quality_metrics(
     
     if not submissions:
         return {
-            "overall_score": 0,
-            "completeness": 0,
-            "accuracy": 0,
-            "timeliness": 0,
-            "issues": []
+            "avg_quality_score": 0,
+            "approved_count": 0,
+            "rejected_count": 0,
+            "flagged_count": 0
         }
     
     # Calculate quality metrics
     total_submissions = len(submissions)
     
-    # Completeness - check for required fields
-    complete_count = sum(1 for s in submissions if s.get("data") and len(s.get("data", {})) > 0)
-    completeness = round((complete_count / total_submissions) * 100) if total_submissions > 0 else 0
+    # Count by status
+    approved_count = sum(1 for s in submissions if s.get("status") == "approved")
+    rejected_count = sum(1 for s in submissions if s.get("status") == "rejected")
+    flagged_count = sum(1 for s in submissions if s.get("status") in ["flagged", "pending_review"])
     
-    # GPS accuracy - check for GPS coordinates
-    gps_count = sum(1 for s in submissions if s.get("gps_coordinates"))
-    accuracy = round((gps_count / total_submissions) * 100) if total_submissions > 0 else 0
+    # Calculate quality scores based on data completeness and GPS
+    quality_scores = []
+    for s in submissions:
+        score = 100
+        # Check for data completeness
+        if not s.get("data") or len(s.get("data", {})) == 0:
+            score -= 30
+        # Check for GPS coordinates
+        if not s.get("gps_coordinates"):
+            score -= 20
+        # Check for submission time
+        if not s.get("submitted_at"):
+            score -= 10
+        quality_scores.append(max(0, score))
     
-    # Timeliness - submissions within expected time
-    timeliness = 85  # Default good timeliness score
-    
-    # Overall score
-    overall_score = round((completeness + accuracy + timeliness) / 3)
-    
-    # Identify issues
-    issues = []
-    if completeness < 80:
-        issues.append({
-            "type": "completeness",
-            "severity": "warning",
-            "message": f"{100 - completeness}% of submissions have incomplete data"
-        })
-    if accuracy < 70:
-        issues.append({
-            "type": "accuracy",
-            "severity": "warning", 
-            "message": f"{100 - accuracy}% of submissions missing GPS coordinates"
-        })
+    avg_quality_score = round(sum(quality_scores) / len(quality_scores)) if quality_scores else 0
     
     return {
-        "overall_score": overall_score,
-        "completeness": completeness,
-        "accuracy": accuracy,
-        "timeliness": timeliness,
-        "total_submissions": total_submissions,
-        "issues": issues
+        "avg_quality_score": avg_quality_score,
+        "approved_count": approved_count,
+        "rejected_count": rejected_count,
+        "flagged_count": flagged_count,
+        "total_submissions": total_submissions
     }
 
 
