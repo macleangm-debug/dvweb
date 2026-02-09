@@ -1215,11 +1215,11 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#0a1628] text-white relative noise-overlay" data-testid="footer">
-      <div className="container mx-auto px-6 lg:px-12 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-8">
+      <div className="container mx-auto px-6 lg:px-12 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10">
           {/* Brand - Takes 2 columns on large screens */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <div className="mb-4">
+            <div className="mb-6">
               <div className="bg-white inline-block rounded px-3 py-2">
                 <img 
                   src="/datavision-logo-cropped.png" 
@@ -1228,9 +1228,9 @@ const Footer = () => {
                 />
               </div>
             </div>
-            <p className="text-white/70 mb-4 max-w-md text-sm leading-relaxed">
-              Africa's trusted partner in research and statistics. Over 25 years of experience 
-              delivering data-driven insights that shape policy and drive development across the continent.
+            <p className="text-white/70 mb-6 max-w-md text-sm leading-relaxed">
+              A trusted global partner in research, data analytics, and development consulting. Over 25 years of experience 
+              delivering data-driven insights across Africa and beyond.
             </p>
             <div className="flex gap-3">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 flex items-center justify-center hover:bg-[#e63946] transition-colors" data-testid="footer-linkedin">
@@ -1239,7 +1239,7 @@ const Footer = () => {
             </div>
             
             {/* Contact Info */}
-            <div className="mt-4 space-y-2 text-sm text-white/70">
+            <div className="mt-6 space-y-3 text-sm text-white/70">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 text-[#e63946] flex-shrink-0" />
                 <span>Garden Road, Mikocheni Area, Dar es Salaam</span>
