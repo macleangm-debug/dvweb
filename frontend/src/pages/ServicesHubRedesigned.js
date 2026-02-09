@@ -175,7 +175,7 @@ const ServicesHubPageRedesigned = () => {
     {
       sector: "WASH",
       title: "Rural Water Infrastructure Verification",
-      description: "Four-year data verification project mapping and assessing water points across all regions of Tanzania for improved water sector governance.",
+      description: "Four-year data verification project mapping and assessing water points across multiple regions for improved water sector governance.",
       metrics: ["129,949 Water Points", "124 Enumerators", "26 Regions"],
       icon: Droplets,
       color: "#2a9d8f"
@@ -554,7 +554,7 @@ const ServicesHubPageRedesigned = () => {
                 viewport={{ once: true }}
                 className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm"
               >
-                Our Impact in Tanzania
+                Our Global Impact
               </motion.p>
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
@@ -844,7 +844,7 @@ const ServicesHubPageRedesigned = () => {
               transition={{ delay: 0.1 }}
               className="text-xl text-white/90 mb-10"
             >
-              Let's discuss how we can support your research and evaluation needs in Tanzania.
+              Let's discuss how we can support your research and evaluation needs globally.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
