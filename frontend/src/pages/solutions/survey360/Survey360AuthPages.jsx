@@ -13,7 +13,8 @@ import { toast } from 'sonner';
 // Check for DataVision auth token in localStorage
 const getDataVisionToken = () => {
   try {
-    const token = localStorage.getItem('datavision_token') || localStorage.getItem('token');
+    // DataVision stores token as 'dv_token'
+    const token = localStorage.getItem('dv_token') || localStorage.getItem('datavision_token') || localStorage.getItem('token');
     return token;
   } catch {
     return null;
