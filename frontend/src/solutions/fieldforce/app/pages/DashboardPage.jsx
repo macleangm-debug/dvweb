@@ -257,7 +257,7 @@ export function DashboardPage() {
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Submission Trends */}
-          <Card className="lg:col-span-2 bg-white border border-slate-200">
+          <Card className="lg:col-span-2 bg-slate-800 border border-slate-700">
             <CardHeader>
               <CardTitle className="text-slate-900">Submission Trends</CardTitle>
               <CardDescription className="text-slate-500">Last 14 days</CardDescription>
@@ -304,7 +304,7 @@ export function DashboardPage() {
           </Card>
 
           {/* Data Quality */}
-          <Card className="bg-white border border-slate-200">
+          <Card className="bg-slate-800 border border-slate-700">
             <CardHeader>
               <CardTitle className="text-slate-900">Data Quality</CardTitle>
               <CardDescription className="text-slate-500">Overall quality metrics</CardDescription>
@@ -352,7 +352,7 @@ export function DashboardPage() {
         {/* Recent Activity & Quick Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Recent Activity */}
-          <Card className="lg:col-span-2 bg-white border border-slate-200">
+          <Card className="lg:col-span-2 bg-slate-800 border border-slate-700">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-slate-900">Recent Activity</CardTitle>
@@ -392,7 +392,7 @@ export function DashboardPage() {
           </Card>
 
           {/* Quick Actions */}
-          <Card className="bg-white border border-slate-200">
+          <Card className="bg-slate-800 border border-slate-700">
             <CardHeader>
               <CardTitle className="text-slate-900">Quick Actions</CardTitle>
             </CardHeader>
