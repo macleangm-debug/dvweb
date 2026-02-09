@@ -2185,8 +2185,12 @@ async def get_user_products(email: str):
     ).to_list(100)
     return {"products": access_records}
 
+# Import and include Survey360 routes
+from routes.survey360_routes import router as survey360_router, create_survey360_demo_user
+
 # Include router and middleware
 app.include_router(api_router)
+api_router.include_router(survey360_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -2195,6 +2199,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_db_client():
+    # Store db reference for survey360 routes
+    app.state.db = db
+    # Create demo user for Survey360
+    await create_survey360_demo_user(db)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
