@@ -1185,10 +1185,12 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand - Takes 2 columns on large screens */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl font-bold font-serif">Data</span>
-              <span className="text-2xl font-bold text-[#e63946] font-serif">Vision</span>
-              <span className="text-xs font-semibold tracking-wider ml-2 border-l border-white/30 pl-2">INTERNATIONAL</span>
+            <div className="mb-4">
+              <img 
+                src="/datavision-logo.png" 
+                alt="DataVision International" 
+                className="h-10 w-auto brightness-0 invert"
+              />
             </div>
             <p className="text-white/70 mb-6 max-w-md text-sm leading-relaxed">
               Africa's trusted partner in research and statistics. Over 25 years of experience 
