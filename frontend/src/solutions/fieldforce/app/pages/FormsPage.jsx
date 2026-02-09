@@ -62,7 +62,7 @@ const FormCard = ({ form, onPublish, onDuplicate, onArchive }) => {
     >
       <Card 
         className="bg-card border border-border hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group"
-        onClick={() => navigate(`/forms/${form.id}`)}
+        onClick={() => navigate(`/solutions/fieldforce/app/forms/${form.id}`)}
         data-testid={`form-card-${form.id}`}
       >
         <CardHeader className="pb-3">
