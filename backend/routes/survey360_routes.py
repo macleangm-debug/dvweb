@@ -201,7 +201,9 @@ def create_survey360_token(user_id: str) -> str:
     )
 
 async def get_survey360_user(authorization: Optional[str] = Header(None)):
-    
+    """
+    Unified authentication - accepts both Survey360 and DataVision tokens
+    """
     db = get_db()
     
     if not authorization or not authorization.startswith("Bearer "):
@@ -210,10 +212,50 @@ async def get_survey360_user(authorization: Optional[str] = Header(None)):
     token = authorization.replace("Bearer ", "")
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        user = await db.survey360_users.find_one({"id": payload["user_id"]}, {"_id": 0, "password_hash": 0})
-        if not user:
-            raise HTTPException(status_code=401, detail="User not found")
-        return user
+        
+        # Check for Survey360 user first
+        if "user_id" in payload:
+            user = await db.survey360_users.find_one({"id": payload["user_id"]}, {"_id": 0, "password_hash": 0})
+            if user:
+                return user
+        
+        # Check for DataVision admin user (SSO)
+        if "sub" in payload:
+            admin_email = payload["sub"]
+            # Check if admin has a linked Survey360 account
+            user = await db.survey360_users.find_one({"email": admin_email}, {"_id": 0, "password_hash": 0})
+            if user:
+                return user
+            
+            # Auto-create Survey360 account for DataVision admin
+            admin = await db.admins.find_one({"email": admin_email}, {"_id": 0})
+            if admin:
+                user_id = str(uuid.uuid4())
+                org_id = str(uuid.uuid4())
+                
+                # Create org for admin
+                await db.survey360_orgs.insert_one({
+                    "id": org_id,
+                    "name": f"{admin.get('name', 'Admin')}'s Organization",
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                })
+                
+                # Create Survey360 user linked to admin
+                new_user = {
+                    "id": user_id,
+                    "email": admin_email,
+                    "name": admin.get("name", "Admin User"),
+                    "password_hash": "",  # SSO user, no password
+                    "org_id": org_id,
+                    "sso_linked": True,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.survey360_users.insert_one(new_user)
+                del new_user["password_hash"]
+                del new_user["_id"] if "_id" in new_user else None
+                return new_user
+        
+        raise HTTPException(status_code=401, detail="User not found")
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
@@ -222,27 +264,67 @@ async def get_survey360_user(authorization: Optional[str] = Header(None)):
 # Auth routes
 @router.post("/auth/login", response_model=Survey360AuthResponse)
 async def survey360_login(request: Survey360LoginRequest):
-    
+    """
+    Unified login - checks both Survey360 users and DataVision admins
+    """
     db = get_db()
     
+    # First check Survey360 users
     user = await db.survey360_users.find_one({"email": request.email}, {"_id": 0})
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+    if user and user.get("password_hash"):
+        password_hash = hashlib.sha256(request.password.encode()).hexdigest()
+        if user.get("password_hash") == password_hash:
+            token = create_survey360_token(user["id"])
+            return Survey360AuthResponse(
+                user=Survey360UserResponse(
+                    id=user["id"],
+                    email=user["email"],
+                    name=user["name"],
+                    org_id=user.get("org_id")
+                ),
+                access_token=token
+            )
     
-    password_hash = hashlib.sha256(request.password.encode()).hexdigest()
-    if user.get("password_hash") != password_hash:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+    # Check DataVision admins (SSO)
+    admin = await db.admins.find_one({"email": request.email}, {"_id": 0})
+    if admin:
+        # Verify password against admin store
+        password_hash = hashlib.sha256(request.password.encode()).hexdigest()
+        if admin.get("password_hash") == password_hash:
+            # Create or get Survey360 user for admin
+            survey360_user = await db.survey360_users.find_one({"email": request.email}, {"_id": 0})
+            if not survey360_user:
+                user_id = str(uuid.uuid4())
+                org_id = str(uuid.uuid4())
+                
+                await db.survey360_orgs.insert_one({
+                    "id": org_id,
+                    "name": f"{admin.get('name', 'Admin')}'s Organization",
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                })
+                
+                survey360_user = {
+                    "id": user_id,
+                    "email": request.email,
+                    "name": admin.get("name", "Admin User"),
+                    "org_id": org_id,
+                    "sso_linked": True,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.survey360_users.insert_one({**survey360_user, "password_hash": ""})
+            
+            token = create_survey360_token(survey360_user["id"])
+            return Survey360AuthResponse(
+                user=Survey360UserResponse(
+                    id=survey360_user["id"],
+                    email=survey360_user["email"],
+                    name=survey360_user["name"],
+                    org_id=survey360_user.get("org_id")
+                ),
+                access_token=token
+            )
     
-    token = create_survey360_token(user["id"])
-    return Survey360AuthResponse(
-        user=Survey360UserResponse(
-            id=user["id"],
-            email=user["email"],
-            name=user["name"],
-            org_id=user.get("org_id")
-        ),
-        access_token=token
-    )
+    raise HTTPException(status_code=401, detail="Invalid credentials")
 
 @router.post("/auth/register", response_model=Survey360AuthResponse)
 async def survey360_register(request: Survey360RegisterRequest):
