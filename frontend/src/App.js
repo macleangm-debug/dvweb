@@ -109,6 +109,15 @@ const AuthContext = React.createContext(null);
 
 const useAuth = () => React.useContext(AuthContext);
 
+// Check for Survey360 auth token in localStorage
+const getSurvey360Token = () => {
+  try {
+    return localStorage.getItem('survey360_token');
+  } catch {
+    return null;
+  }
+};
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('dv_token'));
@@ -116,17 +125,40 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
+      // First try DataVision token
       if (token) {
         try {
           const res = await axios.get(`${API}/auth/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setUser(res.data);
+          setLoading(false);
+          return;
         } catch {
           localStorage.removeItem('dv_token');
           setToken(null);
         }
       }
+      
+      // Try Survey360 SSO exchange (reverse SSO)
+      const survey360Token = getSurvey360Token();
+      if (survey360Token) {
+        try {
+          const res = await axios.post(`${API}/auth/sso-exchange`, {}, {
+            headers: { Authorization: `Bearer ${survey360Token}` }
+          });
+          if (res.data.access_token) {
+            localStorage.setItem('dv_token', res.data.access_token);
+            setToken(res.data.access_token);
+            setUser(res.data.user);
+            setLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.log('Survey360 SSO exchange failed:', error.message);
+        }
+      }
+      
       setLoading(false);
     };
     verifyToken();
