@@ -2885,7 +2885,14 @@ function App() {
                   <Route path="/s/:surveyId" element={<PublicSurveyPage />} />
                   <Route path="/solutions/dataviz-studio" element={<DataVizStudioPage />} />
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
-                  <Route path="/solutions/fieldforce" element={<FieldForcePage />} />
+                  
+                  {/* FieldForce Routes */}
+                  <Route path="/solutions/fieldforce" element={<FieldForceLandingPage />} />
+                  <Route path="/solutions/fieldforce/app/login" element={<FieldForceLoginPage />} />
+                  <Route path="/solutions/fieldforce/app/register" element={<FieldForceRegisterPage />} />
+                  <Route path="/solutions/fieldforce/app/dashboard" element={<FieldForceDashboardPage />} />
+                  <Route path="/solutions/fieldforce/app/*" element={<FieldForceDashboardPage />} />
+                  
                   <Route path="/solutions/agridata-pro" element={<AgriDataProPage />} />
                   <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
                   <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
