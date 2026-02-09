@@ -67,13 +67,46 @@
 }
 
 .fieldforce-app .bg-white,
-.fieldforce-app .bg-slate-50 {
+.fieldforce-app .bg-slate-50,
+.fieldforce-app .bg-gray-50,
+.fieldforce-app .bg-gray-100,
+.fieldforce-app [class*="bg-slate-"],
+.fieldforce-app [class*="bg-gray-"] {
   background-color: hsl(222 47% 14%) !important;
 }
 
+/* Field type buttons in form builder */
+.fieldforce-app button[class*="bg-slate"],
+.fieldforce-app button[class*="bg-gray"],
+.fieldforce-app .field-type-button {
+  background-color: hsl(217 33% 17%) !important;
+  color: hsl(210 40% 98%) !important;
+}
+
+.fieldforce-app button[class*="bg-slate"]:hover,
+.fieldforce-app button[class*="bg-gray"]:hover {
+  background-color: hsl(217 33% 22%) !important;
+}
+
 .fieldforce-app .border-slate-200,
-.fieldforce-app .border-slate-100 {
+.fieldforce-app .border-slate-100,
+.fieldforce-app .border-gray-200,
+.fieldforce-app .border-gray-100 {
   border-color: hsl(217 33% 20%) !important;
+}
+
+/* Inputs and forms */
+.fieldforce-app input,
+.fieldforce-app textarea,
+.fieldforce-app select {
+  background-color: hsl(217 33% 17%) !important;
+  color: hsl(210 40% 98%) !important;
+  border-color: hsl(217 33% 25%) !important;
+}
+
+.fieldforce-app input::placeholder,
+.fieldforce-app textarea::placeholder {
+  color: hsl(215 20% 50%) !important;
 }
 
 /* Font families */
