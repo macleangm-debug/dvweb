@@ -10,8 +10,8 @@ import pandas as pd
 
 from fieldforce.models import ExportRequest, ExportJob
 from fieldforce.auth import get_current_user
-from utils.security import requires_permission, check_permission
-from utils.audit import log_action
+from fieldforce.utils.security import requires_permission, check_permission
+from fieldforce.utils.audit import log_action
 
 router = APIRouter(prefix="/exports", tags=["Exports"])
 
