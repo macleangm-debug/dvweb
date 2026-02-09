@@ -1632,11 +1632,11 @@ const HomePage = () => {
       <section className="py-24 bg-[#f8fafc]">
         <div className="container mx-auto px-6 lg:px-12 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-6 font-serif">
-            Ready to Partner With Africa's Leading Research Consultancy?
+            Ready to Transform Your Data into Impact?
           </h2>
           <p className="text-[#64748b] max-w-2xl mx-auto mb-8">
             Whether you're planning a large-scale survey, need monitoring and evaluation expertise, 
-            or require data collection services across Africa, we're here to help.
+            or require data analytics and technology solutions, we're here to help.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link 
