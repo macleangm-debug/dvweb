@@ -454,9 +454,9 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img 
-                src="/datavision-logo.png" 
+                src="/datavision-logo-cropped.png" 
                 alt="DataVision International" 
-                className="h-10 w-auto"
+                className="h-8 w-auto"
               />
             </Link>
 
