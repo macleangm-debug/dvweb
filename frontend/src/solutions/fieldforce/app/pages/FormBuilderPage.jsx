@@ -815,7 +815,7 @@ export function FormBuilderPage() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="outline" onClick={() => navigate(`/forms/${formId}/preview`)}>
+            <Button variant="outline" onClick={() => navigate(`/solutions/fieldforce/app/forms/${formId}/preview`)}>
               <Eye className="w-4 h-4 mr-2" />
               Preview
             </Button>
