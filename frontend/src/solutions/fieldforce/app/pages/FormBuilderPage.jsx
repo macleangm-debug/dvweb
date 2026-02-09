@@ -660,6 +660,11 @@ export function FormBuilderPage() {
   const [selectedVersion, setSelectedVersion] = useState(null);
 
   const loadForm = useCallback(async () => {
+    // Skip loading if we're creating a new form (no formId)
+    if (!formId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const response = await formAPI.get(formId);
