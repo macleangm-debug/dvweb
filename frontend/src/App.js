@@ -121,7 +121,7 @@ import { GPSMapPage as FFGPSMapPage } from './solutions/fieldforce/app/pages/GPS
 import { DeviceManagementPage as FFDeviceManagementPage } from './solutions/fieldforce/app/pages/DeviceManagementPage';
 import { QualityPage as FFQualityPage } from './solutions/fieldforce/app/pages/QualityPage';
 import { AnalyticsPage as FFAnalyticsPage } from './solutions/fieldforce/app/pages/AnalyticsPage';
-import { TeamPage as FFTeamPage } from './solutions/fieldforce/app/pages/TeamPage';
+import { TeamPage as FFTeamPage, CreateOrganizationPage as FFCreateOrganizationPage } from './solutions/fieldforce/app/pages/TeamPage';
 import { RBACPage as FFRBACPage } from './solutions/fieldforce/app/pages/RBACPage';
 import { TranslationsPage as FFTranslationsPage } from './solutions/fieldforce/app/pages/TranslationsPage';
 import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages/SettingsPage';
