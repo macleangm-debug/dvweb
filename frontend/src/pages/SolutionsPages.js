@@ -524,7 +524,52 @@ export const SolutionsHubPage = () => {
 
 // ==================== SOLUTION DETAIL PAGE TEMPLATE ====================
 const SolutionDetailPage = ({ solution }) => {
+  const [purchaseLoading, setPurchaseLoading] = useState(null);
+  const [purchaseError, setPurchaseError] = useState(null);
+
   if (!solution) return <div>Solution not found</div>;
+
+  const pricing = PRICING_DATA[solution.id] || {};
+
+  const handlePurchase = async (packageId) => {
+    setPurchaseLoading(packageId);
+    setPurchaseError(null);
+    
+    try {
+      const response = await fetch(`${API}/payments/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          package_id: packageId,
+          origin_url: window.location.origin,
+          metadata: {
+            source: 'solutions_page',
+            product: solution.id
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to create checkout session');
+      }
+
+      const data = await response.json();
+      
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Purchase error:', error);
+      setPurchaseError(error.message);
+      setPurchaseLoading(null);
+    }
+  };
 
   return (
     <div className="pt-20">
@@ -566,17 +611,20 @@ const SolutionDetailPage = ({ solution }) => {
                 scalability, and actionable insights from their data operations.
               </p>
               <div className="flex flex-wrap gap-4">
+                <a
+                  href="#pricing"
+                  className="inline-flex items-center gap-2 bg-[#e63946] text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
+                  data-testid="view-pricing-btn"
+                >
+                  <Tag className="w-4 h-4" />
+                  View Pricing
+                </a>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 bg-[#e63946] text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
+                  className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all"
                 >
                   Request Demo
-                  <ArrowRight className="w-4 h-4" />
                 </Link>
-                <button className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0a1628] transition-all">
-                  <Play className="w-4 h-4" />
-                  Watch Demo
-                </button>
               </div>
             </motion.div>
 
