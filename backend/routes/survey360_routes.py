@@ -13,7 +13,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 router = APIRouter(prefix="/survey360", tags=["Survey360"])
 
 # JWT settings
-JWT_SECRET = os.environ.get("JWT_SECRET", "survey360-secret-key-change-in-production")
+JWT_SECRET = os.environ.get("JWT_SECRET", "datavision-secret-key-2024")  # Unified with DataVision
 
 # Database connection - initialized on startup
 _db = None
