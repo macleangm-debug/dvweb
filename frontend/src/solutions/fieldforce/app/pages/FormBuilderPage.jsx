@@ -675,8 +675,17 @@ export function FormBuilderPage() {
   }, [formId, navigate, setForm]);
 
   useEffect(() => {
-    loadForm();
-  }, [loadForm]);
+    if (formId) {
+      loadForm();
+    } else {
+      // New form - reset state
+      setFormName('');
+      setFormDescription('');
+      setForm(null);
+      setFields([]);
+      setLoading(false);
+    }
+  }, [formId, loadForm, setForm, setFields]);
 
   const handleAddField = (type) => {
     const newField = {
