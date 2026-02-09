@@ -782,25 +782,178 @@ const SolutionDetailPage = ({ solution }) => {
               Ready to Get Started with {solution.name}?
             </h2>
             <p className="text-white/90 max-w-2xl mx-auto mb-8">
-              Schedule a personalized demo and see how {solution.name} can transform 
-              your data operations.
+              Choose a plan that fits your needs or schedule a personalized demo 
+              to see {solution.name} in action.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/contact"
+              <a 
+                href="#pricing"
                 className="inline-flex items-center gap-2 bg-white text-[#e63946] px-8 py-4 font-semibold uppercase tracking-wider hover:bg-[#0a1628] hover:text-white transition-all"
               >
-                Schedule Demo
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <ShoppingCart className="w-4 h-4" />
+                Buy Now
+              </a>
               <Link 
-                to="/solutions"
+                to="/contact"
                 className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-white hover:text-[#e63946] transition-all"
               >
-                View All Solutions
+                Schedule Demo
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-24 bg-white scroll-mt-20">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4 text-sm">
+              Pricing
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-4">
+              Choose Your Plan
+            </h2>
+            <p className="text-[#64748b] max-w-2xl mx-auto">
+              Flexible pricing options designed for organizations of all sizes. 
+              All plans include access to our Tanzania-based support team.
+            </p>
+          </div>
+
+          {purchaseError && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-3xl mx-auto mb-8 bg-red-50 border border-red-200 rounded-xl p-4 text-center"
+            >
+              <p className="text-red-600 text-sm">{purchaseError}</p>
+            </motion.div>
+          )}
+
+          <div className={`grid gap-6 max-w-6xl mx-auto ${
+            Object.keys(pricing).length === 1 ? 'md:grid-cols-1 max-w-md' :
+            Object.keys(pricing).length === 2 ? 'md:grid-cols-2 max-w-3xl' :
+            'md:grid-cols-3'
+          }`}>
+            {Object.entries(pricing).map(([tier, plan], index) => {
+              const isPopular = tier === 'professional' || tier === 'medium' || (Object.keys(pricing).length === 1);
+              const isEnterprise = plan.price === null;
+              
+              return (
+                <motion.div
+                  key={tier}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`relative rounded-2xl p-8 ${
+                    isPopular 
+                      ? 'bg-[#0a1628] text-white ring-4 ring-[#e63946] scale-105' 
+                      : 'bg-[#f8fafc] text-[#0a1628]'
+                  }`}
+                >
+                  {isPopular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <span className="bg-[#e63946] text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="text-center mb-6">
+                    <h3 className={`text-lg font-bold capitalize mb-2 ${isPopular ? 'text-white' : 'text-[#0a1628]'}`}>
+                      {tier.replace('_', ' ')}
+                    </h3>
+                    <div className="flex items-baseline justify-center gap-1">
+                      {isEnterprise ? (
+                        <span className={`text-3xl font-bold ${isPopular ? 'text-white' : 'text-[#0a1628]'}`}>
+                          Custom
+                        </span>
+                      ) : (
+                        <>
+                          <span className={`text-4xl font-bold ${isPopular ? 'text-white' : 'text-[#0a1628]'}`}>
+                            ${plan.price.toLocaleString()}
+                          </span>
+                          <span className={`text-sm ${isPopular ? 'text-white/70' : 'text-[#64748b]'}`}>
+                            {plan.period}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                          isPopular ? 'text-[#2a9d8f]' : 'text-[#2a9d8f]'
+                        }`} />
+                        <span className={`text-sm ${isPopular ? 'text-white/90' : 'text-[#64748b]'}`}>
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  {isEnterprise ? (
+                    <Link
+                      to="/contact"
+                      className={`w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-all ${
+                        isPopular
+                          ? 'bg-white text-[#0a1628] hover:bg-[#e63946] hover:text-white'
+                          : 'bg-[#0a1628] text-white hover:bg-[#e63946]'
+                      }`}
+                      data-testid={`contact-${tier}-btn`}
+                    >
+                      Contact Sales
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => handlePurchase(plan.id)}
+                      disabled={purchaseLoading === plan.id}
+                      className={`w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-70 disabled:cursor-not-allowed ${
+                        isPopular
+                          ? 'bg-[#e63946] text-white hover:bg-white hover:text-[#0a1628]'
+                          : 'bg-[#0a1628] text-white hover:bg-[#e63946]'
+                      }`}
+                      data-testid={`buy-${tier}-btn`}
+                    >
+                      {purchaseLoading === plan.id ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="w-4 h-4" />
+                          Buy Now
+                        </>
+                      )}
+                    </button>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+          
+          {/* Trust badges */}
+          <div className="mt-16 text-center">
+            <div className="flex flex-wrap justify-center items-center gap-8 text-[#64748b]">
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-[#2a9d8f]" />
+                <span className="text-sm">Secure Payment</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-[#2a9d8f]" />
+                <span className="text-sm">Powered by Stripe</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-[#2a9d8f]" />
+                <span className="text-sm">Instant Access</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
