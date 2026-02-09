@@ -2752,6 +2752,7 @@ function App() {
                   <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
                   <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
                   <Route path="/solutions/wash-monitor" element={<WASHMonitorPage />} />
+                  <Route path="/payment/success" element={<PaymentSuccessPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
                   <Route path="/careers" element={<CareersPage />} />
