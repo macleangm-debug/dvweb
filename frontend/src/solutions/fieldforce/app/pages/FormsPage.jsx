@@ -229,7 +229,7 @@ export function FormsPage() {
       setCreateDialogOpen(false);
       setNewForm({ name: '', description: '', project_id: '' });
       toast.success('Form created');
-      navigate(`/forms/${response.data.id}/edit`);
+      navigate(`/solutions/fieldforce/app/forms/${response.data.id}/edit`);
     } catch (error) {
       toast.error('Failed to create form');
     } finally {
