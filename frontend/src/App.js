@@ -88,6 +88,20 @@ import {
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
+// Survey360 App Pages (from GitHub repo)
+import {
+  Survey360LoginPage,
+  Survey360RegisterPage,
+  Survey360AppLayout,
+  Survey360DashboardPage,
+  Survey360SurveysPage,
+  Survey360BuilderPage,
+  Survey360ResponsesPage,
+  Survey360BillingPage,
+  Survey360SettingsPage,
+  PublicSurveyPage
+} from './pages/solutions/survey360';
+
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // ==================== CONTEXT ====================
