@@ -229,26 +229,26 @@ export function DashboardPage() {
                 title="Total Projects"
                 value={stats?.total_projects || 0}
                 icon={FolderKanban}
-                onClick={() => navigate('/projects')}
+                onClick={() => navigate('/solutions/fieldforce/app/projects')}
               />
               <StatCard
                 title="Active Forms"
                 value={stats?.total_forms || 0}
                 icon={FileText}
-                onClick={() => navigate('/forms')}
+                onClick={() => navigate('/solutions/fieldforce/app/forms')}
               />
               <StatCard
                 title="Submissions"
                 value={stats?.total_submissions || 0}
                 icon={Database}
                 description={`${stats?.submissions_today || 0} today`}
-                onClick={() => navigate('/submissions')}
+                onClick={() => navigate('/solutions/fieldforce/app/submissions')}
               />
               <StatCard
                 title="Pending Reviews"
                 value={stats?.pending_reviews || 0}
                 icon={AlertCircle}
-                onClick={() => navigate('/submissions?status=pending')}
+                onClick={() => navigate('/solutions/fieldforce/app/submissions?status=pending')}
               />
             </>
           )}
