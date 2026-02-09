@@ -622,7 +622,7 @@ async def ff_get_submission_trends(
     if not org_id:
         user = await db.fieldforce_users.find_one({"id": payload["user_id"]}, {"_id": 0})
         if not user or not user.get("organization_id"):
-            return {"trends": [], "total": 0}
+            return []
         org_id = user["organization_id"]
     
     # Calculate date range
@@ -653,13 +653,7 @@ async def ff_get_submission_trends(
             "count": count
         })
     
-    total = sum(t["count"] for t in trends)
-    
-    return {
-        "trends": trends,
-        "total": total,
-        "period_days": days
-    }
+    return trends
 
 
 @router.get("/dashboard/quality-metrics")
