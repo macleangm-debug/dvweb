@@ -445,7 +445,7 @@ export function FormsPage() {
                 </Button>
               )}
               {projects.length === 0 && (
-                <Button onClick={() => navigate('/projects')}>
+                <Button onClick={() => navigate('/solutions/fieldforce/app/projects')}>
                   Create a Project First
                 </Button>
               )}
