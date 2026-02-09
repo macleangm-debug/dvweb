@@ -2531,7 +2531,7 @@ const LoginPage = () => {
 
 // Admin Dashboard
 const AdminDashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('inquiries');
   const [inquiries, setInquiries] = useState([]);
@@ -2539,6 +2539,9 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState([]);
 
   useEffect(() => {
+    // Wait for auth loading to complete before redirecting
+    if (loading) return;
+    
     if (!user) {
       navigate('/login');
       return;
@@ -2556,7 +2559,19 @@ const AdminDashboard = () => {
       setProjects(projRes.data);
       setStats(statsRes.data);
     }).catch(console.error);
-  }, [user, navigate]);
+  }, [user, navigate, loading]);
+
+  // Show loading while auth is being verified
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-[#e63946] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) return null;
 
