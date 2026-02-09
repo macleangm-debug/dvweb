@@ -1,29 +1,33 @@
+/**
+ * FieldForce Dashboard Page - Canva-style UI
+ * Based on the original GitHub FieldForce design
+ */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard,
-  FolderOpen,
-  ClipboardList,
+  FolderKanban,
   FileText,
+  ClipboardList,
   Users,
-  TrendingUp,
   Plus,
   ArrowRight,
   MapPin,
   Clock,
   CheckCircle2,
-  AlertCircle
+  TrendingUp
 } from 'lucide-react';
 import axios from 'axios';
-import { FieldForceAppLayout } from './FieldForceAppLayout';
+import { FieldForceCanvaLayout } from './FieldForceAppLayout';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api/fieldforce`;
 
 export const FieldForceDashboardPage = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({ projects: 0, forms: 0, submissions: 0, enumerators: 0 });
   const [recentActivity, setRecentActivity] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasOrg, setHasOrg] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -31,6 +35,8 @@ export const FieldForceDashboardPage = () => {
 
   const fetchDashboardData = async () => {
     const token = localStorage.getItem('fieldforce_token');
+    const user = JSON.parse(localStorage.getItem('fieldforce_user') || '{}');
+    
     try {
       const [statsRes, activityRes] = await Promise.all([
         axios.get(`${API}/dashboard/stats`, {
@@ -42,6 +48,7 @@ export const FieldForceDashboardPage = () => {
       ]);
       setStats(statsRes.data);
       setRecentActivity(activityRes.data || []);
+      setHasOrg(!!user.organization_id);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
@@ -49,31 +56,71 @@ export const FieldForceDashboardPage = () => {
     }
   };
 
+  const createOrganization = async () => {
+    const token = localStorage.getItem('fieldforce_token');
+    try {
+      const res = await axios.post(`${API}/organizations`, null, {
+        params: { name: 'My Organization' },
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // Update user in localStorage
+      const user = JSON.parse(localStorage.getItem('fieldforce_user') || '{}');
+      user.organization_id = res.data.id;
+      localStorage.setItem('fieldforce_user', JSON.stringify(user));
+      
+      setHasOrg(true);
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to create organization:', error);
+    }
+  };
+
   const statCards = [
-    { label: 'Projects', value: stats.projects, icon: FolderOpen, color: 'bg-blue-500', link: '/solutions/fieldforce/app/projects' },
-    { label: 'Forms', value: stats.forms, icon: ClipboardList, color: 'bg-teal-500', link: '/solutions/fieldforce/app/forms' },
-    { label: 'Submissions', value: stats.submissions, icon: FileText, color: 'bg-purple-500', link: '/solutions/fieldforce/app/submissions' },
+    { label: 'Projects', value: stats.projects, icon: FolderKanban, color: 'bg-blue-500', link: '/solutions/fieldforce/app/projects' },
+    { label: 'Forms', value: stats.forms, icon: FileText, color: 'bg-teal-500', link: '/solutions/fieldforce/app/forms' },
+    { label: 'Submissions', value: stats.submissions, icon: ClipboardList, color: 'bg-purple-500', link: '/solutions/fieldforce/app/submissions' },
     { label: 'Team Members', value: stats.enumerators, icon: Users, color: 'bg-orange-500', link: '/solutions/fieldforce/app/team' }
   ];
 
-  return (
-    <FieldForceAppLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white" data-testid="ff-dashboard-title">Dashboard</h1>
-            <p className="text-white/60 text-sm">Welcome back to FieldForce</p>
+  // Show organization creation prompt if user has no org
+  if (!loading && !hasOrg) {
+    return (
+      <FieldForceCanvaLayout>
+        <div className="flex flex-col items-center justify-center min-h-[60vh]" data-testid="ff-create-org-prompt">
+          <div className="w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center mb-6">
+            <FolderKanban className="w-10 h-10 text-blue-400" />
           </div>
-          <div className="flex gap-3">
-            <Link
-              to="/solutions/fieldforce/app/projects"
-              className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
-              data-testid="ff-new-project-btn"
-            >
-              <Plus className="w-4 h-4" />
-              New Project
-            </Link>
+          <h2 className="text-xl font-semibold text-white mb-2">Create your first organization to start collecting data</h2>
+          <p className="text-white/60 text-sm mb-6 text-center max-w-md">
+            Organizations help you manage projects, forms, and team members
+          </p>
+          <button
+            onClick={createOrganization}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors"
+            data-testid="ff-create-org-btn"
+          >
+            <Plus className="w-4 h-4" />
+            Create Organization
+          </button>
+        </div>
+      </FieldForceCanvaLayout>
+    );
+  }
+
+  return (
+    <FieldForceCanvaLayout>
+      <div className="space-y-6" data-testid="ff-dashboard">
+        {/* Welcome Message */}
+        <div className="bg-gradient-to-r from-blue-600/20 to-teal-600/20 rounded-xl p-4 border border-blue-500/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-white font-medium">Welcome back!</h2>
+              <p className="text-white/60 text-sm">You're all set to collect data</p>
+            </div>
           </div>
         </div>
 
@@ -88,9 +135,9 @@ export const FieldForceDashboardPage = () => {
             >
               <Link
                 to={stat.link}
-                className="block bg-[#1e293b] rounded-xl p-6 hover:bg-[#1e293b]/80 transition-colors group"
+                className="block bg-[#1e293b] rounded-xl p-5 hover:bg-[#1e293b]/80 transition-colors group border border-white/5"
               >
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-3">
                   <div className={`w-10 h-10 ${stat.color}/20 rounded-lg flex items-center justify-center`}>
                     <stat.icon className={`w-5 h-5 ${stat.color.replace('bg-', 'text-')}`} />
                   </div>
@@ -108,21 +155,21 @@ export const FieldForceDashboardPage = () => {
         {/* Quick Actions & Recent Activity */}
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Quick Actions */}
-          <div className="bg-[#1e293b] rounded-xl p-6">
+          <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5">
             <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
             <div className="grid grid-cols-2 gap-3">
               <Link
-                to="/solutions/fieldforce/app/forms"
+                to="/solutions/fieldforce/app/forms/new"
                 className="bg-white/5 hover:bg-white/10 rounded-lg p-4 flex flex-col items-center text-center transition-colors"
               >
-                <ClipboardList className="w-8 h-8 text-teal-400 mb-2" />
+                <FileText className="w-8 h-8 text-teal-400 mb-2" />
                 <span className="text-white text-sm font-medium">Create Form</span>
               </Link>
               <Link
                 to="/solutions/fieldforce/app/submissions"
                 className="bg-white/5 hover:bg-white/10 rounded-lg p-4 flex flex-col items-center text-center transition-colors"
               >
-                <FileText className="w-8 h-8 text-purple-400 mb-2" />
+                <ClipboardList className="w-8 h-8 text-purple-400 mb-2" />
                 <span className="text-white text-sm font-medium">View Data</span>
               </Link>
               <Link
@@ -142,8 +189,8 @@ export const FieldForceDashboardPage = () => {
             </div>
           </div>
 
-          {/* Recent Activity */}
-          <div className="bg-[#1e293b] rounded-xl p-6">
+          {/* Recent Submissions */}
+          <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5">
             <h2 className="text-lg font-semibold text-white mb-4">Recent Submissions</h2>
             {loading ? (
               <div className="text-center py-8">
@@ -151,7 +198,7 @@ export const FieldForceDashboardPage = () => {
               </div>
             ) : recentActivity.length === 0 ? (
               <div className="text-center py-8">
-                <FileText className="w-12 h-12 text-white/20 mx-auto mb-3" />
+                <ClipboardList className="w-12 h-12 text-white/20 mx-auto mb-3" />
                 <p className="text-white/60 text-sm">No submissions yet</p>
                 <p className="text-white/40 text-xs mt-1">Create a form and start collecting data</p>
               </div>
@@ -176,12 +223,12 @@ export const FieldForceDashboardPage = () => {
           </div>
         </div>
 
-        {/* Getting Started Guide (if no data) */}
+        {/* Getting Started Guide (if no projects) */}
         {!loading && stats.projects === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-500/30 rounded-xl p-6"
+            className="bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 rounded-xl p-6"
           >
             <h2 className="text-lg font-semibold text-white mb-2">Getting Started</h2>
             <p className="text-white/70 text-sm mb-4">
@@ -219,7 +266,7 @@ export const FieldForceDashboardPage = () => {
           </motion.div>
         )}
       </div>
-    </FieldForceAppLayout>
+    </FieldForceCanvaLayout>
   );
 };
 
