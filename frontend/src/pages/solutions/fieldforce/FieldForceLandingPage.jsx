@@ -177,7 +177,7 @@ export const FieldForceLandingPage = () => {
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto px-6 lg:px-12 pt-32 pb-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 pt-40 pb-20 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
