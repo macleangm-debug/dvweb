@@ -452,14 +452,12 @@ const Navbar = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold text-[#0a1628] font-serif">Data</span>
-                <span className="text-2xl font-bold text-[#e63946] font-serif">Vision</span>
-              </div>
-              <div className="hidden sm:block border-l-2 border-[#0a1628] pl-3">
-                <span className="text-xs font-semibold text-[#0a1628] tracking-wider">25 YEARS</span>
-              </div>
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/datavision-logo.png" 
+                alt="DataVision International" 
+                className="h-10 w-auto"
+              />
             </Link>
 
             {/* Back to Solutions link */}
@@ -484,10 +482,12 @@ const Navbar = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-[#0a1628] font-serif">Data</span>
-              <span className="text-2xl font-bold text-[#e63946] font-serif">Vision</span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/datavision-logo.png" 
+              alt="DataVision International" 
+              className="h-12 w-auto"
+            />
             </div>
             <div className="hidden sm:block border-l-2 border-[#0a1628] pl-3">
               <span className="text-xs font-semibold text-[#0a1628] tracking-wider">25 YEARS</span>
