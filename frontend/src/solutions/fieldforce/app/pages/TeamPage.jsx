@@ -359,7 +359,7 @@ export function CreateOrganizationPage() {
       setOrganizations([...organizations, response.data]);
       setCurrentOrg(response.data);
       toast.success('Organization created');
-      navigate('/dashboard');
+      navigate('/solutions/fieldforce/app/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Failed to create organization');
     } finally {
