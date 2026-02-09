@@ -2013,7 +2013,7 @@ async def seed_database():
             {"id": str(uuid.uuid4()), "name": "World Bank", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/The_World_Bank_logo.svg/2560px-The_World_Bank_logo.svg.png", "order": 0},
             {"id": str(uuid.uuid4()), "name": "USAID", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/USAID-Identity.svg/2560px-USAID-Identity.svg.png", "order": 1},
             {"id": str(uuid.uuid4()), "name": "UNICEF", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Logo_of_UNICEF.svg/2560px-Logo_of_UNICEF.svg.png", "order": 2},
-            {"id": str(uuid.uuid4()), "name": "UK Aid", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/UK_aid.svg/2560px-UK_aid.svg.png", "order": 3},
+            {"id": str(uuid.uuid4()), "name": "UK Aid", "logo_url": "/uk-aid-logo.png", "order": 3},
         ]
         await db.partners.insert_many(partners)
     
