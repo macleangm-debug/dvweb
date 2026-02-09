@@ -15,19 +15,17 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // Pricing packages mapping to backend packages
 const PRICING_DATA = {
   'survey360': {
-    starter: { id: 'survey360_starter', price: 99, period: '/month', features: ['Up to 5 surveys', '1,000 responses/month', 'Basic analytics', 'Email support'] },
-    professional: { id: 'survey360_pro', price: 299, period: '/month', features: ['Unlimited surveys', '10,000 responses/month', 'Advanced analytics', 'Priority support', 'API access'] },
+    monthly: { id: 'survey360_monthly', price: 99, period: '/month', features: ['Up to 5 surveys', '1,000 responses/month', 'Basic analytics', 'Email support'] },
+    annual: { id: 'survey360_annual', price: 990, period: '/year', features: ['Unlimited surveys', '10,000 responses/month', 'Advanced analytics', 'Priority support', 'API access'] },
     enterprise: { id: 'survey360_enterprise', price: null, period: 'Custom', features: ['Unlimited everything', 'Dedicated account manager', 'Custom integrations', 'On-premise option', 'SLA guarantee'] }
   },
   'dataviz-studio': {
-    starter: { id: 'dataviz_starter', price: 79, period: '/month', features: ['5 dashboards', '10 data sources', 'Basic charts', 'Export to PDF'] },
-    professional: { id: 'dataviz_pro', price: 249, period: '/month', features: ['Unlimited dashboards', 'Unlimited data sources', 'Advanced visualizations', 'White labeling', 'Team collaboration'] },
-    enterprise: { id: 'dataviz_enterprise', price: null, period: 'Custom', features: ['Everything in Pro', 'Custom branding', 'API access', 'Dedicated support', 'Custom training'] }
+    monthly: { id: 'dataviz_monthly', price: 79, period: '/month', features: ['5 dashboards', '10 data sources', 'Basic charts', 'Export to PDF'] },
+    annual: { id: 'dataviz_annual', price: 790, period: '/year', features: ['Unlimited dashboards', 'Unlimited data sources', 'Advanced visualizations', 'White labeling', 'Team collaboration'] }
   },
   'me-tracker': {
-    starter: { id: 'metracker_starter', price: 149, period: '/month', features: ['5 programs', '50 indicators', 'Basic reports', 'Email support'] },
-    professional: { id: 'metracker_pro', price: 399, period: '/month', features: ['25 programs', '500 indicators', 'Advanced reports', 'Donor templates', 'API access'] },
-    enterprise: { id: 'metracker_enterprise', price: null, period: 'Custom', features: ['Unlimited programs', 'Custom indicators', 'Impact evaluation tools', 'Dedicated success manager'] }
+    monthly: { id: 'me_tracker_monthly', price: 149, period: '/month', features: ['5 programs', '50 indicators', 'Basic reports', 'Email support'] },
+    annual: { id: 'me_tracker_annual', price: 1490, period: '/year', features: ['25 programs', '500 indicators', 'Advanced reports', 'Donor templates', 'API access'] }
   },
   'fieldforce': {
     small: { id: 'fieldforce_10seats', price: 499, period: 'one-time', features: ['10 user seats', 'iOS & Android apps', 'Offline mode', '1 year support'] },
