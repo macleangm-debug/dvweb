@@ -148,7 +148,7 @@ export const FieldForceLandingPage = () => {
       {/* Fixed Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             {/* Logo on white background */}
             <Link to="/" className="flex items-center">
               <div className="bg-white rounded px-3 py-2">
@@ -162,12 +162,12 @@ export const FieldForceLandingPage = () => {
 
             {/* Navigation Links */}
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Features</a>
-              <a href="#pricing" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Pricing</a>
-              <Link to="/solutions/fieldforce/app/login" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Sign In</Link>
+              <a href="#features" className="text-sm text-gray-300 hover:text-white transition-colors">Features</a>
+              <a href="#pricing" className="text-sm text-gray-300 hover:text-white transition-colors">Pricing</a>
+              <Link to="/solutions/fieldforce/app/login" className="text-sm text-gray-300 hover:text-white transition-colors">Sign In</Link>
               <Link 
                 to="/solutions/fieldforce/app/login" 
-                className="bg-teal-500 text-white px-4 py-2 text-sm font-semibold rounded hover:bg-teal-600 transition-all"
+                className="bg-teal-500 text-white px-5 py-2 text-sm font-semibold rounded hover:bg-teal-600 transition-all"
               >
                 Start Free
               </Link>
@@ -176,14 +176,26 @@ export const FieldForceLandingPage = () => {
             {/* Back to Solutions link (mobile) */}
             <Link 
               to="/solutions" 
-              className="md:hidden flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
+              className="md:hidden flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
             >
               <ArrowRight className="w-4 h-4 rotate-180" />
-              <span>Back</span>
+              Back
             </Link>
           </div>
         </div>
       </header>
+
+      {/* Product Badge - Below Nav */}
+      <div className="fixed top-16 left-0 right-0 z-40 bg-[#0a1628]/80 backdrop-blur-sm border-b border-white/5">
+        <div className="container mx-auto px-6 lg:px-12 py-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-teal-400 font-bold text-sm tracking-wider">FIELDFORCE</span>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#0a1628] via-[#1e293b] to-[#0f172a] text-white overflow-hidden pt-20">
