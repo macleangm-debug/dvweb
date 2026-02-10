@@ -160,13 +160,26 @@ export const FieldForceLandingPage = () => {
               </div>
             </Link>
 
-            {/* Back to Solutions link */}
+            {/* Navigation Links */}
+            <nav className="hidden md:flex items-center gap-8">
+              <a href="#features" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Features</a>
+              <a href="#pricing" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Pricing</a>
+              <Link to="/solutions/fieldforce/app/login" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Sign In</Link>
+              <Link 
+                to="/solutions/fieldforce/app/login" 
+                className="bg-teal-500 text-white px-4 py-2 text-sm font-semibold rounded hover:bg-teal-600 transition-all"
+              >
+                Start Free
+              </Link>
+            </nav>
+
+            {/* Back to Solutions link (mobile) */}
             <Link 
               to="/solutions" 
-              className="flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
+              className="md:hidden flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
             >
               <ArrowRight className="w-4 h-4 rotate-180" />
-              <span>Back to Solutions</span>
+              <span>Back</span>
             </Link>
           </div>
         </div>
