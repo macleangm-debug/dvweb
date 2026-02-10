@@ -3,61 +3,56 @@ Copied AS IS from https://github.com/macleangm-debug/Survey360
 Integrates all 46 route modules into a single router for DataVision
 """
 from fastapi import APIRouter, Request
-import sys
-import os
-
-# Add survey360 package to path for imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Create main router with survey360 prefix
 survey360_router = APIRouter(prefix="/survey360", tags=["Survey360"])
 
 # Import all route modules from the routes directory
-from routes.auth_routes import router as auth_router
-from routes.org_routes import router as org_router
-from routes.project_routes import router as project_router
-from routes.form_routes import router as form_router
-from routes.survey_routes import router as survey_router
-from routes.submission_routes import router as submission_router
-from routes.case_routes import router as case_router
-from routes.dashboard_routes import router as dashboard_router
-from routes.analysis_routes import router as analysis_router
-from routes.export_routes import router as export_router
-from routes.analytics_routes import router as analytics_router
-from routes.report_routes import router as report_router
-from routes.stats_routes import router as stats_router
-from routes.survey_stats_routes import router as survey_stats_router
-from routes.gps_routes import router as gps_router
-from routes.media_routes import router as media_router
-from routes.device_routes import router as device_router
-from routes.job_routes import router as job_router
-from routes.logic_routes import router as logic_router
-from routes.translation_routes import router as translation_router
-from routes.template_routes import router as template_router
-from routes.cati_routes import router as cati_router
-from routes.cawi_routes import router as cawi_router
-from routes.backcheck_routes import router as backcheck_router
-from routes.quality_ai_routes import router as quality_ai_router
-from routes.workflow_routes import router as workflow_router
-from routes.collaboration_routes import router as collaboration_router
-from routes.rbac_routes import router as rbac_router
-from routes.security_routes import router as security_router
-from routes.audit_routes import router as audit_router
-from routes.admin_routes import router as admin_router
-from routes.versioning_routes import router as versioning_router
-from routes.revision_routes import router as revision_router
-from routes.reproducibility_routes import router as reproducibility_router
-from routes.preload_routes import router as preload_router
-from routes.paradata_routes import router as paradata_router
-from routes.duplicate_routes import router as duplicate_router
-from routes.case_import_routes import router as case_import_router
-from routes.dataset_routes import router as dataset_router
-from routes.simulation_routes import router as simulation_router
-from routes.analysis_export_routes import router as analysis_export_router
-from routes.widget_routes import router as widget_router
-from routes.dashboard_builder_routes import router as dashboard_builder_router
-from routes.ai_copilot_routes import router as ai_copilot_router
-from routes.advanced_models_routes import router as advanced_models_router
+from survey360.routes.auth_routes import router as auth_router
+from survey360.routes.org_routes import router as org_router
+from survey360.routes.project_routes import router as project_router
+from survey360.routes.form_routes import router as form_router
+from survey360.routes.survey_routes import router as survey_router
+from survey360.routes.submission_routes import router as submission_router
+from survey360.routes.case_routes import router as case_router
+from survey360.routes.dashboard_routes import router as dashboard_router
+from survey360.routes.analysis_routes import router as analysis_router
+from survey360.routes.export_routes import router as export_router
+from survey360.routes.analytics_routes import router as analytics_router
+from survey360.routes.report_routes import router as report_router
+from survey360.routes.stats_routes import router as stats_router
+from survey360.routes.survey_stats_routes import router as survey_stats_router
+from survey360.routes.gps_routes import router as gps_router
+from survey360.routes.media_routes import router as media_router
+from survey360.routes.device_routes import router as device_router
+from survey360.routes.job_routes import router as job_router
+from survey360.routes.logic_routes import router as logic_router
+from survey360.routes.translation_routes import router as translation_router
+from survey360.routes.template_routes import router as template_router
+from survey360.routes.cati_routes import router as cati_router
+from survey360.routes.cawi_routes import router as cawi_router
+from survey360.routes.backcheck_routes import router as backcheck_router
+from survey360.routes.quality_ai_routes import router as quality_ai_router
+from survey360.routes.workflow_routes import router as workflow_router
+from survey360.routes.collaboration_routes import router as collaboration_router
+from survey360.routes.rbac_routes import router as rbac_router
+from survey360.routes.security_routes import router as security_router
+from survey360.routes.audit_routes import router as audit_router
+from survey360.routes.admin_routes import router as admin_router
+from survey360.routes.versioning_routes import router as versioning_router
+from survey360.routes.revision_routes import router as revision_router
+from survey360.routes.reproducibility_routes import router as reproducibility_router
+from survey360.routes.preload_routes import router as preload_router
+from survey360.routes.paradata_routes import router as paradata_router
+from survey360.routes.duplicate_routes import router as duplicate_router
+from survey360.routes.case_import_routes import router as case_import_router
+from survey360.routes.dataset_routes import router as dataset_router
+from survey360.routes.simulation_routes import router as simulation_router
+from survey360.routes.analysis_export_routes import router as analysis_export_router
+from survey360.routes.widget_routes import router as widget_router
+from survey360.routes.dashboard_builder_routes import router as dashboard_builder_router
+from survey360.routes.ai_copilot_routes import router as ai_copilot_router
+from survey360.routes.advanced_models_routes import router as advanced_models_router
 
 # Include all routers
 survey360_router.include_router(auth_router)
