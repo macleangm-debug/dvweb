@@ -9,6 +9,75 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 10, 2026 - CMS Users Dashboard for Marketing (COMPLETED)
+
+**CMS User Management Dashboard:**
+- New admin tab "Users" in CMS at `/admin`
+- Stats cards: Total Users, Countries, FieldForce Users, Survey360 Users
+- Segment breakdown: Users by Country, Users by Industry (with progress bars)
+- Search: By name, email, organization
+- Filters: Country, Industry, Product (FieldForce/Survey360)
+- User table: Name, Email, Phone, Location, Industry, Organization, Job Title, Company Size, Products accessed, Registration date
+- Bulk selection: Checkboxes for selecting multiple users
+- CSV Export: Export filtered/selected users for marketing campaigns
+- File: `/app/frontend/src/components/AdminUsersManagement.js`
+
+**Backend API:**
+- `GET /api/admin/users` - Returns users with stats (by country, industry, product)
+- Filters: `?country=Kenya&industry=healthcare&product=fieldforce`
+
+---
+
+### February 10, 2026 - Two-Step Registration with Marketing Segmentation (COMPLETED)
+
+**Step 1 (Required):** Name, Email, Password
+**Step 2 (Optional):** Country, Industry, Organization, Job Title, Company Size, Phone, How Heard
+- Progress indicator (1-2 steps)
+- "Skip for now" option
+- Files: `/app/frontend/src/pages/DataVisionAuth.js`, `/app/backend/server.py`
+
+**Backend APIs:**
+- `POST /api/auth/register` - User registration
+- `PUT /api/auth/profile` - Update profile (Step 2)
+- Product access tracking on SSO (fieldforce, survey360)
+
+**Profile Fields:**
+- country, industry, organization, job_title, company_size, phone, how_heard
+- profile_completed, products_accessed[], last_login
+
+---
+
+### February 10, 2026 - DataVision Central Authentication (COMPLETED)
+
+**New Auth Pages:**
+- `/auth/login` - DataVision user login
+- `/auth/register` - Two-step registration
+
+**SSO Flow:**
+1. User registers/logs in at DataVision
+2. Clicks "Access FieldForce" or "Access Survey360"
+3. SSO generates product-specific token
+4. User redirected to product dashboard
+
+**Backend APIs:**
+- `POST /api/auth/login` - Unified login (users + admins)
+- `POST /api/auth/sso/fieldforce` - SSO to FieldForce
+- `POST /api/auth/sso/survey360` - SSO to Survey360
+
+---
+
+### February 10, 2026 - FieldForce Landing Page Updates (COMPLETED)
+
+**Changes:**
+- DataVision logo in header (links to home)
+- Fixed all text colors (white headings on dark background)
+- Mobile hamburger menu added
+- "Start Free" button hidden on mobile
+- Auth buttons redirect to FieldForce app login (not CMS admin)
+- SSO button redesigned with DataVision logo
+
+---
+
 ### February 10, 2026 - FieldForce Landing Page GitHub Sync (COMPLETED)
 
 **Task: Sync FieldForce landing page from GitHub AS IS**
