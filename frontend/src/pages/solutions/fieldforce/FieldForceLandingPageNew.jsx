@@ -283,7 +283,7 @@ const FieldForceLandingPage = () => {
             <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
               How It Works
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               From Design to Insights in 4 Steps
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
@@ -303,7 +303,7 @@ const FieldForceLandingPage = () => {
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white font-bold mb-4`}>
                   {item.step}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">{item.title}</h3>
                 <p className="text-sm text-gray-400">{item.description}</p>
               </motion.div>
             ))}
@@ -318,7 +318,7 @@ const FieldForceLandingPage = () => {
             <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
               Features
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Everything You Need for Field Data Collection
             </h2>
           </div>
