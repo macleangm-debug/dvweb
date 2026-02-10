@@ -120,6 +120,31 @@ sync_fieldforce() {
     
     echo -e "${GREEN}✓ FieldForce backend synced${NC}"
     
+    # Sync frontend pages from GitHub
+    echo -e "${YELLOW}   Syncing FieldForce frontend pages...${NC}"
+    FF_FE_SRC="$SOURCES_DIR/FieldForce/fieldforce/frontend/src/pages"
+    FF_FE_DEST="$FRONTEND_DIR/src/solutions/fieldforce/app/pages"
+    
+    # Copy frontend pages if they exist (excluding auth pages to keep SSO)
+    if [ -d "$FF_FE_SRC" ]; then
+        # Copy dashboard and other pages
+        cp "$FF_FE_SRC/DashboardPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/FormsPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/FormBuilderPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/ProjectsPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/TeamPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/SubmissionsPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        cp "$FF_FE_SRC/SettingsPage.jsx" "$FF_FE_DEST/" 2>/dev/null || true
+        
+        # Fix import paths for DataVision structure
+        cd "$FF_FE_DEST"
+        sed -i "s|'../../components/ui/|'../../../../../components/ui/|g" *.jsx 2>/dev/null || true
+        sed -i "s|'../../lib/|'../../../../../lib/|g" *.jsx 2>/dev/null || true
+        sed -i "s|'../../store|'../../../../../store|g" *.jsx 2>/dev/null || true
+        
+        echo -e "${GREEN}   ✓ Frontend pages synced${NC}"
+    fi
+    
     # Count routes
     ROUTE_COUNT=$(ls "$BACKEND_DIR/fieldforce/routes/"*.py 2>/dev/null | wc -l)
     echo -e "${GREEN}   Total route files: $ROUTE_COUNT${NC}"
