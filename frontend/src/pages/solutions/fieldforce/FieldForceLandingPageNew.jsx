@@ -150,7 +150,7 @@ const FieldForceLandingPage = () => {
               </button>
             </div>
 
-            {/* Auth Buttons */}
+            {/* Auth Buttons & Mobile Menu */}
             <div className="flex items-center gap-3">
               <button 
                 onClick={handleLogin}
@@ -166,9 +166,73 @@ const FieldForceLandingPage = () => {
                 <span className="hidden sm:inline">✨</span>
                 Start Free
               </button>
+              {/* Mobile Menu Button */}
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 text-gray-300 hover:text-white transition-all"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-[#0a1628] border-t border-white/5"
+            >
+              <div className="px-4 py-4 space-y-2">
+                <a 
+                  href="#features" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                >
+                  Features
+                </a>
+                <a 
+                  href="#how-it-works" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                >
+                  How It Works
+                </a>
+                <a 
+                  href="#use-cases" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                >
+                  Use Cases
+                </a>
+                <a 
+                  href="#pricing" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                >
+                  Pricing
+                </a>
+                <button 
+                  className="w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
+                >
+                  <Play className="w-4 h-4" />
+                  Demo
+                </button>
+                <hr className="border-white/10 my-2" />
+                <button 
+                  onClick={() => { handleLogin(); setMobileMenuOpen(false); }}
+                  className="w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  Log in
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}
