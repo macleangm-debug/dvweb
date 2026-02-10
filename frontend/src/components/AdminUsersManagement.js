@@ -159,8 +159,8 @@ const AdminUsersManagement = ({ token }) => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-[#0a1628] font-serif">User Management</h2>
-          <p className="text-sm text-[#64748b] mt-1">Manage registered users and marketing segments</p>
+          <h2 className="text-2xl font-bold text-[#0a1628] font-serif">Client Management</h2>
+          <p className="text-sm text-[#64748b] mt-1">Manage registered clients and marketing segments</p>
         </div>
         <button
           onClick={exportToCSV}
@@ -180,7 +180,7 @@ const AdminUsersManagement = ({ token }) => {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0a1628]">{stats.total}</p>
-              <p className="text-xs text-[#64748b]">Total Users</p>
+              <p className="text-xs text-[#64748b]">Total Clients</p>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ const AdminUsersManagement = ({ token }) => {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0a1628]">{stats.by_product?.fieldforce || 0}</p>
-              <p className="text-xs text-[#64748b]">FieldForce Users</p>
+              <p className="text-xs text-[#64748b]">FieldForce Clients</p>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ const AdminUsersManagement = ({ token }) => {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0a1628]">{stats.by_product?.survey360 || 0}</p>
-              <p className="text-xs text-[#64748b]">Survey360 Users</p>
+              <p className="text-xs text-[#64748b]">Survey360 Clients</p>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ const AdminUsersManagement = ({ token }) => {
         <div className="bg-white border border-[#e2e8f0] p-4">
           <h3 className="font-semibold text-[#0a1628] mb-3 flex items-center gap-2">
             <Globe className="w-4 h-4 text-[#64748b]" />
-            Users by Country
+            Clients by Country
           </h3>
           <div className="space-y-2 max-h-40 overflow-y-auto">
             {Object.entries(stats.by_country).length > 0 ? (
@@ -256,7 +256,7 @@ const AdminUsersManagement = ({ token }) => {
         <div className="bg-white border border-[#e2e8f0] p-4">
           <h3 className="font-semibold text-[#0a1628] mb-3 flex items-center gap-2">
             <Building2 className="w-4 h-4 text-[#64748b]" />
-            Users by Industry
+            Clients by Industry
           </h3>
           <div className="space-y-2 max-h-40 overflow-y-auto">
             {Object.entries(stats.by_industry).length > 0 ? (
