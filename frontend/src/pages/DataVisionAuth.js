@@ -89,7 +89,8 @@ export const DataVisionLogin = () => {
           state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
           version: 0
         }));
-        navigate('/solutions/fieldforce/app/dashboard');
+        // Use window.location for full page reload to initialize Zustand stores
+        window.location.href = '/solutions/fieldforce/app/dashboard';
       } else if (redirect.includes('survey360')) {
         const ssoResponse = await axios.post(`${API}/api/auth/sso/survey360`, {}, {
           headers: { Authorization: `Bearer ${access_token}` }
@@ -108,7 +109,8 @@ export const DataVisionLogin = () => {
             version: 0
           }));
         }
-        navigate('/solutions/survey360/app/dashboard');
+        // Use window.location for full page reload to initialize Zustand stores
+        window.location.href = '/solutions/survey360/app/dashboard';
       } else {
         navigate(redirect);
       }
