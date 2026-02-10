@@ -2842,6 +2842,8 @@ function App() {
           <Routes>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/auth/login" element={<DataVisionLogin />} />
+            <Route path="/auth/register" element={<DataVisionRegister />} />
             <Route path="*" element={
               <>
                 <Navbar />
