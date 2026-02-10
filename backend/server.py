@@ -517,19 +517,81 @@ def verify_password(password: str, hashed: str) -> bool:
 
 # ==================== AUTH ROUTES ====================
 
-@api_router.post("/auth/login", response_model=TokenResponse)
+@api_router.post("/auth/register", response_model=UserTokenResponse)
+async def register_user(user_data: DataVisionUserRegister):
+    """
+    Register a new DataVision user.
+    Users can then use SSO to access FieldForce and Survey360.
+    """
+    # Check if user already exists
+    existing_user = await db.datavision_users.find_one({"email": user_data.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Also check admins collection
+    existing_admin = await db.admins.find_one({"email": user_data.email})
+    if existing_admin:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Create new user
+    user_id = str(uuid.uuid4())
+    hashed_password = hash_password(user_data.password)
+    
+    new_user = {
+        "id": user_id,
+        "email": user_data.email,
+        "password": hashed_password,
+        "name": user_data.name,
+        "is_admin": False,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.datavision_users.insert_one(new_user)
+    
+    # Generate token
+    token = create_access_token({"sub": user_data.email, "id": user_id, "is_admin": False})
+    
+    return UserTokenResponse(
+        access_token=token,
+        user=DataVisionUser(
+            id=user_id,
+            email=user_data.email,
+            name=user_data.name,
+            is_admin=False
+        )
+    )
+
+@api_router.post("/auth/login", response_model=UserTokenResponse)
 async def login(credentials: AdminLogin):
     """
-    Admin login - only for DataVision administrators.
-    Regular Survey360 customers cannot login here.
+    Login for DataVision users and administrators.
     """
-    # Only check DataVision admins
+    # First check DataVision users collection
+    user = await db.datavision_users.find_one({"email": credentials.email}, {"_id": 0})
+    if user and verify_password(credentials.password, user["password"]):
+        token = create_access_token({"sub": user["email"], "id": user["id"], "is_admin": user.get("is_admin", False)})
+        return UserTokenResponse(
+            access_token=token,
+            user=DataVisionUser(
+                id=user["id"],
+                email=user["email"],
+                name=user.get("name", "User"),
+                is_admin=user.get("is_admin", False)
+            )
+        )
+    
+    # Then check admins collection (backward compatibility)
     admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
     if admin and verify_password(credentials.password, admin["password"]):
-        token = create_access_token({"sub": admin["email"], "id": admin["id"]})
-        return TokenResponse(
+        token = create_access_token({"sub": admin["email"], "id": admin["id"], "is_admin": True})
+        return UserTokenResponse(
             access_token=token,
-            user=AdminUser(id=admin["id"], email=admin["email"], name=admin.get("name", "Administrator"))
+            user=DataVisionUser(
+                id=admin["id"],
+                email=admin["email"],
+                name=admin.get("name", "Administrator"),
+                is_admin=True
+            )
         )
     
     raise HTTPException(status_code=401, detail="Invalid credentials")
