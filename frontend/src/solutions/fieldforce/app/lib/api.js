@@ -14,7 +14,26 @@ const api = axios.create({
 
 // Request interceptor to add auth token
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
+  // First try Zustand store
+  let token = useAuthStore.getState().token;
+  
+  // If Zustand doesn't have token, check localStorage directly (for page reloads before Zustand syncs)
+  if (!token) {
+    const authStorage = localStorage.getItem('auth-storage');
+    if (authStorage) {
+      try {
+        const parsed = JSON.parse(authStorage);
+        token = parsed?.state?.token;
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+    // Also check fieldforce_token as backup
+    if (!token) {
+      token = localStorage.getItem('fieldforce_token') || localStorage.getItem('ff_token');
+    }
+  }
+  
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
