@@ -19,7 +19,7 @@ import numpy as np
 from scipy import stats as scipy_stats
 import warnings
 
-from utils.audit import log_action
+from survey360.utils.audit import log_action
 
 router = APIRouter(prefix="/statistics", tags=["Advanced Statistics"])
 

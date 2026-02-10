@@ -13,7 +13,7 @@ import io
 import json
 import os
 
-from utils.audit import log_action
+from survey360.utils.audit import log_action
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 

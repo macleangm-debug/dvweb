@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
-from utils.job_manager import get_job_manager, JobStatus, run_background_job
+from survey360.utils.job_manager import get_job_manager, JobStatus, run_background_job
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
