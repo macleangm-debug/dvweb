@@ -556,6 +556,126 @@ export const FieldForceLandingPage = () => {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 bg-white">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 bg-teal-100 text-teal-700 text-sm font-semibold rounded-full mb-4">
+              PRICING
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Choose the plan that fits your field data collection needs. All plans include core features.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {/* Free Plan */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Free</h3>
+                <div className="text-4xl font-bold text-gray-900">$0</div>
+                <div className="text-gray-500 text-sm">Forever free</div>
+                <p className="text-gray-600 text-sm mt-2">For individuals and small projects</p>
+              </div>
+              <ul className="space-y-3 mb-6">
+                {['1 project', '100 submissions/month', 'Basic form builder', 'GPS capture', 'Photo capture', 'Community support'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-teal-500" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link 
+                to="/solutions/fieldforce/app/login"
+                className="block w-full py-3 text-center border-2 border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all"
+              >
+                Start Free
+              </Link>
+            </div>
+
+            {/* Starter Plan */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Starter</h3>
+                <div className="text-4xl font-bold text-gray-900">$29</div>
+                <div className="text-gray-500 text-sm">/month</div>
+                <p className="text-gray-600 text-sm mt-2">For growing teams</p>
+              </div>
+              <ul className="space-y-3 mb-6">
+                {['5 projects', '1,000 submissions/month', 'Advanced form builder', 'Skip logic', 'Offline sync', 'Email support', 'Data export'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-teal-500" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link 
+                to="/solutions/fieldforce/app/login"
+                className="block w-full py-3 text-center bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all"
+              >
+                Get Started
+              </Link>
+            </div>
+
+            {/* Professional Plan - Most Popular */}
+            <div className="bg-teal-600 text-white rounded-xl p-6 shadow-xl relative transform scale-105">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="bg-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  MOST POPULAR
+                </span>
+              </div>
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold mb-2">Professional</h3>
+                <div className="text-4xl font-bold">$79</div>
+                <div className="text-teal-200 text-sm">/month</div>
+                <p className="text-teal-100 text-sm mt-2">For professional teams</p>
+              </div>
+              <ul className="space-y-3 mb-6">
+                {['Unlimited projects', '10,000 submissions/month', 'Everything in Starter', 'Team management', 'Real-time analytics', 'Priority support', 'API access'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-teal-100">
+                    <CheckCircle2 className="w-4 h-4 text-teal-300" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link 
+                to="/solutions/fieldforce/app/login"
+                className="block w-full py-3 text-center bg-white text-teal-700 font-semibold rounded-lg hover:bg-gray-100 transition-all"
+              >
+                Get Started
+              </Link>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                <div className="text-4xl font-bold text-gray-900">Custom</div>
+                <div className="text-gray-500 text-sm">Contact us</div>
+                <p className="text-gray-600 text-sm mt-2">For large organizations</p>
+              </div>
+              <ul className="space-y-3 mb-6">
+                {['Unlimited everything', 'Custom integrations', 'Dedicated support', 'On-premise option', 'SLA guarantee', 'Training included', 'White-label option'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-teal-500" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link 
+                to="/contact"
+                className="block w-full py-3 text-center border-2 border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all"
+              >
+                Contact Sales
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-teal-600 to-teal-700 text-white">
         <div className="container mx-auto px-6 lg:px-12 text-center">
