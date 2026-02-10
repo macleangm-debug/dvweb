@@ -1,139 +1,130 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
+import { 
   ClipboardList,
-  CheckCircle,
+  FileText,
   BarChart3,
-  Users,
-  Zap,
-  Shield,
+  Share2,
+  CheckCircle2,
   ArrowRight,
   Play,
-  Star,
-  Globe,
-  ChevronDown,
+  Heart,
+  GraduationCap,
+  Building2,
+  Briefcase,
+  Users,
+  Calendar,
+  HeartPulse,
+  ChevronRight,
+  Menu,
+  X,
   QrCode,
-  PieChart,
   GitBranch,
   Palette,
   Download,
-  Sparkles,
-  MousePointerClick,
-  Building2,
-  GraduationCap,
-  Heart,
-  ShoppingBag,
-  Briefcase,
-  HeartPulse,
-  Calendar,
-  Hotel,
-  Send,
-  Share2,
-  FileText,
   Lock,
-  Menu,
-  X
+  PieChart,
+  Send,
+  Zap
 } from 'lucide-react';
-import { Button } from '../../../components/ui/button';
-import { Badge } from '../../../components/ui/badge';
 
-const FEATURES = [
-  { icon: ClipboardList, title: 'Drag & Drop Builder', description: '10+ question types. Build beautiful surveys in minutes.', color: '#14b8a6' },
-  { icon: GitBranch, title: 'Smart Skip Logic', description: 'Show questions based on previous answers.', color: '#3b82f6' },
-  { icon: QrCode, title: 'QR & Embed', description: 'Share via QR codes or embed on any website.', color: '#8b5cf6' },
-  { icon: Lock, title: 'Secure Responses', description: 'All data encrypted and stored securely.', color: '#f59e0b' },
-  { icon: Palette, title: 'Custom Branding', description: 'Your logo, your colors, your identity.', color: '#ec4899' },
-  { icon: Share2, title: 'Easy Sharing', description: 'Public links, private invites, email distribution.', color: '#06b6d4' },
-  { icon: PieChart, title: 'Real-Time Analytics', description: 'Charts and insights as responses come in.', color: '#10b981' },
-  { icon: Download, title: 'Export Anywhere', description: 'Download as CSV for any analysis tool.', color: '#6366f1' }
-];
-
-const USE_CASES = [
-  {
-    title: 'Customer Experience',
-    icon: Heart,
-    description: 'Understand your customers better with feedback surveys, NPS tracking, and satisfaction measurement.',
-    examples: ['Customer satisfaction', 'Product feedback', 'Support ratings']
-  },
-  {
-    title: 'Market Research',
-    icon: BarChart3,
-    description: 'Validate ideas and understand your market with targeted research surveys and concept testing.',
-    examples: ['Consumer insights', 'Brand awareness', 'Pricing research']
-  },
-  {
-    title: 'Employee Engagement',
-    icon: Users,
-    description: 'Build a better workplace with engagement surveys, pulse checks, and 360° feedback.',
-    examples: ['Engagement surveys', 'Exit interviews', 'Team feedback']
-  },
-  {
-    title: 'Events & Registration',
-    icon: Calendar,
-    description: 'Manage events effortlessly with registration forms, RSVPs, and post-event surveys.',
-    examples: ['Event registration', 'Attendee feedback', 'Speaker ratings']
-  },
-  {
-    title: 'Education & Academia',
-    icon: GraduationCap,
-    description: 'Improve learning outcomes with course evaluations, student feedback, and research studies.',
-    examples: ['Course evaluations', 'Student surveys', 'Research studies']
-  },
-  {
-    title: 'Healthcare',
-    icon: HeartPulse,
-    description: 'Enhance patient care with satisfaction surveys, intake forms, and health assessments.',
-    examples: ['Patient satisfaction', 'Appointment follow-up', 'Health screenings']
-  }
-];
-
-const PRICING = [
-  {
-    name: 'Starter',
-    price: 'Free',
-    period: 'forever',
-    features: ['3 surveys', '100 responses/month', '10 question types', 'Basic analytics', 'CSV export'],
-    cta: 'Start Free',
-    popular: false
-  },
-  {
-    name: 'Pro',
-    price: '$29',
-    period: '/month',
-    features: ['Unlimited surveys', '2,500 responses/month', 'Skip logic', 'Custom branding', 'Priority support'],
-    cta: 'Start Free Trial',
-    popular: true
-  },
-  {
-    name: 'Business',
-    price: '$99',
-    period: '/month',
-    features: ['Everything in Pro', '10,000 responses/month', 'Team collaboration', 'API access', 'SSO'],
-    cta: 'Contact Sales',
-    popular: false
-  }
-];
-
-export function Survey360LandingPage() {
+const Survey360LandingPage = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleLogin = () => {
-    navigate('/solutions/survey360/login');
-  };
+  const stats = [
+    { value: '500+', label: 'Free responses' },
+    { value: '100%', label: 'Free forever' },
+    { value: '10+', label: 'Question types' },
+    { value: '24/7', label: 'Support available' }
+  ];
+
+  const howItWorks = [
+    {
+      step: 1,
+      title: 'Design Survey',
+      description: 'Use our drag-and-drop builder. Add skip logic, branding, and validations.',
+      color: 'from-blue-500 to-cyan-500'
+    },
+    {
+      step: 2,
+      title: 'Share Anywhere',
+      description: 'Send via link, QR code, email, or embed on your website.',
+      color: 'from-green-500 to-emerald-500'
+    },
+    {
+      step: 3,
+      title: 'Collect Responses',
+      description: 'Respondents fill out your survey. All data captured securely.',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
+      step: 4,
+      title: 'Analyze Results',
+      description: 'View real-time charts. Export data. Make data-driven decisions.',
+      color: 'from-orange-500 to-red-500'
+    }
+  ];
+
+  const features = [
+    { icon: ClipboardList, title: 'Drag & Drop Builder', description: '10+ question types. Build beautiful surveys in minutes.' },
+    { icon: GitBranch, title: 'Smart Skip Logic', description: 'Show questions based on previous answers.' },
+    { icon: QrCode, title: 'QR & Embed', description: 'Share via QR codes or embed on any website.' },
+    { icon: Lock, title: 'Secure Responses', description: 'All data encrypted and stored securely.' },
+    { icon: Palette, title: 'Custom Branding', description: 'Your logo, your colors, your identity.' },
+    { icon: Share2, title: 'Easy Sharing', description: 'Public links, private invites, email distribution.' },
+    { icon: PieChart, title: 'Real-Time Analytics', description: 'Charts and insights as responses come in.' },
+    { icon: Download, title: 'Export Anywhere', description: 'Download as CSV for any analysis tool.' }
+  ];
+
+  const useCases = [
+    { icon: Heart, title: 'Customer Experience', description: 'Understand your customers better with feedback surveys, NPS tracking, and satisfaction measurement.', tags: ['Customer satisfaction', 'Product feedback', 'Support ratings'] },
+    { icon: BarChart3, title: 'Market Research', description: 'Validate ideas and understand your market with targeted research surveys and concept testing.', tags: ['Consumer insights', 'Brand awareness', 'Pricing research'] },
+    { icon: Users, title: 'Employee Engagement', description: 'Build a better workplace with engagement surveys, pulse checks, and 360° feedback.', tags: ['Engagement surveys', 'Exit interviews', 'Team feedback'] },
+    { icon: Calendar, title: 'Events & Registration', description: 'Manage events effortlessly with registration forms, RSVPs, and post-event surveys.', tags: ['Event registration', 'Attendee feedback', 'Speaker ratings'] },
+    { icon: GraduationCap, title: 'Education & Academia', description: 'Improve learning outcomes with course evaluations, student feedback, and research studies.', tags: ['Course evaluations', 'Student surveys', 'Research studies'] },
+    { icon: HeartPulse, title: 'Healthcare', description: 'Enhance patient care with satisfaction surveys, intake forms, and health assessments.', tags: ['Patient satisfaction', 'Appointment follow-up', 'Health screenings'] },
+    { icon: Building2, title: 'Non-Profit & NGO', description: 'Measure impact with beneficiary surveys, program evaluations, and donor feedback.', tags: ['Impact assessment', 'Donor surveys', 'Volunteer feedback'] },
+    { icon: Briefcase, title: 'Professional Services', description: 'Gather client feedback, conduct assessments, and improve service delivery.', tags: ['Client satisfaction', 'Project feedback', 'Quality audits'] }
+  ];
+
+  const pricingPlans = [
+    {
+      name: 'Starter',
+      price: 0,
+      features: ['3 surveys', '100 responses/month', '10 question types', 'Basic analytics'],
+      popular: false
+    },
+    {
+      name: 'Pro',
+      price: 29,
+      features: ['Unlimited surveys', '2,500 responses/month', 'Skip logic', 'Custom branding', 'Priority support'],
+      popular: true
+    },
+    {
+      name: 'Business',
+      price: 99,
+      features: ['Everything in Pro', '10,000 responses/month', 'Team collaboration', 'API access', 'SSO'],
+      popular: false
+    }
+  ];
 
   const handleStartFreeTrial = () => {
     navigate('/solutions/survey360/login');
   };
 
+  const handleLogin = () => {
+    navigate('/solutions/survey360/login');
+  };
+
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0a1628] text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/90 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* DataVision logo - links to home */}
+            {/* DataVision logo only - links to home */}
             <Link to="/" className="flex items-center gap-2">
               <div className="bg-white rounded px-2 py-1">
                 <img 
@@ -145,36 +136,33 @@ export function Survey360LandingPage() {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center">
-              <div className="flex items-center bg-white/5 rounded-full p-1">
-                <a href="#features" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">Features</a>
-                <a href="#how-it-works" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">How It Works</a>
-                <a href="#use-cases" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">Use Cases</a>
-                <a href="#pricing" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">Pricing</a>
-                <button className="px-4 py-1.5 text-sm text-teal-400 bg-teal-500/10 rounded-full flex items-center gap-1.5 hover:bg-teal-500/20 transition-colors">
-                  <Play className="w-3 h-3" />
-                  Demo
-                </button>
-              </div>
+            <div className="hidden md:flex items-center gap-1">
+              <a href="#features" className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">Features</a>
+              <a href="#how-it-works" className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">How It Works</a>
+              <a href="#use-cases" className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">Use Cases</a>
+              <a href="#pricing" className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">Pricing</a>
+              <button className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2">
+                <Play className="w-4 h-4" />
+                Demo
+              </button>
             </div>
 
-            {/* Auth Buttons */}
+            {/* Auth Buttons & Mobile Menu */}
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                className="hidden sm:flex text-gray-300 hover:text-white"
+              <button 
                 onClick={handleLogin}
+                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white transition-all"
               >
-                <ArrowRight className="w-4 h-4 mr-2" />
+                <ArrowRight className="w-4 h-4" />
                 Log in
-              </Button>
-              <Button
-                className="hidden sm:flex bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white border-0"
+              </button>
+              <button 
                 onClick={handleStartFreeTrial}
+                className="hidden sm:flex px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-400 hover:to-pink-400 transition-all items-center gap-2"
               >
-                <Sparkles className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">✨</span>
                 Start Free
-              </Button>
+              </button>
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -225,7 +213,7 @@ export function Survey360LandingPage() {
                   Pricing
                 </a>
                 <button 
-                  className="w-full px-4 py-3 text-teal-400 hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
+                  className="w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
                 >
                   <Play className="w-4 h-4" />
                   Demo
@@ -246,132 +234,126 @@ export function Survey360LandingPage() {
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Floating decorative icons */}
-        <motion.div
+        {/* Floating Icons */}
+        <motion.div 
+          className="absolute top-32 left-10 w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center"
           animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-32 left-[10%] w-14 h-14 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center"
+          transition={{ duration: 3, repeat: Infinity }}
         >
-          <ClipboardList className="w-6 h-6 text-teal-400" />
+          <ClipboardList className="w-6 h-6 text-purple-400" />
         </motion.div>
-        <motion.div
+        <motion.div 
+          className="absolute top-40 right-20 w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center"
           animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-48 right-[10%] w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center"
+          transition={{ duration: 4, repeat: Infinity }}
         >
-          <PieChart className="w-6 h-6 text-purple-400" />
+          <PieChart className="w-6 h-6 text-pink-400" />
         </motion.div>
-        <motion.div
+        <motion.div 
+          className="absolute bottom-40 left-20 w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center"
           animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-40 left-[8%] w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center"
+          transition={{ duration: 3.5, repeat: Infinity }}
         >
           <Send className="w-5 h-5 text-blue-400" />
         </motion.div>
 
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-4xl mx-auto">
-            {/* Logo and badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center mb-8"
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Product Logo */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-center gap-3 mb-6"
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
+              <ClipboardList className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold">Survey360</span>
+          </motion.div>
+
+          {/* By DataVision Badge */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="inline-block mb-6"
+          >
+            <span className="px-4 py-2 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full border border-purple-500/30">
+              By DataVision International
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white"
+          >
+            Beautiful Surveys{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              Made Simple
+            </span>
+          </motion.h1>
+
+          {/* Subheadline */}
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto"
+          >
+            Create professional surveys in minutes. Collect responses anywhere. 
+            Get insights instantly - all in one simple platform.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+          >
+            <button 
+              onClick={handleStartFreeTrial}
+              className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/25 flex items-center gap-2"
             >
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center mb-4 shadow-xl shadow-teal-500/30">
-                <ClipboardList className="w-10 h-10 text-white" />
+              Start Free Trial
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={handleLogin}
+              className="px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 transition-all flex items-center gap-2"
+            >
+              <Play className="w-5 h-5" />
+              Try Interactive Demo
+            </button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-8"
+          >
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <p className="text-3xl font-bold text-purple-400">{stat.value}</p>
+                <p className="text-sm text-gray-500">{stat.label}</p>
               </div>
-              <span className="text-2xl font-bold text-white mb-2">Survey360</span>
-              <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30">
-                By DataVision International
-              </Badge>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
-            >
-              Beautiful Surveys
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">
-                Made Simple
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg sm:text-xl text-gray-400 mb-8 max-w-2xl mx-auto"
-            >
-              Create professional surveys in minutes. Collect responses anywhere.
-              Get insights instantly - all in one simple platform.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-            >
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white border-0 px-8 py-6 text-lg shadow-xl shadow-teal-500/30"
-                onClick={handleStartFreeTrial}
-              >
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:bg-white/5 px-8 py-6"
-                onClick={handleLogin}
-              >
-                <Play className="w-5 h-5 mr-2" />
-                Try Interactive Demo
-              </Button>
-            </motion.div>
-
-            {/* Stats row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="flex justify-center gap-8 sm:gap-16 flex-wrap"
-            >
-              {[
-                { value: '500+', label: 'Free responses' },
-                { value: '100%', label: 'Free forever' },
-                { value: '10+', label: 'Question types' },
-                { value: '24/7', label: 'Support' }
-              ].map((stat, idx) => (
-                <div key={idx} className="text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-teal-400">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+            ))}
+          </motion.div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex justify-center mt-16"
-        >
-          <ChevronDown className="w-6 h-6 text-gray-600" />
-        </motion.div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0d1d33]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="bg-white/10 text-gray-300 border-white/20 mb-4">How It Works</Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <span className="inline-block px-4 py-1 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full mb-4">
+              How It Works
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               From Idea to Insights in 4 Steps
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
@@ -379,108 +361,20 @@ export function Survey360LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                step: 1,
-                title: 'Design Survey',
-                description: 'Use our drag-and-drop builder. Add skip logic, branding, and more.',
-                color: '#14b8a6',
-                mockup: (
-                  <div className="space-y-2 mt-4">
-                    <div className="h-2 bg-teal-400 rounded w-3/4" />
-                    <div className="h-2 bg-white/20 rounded w-full" />
-                    <div className="h-2 bg-teal-400/60 rounded w-1/2" />
-                    <div className="flex gap-2 mt-3">
-                      <div className="h-6 w-12 bg-teal-500 rounded" />
-                      <div className="h-6 w-12 bg-white/10 rounded" />
-                    </div>
-                  </div>
-                )
-              },
-              {
-                step: 2,
-                title: 'Share Anywhere',
-                description: 'Send via link, QR code, email, or embed on your website.',
-                color: '#3b82f6',
-                mockup: (
-                  <div className="mt-4 relative">
-                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="bg-white/5 rounded-lg p-3 border border-white/10">
-                      <div className="text-xs text-blue-400 mb-2 flex items-center gap-1">
-                        <Zap className="w-3 h-3" /> Sharing
-                      </div>
-                      <div className="space-y-1.5">
-                        <div className="h-2 bg-blue-400 rounded w-full" />
-                        <div className="h-2 bg-white/20 rounded w-3/4" />
-                        <div className="h-2 bg-white/20 rounded w-1/2" />
-                      </div>
-                    </div>
-                  </div>
-                )
-              },
-              {
-                step: 3,
-                title: 'Collect Responses',
-                description: 'Respondents fill out your survey. All data captured securely.',
-                color: '#8b5cf6',
-                mockup: (
-                  <div className="mt-4 grid grid-cols-2 gap-2">
-                    {[
-                      { icon: FileText, label: 'Form' },
-                      { icon: QrCode, label: 'QR' },
-                      { icon: Send, label: 'Email' },
-                      { icon: Lock, label: 'Secure' }
-                    ].map((item, i) => (
-                      <div key={i} className="bg-white/5 rounded-lg p-2 border border-white/10 text-center">
-                        <item.icon className="w-4 h-4 mx-auto text-purple-400 mb-1" />
-                        <span className="text-[10px] text-gray-500">{item.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                )
-              },
-              {
-                step: 4,
-                title: 'Analyze Results',
-                description: 'View real-time charts. Export data. Make decisions.',
-                color: '#f59e0b',
-                mockup: (
-                  <div className="mt-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                      <span className="text-xs text-green-400">Live</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-400">Responses</span>
-                      <span className="text-white font-semibold">1,234</span>
-                    </div>
-                    <div className="h-2 bg-white/10 rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full" style={{ width: '75%' }} />
-                    </div>
-                  </div>
-                )
-              }
-            ].map((item, idx) => (
+          <div className="grid md:grid-cols-4 gap-6">
+            {howItWorks.map((item, index) => (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-white/20 transition-colors"
+                transition={{ delay: index * 0.1 }}
+                className="bg-[#0a1628] rounded-2xl p-6 border border-white/5 hover:border-purple-500/30 transition-all"
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold mb-4"
-                  style={{ backgroundColor: `${item.color}20`, color: item.color }}
-                >
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white font-bold mb-4`}>
                   {item.step}
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">{item.title}</h3>
                 <p className="text-sm text-gray-400">{item.description}</p>
-                {item.mockup}
               </motion.div>
             ))}
           </div>
@@ -491,87 +385,76 @@ export function Survey360LandingPage() {
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30 mb-4">Features</Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <span className="inline-block px-4 py-1 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full mb-4">
+              Features
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Everything You Need for Better Surveys
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {FEATURES.map((feature, idx) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all group"
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: `${feature.color}15` }}
-                  >
-                    <Icon className="w-6 h-6" style={{ color: feature.color }} />
-                  </div>
-                  <h3 className="text-white font-semibold mb-1">{feature.title}</h3>
-                  <p className="text-sm text-gray-500">{feature.description}</p>
-                </motion.div>
-              );
-            })}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-[#0a1628] rounded-2xl p-6 border border-white/5 hover:border-purple-500/30 transition-all"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-purple-400" />
+                </div>
+                <h3 className="font-semibold mb-2 text-white">{feature.title}</h3>
+                <p className="text-sm text-gray-400">{feature.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Use Cases Section */}
-      <section id="use-cases" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent via-teal-500/5 to-transparent">
+      <section id="use-cases" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0d1d33]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 mb-4">Use Cases</Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <span className="inline-block px-4 py-1 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full mb-4">
+              Use Cases
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               Built for Every Industry
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              From startups to enterprises, teams worldwide use Survey360 to collect insights.
+              From startups to enterprises, teams worldwide use Survey360 to collect insights and make better decisions.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {USE_CASES.map((useCase, idx) => {
-              const Icon = useCase.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-teal-500/30 transition-all"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
-                      <Icon className="w-6 h-6 text-teal-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">{useCase.title}</h3>
-                      <p className="text-sm text-gray-400 mb-3">{useCase.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {useCase.examples.map((ex, i) => (
-                          <span key={i} className="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-400">
-                            {ex}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {useCases.map((useCase, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-[#0a1628] rounded-xl p-6 border border-white/5 hover:border-purple-500/30 transition-all"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mb-4">
+                  <useCase.icon className="w-6 h-6 text-purple-400" />
+                </div>
+                <h3 className="font-semibold mb-2 text-white">{useCase.title}</h3>
+                <p className="text-sm text-gray-400 mb-4">{useCase.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {useCase.tags.map((tag, i) => (
+                    <span key={i} className="text-xs px-2 py-1 bg-white/5 text-gray-400 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <p className="text-center text-gray-500 mt-8 text-sm">
-            Also used in: Real Estate • Consulting • Non-profits • Hospitality • Retail • Government
+          <p className="text-center text-sm text-gray-500 mt-8">
+            Also used in: Real Estate • Consulting • Hospitality • Retail • Government • Manufacturing
           </p>
         </div>
       </section>
@@ -580,106 +463,99 @@ export function Survey360LandingPage() {
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30 mb-4">Pricing</Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <span className="inline-block px-4 py-1 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full mb-4">
+              Pricing
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               Simple, Transparent Pricing
             </h2>
             <p className="text-gray-400">Start free, upgrade when you need more.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {PRICING.map((plan, idx) => (
+            {pricingPlans.map((plan, index) => (
               <motion.div
-                key={idx}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className={`relative bg-white/5 border rounded-xl p-6 ${
-                  plan.popular ? 'border-teal-500 ring-1 ring-teal-500/50' : 'border-white/10'
-                }`}
+                transition={{ delay: index * 0.1 }}
+                className={`bg-[#0a1628] rounded-2xl p-6 border ${plan.popular ? 'border-purple-500 ring-1 ring-purple-500/50' : 'border-white/5'}`}
               >
                 {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal-500 text-white border-0">
+                  <span className="inline-block px-3 py-1 bg-purple-500 text-white text-xs font-medium rounded-full mb-4">
                     Most Popular
-                  </Badge>
+                  </span>
                 )}
-                <h3 className="text-xl font-semibold text-white mb-2">{plan.name}</h3>
-                <div className="mb-4">
-                  <span className="text-3xl font-bold text-white">{plan.price}</span>
-                  <span className="text-gray-500">{plan.period}</span>
+                <h3 className="text-xl font-semibold mb-2 text-white">{plan.name}</h3>
+                <div className="mb-6">
+                  <span className="text-4xl font-bold text-white">${plan.price}</span>
+                  <span className="text-gray-400">/month</span>
                 </div>
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-gray-300">
-                      <CheckCircle className="w-4 h-4 text-teal-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-purple-400" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button
-                  className={`w-full ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-0'
-                      : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                  onClick={handleStartFreeTrial}
-                >
-                  {plan.cta}
-                </Button>
               </motion.div>
             ))}
           </div>
 
-          <p className="text-center text-gray-500 mt-8 text-sm">
-            All plans include SSL encryption and GDPR compliance.
-          </p>
+          <div className="text-center mt-8">
+            <Link 
+              to="/"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 text-white font-medium rounded-xl hover:bg-white/10 transition-all border border-white/10"
+            >
+              View Full Pricing
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+            <p className="text-sm text-gray-500 mt-4">
+              All plans include SSL encryption and GDPR compliance.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+      {/* Final CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0d1d33]">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-purple-500/25">
+            <ClipboardList className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Ready to Create Better Surveys?
           </h2>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-gray-400 text-lg mb-8">
             Join thousands of teams collecting insights with Survey360.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white border-0 px-8 py-6 text-lg shadow-xl shadow-teal-500/30"
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <button 
               onClick={handleStartFreeTrial}
+              className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/25 flex items-center gap-2"
             >
               Start Free Trial
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-white/5 px-8 py-6"
-              onClick={() => navigate('/solutions/survey360/pricing')}
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <Link 
+              to="/solutions/survey360/pricing"
+              className="px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 transition-all flex items-center gap-2"
             >
               View Pricing
-            </Button>
+            </Link>
           </div>
-          <p className="text-sm text-gray-500 mt-6">
+          <p className="text-sm text-gray-500">
             No credit card required • 500 free responses • Full onboarding included
           </p>
-        </motion.div>
+        </div>
       </section>
 
       {/* Footer */}
       <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-600 rounded-lg flex items-center justify-center">
               <ClipboardList className="w-4 h-4 text-white" />
             </div>
             <span className="font-bold text-white">Survey360</span>
@@ -691,6 +567,7 @@ export function Survey360LandingPage() {
       </footer>
     </div>
   );
-}
+};
 
+export { Survey360LandingPage };
 export default Survey360LandingPage;
