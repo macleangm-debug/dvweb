@@ -7,7 +7,7 @@ import io
 import json
 from bson import ObjectId
 
-from auth import get_current_user
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/cases", tags=["Cases"])
 

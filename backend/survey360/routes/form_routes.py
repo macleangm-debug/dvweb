@@ -4,8 +4,8 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone
 from pydantic import BaseModel
 
-from models import Form, FormCreate, FormOut, FormDetailOut, FormField
-from auth import get_current_user
+from survey360.models import Form, FormCreate, FormOut, FormDetailOut, FormField
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/forms", tags=["Forms"])
 

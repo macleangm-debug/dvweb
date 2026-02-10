@@ -4,8 +4,8 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime, timezone
 import secrets
 
-from models import User, UserCreate, UserOut, TokenResponse
-from auth import (
+from survey360.models import User, UserCreate, UserOut, TokenResponse
+from survey360.auth import (
     get_password_hash, verify_password, create_access_token,
     get_sso_authorization_url, exchange_sso_code, get_sso_userinfo
 )
@@ -222,7 +222,7 @@ async def sso_callback(request: Request, data: SSOCallbackRequest):
 @router.get("/me", response_model=UserOut)
 async def get_current_user_info(request: Request):
     """Get current user info"""
-    from auth import get_current_user
+    from survey360.auth import get_current_user
     from fastapi import Depends
     
     # Manual token extraction for this endpoint
@@ -231,7 +231,7 @@ async def get_current_user_info(request: Request):
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     token = auth_header.split(" ")[1]
-    from auth import decode_token
+    from survey360.auth import decode_token
     payload = decode_token(token)
     
     db = request.app.state.db

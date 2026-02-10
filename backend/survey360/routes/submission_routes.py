@@ -4,8 +4,8 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel
 
-from models import Submission, SubmissionCreate, SubmissionOut
-from auth import get_current_user
+from survey360.models import Submission, SubmissionCreate, SubmissionOut
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/submissions", tags=["Submissions"])
 

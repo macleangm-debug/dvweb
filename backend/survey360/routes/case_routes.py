@@ -3,8 +3,8 @@ from fastapi import APIRouter, HTTPException, status, Request, Depends, Query
 from typing import List, Optional
 from datetime import datetime, timezone
 
-from models import Case, CaseCreate, CaseOut
-from auth import get_current_user
+from survey360.models import Case, CaseCreate, CaseOut
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/cases", tags=["Cases"])
 

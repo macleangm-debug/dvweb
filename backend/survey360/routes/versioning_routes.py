@@ -7,7 +7,7 @@ from bson import ObjectId
 import difflib
 import json
 
-from auth import get_current_user
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/forms/versions", tags=["Form Versioning"])
 

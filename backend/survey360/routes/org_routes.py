@@ -4,11 +4,11 @@ from typing import List, Optional
 from datetime import datetime, timezone
 import re
 
-from models import (
+from survey360.models import (
     Organization, OrganizationCreate, OrganizationOut,
     OrgMember, OrgMemberOut, UserOut
 )
-from auth import get_current_user
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/organizations", tags=["Organizations"])
 

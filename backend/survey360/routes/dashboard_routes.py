@@ -4,8 +4,8 @@ from typing import List, Optional
 from datetime import datetime, timezone, timedelta
 from collections import defaultdict
 
-from models import DashboardStats, SubmissionTrend, QualityMetrics
-from auth import get_current_user
+from survey360.models import DashboardStats, SubmissionTrend, QualityMetrics
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 

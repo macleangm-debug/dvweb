@@ -7,7 +7,7 @@ from bson import ObjectId
 import hashlib
 import json
 
-from auth import get_current_user
+from survey360.auth import get_current_user
 
 router = APIRouter(prefix="/duplicates", tags=["Duplicates"])
 
