@@ -2911,7 +2911,6 @@ function App() {
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
                   <Route path="/industries/retail" element={<RetailIndustryPage />} />
                   <Route path="/solutions" element={<SolutionsHubPage />} />
-                  <Route path="/solutions/survey360" element={<Survey360LandingPage />} />
                   <Route path="/solutions/survey360/pricing" element={<Survey360PricingPage />} />
                   <Route path="/solutions/survey360/login" element={<Survey360LoginPage />} />
                   <Route path="/solutions/survey360/register" element={<Survey360RegisterPage />} />
@@ -2929,7 +2928,6 @@ function App() {
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
                   
                   {/* FieldForce Routes - Using ORIGINAL GitHub Canva-style Layout */}
-                  <Route path="/solutions/fieldforce" element={<FieldForceLandingPage />} />
                   <Route path="/solutions/fieldforce/app/login" element={<FFLoginPage />} />
                   <Route path="/solutions/fieldforce/app/register" element={<FFRegisterPage />} />
                   <Route path="/solutions/fieldforce/app/dashboard" element={<FFDashboardPage />} />
