@@ -65,6 +65,13 @@ sync_survey360() {
     # Copy frontend pages if they exist
     if [ -d "$S360_FE_SRC" ]; then
         cp "$S360_FE_SRC/Survey360"*.jsx "$S360_FE_DEST/" 2>/dev/null || true
+        
+        # Fix import paths for DataVision structure (3 levels deep instead of 2)
+        cd "$S360_FE_DEST"
+        sed -i "s|'../../components/ui/|'../../../components/ui/|g" Survey360*.jsx 2>/dev/null || true
+        sed -i "s|'../../lib/|'../../../lib/|g" Survey360*.jsx 2>/dev/null || true
+        sed -i "s|'../../store|'../../../store|g" Survey360*.jsx 2>/dev/null || true
+        
         echo -e "${GREEN}   ✓ Frontend pages synced${NC}"
     fi
     
