@@ -249,6 +249,64 @@ export function Survey360LoginPage() {
                 </Button>
               </form>
 
+              {/* DataVision SSO */}
+              <div className="mt-4">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-white/10" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-[#0a1628] px-2 text-gray-500">Or continue with</span>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-4 bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-white"
+                  onClick={async () => {
+                    // Redirect to DataVision login, which will redirect back with token
+                    const dvToken = getDataVisionToken();
+                    if (dvToken) {
+                      try {
+                        setLoading(true);
+                        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/sso/survey360`, {
+                          method: 'POST',
+                          headers: {
+                            'Authorization': `Bearer ${dvToken}`,
+                            'Content-Type': 'application/json'
+                          }
+                        });
+                        if (response.ok) {
+                          const data = await response.json();
+                          localStorage.setItem('survey360_token', data.access_token);
+                          setAuth(data.user, data.access_token);
+                          if (data.user.org_id) {
+                            setCurrentOrg({ id: data.user.org_id, name: data.user.name + "'s Organization" });
+                          }
+                          toast.success('Logged in via DataVision SSO!');
+                          navigate('/solutions/survey360/app/dashboard');
+                        } else {
+                          toast.error('Please login to DataVision first');
+                          window.location.href = '/admin';
+                        }
+                      } catch (error) {
+                        toast.error('Please login to DataVision first');
+                        window.location.href = '/admin';
+                      } finally {
+                        setLoading(false);
+                      }
+                    } else {
+                      toast.info('Redirecting to DataVision login...');
+                      window.location.href = '/admin';
+                    }
+                  }}
+                  data-testid="datavision-sso-btn"
+                >
+                  <img src="/datavision-logo-cropped.png" alt="DataVision" className="w-5 h-5 mr-2" />
+                  Sign in with DataVision
+                </Button>
+              </div>
+
               <p className="text-center text-sm text-gray-400 mt-6">
                 Don't have an account?{' '}
                 <Link to="/solutions/survey360/register" className="text-teal-400 hover:underline font-medium" data-testid="register-link">
