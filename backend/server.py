@@ -2250,14 +2250,19 @@ async def get_user_products(email: str):
     ).to_list(100)
     return {"products": access_records}
 
-# Import and include Survey360 routes
-from routes.survey360_routes import router as survey360_router, create_survey360_demo_user
+# Import and include Survey360 routes (ALL 46 route modules from GitHub)
+from survey360.survey360_main import survey360_router as survey360_full_router, init_survey360_db
+# Keep the basic routes for backward compatibility with existing frontend
+from routes.survey360_routes import router as survey360_basic_router, create_survey360_demo_user
 
 # Import and include FieldForce routes (original GitHub code)
 from fieldforce.fieldforce_main import fieldforce_router
 
-# Include Survey360 router into api_router FIRST
-api_router.include_router(survey360_router)
+# Include Survey360 basic router (for existing frontend compatibility)
+api_router.include_router(survey360_basic_router)
+
+# Include Survey360 full router (all 46 modules from GitHub)
+api_router.include_router(survey360_full_router)
 
 # Include FieldForce router (all original routes from GitHub)
 api_router.include_router(fieldforce_router)
