@@ -2777,6 +2777,10 @@ const AdminDashboard = () => {
             <AdminExpertManagement token={localStorage.getItem('dv_token')} />
           )}
 
+          {activeTab === 'users' && (
+            <AdminUsersManagement token={localStorage.getItem('dv_token')} />
+          )}
+
           {activeTab === 'verification' && (
             <AdminVerificationDashboard token={localStorage.getItem('dv_token')} />
           )}
