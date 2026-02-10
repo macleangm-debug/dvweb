@@ -222,48 +222,55 @@ export function Survey360LandingPage() {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link to="/solutions/survey360" className="flex items-center gap-2 group">
-              <motion.div 
-                whileHover={{ rotate: 10, scale: 1.1 }}
-                className="w-9 h-9 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/25"
-              >
-                <ClipboardList className="w-5 h-5 text-white" />
-              </motion.div>
-              <span className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Survey360</span>
+            {/* DataVision Logo on white background */}
+            <Link to="/" className="flex items-center">
+              <div className="bg-white rounded px-3 py-2">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision International" 
+                  className="h-8 w-auto"
+                />
+              </div>
             </Link>
             
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">Features</a>
-              <a href="#how-it-works" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">How It Works</a>
-              <a href="#industries" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">Industries</a>
-              <Link to="/solutions/survey360/pricing" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">Pricing</Link>
-              <a href="#testimonials" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">Testimonials</a>
+              <a href="#features" className="text-sm text-gray-300 hover:text-white transition-colors">Features</a>
+              <Link to="/solutions/survey360/pricing" className="text-sm text-gray-300 hover:text-white transition-colors">Pricing</Link>
+              <Link to="/solutions/survey360/login" className="text-sm text-gray-300 hover:text-white transition-colors">Sign In</Link>
+              <Link 
+                to="/solutions/survey360/register"
+                className="bg-teal-500 text-white px-5 py-2 text-sm font-semibold rounded hover:bg-teal-600 transition-all"
+              >
+                Start Free
+              </Link>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                className="text-gray-300 hover:text-white hover:bg-white/10"
-                onClick={() => navigate('/solutions/survey360/login')}
-                data-testid="nav-signin-btn"
-              >
-                Sign In
-              </Button>
-              <Button 
-                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white border-0 shadow-lg shadow-teal-500/25"
-                onClick={() => navigate('/solutions/survey360/register')}
-                data-testid="nav-getstarted-btn"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Start Free
-              </Button>
-            </div>
+            {/* Mobile: Back to Solutions */}
+            <Link 
+              to="/solutions" 
+              className="md:hidden flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Back
+            </Link>
           </div>
         </div>
       </nav>
+
+      {/* Product Badge - Below Nav */}
+      <div className="fixed top-16 left-0 right-0 z-40 bg-[#0a1628]/80 backdrop-blur-sm border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+              <ClipboardList className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-teal-400 font-bold text-sm tracking-wider">SURVEY360</span>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative">
