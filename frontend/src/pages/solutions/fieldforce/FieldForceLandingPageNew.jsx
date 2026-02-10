@@ -112,13 +112,13 @@ const FieldForceLandingPage = () => {
   ];
 
   const handleStartFreeTrial = () => {
-    // Redirect to DataVision for signup
-    navigate('/admin');
+    // Redirect to FieldForce app login/register
+    navigate('/solutions/fieldforce/app/login');
   };
 
   const handleLogin = () => {
-    // Redirect to DataVision login, which will SSO back
-    navigate('/admin');
+    // Redirect to FieldForce app login (has SSO with DataVision)
+    navigate('/solutions/fieldforce/app/login');
   };
 
   return (
