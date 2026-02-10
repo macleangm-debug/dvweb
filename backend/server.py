@@ -687,9 +687,11 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
         survey360_user = await db.survey360_users.find_one({"email": user_email}, {"_id": 0})
         
         if not survey360_user:
-            # Get user info from DataVision admin or create new user
-            admin = await db.admins.find_one({"email": user_email}, {"_id": 0})
-            user_name = admin.get("name", user_email.split("@")[0]) if admin else user_email.split("@")[0]
+            # Get user info from DataVision users or admins
+            dv_user = await db.datavision_users.find_one({"email": user_email}, {"_id": 0})
+            if not dv_user:
+                dv_user = await db.admins.find_one({"email": user_email}, {"_id": 0})
+            user_name = dv_user.get("name", user_email.split("@")[0]) if dv_user else user_email.split("@")[0]
             
             # Create Survey360 user with SSO
             new_user_id = str(uuid.uuid4())
