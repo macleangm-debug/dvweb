@@ -879,18 +879,20 @@ const Survey360ProductPage = () => {
         </div>
       </div>
 
-      {/* Tab Content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-        >
-          {renderTabContent()}
-        </motion.div>
-      </AnimatePresence>
+      {/* Tab Content - with padding for fixed headers */}
+      <div className="pt-28">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {renderTabContent()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
