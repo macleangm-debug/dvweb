@@ -206,20 +206,16 @@ const FieldForceLandingPage = () => {
             <span className="text-2xl font-bold">FieldForce</span>
           </motion.div>
 
-          {/* By DataVision Badge - CLICKABLE for Option 3 */}
+          {/* By DataVision Badge */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="inline-block mb-6"
           >
-            <Link 
-              to="/"
-              className="px-4 py-2 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full border border-teal-500/30 hover:bg-teal-500/30 hover:border-teal-400/50 transition-all inline-flex items-center gap-2"
-            >
-              <ArrowRight className="w-3 h-3 rotate-180" />
+            <span className="px-4 py-2 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full border border-teal-500/30">
               By DataVision International
-            </Link>
+            </span>
           </motion.div>
 
           {/* Headline */}
