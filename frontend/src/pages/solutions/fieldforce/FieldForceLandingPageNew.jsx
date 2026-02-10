@@ -124,13 +124,24 @@ const FieldForceLandingPage = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/solutions/fieldforce" className="flex items-center gap-2">
-              <div className="w-9 h-9 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">FieldForce</span>
-            </Link>
+            {/* OPTION 1: DataVision logo on left with back arrow */}
+            <div className="flex items-center gap-4">
+              <Link to="/" className="flex items-center gap-2 pr-4 border-r border-white/10">
+                <div className="bg-white rounded px-2 py-1">
+                  <img 
+                    src="/datavision-logo-cropped.png" 
+                    alt="DataVision" 
+                    className="h-6 w-auto"
+                  />
+                </div>
+              </Link>
+              <Link to="/solutions/fieldforce" className="flex items-center gap-2">
+                <div className="w-9 h-9 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-white">FieldForce</span>
+              </Link>
+            </div>
 
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1">
