@@ -2851,6 +2851,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth/login" element={<DataVisionLogin />} />
             <Route path="/auth/register" element={<DataVisionRegister />} />
+            <Route path="/solutions/survey360" element={<Survey360LandingPage />} />
+            <Route path="/solutions/fieldforce" element={<FieldForceLandingPage />} />
             <Route path="*" element={
               <>
                 <Navbar />
