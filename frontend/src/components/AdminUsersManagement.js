@@ -378,7 +378,7 @@ const AdminUsersManagement = ({ token }) => {
       {/* Results count */}
       <div className="flex items-center justify-between mb-2">
         <p className="text-sm text-[#64748b]">
-          Showing {filteredUsers.length} of {users.length} users
+          Showing {filteredUsers.length} of {users.length} clients
           {selectedUsers.length > 0 && ` (${selectedUsers.length} selected)`}
         </p>
       </div>
@@ -396,7 +396,7 @@ const AdminUsersManagement = ({ token }) => {
                   className="w-4 h-4 accent-[#0a1628]"
                 />
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider">User</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider">Client</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider">Location</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider">Organization</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider">Products</th>
@@ -407,7 +407,7 @@ const AdminUsersManagement = ({ token }) => {
             {filteredUsers.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-12 text-center text-[#64748b]">
-                  {hasActiveFilters ? 'No users match your filters' : 'No users registered yet'}
+                  {hasActiveFilters ? 'No clients match your filters' : 'No clients registered yet'}
                 </td>
               </tr>
             ) : (
