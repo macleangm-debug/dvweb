@@ -121,12 +121,19 @@ function findActiveGroup(pathname) {
 export function DashboardLayout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, token, isAuthenticated, logout } = useAuthStore();
   const { currentOrg, organizations, setCurrentOrg } = useOrgStore();
   
   const [activeGroup, setActiveGroup] = useState('home');
   const [panelOpen, setPanelOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Auth guard - redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !token) {
+      navigate('/solutions/fieldforce/app/login');
+    }
+  }, [isAuthenticated, token, navigate]);
 
   // Update active group based on route
   useEffect(() => {
