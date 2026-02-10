@@ -70,22 +70,44 @@ export const DataVisionLogin = () => {
       const response = await axios.post(`${API}/api/auth/login`, { email, password });
       const { access_token, user } = response.data;
       
+      // Store DataVision tokens with multiple keys for compatibility
       localStorage.setItem('datavision_token', access_token);
+      localStorage.setItem('dv_token', access_token);
+      localStorage.setItem('token', access_token);
       localStorage.setItem('datavision_user', JSON.stringify(user));
       
       if (redirect.includes('fieldforce')) {
         const ssoResponse = await axios.post(`${API}/api/auth/sso/fieldforce`, {}, {
           headers: { Authorization: `Bearer ${access_token}` }
         });
+        // Store FieldForce token with all keys used by the app
+        localStorage.setItem('fieldforce_token', ssoResponse.data.access_token);
         localStorage.setItem('ff_token', ssoResponse.data.access_token);
         localStorage.setItem('ff_user', JSON.stringify(ssoResponse.data.user));
+        // Set Zustand auth-storage for FieldForce app compatibility
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
+          version: 0
+        }));
         navigate('/solutions/fieldforce/app/dashboard');
       } else if (redirect.includes('survey360')) {
         const ssoResponse = await axios.post(`${API}/api/auth/sso/survey360`, {}, {
           headers: { Authorization: `Bearer ${access_token}` }
         });
+        // Store Survey360 token with all keys used by the app
         localStorage.setItem('survey360_token', ssoResponse.data.access_token);
         localStorage.setItem('survey360_user', JSON.stringify(ssoResponse.data.user));
+        // Set Zustand auth-storage for Survey360 app compatibility
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+        if (ssoResponse.data.user.org_id) {
+          localStorage.setItem('org-storage', JSON.stringify({
+            state: { currentOrg: { id: ssoResponse.data.user.org_id, name: ssoResponse.data.user.name + "'s Organization" }, organizations: [] },
+            version: 0
+          }));
+        }
         navigate('/solutions/survey360/app/dashboard');
       } else {
         navigate(redirect);
