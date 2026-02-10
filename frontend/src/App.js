@@ -99,6 +99,7 @@ import {
   Survey360ResponsesPage,
   Survey360BillingPage,
   Survey360SettingsPage,
+  Survey360PricingPage,
   PublicSurveyPage
 } from './pages/solutions/survey360';
 
