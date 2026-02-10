@@ -6,7 +6,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://unified-platform-22.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://auth-journey-prod.preview.emergentagent.com').rstrip('/')
 
 class TestFieldForceHealth:
     """Health check tests"""
