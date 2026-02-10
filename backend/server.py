@@ -655,12 +655,29 @@ async def datavision_sso_exchange(authorization: str = Header(None)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@api_router.get("/auth/me", response_model=AdminUser)
+@api_router.get("/auth/me")
 async def get_current_user(payload: dict = Depends(verify_token)):
+    # Check datavision_users first
+    user = await db.datavision_users.find_one({"email": payload["sub"]}, {"_id": 0, "password": 0})
+    if user:
+        return DataVisionUser(
+            id=user["id"],
+            email=user["email"],
+            name=user.get("name", "User"),
+            is_admin=user.get("is_admin", False)
+        )
+    
+    # Then check admins
     admin = await db.admins.find_one({"email": payload["sub"]}, {"_id": 0, "password": 0})
-    if not admin:
-        raise HTTPException(status_code=404, detail="User not found")
-    return AdminUser(**admin)
+    if admin:
+        return DataVisionUser(
+            id=admin["id"],
+            email=admin["email"],
+            name=admin.get("name", "Administrator"),
+            is_admin=True
+        )
+    
+    raise HTTPException(status_code=404, detail="User not found")
 
 # ==================== DATAVISION SSO FOR PRODUCTS ====================
 
