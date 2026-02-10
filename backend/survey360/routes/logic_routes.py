@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient
-from logic_engine import CalculationEngine, SkipLogicEngine, process_form_logic
+from survey360.logic_engine import CalculationEngine, SkipLogicEngine, process_form_logic
 
 router = APIRouter(prefix="/logic", tags=["Form Logic"])
 
