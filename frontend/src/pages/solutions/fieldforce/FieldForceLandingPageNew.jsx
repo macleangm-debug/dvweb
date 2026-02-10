@@ -335,7 +335,7 @@ const FieldForceLandingPage = () => {
                 <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-teal-500/20 transition-all">
                   <feature.icon className="w-6 h-6 text-teal-400" />
                 </div>
-                <h3 className="font-semibold mb-2">{feature.title}</h3>
+                <h3 className="font-semibold mb-2 text-white">{feature.title}</h3>
                 <p className="text-sm text-gray-400">{feature.description}</p>
               </motion.div>
             ))}
@@ -350,7 +350,7 @@ const FieldForceLandingPage = () => {
             <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
               Use Cases
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               Built for Every Industry
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
@@ -370,7 +370,7 @@ const FieldForceLandingPage = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center mb-4">
                   <useCase.icon className="w-6 h-6 text-teal-400" />
                 </div>
-                <h3 className="font-semibold mb-2">{useCase.title}</h3>
+                <h3 className="font-semibold mb-2 text-white">{useCase.title}</h3>
                 <p className="text-sm text-gray-400 mb-4">{useCase.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {useCase.tags.map((tag, i) => (
@@ -396,7 +396,7 @@ const FieldForceLandingPage = () => {
             <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
               Pricing
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
               Enterprise Features, Startup Pricing
             </h2>
             <p className="text-gray-400">
