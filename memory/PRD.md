@@ -8,6 +8,38 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 10, 2026 - Survey360 Full GitHub Integration & DataVision SSO (COMPLETED)
+
+**Survey360 GitHub Integration:**
+- Source: https://github.com/macleangm-debug/Survey360
+- Copied ALL 46 route modules from GitHub to `/app/backend/survey360/routes/`
+- Copied supporting files: `models.py`, `auth.py`, `logic_engine.py`
+- Created `survey360_main.py` to combine all route modules
+- **385 total API endpoints** now available
+- Installed dependencies: `scipy`, `slowapi`
+
+**Route Modules Integrated (46 total):**
+- Core: auth, org, project, form, survey, submission, dashboard, case
+- Analytics: analysis, analytics, stats, survey_stats, report
+- Enterprise: CATI, CAWI, backcheck, quality_ai, workflow, collaboration
+- Advanced: ai_copilot, advanced_models, simulation, reproducibility
+- Admin: rbac, security, audit, admin, versioning, revision
+- Data: export, dataset, case_import, duplicate, preload, paradata, gps, media
+
+**DataVision SSO Integration:**
+- `/api/auth/sso/survey360` - DataVision → Survey360 SSO endpoint
+- `/api/auth/sso/fieldforce` - DataVision → FieldForce SSO endpoint
+- Auto-creates product users/organizations for DataVision admins
+- "Sign in with DataVision" button added to Survey360 login
+- "Continue with DataVision SSO" button added to FieldForce login
+
+**Frontend Updates:**
+- Survey360 API lib updated to auto-include `org_id` from auth store
+- SSO buttons integrated into both product login pages
+- Token format unified across all products
+
+---
+
 ### February 9, 2026 - Global Branding & Partner Logo Update (COMPLETED)
 
 **Partner Logo Updates:**
