@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-# Security config - unified with DataVision
+# Security config
 SECRET_KEY = os.environ.get("JWT_SECRET", "datavision-secret-key-2024")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24
@@ -74,8 +74,7 @@ async def get_current_user(
     token = credentials.credentials
     payload = decode_token(token)
     
-    # Support both token formats: "sub" (GitHub format) and "user_id" (basic format)
-    user_id = payload.get("sub") or payload.get("user_id")
+    user_id = payload.get("sub")
     if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
