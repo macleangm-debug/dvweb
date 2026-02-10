@@ -88,6 +88,9 @@ import {
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
+// DataVision Central Auth Pages
+import { DataVisionLogin, DataVisionRegister } from './pages/DataVisionAuth';
+
 // Survey360 App Pages (from GitHub repo)
 import {
   Survey360LoginPage,
