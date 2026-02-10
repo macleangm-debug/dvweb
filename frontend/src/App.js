@@ -104,7 +104,8 @@ import {
   Survey360BillingPage,
   Survey360SettingsPage,
   Survey360PricingPage,
-  PublicSurveyPage
+  PublicSurveyPage,
+  Survey360LandingPage
 } from './pages/solutions/survey360';
 
 // FieldForce Landing Page
