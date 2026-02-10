@@ -161,7 +161,7 @@ const FieldForceLandingPage = () => {
               </button>
               <button 
                 onClick={handleStartFreeTrial}
-                className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg hover:from-teal-400 hover:to-cyan-400 transition-all flex items-center gap-2"
+                className="hidden sm:flex px-4 py-2 text-sm font-medium bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg hover:from-teal-400 hover:to-cyan-400 transition-all items-center gap-2"
               >
                 <span className="hidden sm:inline">✨</span>
                 Start Free
