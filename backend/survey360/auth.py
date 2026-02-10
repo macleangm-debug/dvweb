@@ -8,8 +8,8 @@ from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-# Security config
-SECRET_KEY = os.environ.get("JWT_SECRET", "datapulse-secret-key-change-in-production")
+# Security config - unified with DataVision
+SECRET_KEY = os.environ.get("JWT_SECRET", "datavision-secret-key-2024")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24
 
