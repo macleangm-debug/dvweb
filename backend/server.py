@@ -896,6 +896,15 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
         if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token")
         
+        # Track product access for marketing
+        await db.datavision_users.update_one(
+            {"email": user_email},
+            {
+                "$addToSet": {"products_accessed": "fieldforce"},
+                "$set": {"last_login": datetime.now(timezone.utc).isoformat()}
+            }
+        )
+        
         # Check if user exists in FieldForce
         ff_user = await db.users.find_one({"email": user_email}, {"_id": 0})
         
