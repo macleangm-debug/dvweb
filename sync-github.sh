@@ -57,6 +57,17 @@ sync_survey360() {
     
     echo -e "${GREEN}✓ Survey360 backend synced${NC}"
     
+    # Sync frontend pages
+    echo -e "${YELLOW}   Syncing Survey360 frontend pages...${NC}"
+    S360_FE_SRC="$SOURCES_DIR/Survey360/frontend/src/pages/solutions"
+    S360_FE_DEST="$FRONTEND_DIR/src/pages/solutions/survey360"
+    
+    # Copy frontend pages if they exist
+    if [ -d "$S360_FE_SRC" ]; then
+        cp "$S360_FE_SRC/Survey360"*.jsx "$S360_FE_DEST/" 2>/dev/null || true
+        echo -e "${GREEN}   ✓ Frontend pages synced${NC}"
+    fi
+    
     # Count routes
     ROUTE_COUNT=$(ls "$BACKEND_DIR/survey360/routes/"*.py 2>/dev/null | wc -l)
     echo -e "${GREEN}   Total route files: $ROUTE_COUNT${NC}"
