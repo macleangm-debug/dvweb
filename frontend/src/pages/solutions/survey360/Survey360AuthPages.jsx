@@ -43,8 +43,8 @@ export function Survey360LoginPage() {
       const dvToken = getDataVisionToken();
       if (dvToken) {
         try {
-          // Exchange DataVision token for Survey360 access
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/survey360/auth/sso-exchange`, {
+          // Exchange DataVision token for Survey360 access via SSO
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/sso/survey360`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${dvToken}`,
@@ -54,17 +54,13 @@ export function Survey360LoginPage() {
           
           if (response.ok) {
             const data = await response.json();
+            // Store Survey360 token
+            localStorage.setItem('survey360_token', data.access_token);
             setAuth(data.user, data.access_token);
             
-            // Load organizations
-            try {
-              const orgsRes = await survey360Api.get('/organizations');
-              setOrganizations(orgsRes.data);
-              if (orgsRes.data.length > 0) {
-                setCurrentOrg(orgsRes.data[0]);
-              }
-            } catch (e) {
-              console.error('Failed to load orgs:', e);
+            // Set organization from SSO response
+            if (data.user.org_id) {
+              setCurrentOrg({ id: data.user.org_id, name: data.user.name + "'s Organization" });
             }
             
             toast.success('Logged in via DataVision SSO!');
