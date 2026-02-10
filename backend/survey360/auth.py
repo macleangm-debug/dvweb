@@ -74,7 +74,8 @@ async def get_current_user(
     token = credentials.credentials
     payload = decode_token(token)
     
-    user_id = payload.get("sub")
+    # Support both token formats: "sub" (GitHub format) and "user_id" (basic format)
+    user_id = payload.get("sub") or payload.get("user_id")
     if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
