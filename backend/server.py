@@ -2285,6 +2285,9 @@ async def startup_db_client():
     # Create demo user for Survey360
     await create_survey360_demo_user(db)
     
+    # Initialize Survey360 full database (from GitHub)
+    await init_survey360_db(db)
+    
     # Create FieldForce database indexes (from original GitHub code)
     try:
         # Users
