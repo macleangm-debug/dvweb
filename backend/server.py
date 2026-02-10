@@ -57,12 +57,31 @@ class DataVisionUserRegister(BaseModel):
     password: str
     name: str
 
+class DataVisionUserProfile(BaseModel):
+    country: Optional[str] = None
+    industry: Optional[str] = None
+    organization: Optional[str] = None
+    job_title: Optional[str] = None
+    company_size: Optional[str] = None
+    phone: Optional[str] = None
+    how_heard: Optional[str] = None
+
 class DataVisionUser(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: str
     name: str
     is_admin: bool = False
+    country: Optional[str] = None
+    industry: Optional[str] = None
+    organization: Optional[str] = None
+    job_title: Optional[str] = None
+    company_size: Optional[str] = None
+    phone: Optional[str] = None
+    how_heard: Optional[str] = None
+    profile_completed: bool = False
+    products_accessed: List[str] = []
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    last_login: Optional[str] = None
 
 class TokenResponse(BaseModel):
     access_token: str
