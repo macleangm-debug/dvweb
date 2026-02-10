@@ -278,26 +278,38 @@ export function Survey360LoginPage() {
                         });
                         if (response.ok) {
                           const data = await response.json();
+                          // Store token in localStorage for Survey360 app
                           localStorage.setItem('survey360_token', data.access_token);
+                          // Also store in auth-storage for Zustand compatibility
+                          localStorage.setItem('auth-storage', JSON.stringify({
+                            state: { user: data.user, token: data.access_token, isAuthenticated: true },
+                            version: 0
+                          }));
                           setAuth(data.user, data.access_token);
                           if (data.user.org_id) {
+                            localStorage.setItem('org-storage', JSON.stringify({
+                              state: { currentOrg: { id: data.user.org_id, name: data.user.name + "'s Organization" }, organizations: [] },
+                              version: 0
+                            }));
                             setCurrentOrg({ id: data.user.org_id, name: data.user.name + "'s Organization" });
                           }
                           toast.success('Logged in via DataVision SSO!');
+                          // Small delay to allow Zustand persist to sync before navigation
+                          await new Promise(resolve => setTimeout(resolve, 100));
                           navigate('/solutions/survey360/app/dashboard');
                         } else {
                           toast.error('Please login to DataVision first');
-                          window.location.href = '/admin';
+                          window.location.href = '/auth/login?redirect=survey360';
                         }
                       } catch (error) {
                         toast.error('Please login to DataVision first');
-                        window.location.href = '/admin';
+                        window.location.href = '/auth/login?redirect=survey360';
                       } finally {
                         setLoading(false);
                       }
                     } else {
                       toast.info('Redirecting to DataVision login...');
-                      window.location.href = '/admin';
+                      window.location.href = '/auth/login?redirect=survey360';
                     }
                   }}
                   data-testid="datavision-sso-btn"
