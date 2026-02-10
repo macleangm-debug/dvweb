@@ -127,12 +127,35 @@ export function DashboardLayout({ children }) {
   const [activeGroup, setActiveGroup] = useState('home');
   const [panelOpen, setPanelOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
-  // Auth guard - redirect to login if not authenticated
+  // Auth guard - check both Zustand state and localStorage
   useEffect(() => {
-    if (!isAuthenticated || !token) {
+    // Check if there's a valid token in localStorage directly (for fresh page loads)
+    const authStorage = localStorage.getItem('auth-storage');
+    const ffToken = localStorage.getItem('fieldforce_token');
+    
+    let isAuthValid = isAuthenticated && token;
+    
+    // Also check localStorage as backup for page reloads
+    if (!isAuthValid && authStorage) {
+      try {
+        const parsed = JSON.parse(authStorage);
+        isAuthValid = parsed?.state?.isAuthenticated && parsed?.state?.token;
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+    
+    // Check for fieldforce_token as another backup
+    if (!isAuthValid && ffToken) {
+      isAuthValid = true;
+    }
+    
+    if (!isAuthValid) {
       navigate('/solutions/fieldforce/app/login');
     }
+    setAuthChecked(true);
   }, [isAuthenticated, token, navigate]);
 
   // Update active group based on route
