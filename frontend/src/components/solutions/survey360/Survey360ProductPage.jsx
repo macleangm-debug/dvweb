@@ -764,9 +764,36 @@ const Survey360ProductPage = () => {
   };
 
   return (
-    <div className="pt-20 min-h-screen bg-gray-50">
-      {/* Product Navigation Bar - Compact & Integrated */}
-      <div className="sticky top-20 z-40 bg-[#0a1628] border-b border-[#1e3a5f]">
+    <div className="min-h-screen bg-gray-50">
+      {/* DataVision Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex items-center justify-between h-16">
+            {/* DataVision Logo on white background */}
+            <Link to="/" className="flex items-center">
+              <div className="bg-white rounded px-3 py-2">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision International" 
+                  className="h-8 w-auto"
+                />
+              </div>
+            </Link>
+
+            {/* Back to Solutions */}
+            <Link 
+              to="/solutions" 
+              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Back to Solutions
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Product Navigation Bar - Below Header */}
+      <div className="fixed top-16 left-0 right-0 z-40 bg-[#0a1628] border-b border-[#1e3a5f]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-12">
             {/* Logo & Brand - Compact */}
