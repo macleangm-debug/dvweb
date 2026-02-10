@@ -16,11 +16,11 @@ import {
   Users,
   RefreshCw
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Badge } from '../../components/ui/badge';
-import { Progress } from '../../components/ui/progress';
-import { Skeleton } from '../../components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { Badge } from '../../../components/ui/badge';
+import { Progress } from '../../../components/ui/progress';
+import { Skeleton } from '../../../components/ui/skeleton';
 import {
   Dialog,
   DialogContent,
@@ -28,8 +28,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../../components/ui/dialog';
-import survey360Api from '../../lib/survey360Api';
+} from '../../../components/ui/dialog';
+import survey360Api from '../../../lib/survey360Api';
 import { toast } from 'sonner';
 
 const PLANS = [
