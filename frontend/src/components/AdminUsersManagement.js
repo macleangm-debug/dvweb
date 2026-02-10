@@ -64,7 +64,7 @@ const AdminUsersManagement = ({ token }) => {
       setUsers(response.data.users || []);
       setStats(response.data.stats || { total: 0, by_country: {}, by_industry: {}, by_product: {} });
     } catch (err) {
-      setError('Failed to load users');
+      setError('Failed to load clients');
       console.error(err);
     } finally {
       setLoading(false);
