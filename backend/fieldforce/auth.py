@@ -74,7 +74,8 @@ async def get_current_user(
     token = credentials.credentials
     payload = decode_token(token)
     
-    user_id = payload.get("sub")
+    # Support both "sub" and "user_id" formats for SSO compatibility
+    user_id = payload.get("sub") or payload.get("user_id")
     if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -85,7 +86,8 @@ async def get_current_user(
         "user_id": user_id,
         "email": payload.get("email"),
         "name": payload.get("name"),
-        "is_superadmin": payload.get("is_superadmin", False)
+        "is_superadmin": payload.get("is_superadmin", False),
+        "sso": payload.get("sso", False)
     }
 
 
