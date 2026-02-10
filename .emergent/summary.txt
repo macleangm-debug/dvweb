@@ -1,129 +1,150 @@
 <analysis>**original_problem_statement:**
-The initial request was to fix an inconsistent dark theme in the FieldForce application. This evolved into a complete overhaul of the FieldForce integration. The user requested that the agent replace its temporary backend implementation with the original, complete backend from a provided GitHub repository. Following this major integration, the user asked for comprehensive testing, which uncovered and led to fixes for numerous frontend routing and navigation bugs. The user then directed the agent to fix several UI/UX issues, including matching the fonts to the original repository, fixing header overlaps, and correcting various logo and spacing problems on the main homepage and FieldForce landing page. The final set of requests involved updating the site's partner logos and rewriting site-wide content to shift the focus from Tanzania-specific to a global audience.
+The user initially requested an adjustment to the footer spacing. This request evolved into a major integration and refactoring project. The primary goals are:
+1.  Integrate two standalone applications, **Survey360** and **FieldForce**, from the user's GitHub repositories into the main DataVision platform, replacing any existing mock-ups.
+2.  Ensure the integrations are complete (AS IS), including all backend routes and frontend components.
+3.  Establish a workflow (Git Submodules and a sync script) to pull future updates for these applications from their source GitHub repos.
+4.  Implement a centralized **DataVision SSO** for both applications.
+5.  Unify the product page headers for a consistent user experience (Deeper Integration).
+6.  Update the pricing information on the product pages to match the code from GitHub.
+7.  Define and begin implementing a centralized user journey where **DataVision handles all user registration and billing**, with the individual solutions being accessed post-authentication.
+8.  The most recent request is to replace the current FieldForce landing page with a new, more polished design provided by the user via a reference URL.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The FieldForce solution is now fully integrated into the main DataVision platform, using the original backend code from the specified GitHub repository. The frontend has been extensively patched to provide a consistent dark theme, correct fonts (Manrope and Barlow Condensed), and fix all known navigation and routing issues. All user-reported UI/UX bugs, including header overlaps, footer spacing, and broken logos, have been addressed. The website's content on the Homepage, About page, Services Hub, and FieldForce Landing page has been updated to reflect a global business focus. The partner logos have also been updated as per the user's request.
+The project is a React (frontend) and Flask (backend) web application for a company called DataVision. Two of its products, FieldForce and Survey360, have been integrated into this main platform. Their source code is pulled from external GitHub repositories using a sync script. The platform features a centralized Single Sign-On (SSO) system, allowing users to access both products with their DataVision credentials. The product pages for FieldForce and Survey360 have been updated with consistent branding, navigation headers, and pricing information. A clear architectural decision has been made for DataVision to be the central hub for user authentication and billing.
 
 **Last working item**:
-*   **Last item agent was working**: The agent was implementing the user's request to update the website's branding. This included two main parts:
-    1.  **Partner Logos:** Removing the UK Aid logo and adding WHO, RTI International, and Ecorys. This involved fixing display issues for the new logos by downloading them to the  folder and updating the database seeding script in .
-    2.  **Global Content:** Updating text across the Homepage, About page, Services Hub, and FieldForce landing page to remove specific references to Tanzania and adopt a more global data analytics and development consulting messaging.
-*   **Status**: IN PROGRESS
-*   **Agent Testing Done**: Y
-*   **Which testing method agent to use?**: Frontend testing agent
-*   **User Testing Done**: N
+-   **Last item agent was working on:** The agent was tasked with replacing the existing FieldForce landing page with a new design from a reference URL provided by the user. The agent determined that this new design was not in the user's GitHub repository and began recreating it from scratch by creating a new file: .
+-   **Status:** IN PROGRESS
+-   **Agent Testing Done:** N
+-   **Which testing method agent to use?** screenshot tool to visually verify the new page matches the reference design.
+-   **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
-*   **Issue 1: Complete verification of global content and branding updates (P0)**
-    *   **Description**: The agent has implemented code and database changes to update partner logos and make the site content globally focused. A final, comprehensive verification is required to ensure all changes are correctly and consistently applied across all affected pages without any regressions.
-    *   **Attempted fixes**: The agent has updated the code in multiple components (, , , , ) and confirmed the changes via targeted screenshots. However, a full end-to-end review is pending.
-    *   **Next debug checklist**:
-        *   Use the frontend testing agent to perform a full regression test on the application.
-        *   Manually review the Homepage, About Page, Services Hub, and FieldForce Landing Page to confirm all Tanzania-specific text has been replaced with global messaging.
-        *   Verify that the new partner logos (World Bank, USAID, UNICEF, WHO, RTI, Ecorys) display correctly on the homepage.
-        *   Check the footer on multiple pages to confirm the increased padding/spacing is correct.
-    *   **Why fix this issue and what will be achieved with the fix?**: This will complete the user's final request from the session, ensuring the website's branding and messaging are accurate and up-to-date.
-    *   **Status**: IN PROGRESS
-    *   **Is recurring issue?**: N
-    *   **Should Test frontend/backend/both after fix?**: Frontend
-    *   **Blocked on other issue**: None
+There are no outstanding bugs. The work is focused on new feature implementation and UI/UX refinement.
 
 **In progress Task List**:
-*   **Task 1: Comprehensive Testing and Final Verification**
-    *   **Description**: Finalize the user's request to Test everything to completion.
-    *   **Where to resume**: Run the frontend testing agent to conduct a full regression test. This test should verify all the recent changes (global content, new partner logos, footer spacing) and ensure no new bugs were introduced.
-    *   **What will be achieved with this?**: A fully tested and verified application that meets all user requirements from this session, making the solution ready for final review.
-    *   **Status**: IN PROGRESS
-    *   **Should Test frontend/backend/both after fix?**: Frontend
-    *   **Blocked on something**: None
+-   **Task 1: Recreate and Integrate the New FieldForce Landing Page (P0)**
+    -   **Where to resume:** Continue building the React component in . The file is currently empty. The agent needs to add JSX and Tailwind CSS to replicate the design from the reference URL ().
+    -   **What will be achieved with this?** The FieldForce solution will have a new, professionally designed landing page that matches the user's vision, improving the product's presentation.
+    -   **Status:** IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?** Frontend
+    -   **Blocked on something:** No
 
 **Upcoming and Future Tasks**
-*   **Future Task: Implement  functionality (P2)**
-    *   The file  was created as a stub to resolve import errors from the incomplete GitHub repository. It contains non-functional decorators like  and . If the Export feature, which uses these decorators, is to be enabled in the future, these functions will need to be properly implemented.
+-   **Upcoming Tasks:**
+    -   **Task 1: Implement Centralized Billing System (P0)**
+        -   The user has confirmed that DataVision will handle all billing centrally.
+        -   **Action Items:**
+            1.  Create a central **DataVision Billing Page** where users can select products (FieldForce, Survey360) and manage subscriptions. This will likely involve Stripe integration.
+            2.  Create a backend **Subscription API** that products can call to verify a user has an active subscription.
+            3.  Update UI elements: All Start Free, Sign Up, and Upgrade buttons on the product pages must redirect to the new central DataVision Billing Page.
+    -   **Task 2: Finalize Centralized Authentication Flow (P1)**
+        -   Building on the centralized billing model, ensure the entire user journey is seamless.
+        -   **Action Items:**
+            1.  Confirm all Log In and Sign Up buttons across all product landing pages redirect to a single DataVision authentication page.
+            2.  Verify that after login/signup on the DataVision page, the user is correctly redirected *back* to the product dashboard they intended to access, using the existing SSO mechanism.
+
+-   **Future Tasks:**
+    -   **Task 1: Refine and Document the Sync Workflow (P2)**
+        -   The  script is functional but could be made more robust.
+        -   **Action Items:**
+            1.  Add comments and error handling to the  script.
+            2.  Create or update a  file in the project root to document the development workflow, explaining how to use Git submodules and the sync script to update the integrated solutions.
 
 **Completed work in this session**
-*   **FieldForce Backend Integration:** Replaced the agent-made mock backend with the complete, original backend from the user's GitHub repository. This involved restructuring the code into a Python package () and integrating it into .
-*   **FieldForce Dark Theme:** Successfully applied a consistent dark theme across all FieldForce pages by using the  class defined in .
-*   **Font Matching:** Updated the application's fonts in  to use **Manrope** (body) and **Barlow Condensed** (headings), matching the original repository.
-*   **Frontend Routing & Navigation Fixes:** Corrected dozens of broken navigation links and redirects within the FieldForce application by prefixing all paths with . Key files fixed include , , , and .
-*   **Form Builder Fix:** Resolved a critical bug in  that prevented the creation of new forms by adding a conditional check for .
-*   **Landing Page UI/UX Overhaul:**
-    *   Fixed the main header from overlapping the FieldForce landing page content.
-    *   Corrected the font on the hero banner heading.
-    *   Fixed the broken DataVision logo in the footer and adjusted footer spacing.
-*   **Partner Logo Update:** Replaced the UK Aid logo and added WHO, RTI, and Ecorys logos, resolving all display issues by serving the images locally from the  directory.
-*   **Site-wide Content Update:** Rewrote content across , , , and  to reflect a global, rather than Tanzania-specific, focus.
+-   **Full Survey360 GitHub Integration:** Replaced an agent-made mock-up with the user's complete Survey360 application from GitHub, including all 49 backend routes and the full frontend.
+-   **FieldForce Backend Integration:** Synced the FieldForce backend application from its GitHub repository.
+-   **Centralized DataVision SSO:** Implemented and verified SSO for both Survey360 and FieldForce, with Sign in with DataVision buttons added to their respective login pages.
+-   **Sync Script & Submodule Workflow:** Created a  script and configured Git submodules to easily pull updates from the Survey360 and FieldForce GitHub repos.
+-   **Pricing Integration:** Synced pricing data from GitHub for Survey360 and added a new pricing section to the FieldForce page, ensuring consistency on all product pages.
+-   **Unified Header Design:** Refactored the Survey360 and FieldForce product pages to use a consistent, unified header with the DataVision logo and standard navigation links, achieving the deeper integration requested by the user.
+-   **Global Content Generalization:** Removed all hardcoded Tanzania-specific text from the website and replaced it with global-centric messaging.
+
+**Earlier issues found/mentioned but not fixed**
+-   None. The agent has addressed all issues raised by the user in this session.
 
 **Known issue recurrence from previous fork**
-*   None.
+-   N/A
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
-*   **Frontend**: React, React Router, Tailwind CSS
-*   **Backend**: FastAPI (Python), MongoDB
-*   **Architecture**: A monorepo containing a React frontend and a FastAPI backend. The FieldForce product is integrated as a sub-application, now utilizing its complete original backend code organized as a Python package.
+-   **Frontend:** React, Tailwind CSS
+-   **Backend:** Flask (Python)
+-   **Database:** MongoDB
+-   **Architecture:** Monorepo with a central shell platform (DataVision) that integrates two full-stack applications (FieldForce, Survey360) as features.
+-   **Authentication:** Centralized Single Sign-On (SSO) with JWT.
+-   **Development Workflow:** Code for the integrated applications is managed in external GitHub repositories and synced into the main project via Git submodules and a custom shell script.
 
 **key DB schema**
-*   **partners**: 
-*   **fieldforce collections**: Includes , , , , . Schemas are defined by Pydantic models in .
+-   : {username, password_hash, org_id}
+-   : {user_id, org_id, role}
+-   : {token, user_id, used}
+-   (Numerous other collections for Survey360 and FieldForce features like , , , ).
 
 **changes in tech stack**
-*   None.
+-   The  Python library was added as a dependency for the full Survey360 backend.
 
 **All files of reference**
-*   : Major changes to integrate the new FieldForce backend package and update the partner logo seeding data.
-*    (directory): Contains the entire original FieldForce backend, restructured to work within the project.
-*   : Modified to handle routing and layout logic for the FieldForce sub-application.
-*   : Modified to implement the correct fonts and dark theme variables.
-*   : Heavily modified to add a custom header, fix layout issues, and update content.
-*   Multiple FieldForce pages (, , , etc.): Modified to fix navigation paths.
-*   Multiple content pages (, , ): Modified to update text for global branding.
-*   : New logo image files were added here.
+-   : New script that automates pulling the latest code for FieldForce and Survey360 from their GitHub repositories.
+-   : New directory containing the full backend code for Survey360, managed as a Git submodule.
+-   : New directory containing the backend code for FieldForce, managed as a Git submodule.
+-   : New file created to register all 49 backend routes from the Survey360 application into the main Flask server.
+-   : Heavily modified to handle the full integration of Survey360 routes and the implementation of SSO endpoints for both products.
+-   : New, empty file created to house the code for the new FieldForce landing page design. This is the primary file for the next agent to work on.
+-    & : Both were modified to implement the new unified header design.
+
+**Areas that need refactoring**:
+-   There are multiple, partially redundant files for product pages. Once  is complete and integrated, the old  should be removed. The unused  (in ) should also be deleted to prevent future confusion.
+
+**key api endpoints**
+-   : Generates an SSO token for a validated DataVision user to access Survey360.
+-   : Generates an SSO token for a validated DataVision user to access FieldForce.
+-   : Namespace for all 385+ endpoints of the fully integrated Survey360 application.
+-   : Namespace for all endpoints of the FieldForce application.
 
 **Critical Info for New Agent**
-*   **Backend Source of Truth**: The FieldForce backend () is a direct copy from the user's GitHub repository. Do not add custom logic; refer to the original source for behavior.
-*   **Stubbed Module**:  is a non-functional stub created to prevent import errors. The decorators it provides (, etc.) do not work.
-*   **Database Name**: The correct MongoDB database for this application is , as specified in the  file. The agent previously made errors by writing to the wrong DB, which can manifest as caching issues.
-*   **Frontend Routing**: All navigation within the FieldForce application must use paths prefixed with .
-*   **Pending Verification**: The immediate task is to perform a comprehensive test and verification of the recent branding and content updates across the entire site.
+-   **Centralized Model is Key:** The user has explicitly agreed that DataVision is the central hub for **Authentication** and **Billing**. Do not build signup forms or payment logic within the FieldForce or Survey360 product pages. All Sign Up, Log In, or Buy buttons on these pages must redirect to a central DataVision page.
+-   **Use the Sync Script:** Do not edit code inside , , or their corresponding frontend directories directly. These are managed by Git submodules. To get updates, run the  script. If changes are needed for these products, they should ideally be done in their source GitHub repositories first.
+-   **Current Task:** Your immediate priority is to build the new FieldForce landing page in , matching the design from the reference URL. After completion, you must update the React Router in  to render this new page at the  path.
 
 **documents and test reports created in this job**
-*   None.
+-   
+-   
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User (latest)**: Requested updating partners (remove UK Aid, add WHO, RTI, Ecorys), fixing footer spacing, and changing all site content to be global, not Tanzania-focused. (Status: IN PROGRESS)
-2.  **User**: Provided an image highlighting multiple UI issues: header logo background, hero banner font, footer spacing, broken footer logo, and small UK Aid logo. (Status: COMPLETED)
-3.  **User**: Reported that the main DataVision banner was overlapping the FieldForce page. (Status: COMPLETED)
-4.  **User**: Asked for the web URL. (Status: COMPLETED)
-5.  **User**: Noticed the fonts were different from the GitHub original. (Status: COMPLETED)
-6.  **User**: Instructed: Test everything to completion since the codebase is already there. I want to finish this solution. (Status: IN PROGRESS)
-7.  **User**: Confirmed that the agent must replace the backend with the exact original from GitHub. (Status: COMPLETED)
-8.  **User**: Asked for transparency on what code was original vs. agent-created. (Status: COMPLETED)
-9.  **User**: Questioned the origin of the code, insisting on using only the official GitHub source. (Status: COMPLETED)
-10. **User**: Multiple Proceed messages, giving consent to the agent's plans. (Status: COMPLETED)
+1.  **Ok, when user clicks to sign up...?**: User asked for clarity on the auth flow. The agent defined a centralized flow which the user implicitly accepted by moving on. (Completed)
+2.  **So that means we can proceed with pulling the FieldForce in Git...Sync this codebase as the new FieldForce landing pag**: User gave the final go-ahead to replace the FieldForce landing page with the new design. (In Progress)
+3.  **With payment - DataVision website will handle the billing right?**: User confirmed their understanding of the centralized billing model. (Completed)
+4.  **Ok - check this website for FieldForece...**: User provided the reference URL for the new FieldForce landing page design. (Completed)
+5.  **Yes Deeper Integration...**: User confirmed they wanted the unified header design. (Completed)
+6.  **I this it is wise now to start syncung with the website itself...**: User prompted the idea of deeper integration. (Completed)
+7.  **Share URL**: User requested the preview URLs. (Completed)
+8.  **Now I want to sync FileForce from Github...**: User requested the FieldForce sync and pricing update. (Completed)
+9.  **The pricing imolemented should also be seen in the Prodduct page...**: User requested Survey360 pricing be consistent on its product page tab. (Completed)
+10. **Yes - imlpement this Git Submodules... because I have added pricing code...**: User approved the sync script/submodule workflow. (Completed)
 
 **Project Health Check:**
-*   **Broken**: None. Core functionalities are working.
-*   **Mocked**: The  module contains stubbed, non-functional decorators to allow the server to run. This impacts the Export feature, which is currently non-operational.
+-   **Broken:** No features are currently broken.
+-   **Mocked:** The entire billing and payment system is conceptual. The pricing sections are for display only and do not trigger any actions. The Start Free and Sign Up buttons on the new landing pages will need to be wired to the (yet to be built) central DataVision authentication and billing pages.
 
 **3rd Party Integrations**
-*   None specified.
+-   **SciPy:** A dependency for the Survey360 backend, used for advanced data analysis.
+-   **Stripe (Planned):** Agreed upon as the payment processor for the centralized DataVision billing system. Implementation has not started.
 
 **Testing status**
-*   **Testing agent used after significant changes**: YES
-*   **Troubleshoot agent used after agent stuck in loop**: NO
-*   **Test files created**: None
-*   **Known regressions**: None
+-   **Testing agent used after significant changes:** YES, an early test was run to identify and fix hardcoded Tanzania text.
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None
+-   **Known regressions:** None
 
 **Credentials to test flow:**
-*   **Email**: 
-*   **Password**: 
+-   **FieldForce:**  / 
+-   **Survey360:**  / 
 
 **What agent forgot to execute**
-*   The agent initially created a custom backend for FieldForce instead of using the provided GitHub repository, which had to be undone.
-*   The agent initially wrote to the wrong MongoDB database ( instead of ), which caused confusion until it was corrected.
-*   The final verification of the latest global content and partner logo updates is still pending.</analysis>
+-   The agent created  but has not yet removed the old/redundant files (, ). This should be done after the new page is live to keep the codebase clean.
+-   The final step of the current task—updating the route in  to point to the new FieldForce page—has not been performed yet, as the page is still empty.</analysis>
