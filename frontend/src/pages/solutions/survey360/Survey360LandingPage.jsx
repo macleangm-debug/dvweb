@@ -273,7 +273,7 @@ export function Survey360LandingPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative">
+      <section className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
