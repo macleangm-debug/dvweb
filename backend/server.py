@@ -583,6 +583,169 @@ async def get_current_user(payload: dict = Depends(verify_token)):
         raise HTTPException(status_code=404, detail="User not found")
     return AdminUser(**admin)
 
+# ==================== DATAVISION SSO FOR PRODUCTS ====================
+
+@api_router.post("/auth/sso/survey360")
+async def datavision_to_survey360_sso(authorization: str = Header(None)):
+    """
+    DataVision SSO to Survey360.
+    Allows DataVision authenticated users to access Survey360 without re-login.
+    Creates Survey360 user if doesn't exist.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_email = payload.get("sub")
+        user_id = payload.get("id")
+        
+        if not user_email:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Check if user exists in Survey360
+        survey360_user = await db.survey360_users.find_one({"email": user_email}, {"_id": 0})
+        
+        if not survey360_user:
+            # Get user info from DataVision admin or create new user
+            admin = await db.admins.find_one({"email": user_email}, {"_id": 0})
+            user_name = admin.get("name", user_email.split("@")[0]) if admin else user_email.split("@")[0]
+            
+            # Create Survey360 user with SSO
+            new_user_id = str(uuid.uuid4())
+            org_id = str(uuid.uuid4())
+            
+            # Create organization for the user
+            await db.survey360_orgs.insert_one({
+                "id": org_id,
+                "name": f"{user_name}'s Organization",
+                "plan": "professional",
+                "owner_id": new_user_id,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            })
+            
+            # Create the user
+            survey360_user = {
+                "id": new_user_id,
+                "email": user_email,
+                "name": user_name,
+                "org_id": org_id,
+                "sso_provider": "datavision",
+                "sso_linked": True,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.survey360_users.insert_one(survey360_user)
+        
+        # Generate Survey360 token
+        survey360_token = jwt.encode(
+            {
+                "user_id": survey360_user["id"],
+                "exp": datetime.now(timezone.utc).timestamp() + 86400,
+                "product": "survey360",
+                "sso": True
+            },
+            SECRET_KEY,
+            algorithm="HS256"
+        )
+        
+        return {
+            "user": {
+                "id": survey360_user["id"],
+                "email": survey360_user["email"],
+                "name": survey360_user["name"],
+                "org_id": survey360_user.get("org_id")
+            },
+            "access_token": survey360_token,
+            "sso": True,
+            "provider": "datavision"
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@api_router.post("/auth/sso/fieldforce")
+async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
+    """
+    DataVision SSO to FieldForce.
+    Allows DataVision authenticated users to access FieldForce without re-login.
+    Creates FieldForce user if doesn't exist.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_email = payload.get("sub")
+        
+        if not user_email:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Check if user exists in FieldForce
+        ff_user = await db.users.find_one({"email": user_email}, {"_id": 0})
+        
+        if not ff_user:
+            # Get user info from DataVision admin or create new user
+            admin = await db.admins.find_one({"email": user_email}, {"_id": 0})
+            user_name = admin.get("name", user_email.split("@")[0]) if admin else user_email.split("@")[0]
+            
+            # Create FieldForce user with SSO
+            new_user_id = str(uuid.uuid4())
+            org_id = str(uuid.uuid4())
+            
+            # Create organization
+            await db.organizations.insert_one({
+                "id": org_id,
+                "name": f"{user_name}'s Organization",
+                "slug": f"{user_email.split('@')[0]}-org",
+                "owner_id": new_user_id,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            })
+            
+            # Create the user
+            ff_user = {
+                "id": new_user_id,
+                "email": user_email,
+                "name": user_name,
+                "organization_id": org_id,
+                "role": "admin",
+                "sso_provider": "datavision",
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.users.insert_one(ff_user)
+        
+        # Generate FieldForce token
+        ff_token = jwt.encode(
+            {
+                "user_id": ff_user["id"],
+                "exp": datetime.now(timezone.utc).timestamp() + 86400,
+                "product": "fieldforce",
+                "sso": True
+            },
+            SECRET_KEY,
+            algorithm="HS256"
+        )
+        
+        return {
+            "user": {
+                "id": ff_user["id"],
+                "email": ff_user["email"],
+                "name": ff_user["name"],
+                "organization_id": ff_user.get("organization_id")
+            },
+            "access_token": ff_token,
+            "sso": True,
+            "provider": "datavision"
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
 # ==================== PUBLIC ROUTES ====================
 
 @api_router.get("/")
