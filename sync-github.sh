@@ -71,20 +71,25 @@ sync_fieldforce() {
     echo -e "${GREEN}✓ FieldForce pulled successfully${NC}"
     
     echo -e "\n${YELLOW}[4/4] Syncing FieldForce backend routes...${NC}"
+    
+    # FieldForce has routes in /fieldforce/backend/routes/
+    FF_SOURCE="$SOURCES_DIR/FieldForce/fieldforce/backend"
+    
     # Sync backend routes
     rm -rf "$BACKEND_DIR/fieldforce/routes"
     mkdir -p "$BACKEND_DIR/fieldforce/routes"
-    cp -r "$SOURCES_DIR/FieldForce/backend/routes/"* "$BACKEND_DIR/fieldforce/routes/"
+    cp -r "$FF_SOURCE/routes/"* "$BACKEND_DIR/fieldforce/routes/"
     
     # Sync backend core files
-    cp "$SOURCES_DIR/FieldForce/backend/models.py" "$BACKEND_DIR/fieldforce/"
-    cp "$SOURCES_DIR/FieldForce/backend/auth.py" "$BACKEND_DIR/fieldforce/"
+    cp "$FF_SOURCE/models.py" "$BACKEND_DIR/fieldforce/"
+    cp "$FF_SOURCE/auth.py" "$BACKEND_DIR/fieldforce/"
+    cp "$FF_SOURCE/logic_engine.py" "$BACKEND_DIR/fieldforce/" 2>/dev/null || true
     
     # Sync utils if exists
-    if [ -d "$SOURCES_DIR/FieldForce/backend/utils" ]; then
+    if [ -d "$FF_SOURCE/utils" ]; then
         rm -rf "$BACKEND_DIR/fieldforce/utils"
         mkdir -p "$BACKEND_DIR/fieldforce/utils"
-        cp -r "$SOURCES_DIR/FieldForce/backend/utils/"* "$BACKEND_DIR/fieldforce/utils/" 2>/dev/null || true
+        cp -r "$FF_SOURCE/utils/"* "$BACKEND_DIR/fieldforce/utils/" 2>/dev/null || true
     fi
     
     # Fix imports for DataVision integration
@@ -92,6 +97,7 @@ sync_fieldforce() {
     cd "$BACKEND_DIR/fieldforce/routes"
     sed -i 's/from models import/from fieldforce.models import/g' *.py
     sed -i 's/from auth import/from fieldforce.auth import/g' *.py
+    sed -i 's/from logic_engine import/from fieldforce.logic_engine import/g' *.py 2>/dev/null || true
     sed -i 's/from utils\./from fieldforce.utils./g' *.py 2>/dev/null || true
     
     echo -e "${GREEN}✓ FieldForce backend synced${NC}"
