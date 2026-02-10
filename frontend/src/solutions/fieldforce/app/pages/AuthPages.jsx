@@ -35,13 +35,38 @@ export function LoginPage() {
   };
 
   const handleSSOLogin = async () => {
-    try {
-      const redirectUri = `${window.location.origin}/solutions/fieldforce/app/auth/callback`;
-      const response = await authAPI.getSSOUrl(redirectUri);
-      window.location.href = response.data.auth_url;
-    } catch (error) {
-      toast.error('Failed to initialize SSO login');
+    // Check for existing DataVision token
+    const dvToken = localStorage.getItem('dv_token') || localStorage.getItem('datavision_token') || localStorage.getItem('token');
+    
+    if (dvToken) {
+      try {
+        setLoading(true);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/sso/fieldforce`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${dvToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('fieldforce_token', data.access_token);
+          setAuth(data.user, data.access_token);
+          toast.success('Logged in via DataVision SSO!');
+          navigate('/solutions/fieldforce/app/dashboard');
+          return;
+        }
+      } catch (error) {
+        console.log('SSO exchange failed');
+      } finally {
+        setLoading(false);
+      }
     }
+    
+    // Redirect to DataVision login
+    toast.info('Redirecting to DataVision login...');
+    window.location.href = '/admin';
   };
 
   return (
