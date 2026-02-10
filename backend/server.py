@@ -769,7 +769,17 @@ async def get_current_user(payload: dict = Depends(verify_token)):
             id=user["id"],
             email=user["email"],
             name=user.get("name", "User"),
-            is_admin=user.get("is_admin", False)
+            is_admin=user.get("is_admin", False),
+            country=user.get("country"),
+            industry=user.get("industry"),
+            organization=user.get("organization"),
+            job_title=user.get("job_title"),
+            company_size=user.get("company_size"),
+            phone=user.get("phone"),
+            how_heard=user.get("how_heard"),
+            profile_completed=user.get("profile_completed", False),
+            products_accessed=user.get("products_accessed", []),
+            last_login=user.get("last_login")
         )
     
     # Then check admins
