@@ -52,10 +52,27 @@ class AdminUser(BaseModel):
     name: str = "Administrator"
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
+class DataVisionUserRegister(BaseModel):
+    email: str
+    password: str
+    name: str
+
+class DataVisionUser(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: str
+    name: str
+    is_admin: bool = False
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: AdminUser
+
+class UserTokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: DataVisionUser
 
 class Project(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
