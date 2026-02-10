@@ -198,13 +198,13 @@ export const FieldForceLandingPage = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0a1628] via-[#1e293b] to-[#0f172a] text-white overflow-hidden pt-20">
+      <section className="relative bg-gradient-to-br from-[#0a1628] via-[#1e293b] to-[#0f172a] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 bg-teal-500 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto px-6 lg:px-12 pt-40 pb-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 pt-48 pb-20 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
