@@ -214,12 +214,20 @@ export function LoginPage() {
 
               <Button 
                 variant="outline" 
-                className="w-full" 
+                className="w-full bg-gradient-to-r from-slate-800 to-slate-900 border-2 border-teal-500/50 hover:border-teal-400 hover:from-slate-700 hover:to-slate-800 text-white py-6 rounded-xl transition-all duration-300 shadow-lg shadow-teal-500/10 hover:shadow-teal-500/20" 
                 onClick={handleSSOLogin}
                 data-testid="sso-login-btn"
               >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Continue with DataVision SSO
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                    <img 
+                      src="/datavision-logo-cropped.png" 
+                      alt="DataVision" 
+                      className="h-5 w-auto"
+                    />
+                  </div>
+                  <span className="font-semibold">Continue with DataVision</span>
+                </div>
               </Button>
 
               <p className="text-center text-sm text-muted-foreground mt-6">
