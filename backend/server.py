@@ -2856,6 +2856,9 @@ from routes.survey360_routes import router as survey360_basic_router, create_sur
 # Import and include FieldForce routes (original GitHub code)
 from fieldforce.fieldforce_main import fieldforce_router
 
+# Import and include DataPulse routes
+from routes.datapulse_routes import router as datapulse_router, create_datapulse_routes
+
 # Include Survey360 basic router (for existing frontend compatibility)
 api_router.include_router(survey360_basic_router)
 
