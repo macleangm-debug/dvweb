@@ -2868,6 +2868,10 @@ api_router.include_router(survey360_full_router)
 # Include FieldForce router (all original routes from GitHub)
 api_router.include_router(fieldforce_router)
 
+# Include DataPulse router
+create_datapulse_routes(db)
+api_router.include_router(datapulse_router)
+
 # Then include api_router in app
 app.include_router(api_router)
 
