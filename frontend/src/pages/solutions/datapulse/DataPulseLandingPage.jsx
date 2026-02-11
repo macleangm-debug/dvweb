@@ -202,10 +202,10 @@ const DataPulseLandingPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/solutions/datapulse/demo">
+              <Link to="/solutions/fieldforce/demo">
                 <button className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2" data-testid="hero-demo-btn">
                   <Play className="w-5 h-5" />
-                  Try Interactive Demo
+                  Try FieldForce Demo
                 </button>
               </Link>
               <Link to="/solutions/datapulse/register">
