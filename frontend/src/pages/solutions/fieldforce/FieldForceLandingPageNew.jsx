@@ -459,6 +459,128 @@ const FieldForceLandingPage = () => {
         </div>
       </section>
 
+      {/* Customer Testimonials Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
+              Trusted Worldwide
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+              What Our Customers Say
+            </h2>
+            <p className="text-gray-400">
+              Organizations across Africa trust FieldForce for their data collection needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "FieldForce transformed our household surveys. We reduced data entry errors by 90% and cut project timelines in half.",
+                author: "Dr. Sarah Mwangi",
+                role: "M&E Director",
+                org: "World Bank Tanzania Office",
+                logo: "🏦"
+              },
+              {
+                quote: "The offline capability is a game-changer. Our teams in rural Kenya can now collect data even in areas with zero connectivity.",
+                author: "James Ochieng",
+                role: "Field Operations Lead",
+                org: "UNICEF Eastern Africa",
+                logo: "🦄"
+              },
+              {
+                quote: "We've processed over 50,000 submissions through FieldForce. The real-time analytics help us make faster decisions.",
+                author: "Dr. Fatima Hassan",
+                role: "Research Coordinator",
+                org: "Gates Foundation",
+                logo: "🔬"
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-[#0d1d33] rounded-2xl p-6 border border-white/10 relative"
+              >
+                <div className="text-4xl mb-4 opacity-20 absolute top-4 right-4">"</div>
+                <p className="text-gray-300 mb-6 italic">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-2xl">
+                    {testimonial.logo}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">{testimonial.author}</p>
+                    <p className="text-sm text-gray-400">{testimonial.role}</p>
+                    <p className="text-sm text-teal-400">{testimonial.org}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Trust logos */}
+          <div className="mt-16 text-center">
+            <p className="text-gray-500 text-sm mb-6">Trusted by leading organizations</p>
+            <div className="flex flex-wrap justify-center items-center gap-12 opacity-50">
+              {['World Bank', 'UNICEF', 'USAID', 'WHO', 'Gates Foundation', 'DFID'].map((org, i) => (
+                <span key={i} className="text-white font-semibold">{org}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROI Calculator Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-teal-900/30 to-[#0a1628]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1 bg-teal-500/20 text-teal-300 text-sm font-medium rounded-full mb-4">
+              ROI Calculator
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+              Calculate Your Savings
+            </h2>
+            <p className="text-gray-400">
+              See how much time and money FieldForce can save your organization
+            </p>
+          </div>
+
+          <div className="bg-[#0d1d33] rounded-2xl p-8 border border-teal-500/20">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="text-white">
+                  <p className="text-sm text-gray-400 mb-2">Monthly paper surveys</p>
+                  <div className="text-4xl font-bold text-teal-400">500+</div>
+                </div>
+                <div className="text-white">
+                  <p className="text-sm text-gray-400 mb-2">Data entry time saved</p>
+                  <div className="text-4xl font-bold text-teal-400">40 hrs</div>
+                </div>
+                <div className="text-white">
+                  <p className="text-sm text-gray-400 mb-2">Error reduction</p>
+                  <div className="text-4xl font-bold text-teal-400">90%</div>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-teal-500/20 to-cyan-500/10 rounded-xl p-6 flex flex-col justify-center">
+                <p className="text-gray-400 text-sm mb-2">Estimated monthly savings</p>
+                <div className="text-5xl font-bold text-white mb-2">$2,500+</div>
+                <p className="text-teal-400 text-sm">Based on 500 surveys/month</p>
+                <Link 
+                  to="/solutions/fieldforce/app/register"
+                  className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-500 text-white font-semibold rounded-xl hover:bg-teal-600 transition-all"
+                >
+                  Start Saving Today
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
