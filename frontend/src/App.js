@@ -3229,6 +3229,10 @@ function App() {
             <Route path="/our-services" element={<ServicesShowcase />} />
             <Route path="/solutions/survey360" element={<Survey360LandingPage />} />
             <Route path="/solutions/fieldforce" element={<FieldForceLandingPage />} />
+            <Route path="/solutions/fieldforce/demo" element={<FFDemoPage />} />
+            <Route path="/solutions/datapulse" element={<DataPulseLandingPage />} />
+            <Route path="/solutions/datapulse/login" element={<DataPulseLoginPage />} />
+            <Route path="/solutions/datapulse/register" element={<DataPulseRegisterPage />} />
             <Route path="*" element={
               <>
                 <Navbar />
