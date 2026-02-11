@@ -1402,9 +1402,38 @@ const HomePage = () => {
 
   return (
     <div className="pt-20">
-      {/* Hero Section */}
-      <section className="relative bg-[#0a1628] text-white min-h-[90vh] flex items-center noise-overlay overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-[#1e293b] to-[#0a1628]" style={{background: 'radial-gradient(circle at top right, #1e293b 0%, #0a1628 100%)'}}></div>
+      {/* Hero Section with Product Rotation */}
+      <section className={`relative min-h-[90vh] flex items-center noise-overlay overflow-hidden transition-colors duration-700 ${
+        heroMessages[heroIndex].type === 'fieldforce' 
+          ? 'bg-gradient-to-br from-[#0d3d38] via-[#0a2e2a] to-[#061a17]' 
+          : heroMessages[heroIndex].type === 'survey360'
+          ? 'bg-gradient-to-br from-[#1a1033] via-[#12082a] to-[#0a0515]'
+          : 'bg-[#0a1628]'
+      }`}>
+        <div className="absolute inset-0" style={{
+          background: heroMessages[heroIndex].type === 'fieldforce' 
+            ? 'radial-gradient(circle at top right, #14524b 0%, #061a17 100%)'
+            : heroMessages[heroIndex].type === 'survey360'
+            ? 'radial-gradient(circle at top right, #2d1b4e 0%, #0a0515 100%)'
+            : 'radial-gradient(circle at top right, #1e293b 0%, #0a1628 100%)'
+        }}></div>
+        
+        {/* Hero indicator dots */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
+          {heroMessages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setHeroIndex(idx)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                heroIndex === idx 
+                  ? 'bg-[#e63946] w-8' 
+                  : 'bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -1412,42 +1441,86 @@ const HomePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4">
-                25 Years of Excellence
-              </p>
               <AnimatePresence mode="wait">
-                <motion.h1
+                <motion.div
                   key={heroIndex}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 font-serif text-white"
-                  data-testid="hero-title"
                 >
-                  {heroMessages[heroIndex]}
-                </motion.h1>
+                  {heroMessages[heroIndex].type === 'consulting' ? (
+                    <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4">
+                      25 Years of Excellence
+                    </p>
+                  ) : (
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        heroMessages[heroIndex].type === 'fieldforce' ? 'bg-[#2dd4bf]/20' : 'bg-purple-500/20'
+                      }`}>
+                        {heroMessages[heroIndex].type === 'fieldforce' ? (
+                          <MapPin className="w-5 h-5 text-[#2dd4bf]" />
+                        ) : (
+                          <FileText className="w-5 h-5 text-purple-400" />
+                        )}
+                      </div>
+                      <span className={`font-semibold uppercase tracking-wider text-sm ${
+                        heroMessages[heroIndex].type === 'fieldforce' ? 'text-[#2dd4bf]' : 'text-purple-400'
+                      }`}>
+                        DataVision Software
+                      </span>
+                    </div>
+                  )}
+                  <h1
+                    className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 font-serif text-white"
+                    data-testid="hero-title"
+                  >
+                    {heroMessages[heroIndex].title}
+                  </h1>
+                  <p className="text-lg text-white/80 mb-8 max-w-lg">
+                    {heroMessages[heroIndex].subtitle}
+                  </p>
+                </motion.div>
               </AnimatePresence>
-              <p className="text-lg text-white/80 mb-8 max-w-lg">
-                Leading data analytics, research, and development consultancy with deep expertise across 
-                agriculture, education, health, and WASH sectors. Trusted by World Bank, 
-                USAID, and development partners globally.
-              </p>
+              
               <div className="flex flex-wrap gap-4">
-                <Link 
-                  to="/contact" 
-                  className="bg-[#e63946] text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-[#d02835] transition-all hover:-translate-y-1"
-                  data-testid="hero-partner-btn"
-                >
-                  Partner With Us
-                </Link>
-                <Link 
-                  to="/contact?type=consultation" 
-                  className="border-2 border-white text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-white hover:text-[#0a1628] transition-all"
-                  data-testid="hero-consultation-btn"
-                >
-                  Request Consultation
-                </Link>
+                {heroMessages[heroIndex].type === 'consulting' ? (
+                  <>
+                    <Link 
+                      to="/contact" 
+                      className="bg-[#e63946] text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-[#d02835] transition-all hover:-translate-y-1"
+                      data-testid="hero-partner-btn"
+                    >
+                      Partner With Us
+                    </Link>
+                    <Link 
+                      to="/contact?type=consultation" 
+                      className="border-2 border-white text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-white hover:text-[#0a1628] transition-all"
+                      data-testid="hero-consultation-btn"
+                    >
+                      Request Consultation
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link 
+                      to={heroMessages[heroIndex].cta} 
+                      className={`px-8 py-4 font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-1 ${
+                        heroMessages[heroIndex].type === 'fieldforce'
+                          ? 'bg-[#2dd4bf] text-[#0a1628] hover:bg-[#14b8a6]'
+                          : 'bg-purple-500 text-white hover:bg-purple-600'
+                      }`}
+                    >
+                      {heroMessages[heroIndex].ctaText} →
+                    </Link>
+                    <Link 
+                      to={`${heroMessages[heroIndex].cta}/app/login`}
+                      className="border-2 border-white/50 text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-white/10 transition-all"
+                    >
+                      Try Interactive Demo
+                    </Link>
+                  </>
+                )}
               </div>
             </motion.div>
             <motion.div
@@ -1456,7 +1529,103 @@ const HomePage = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="hidden lg:block"
             >
-              <AfricaMap />
+              <AnimatePresence mode="wait">
+                {heroMessages[heroIndex].type === 'consulting' ? (
+                  <motion.div
+                    key="map"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <AfricaMap />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={heroMessages[heroIndex].type}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative"
+                  >
+                    {/* Product Screenshot Mockup */}
+                    <div className={`rounded-2xl p-1 shadow-2xl ${
+                      heroMessages[heroIndex].type === 'fieldforce'
+                        ? 'bg-gradient-to-br from-[#2dd4bf]/30 to-[#14b8a6]/10'
+                        : 'bg-gradient-to-br from-purple-500/30 to-purple-600/10'
+                    }`}>
+                      <div className="bg-[#0a1628] rounded-xl overflow-hidden">
+                        <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
+                          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                          <span className="ml-4 text-white/50 text-sm">
+                            {heroMessages[heroIndex].type === 'fieldforce' ? 'fieldforce.datavision.co.tz' : 'survey360.datavision.co.tz'}
+                          </span>
+                        </div>
+                        <div className="p-6 min-h-[350px] flex items-center justify-center">
+                          <div className="text-center">
+                            <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-4 ${
+                              heroMessages[heroIndex].type === 'fieldforce'
+                                ? 'bg-[#2dd4bf]/20'
+                                : 'bg-purple-500/20'
+                            }`}>
+                              {heroMessages[heroIndex].type === 'fieldforce' ? (
+                                <MapPin className="w-10 h-10 text-[#2dd4bf]" />
+                              ) : (
+                                <FileText className="w-10 h-10 text-purple-400" />
+                              )}
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2">
+                              {heroMessages[heroIndex].type === 'fieldforce' ? 'FieldForce' : 'Survey360'}
+                            </h3>
+                            <p className="text-white/60 text-sm mb-6">Dashboard Preview</p>
+                            <div className="grid grid-cols-3 gap-4">
+                              {[
+                                { label: heroMessages[heroIndex].type === 'fieldforce' ? 'Projects' : 'Surveys', value: '24' },
+                                { label: heroMessages[heroIndex].type === 'fieldforce' ? 'Submissions' : 'Responses', value: '1.2K' },
+                                { label: 'Team', value: '12' }
+                              ].map((stat, i) => (
+                                <div key={i} className="bg-white/5 rounded-lg p-3">
+                                  <div className={`text-2xl font-bold ${
+                                    heroMessages[heroIndex].type === 'fieldforce' ? 'text-[#2dd4bf]' : 'text-purple-400'
+                                  }`}>{stat.value}</div>
+                                  <div className="text-white/50 text-xs">{stat.label}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Floating badges */}
+                    <motion.div 
+                      className="absolute -bottom-4 -left-4 bg-white rounded-lg shadow-xl px-4 py-2 flex items-center gap-2"
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500">Real-time sync</div>
+                        <div className="text-sm font-semibold text-gray-800">100% Offline Ready</div>
+                      </div>
+                    </motion.div>
+                    <motion.div 
+                      className="absolute -top-4 -right-4 bg-white rounded-lg shadow-xl px-4 py-2"
+                      animate={{ y: [0, 5, 0] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-blue-600" />
+                        <span className="text-sm font-semibold text-gray-800">256-bit Encryption</span>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </div>
