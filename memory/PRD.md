@@ -9,6 +9,49 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 11, 2026 - Homepage Conversion Optimization & Landing Page Redesign (COMPLETED)
+
+**Rotating Product Hero Banner:**
+- 3-slide rotation every 6 seconds: Consulting (Africa map), FieldForce, Survey360
+- Clickable indicator dots for manual navigation
+- Dynamic background gradients per slide (dark blue for consulting, teal for FieldForce, purple for Survey360)
+- Product mockups with floating badges (256-bit Encryption, 100% Offline Ready)
+- Product-specific CTAs: "Try FieldForce Free" / "Try Survey360 Free"
+
+**Software Solutions Section (NEW):**
+- Prominent section after stats showing FieldForce and Survey360 cards
+- Gradient cards with feature lists and trust badges
+- "Most Popular" / "New" tags
+- Trust logos: World Bank, UNICEF, USAID, Gates Foundation, WHO
+
+**Updated About Us Section:**
+- Changed from research-only to multi-disciplinary focus
+- New heading: "Research, Technology & Development Excellence Since 1998"
+- 4 capability cards: Research & M&E, Software Products, Data Analytics, Capacity Building
+- Each card has distinct color accent (red, teal, purple, amber)
+
+**Product Landing Pages Enhanced:**
+- FieldForce: Added customer testimonials section (World Bank, UNICEF, Gates Foundation)
+- FieldForce: Added ROI Calculator section ($2,500+/month savings, 40 hrs saved, 90% error reduction)
+- Survey360: Added customer testimonials section (3 customer quotes)
+- Mobile responsive design verified
+
+**Test Results (100% Pass Rate):**
+- ✅ Hero rotation with manual dots
+- ✅ Software Solutions section display
+- ✅ About Us multi-disciplinary cards
+- ✅ FieldForce testimonials & ROI calculator
+- ✅ Survey360 testimonials
+- ✅ SSO flows for both products
+- ✅ Mobile responsive design
+
+**Files Modified:**
+- `/app/frontend/src/App.js` - Hero rotation, Software Solutions, About Us sections
+- `/app/frontend/src/pages/solutions/fieldforce/FieldForceLandingPageNew.jsx` - Testimonials, ROI calculator
+- `/app/frontend/src/pages/solutions/survey360/Survey360LandingPage.jsx` - Testimonials section
+
+---
+
 ### February 10, 2026 - SSO Flow Fix & Backend Refactoring (COMPLETED)
 
 **SSO Authentication Flow Fixed:**
