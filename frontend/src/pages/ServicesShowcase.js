@@ -145,7 +145,7 @@ const ServicesPage = () => {
               animate={{ opacity: 1, y: 0 }}
             >
               <span className="text-[#2dd4bf] font-semibold uppercase tracking-wider">Our Services</span>
-              <h1 className="text-4xl md:text-5xl font-bold mt-2 mb-6 font-serif">
+              <h1 className="text-4xl md:text-5xl font-bold mt-2 mb-6 font-serif text-white">
                 Comprehensive Solutions for{' '}
                 <span className="text-[#2dd4bf]">Data & Development</span>
               </h1>
