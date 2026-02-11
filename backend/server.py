@@ -811,6 +811,7 @@ async def delete_cms_content(content_type: str, item_id: str, payload: dict = De
 EXPERT_CATEGORIES = [
     {"id": "research_me", "name": "Research & M&E", "description": "Surveys, evaluations, impact assessments"},
     {"id": "data_science", "name": "Data Science & AI/ML", "description": "Machine learning, predictive analytics, NLP"},
+    {"id": "data_analytics", "name": "Data Analytics", "description": "BI dashboards, data visualization, reporting"},
     {"id": "public_health", "name": "Public Health", "description": "Health systems, epidemiology, HMIS"},
     {"id": "agriculture", "name": "Agriculture & Food Security", "description": "Agricultural research, food systems"},
     {"id": "education", "name": "Education & EdTech", "description": "Learning assessments, curriculum, EdTech"},
@@ -821,7 +822,8 @@ EXPERT_CATEGORIES = [
     {"id": "software", "name": "Software Development", "description": "Web, mobile, database development"},
     {"id": "statistics", "name": "Statistics", "description": "Statistical analysis, sampling, modeling"},
     {"id": "wash", "name": "WASH", "description": "Water, sanitation, hygiene research"},
-    {"id": "gender", "name": "Gender & Social Inclusion", "description": "Gender analysis, social assessments"},
+    {"id": "inclusion_equality", "name": "Inclusion & Equality", "description": "Social inclusion, gender equality, diversity"},
+    {"id": "oil_gas", "name": "Oil & Gas", "description": "Energy sector research, petroleum economics"},
     {"id": "nutrition", "name": "Nutrition", "description": "Nutrition surveys, food security assessments"},
     {"id": "digital_transformation", "name": "Digital Transformation", "description": "Digitization, process automation"},
 ]
