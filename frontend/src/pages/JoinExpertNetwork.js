@@ -122,7 +122,7 @@ const JoinExpertNetwork = () => {
               <span className="inline-block px-4 py-2 bg-[#2dd4bf]/20 text-[#2dd4bf] rounded-full text-sm font-medium mb-6">
                 Join 500+ Expert Consultants
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif text-white">
                 Turn Your Expertise Into{' '}
                 <span className="text-[#2dd4bf]">Global Impact</span>
               </h1>
