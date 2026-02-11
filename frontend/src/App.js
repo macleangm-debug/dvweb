@@ -100,7 +100,7 @@ import CMSContentManager from './components/cms/CMSContentManager';
 
 // Expert Network & Services
 import JoinExpertNetwork from './pages/JoinExpertNetwork';
-import ServicesPage from './pages/ServicesPage';
+import ServicesShowcase from './pages/ServicesShowcase';
 
 // Survey360 App Pages (from GitHub repo)
 import {
