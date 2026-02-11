@@ -701,6 +701,110 @@ async def get_all_users(
         }
     }
 
+# ==================== CMS CONTENT MANAGEMENT ====================
+
+@api_router.get("/cms/content/{content_type}")
+async def get_cms_content(content_type: str, payload: dict = Depends(verify_token)):
+    """Get content items by type for CMS."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    collection_map = {
+        "homepage": "cms_homepage",
+        "team": "cms_team",
+        "projects": "cms_projects",
+        "blog": "cms_blog",
+        "testimonials": "cms_testimonials"
+    }
+    
+    collection = collection_map.get(content_type)
+    if not collection:
+        raise HTTPException(status_code=400, detail="Invalid content type")
+    
+    items = await db[collection].find({}, {"_id": 0}).to_list(100)
+    return {"items": items}
+
+@api_router.post("/cms/content/{content_type}")
+async def create_cms_content(content_type: str, data: dict, payload: dict = Depends(verify_token)):
+    """Create new content item."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    collection_map = {
+        "homepage": "cms_homepage",
+        "team": "cms_team",
+        "projects": "cms_projects",
+        "blog": "cms_blog",
+        "testimonials": "cms_testimonials"
+    }
+    
+    collection = collection_map.get(content_type)
+    if not collection:
+        raise HTTPException(status_code=400, detail="Invalid content type")
+    
+    data["id"] = str(uuid.uuid4())
+    data["created_at"] = datetime.now(timezone.utc).isoformat()
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["created_by"] = payload.get("sub")
+    
+    await db[collection].insert_one(data)
+    return {"message": "Content created", "id": data["id"]}
+
+@api_router.put("/cms/content/{content_type}/{item_id}")
+async def update_cms_content(content_type: str, item_id: str, data: dict, payload: dict = Depends(verify_token)):
+    """Update existing content item."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    collection_map = {
+        "homepage": "cms_homepage",
+        "team": "cms_team",
+        "projects": "cms_projects",
+        "blog": "cms_blog",
+        "testimonials": "cms_testimonials"
+    }
+    
+    collection = collection_map.get(content_type)
+    if not collection:
+        raise HTTPException(status_code=400, detail="Invalid content type")
+    
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["updated_by"] = payload.get("sub")
+    
+    result = await db[collection].update_one({"id": item_id}, {"$set": data})
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Content not found")
+    
+    return {"message": "Content updated"}
+
+@api_router.delete("/cms/content/{content_type}/{item_id}")
+async def delete_cms_content(content_type: str, item_id: str, payload: dict = Depends(verify_token)):
+    """Delete content item."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    collection_map = {
+        "homepage": "cms_homepage",
+        "team": "cms_team",
+        "projects": "cms_projects",
+        "blog": "cms_blog",
+        "testimonials": "cms_testimonials"
+    }
+    
+    collection = collection_map.get(content_type)
+    if not collection:
+        raise HTTPException(status_code=400, detail="Invalid content type")
+    
+    result = await db[collection].delete_one({"id": item_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Content not found")
+    
+    return {"message": "Content deleted"}
+
 @api_router.post("/auth/sso-exchange")
 async def datavision_sso_exchange(authorization: str = Header(None)):
     """
