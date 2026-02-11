@@ -125,6 +125,25 @@ const softwareSolutions = [
     stats: { downloads: '25K+', countries: '15+', dataPoints: '75M+' }
   },
   {
+    id: 'datapulse',
+    name: 'DataPulse',
+    tagline: 'Enterprise Data Collection Platform',
+    shortDesc: 'The most powerful platform for research, monitoring & evaluation',
+    icon: Database,
+    color: '#6366f1',
+    category: 'data-collection',
+    industries: ['all'],
+    features: [
+      'Enterprise-grade infrastructure',
+      'AI-powered quality monitoring',
+      'CATI/CAPI integration',
+      'Multi-language support (EN/SW)',
+      'Advanced statistical analysis',
+      'Custom workflow automation'
+    ],
+    stats: { organizations: '500+', countries: '50+', dataPoints: '10M+' }
+  },
+  {
     id: 'agridata-pro',
     name: 'AgriData Pro',
     tagline: 'Agricultural Intelligence Platform',
