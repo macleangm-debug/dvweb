@@ -1872,7 +1872,7 @@ const HomePage = () => {
               <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#2dd4bf] transition-all">
                 <Smartphone className="w-8 h-8 text-[#2dd4bf] mb-4" />
                 <h3 className="font-semibold text-[#0a1628] mb-2">Software Products</h3>
-                <p className="text-sm text-[#64748b]">FieldForce, Survey360 & custom data platforms</p>
+                <p className="text-sm text-[#64748b]">FieldForce, Survey360, DataPulse & custom data platforms</p>
               </div>
               <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#a855f7] transition-all">
                 <BarChart3 className="w-8 h-8 text-[#a855f7] mb-4" />
