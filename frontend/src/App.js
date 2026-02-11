@@ -3134,6 +3134,13 @@ const AdminDashboard = () => {
             <AdminUsersManagement token={localStorage.getItem('dv_token')} />
           )}
 
+          {activeTab === 'content' && (
+            <div>
+              <h2 className="text-2xl font-bold text-[#0a1628] mb-6 font-serif">Content Manager</h2>
+              <CMSContentManager />
+            </div>
+          )}
+
           {activeTab === 'verification' && (
             <AdminVerificationDashboard token={localStorage.getItem('dv_token')} />
           )}
