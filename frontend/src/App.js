@@ -10,7 +10,7 @@ import {
   Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
   Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
   FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb,
-  Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Briefcase
+  Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Briefcase, Activity
 } from 'lucide-react';
 import {
   ResearchStatisticsPage,
