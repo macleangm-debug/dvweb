@@ -1387,14 +1387,16 @@ const HomePage = () => {
       subtitle: "Powerful offline-first data collection for field teams. GPS tracking, photo capture, and seamless sync - trusted by researchers across Africa.",
       type: "fieldforce",
       cta: "/solutions/fieldforce",
-      ctaText: "Try FieldForce Free"
+      ctaText: "Try FieldForce Free",
+      demoLink: "/solutions/fieldforce/app/login"
     },
     { 
       title: "Survey360: Beautiful Surveys Made Simple",
       subtitle: "Create professional surveys in minutes. Collect responses anywhere. Get insights instantly - all in one powerful platform.",
       type: "survey360",
       cta: "/solutions/survey360",
-      ctaText: "Try Survey360 Free"
+      ctaText: "Try Survey360 Free",
+      demoLink: "/solutions/survey360/login"
     }
   ];
   const [heroIndex, setHeroIndex] = useState(0);
