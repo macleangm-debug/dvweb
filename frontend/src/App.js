@@ -1371,15 +1371,32 @@ const HomePage = () => {
   }, [testimonials]);
 
   const heroMessages = [
-    "Data-Driven Insights Driving Global Impact",
-    "Your Trusted Partner in Data, Research & Development"
+    { 
+      title: "Data-Driven Insights Driving Global Impact",
+      subtitle: "Leading data analytics, research, and development consultancy with deep expertise across agriculture, education, health, and WASH sectors.",
+      type: "consulting"
+    },
+    { 
+      title: "FieldForce: Mobile Data Collection Made Simple",
+      subtitle: "Powerful offline-first data collection for field teams. GPS tracking, photo capture, and seamless sync - trusted by researchers across Africa.",
+      type: "fieldforce",
+      cta: "/solutions/fieldforce",
+      ctaText: "Try FieldForce Free"
+    },
+    { 
+      title: "Survey360: Beautiful Surveys Made Simple",
+      subtitle: "Create professional surveys in minutes. Collect responses anywhere. Get insights instantly - all in one powerful platform.",
+      type: "survey360",
+      cta: "/solutions/survey360",
+      ctaText: "Try Survey360 Free"
+    }
   ];
   const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroMessages.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
