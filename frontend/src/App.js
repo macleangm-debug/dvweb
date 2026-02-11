@@ -121,6 +121,13 @@ import {
 // FieldForce Landing Page
 import { FieldForceLandingPage } from './pages/solutions/fieldforce';
 
+// FieldForce Demo Page (from GitHub)
+import FFDemoPage from './solutions/fieldforce/app/pages/DemoPage';
+import FFLandingPage from './solutions/fieldforce/app/pages/LandingPage';
+
+// DataPulse Pages
+import { DataPulseLandingPage, DataPulseLoginPage, DataPulseRegisterPage } from './pages/solutions/datapulse';
+
 // FieldForce Original Pages (from GitHub repo - FULL functionality)
 import { LoginPage as FFLoginPage, RegisterPage as FFRegisterPage } from './solutions/fieldforce/app/pages/AuthPages';
 import { DashboardPage as FFDashboardPage } from './solutions/fieldforce/app/pages/DashboardPage';
