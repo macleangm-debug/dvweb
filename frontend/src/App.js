@@ -1522,7 +1522,7 @@ const HomePage = () => {
                       {heroMessages[heroIndex].ctaText} →
                     </Link>
                     <Link 
-                      to={`${heroMessages[heroIndex].cta}/app/login`}
+                      to={heroMessages[heroIndex].demoLink}
                       className="border-2 border-white/50 text-white px-8 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-white/10 transition-all"
                     >
                       Try Interactive Demo
