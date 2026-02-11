@@ -805,6 +805,102 @@ async def delete_cms_content(content_type: str, item_id: str, payload: dict = De
     
     return {"message": "Content deleted"}
 
+# ==================== EXPERT NETWORK ====================
+
+# Expert categories for backend management
+EXPERT_CATEGORIES = [
+    {"id": "research_me", "name": "Research & M&E", "description": "Surveys, evaluations, impact assessments"},
+    {"id": "data_science", "name": "Data Science & AI/ML", "description": "Machine learning, predictive analytics, NLP"},
+    {"id": "public_health", "name": "Public Health", "description": "Health systems, epidemiology, HMIS"},
+    {"id": "agriculture", "name": "Agriculture & Food Security", "description": "Agricultural research, food systems"},
+    {"id": "education", "name": "Education & EdTech", "description": "Learning assessments, curriculum, EdTech"},
+    {"id": "climate", "name": "Climate & Environment", "description": "Environmental impact, climate adaptation"},
+    {"id": "governance", "name": "Governance & Policy", "description": "Institutional assessments, policy analysis"},
+    {"id": "economics", "name": "Economics & Finance", "description": "Economic modeling, cost-benefit analysis"},
+    {"id": "gis", "name": "GIS & Geospatial", "description": "Mapping, spatial analysis, remote sensing"},
+    {"id": "software", "name": "Software Development", "description": "Web, mobile, database development"},
+    {"id": "statistics", "name": "Statistics", "description": "Statistical analysis, sampling, modeling"},
+    {"id": "wash", "name": "WASH", "description": "Water, sanitation, hygiene research"},
+    {"id": "gender", "name": "Gender & Social Inclusion", "description": "Gender analysis, social assessments"},
+    {"id": "nutrition", "name": "Nutrition", "description": "Nutrition surveys, food security assessments"},
+    {"id": "digital_transformation", "name": "Digital Transformation", "description": "Digitization, process automation"},
+]
+
+@api_router.get("/experts/categories")
+async def get_expert_categories():
+    """Get all expert categories."""
+    return {"categories": EXPERT_CATEGORIES}
+
+@api_router.post("/experts/apply")
+async def apply_to_expert_network(application: dict):
+    """Submit application to join expert network."""
+    required_fields = ["name", "email", "expertise", "experience", "location"]
+    for field in required_fields:
+        if not application.get(field):
+            raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+    
+    # Check if already applied
+    existing = await db.expert_applications.find_one({"email": application["email"]}, {"_id": 0})
+    if existing:
+        raise HTTPException(status_code=400, detail="Application already submitted with this email")
+    
+    application["id"] = str(uuid.uuid4())
+    application["status"] = "pending"
+    application["applied_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.expert_applications.insert_one(application)
+    
+    return {"message": "Application submitted successfully", "id": application["id"]}
+
+@api_router.get("/admin/expert-applications")
+async def get_expert_applications(status: str = None, payload: dict = Depends(verify_token)):
+    """Get expert network applications (admin only)."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    filter_query = {}
+    if status:
+        filter_query["status"] = status
+    
+    applications = await db.expert_applications.find(filter_query, {"_id": 0}).to_list(100)
+    
+    # Get stats
+    total = len(applications)
+    pending = len([a for a in applications if a.get("status") == "pending"])
+    approved = len([a for a in applications if a.get("status") == "approved"])
+    rejected = len([a for a in applications if a.get("status") == "rejected"])
+    
+    return {
+        "applications": applications,
+        "stats": {
+            "total": total,
+            "pending": pending,
+            "approved": approved,
+            "rejected": rejected
+        }
+    }
+
+@api_router.put("/admin/expert-applications/{application_id}")
+async def update_expert_application(application_id: str, data: dict, payload: dict = Depends(verify_token)):
+    """Update expert application status (admin only)."""
+    admin = await db.admins.find_one({"email": payload.get("sub")}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["updated_by"] = payload.get("sub")
+    
+    result = await db.expert_applications.update_one(
+        {"id": application_id},
+        {"$set": data}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Application not found")
+    
+    return {"message": "Application updated"}
+
 @api_router.post("/auth/sso-exchange")
 async def datavision_sso_exchange(authorization: str = Header(None)):
     """
