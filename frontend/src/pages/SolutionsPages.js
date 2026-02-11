@@ -982,6 +982,7 @@ export const Survey360Page = () => <SolutionDetailPage solution={softwareSolutio
 export const DataVizStudioPage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'dataviz-studio')} />;
 export const METrackerPage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'me-tracker')} />;
 export const FieldForcePage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'fieldforce')} />;
+export const DataPulsePage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'datapulse')} />;
 export const AgriDataProPage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'agridata-pro')} />;
 export const EduInsightsPage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'eduinsights')} />;
 export const HealthPulsePage = () => <SolutionDetailPage solution={softwareSolutions.find(s => s.id === 'healthpulse')} />;
