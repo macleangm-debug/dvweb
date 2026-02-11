@@ -92,6 +92,12 @@ import { Survey360ProductPage } from './components/solutions/survey360';
 // DataVision Central Auth Pages
 import { DataVisionLogin, DataVisionRegister } from './pages/DataVisionAuth';
 
+// User Dashboard
+import UserDashboard from './pages/UserDashboard';
+
+// CMS Content Manager
+import CMSContentManager from './components/cms/CMSContentManager';
+
 // Survey360 App Pages (from GitHub repo)
 import {
   Survey360LoginPage,
