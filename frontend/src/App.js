@@ -1216,9 +1216,10 @@ const Footer = () => {
 
   const footerSolutions = [
     { name: 'Survey360', path: '/solutions/survey360' },
+    { name: 'FieldForce', path: '/solutions/fieldforce' },
+    { name: 'DataPulse', path: '/solutions/datapulse' },
     { name: 'DataViz Studio', path: '/solutions/dataviz-studio' },
     { name: 'M&E Tracker', path: '/solutions/me-tracker' },
-    { name: 'FieldForce', path: '/solutions/fieldforce' },
     { name: 'View All Solutions', path: '/solutions' },
   ];
 
