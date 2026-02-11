@@ -1,156 +1,154 @@
-<analysis>**original_problem_statement**: The initial request was to sync the FieldForce landing page from a GitHub repository AS IS and ensure all authentication (sign-in/sign-up) is handled centrally by DataVision.
+<analysis>**original_problem_statement:** The user's goal is to build out a comprehensive web platform for their company, DataVision.
 
-This evolved into a series of feature requests and bug fixes:
-1.  **FieldForce Page:**
-    *   Fix incorrect font colors on the dark theme.
-    *   Add a DataVision logo in the header to navigate back to the main homepage.
-    *   Implement a functional mobile (hamburger) menu.
-    *   Remove the Start Free button from the mobile header view.
-    *   Correct the login/signup buttons to point to the user application login, not the super-admin CMS.
-2.  **Central Authentication & User Management:**
-    *   Implement a public user registration and login system for DataVision, as it was missing.
-    *   Improve the design of the Continue with DataVision SSO button.
-    *   Enhance the registration process to a two-step flow to collect marketing data (country, industry, etc.) without making onboarding cumbersome.
-    *   Build a Clients dashboard within the CMS for admins to view, filter, and segment registered clients for marketing. This includes stats, charts, and an export-to-CSV feature.
-    *   Rename all instances of Users to Clients in the CMS for brand consistency.
-3.  **Survey360 Page:**
-    *   Sync the Survey360 landing page from its GitHub repository.
-    *   Re-style the page to match the design and layout of the new FieldForce page for a consistent look and feel across products.
-    *   Fix a layout bug that caused a white bar to appear between the header and the page content.
-4.  **Final Verification:**
-    *   Confirm that the entire end-to-end authentication flow works: a user can register with DataVision, log in, and seamlessly access both FieldForce and Survey360 via SSO.
+The initial request involved a major code refactoring of the backend ( into FastAPI routers) and the frontend ( to use nested routing).
+
+This evolved into a series of feature requests:
+1.  **SSO Implementation:** Build a seamless Single Sign-On (SSO) flow between the main DataVision platform and its software products, FieldForce and Survey360.
+2.  **Landing Page Overhaul:** Redesign the main homepage and product landing pages to improve conversion. This included adding a rotating hero banner showcasing products, a dedicated Software Solutions section, testimonials, an ROI calculator, and updating the company's About Us section.
+3.  **User & Admin Features:**
+    *   Create a dedicated **User Dashboard** at  for customers to view their purchased products and usage stats.
+    *   Implement a **Custom CMS Admin Panel** for non-technical users to manage website content (e.g., team members, projects, testimonials) with a WYSIWYG editor.
+4.  **Service & Expert Expansion:**
+    *   Create a new page to showcase the company's expanded service offerings beyond just research.
+    *   Build an Expert Network recruitment page to attract specialists to join the platform.
+5.  **Product Integration from GitHub:**
+    *   Pull the latest versions of **FieldForce** and **Survey360** from their respective GitHub repositories.
+    *   Integrate a new product, **DataPulse**, from a third GitHub repository.
+6.  **Interactive Demos:** The user wants to create interactive, no-login-required demo pages for the products, to be built from components in their GitHub repositories.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The platform now has two consistent, mobile-responsive product landing pages for FieldForce and Survey360. A centralized DataVision authentication system is in place, allowing public user registration (with a 2-step profile completion for marketing data) and login. Product login pages feature a prominent Continue with DataVision SSO button. A comprehensive Clients dashboard exists in the CMS for admins to manage and segment registered clients.
+The project is a full-stack application using a FastAPI backend and a React frontend. It features a central platform (DataVision) with two integrated software products (FieldForce and Survey360).
+
+Key implemented features include:
+*   A fully functional, JWT-based SSO system between all products.
+*   A redesigned homepage with dynamic product showcases and updated content.
+*   Enhanced product landing pages with conversion elements like testimonials and an ROI calculator.
+*   A User Dashboard () showing personalized product information.
+*   A CMS within the admin panel () for content management.
+*   New public-facing pages for showcasing expanded services () and recruiting experts ().
+*   The backend  has been partially refactored into a modular  directory structure.
 
 **Last working item**:
--   Last item agent was working: The agent was in the middle of verifying the complete, end-to-end user authentication journey as requested by the user. The user asked: Now can user register and sign in to all the solutions via DataVision SSO and be able to use the solutions?. The agent had verified the backend SSO endpoints and confirmed the UI buttons exist, but had not yet completed a full test from a user's perspective (register -> login -> SSO -> access app).
--   Status: IN PROGRESS
--   Agent Testing Done: N
--   Which testing method agent to use? both
--   User Testing Done: N
+*   **Last item agent was working:** The agent began the process of integrating updated code for  and  and adding a new product, , by pulling content from three user-provided GitHub repositories. The agent's last action was to explore the file structure of these repositories to plan the integration.
+*   **Status:** IN PROGRESS
+*   **Agent Testing Done:** N
+*   **Which testing method agent to use?** both. This is a major integration that will affect the entire application. A full regression test using both frontend and backend testing agents is required after the code is merged.
+*   **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
--   Issue 1: (P0) Complete the end-to-end verification of the user authentication and SSO flow.
-
-  Issues Detail:
--   Issue 1:
-    -   Attempted fixes: The agent tested backend API endpoints for SSO token generation using  and verified that the Continue with DataVision button is present on the product login pages. However, a full UI-driven test from registration to application access has not been performed.
-    -   Next debug checklist:
-        1.  Navigate to the DataVision registration page () and create a new test client.
-        2.  Log out and log back in via the DataVision login page ().
-        3.  Navigate to the FieldForce landing page, click Log in, and use the Continue with DataVision SSO button.
-        4.  Verify successful redirection and authenticated access to the FieldForce application.
-        5.  Repeat the process for the Survey360 landing page and application.
-        6.  Log into the CMS () as an admin and navigate to the Clients dashboard.
-        7.  Confirm the new test client appears in the list with  showing both FieldForce and Survey360.
-    -   Why fix this issue and what will be achieved with the fix? This will validate that the core requirement of a central authentication system that seamlessly serves multiple products is fully functional and meets the user's request.
-    -   Status: IN PROGRESS
-    -   Is recurring issue? N
-    -   Should Test frontend/backend/both after fix? both
-    -   Blocked on other issue: None
+There are no pending bugs or issues. The current focus is on feature implementation.
 
 **In progress Task List**:
-There are no partially completed tasks; the current focus is on verifying the pending issue above.
+*   **Task 1: Integrate Products from GitHub Repositories (P0)**
+    *   **Where to resume:** The agent has inspected the file listings of the , , and  GitHub repositories. The next step is to fetch the code from these repos and begin merging it into the existing  structure. This will involve updating existing product files and creating the necessary new components, routes, and backend endpoints for the  product.
+    *   **What will be achieved with this?** The  and  products will be updated to their latest versions, and the new  product will be integrated into the DataVision platform, making it accessible via SSO and visible on the user dashboard and homepage.
+    *   **Status:** IN PROGRESS
+    *   **Should Test frontend/backend/both after fix?** Both
+    *   **Blocked on something:** No.
 
 **Upcoming and Future Tasks**
-There are no outstanding tasks requested by the user. The next steps will likely be bug fixes or new features based on the results of the full auth flow verification.
+*   **Upcoming Tasks:**
+    *   **Task 1: Implement Interactive Demo Pages (P1)**
+        *   The user has opted to provide demo components from GitHub. The agent has already created a detailed technical specification for this task. The work is pending the user providing the links to the specific demo components/pages from their GitHub repositories.
+        *   **Files to create:** , , and corresponding routes in .
+*   **Future Tasks:**
+    *   **Task 1: Complete Frontend Refactoring (P2)**
+        *   The main frontend file, , is extremely large and contains complex routing logic. It was identified for refactoring using shared layout components (e.g., , ) to simplify logic and improve maintainability, but this was postponed due to complexity.
 
 **Completed work in this session**
--   **FieldForce & Survey360 Landing Pages**: Synced from GitHub, restyled for consistency, fixed layout/color bugs, and made them mobile-responsive with a functional hamburger menu.
--   **Central Authentication**: Implemented a complete public authentication system for DataVision, including a two-step user registration (), login (), and backend SSO token generation.
--   **CMS Client Dashboard**: Created a new Clients dashboard in the admin panel for managing registered clients. It features summary statistics, segmentation charts (by country, industry), a filterable client list, and a CSV export function.
--   **UI/UX Improvements**:
-    -   Added a DataVision logo in the header of product pages for easy navigation back to the homepage.
-    -   Redesigned the Continue with DataVision SSO button for better visual appeal.
-    -   Updated all User terminology to Client in the CMS.
-    -   Corrected auth button redirects to ensure users land on the correct application login page, not the admin CMS.
+- **SSO Implementation & Debugging:** A robust SSO flow between DataVision, FieldForce, and Survey360 was implemented and thoroughly debugged. (DONE)
+- **Homepage & Landing Page Redesign:** The homepage () and product landing pages () were overhauled with a rotating hero banner, a new software section, testimonials, and an ROI calculator. (DONE)
+- **User Dashboard Creation:** A new User Dashboard () was created at  to display user-specific product data. (DONE)
+- **CMS Admin Panel:** A custom CMS () with a WYSIWYG editor was integrated into the admin panel for content management. (DONE)
+- **Expert Network & Services Pages:** Created a Join Expert Network page () and an expanded Services page (). (DONE)
+- **Bug Fixes:** Fixed the Try Interactive Demo button link on the homepage and resolved font color contrast issues on several pages. (DONE)
+- **Partial Backend Refactoring:** Began modularizing the monolithic  by moving endpoints into a new  directory. (DONE)
 
 **Earlier issues found/mentioned but not fixed**
-None. The agent has addressed all issues raised by the user during this session.
+None. All issues identified during the session were addressed and fixed.
 
 **Known issue recurrence from previous fork**
--   Issue recurrence in previous fork: None
--   Recurrence count: 0
--   Status: NONE
+N/A
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Frontend**: React, React Router, Tailwind CSS
--   **Backend**: Python (Flask)
--   **Database**: MongoDB
--   **Authentication**: JWT-based authentication. A centralized auth system (DataVision) provides SSO tokens for satellite product applications (FieldForce, Survey360).
+*   **Frontend:** React, React Router, Zustand (for state management with localStorage persistence), Tailwind CSS, Axios.
+*   **Backend:** FastAPI, Python, Motor (for async MongoDB operations), Pydantic.
+*   **Authentication:** Custom JWT-based Single Sign-On (SSO) architecture. DataVision acts as the identity provider for its sub-products.
+*   **Database:** MongoDB (used in a schema-less manner).
 
 **key DB schema**
--   :  - For authenticating super-admins into the CMS.
--   :  - Stores public client information and tracks which products they use via SSO.
+Using MongoDB. Key fields in collections include:
+*   **users**: , ,  (e.g., 'admin'),  (Array),  (Boolean).
+*   **content**: , ,  (for the CMS).
+*   **experts**: ,  (Array), , .
 
 **changes in tech stack**
--   No changes were made to the core technologies. New collections were added to MongoDB to support the public authentication system.
+None.
 
 **All files of reference**
--   **/app/server.py**: Heavily modified to add all backend logic for public user registration, login, profile completion, SSO tracking, and the API for the CMS Clients Dashboard.
--   **/app/src/App.js**: Modified to add routes for the new auth pages and to structure the layout so that product landing pages do not display the main site's navbar.
--   **/app/src/pages/DataVisionAuth.js**: A new file created to house the multi-step client registration and login forms for the central DataVision platform.
--   **/app/src/components/Admin/ClientsDashboard.js**: A new file created to build the entire client management dashboard UI inside the CMS.
--   **/app/src/pages/solutions/FieldForceLandingPage.jsx**: Updated to sync with GitHub, then modified extensively to fix styling, add the header, and implement a mobile menu.
--   **/app/src/pages/solutions/Survey360LandingPage.jsx**: Created/updated to sync with GitHub and match the style and functionality of the FieldForce page.
--   **/app/src/components/Admin/AdminDashboard.js**: Updated to include the new Clients tab and render the  component.
+*   : The main backend application file, which is being progressively refactored.
+*   : The main frontend component containing all page routing; a candidate for future refactoring.
+*   : Contains the critical, shared JWT validation logic for the SSO flow.
+*   : The Axios instance with interceptors that handle auth tokens and 401 errors.
+*   : The Zustand store managing user authentication state across the app.
+*   **New Feature Files**: , , , .
 
 **Areas that need refactoring**:
--   The routing logic in  has specific exclusions for the landing pages. This could be made more robust by using a nested routing or layout-based approach (e.g., a  vs. ).
--   The backend  file is becoming large. Auth-related routes could be refactored into a separate Blueprint for better organization.
+*   ****: This file is over 2900 lines long and has highly complex, non-DRY routing logic. It should be refactored to use nested routes and shared layout components to improve readability and maintainability.
+*   ****: Although refactoring has started, this file remains large. Further modularization of routes and business logic is recommended.
 
 **key api endpoints**
--   : Creates a new public client account.
--   : Authenticates a public client and returns a JWT.
--   : Updates a client's profile with optional marketing data.
--   : Generates a short-lived SSO token for accessing FieldForce.
--   : Provides all client data and aggregated stats for the CMS dashboard.
--   : Authenticates a super-admin for the CMS.
+*   : Core user authentication.
+*   : SSO token flow.
+*   : Endpoint for the user management part of the CMS.
+*   : Generic endpoints for the page content CMS.
+*   : Endpoints for the expert network feature.
+*   : Product-specific API endpoints.
 
 **Critical Info for New Agent**
--   **Authentication is Centralized**: All public-facing user/client authentication is managed by the DataVision system. Do not add separate registration flows to individual products.
--   **Two User Types**: Be aware of the distinction between Clients (public users of the products, stored in ) and Admins (super-admins for the CMS, stored in ). They use different login pages and tables.
--   **Terminology is Clients**: When working on the CMS or any user-facing management tools, use the term Clients, not Users, as per the user's request.
--   **SSO Flow**: The SSO flow works by the central app generating a JWT, which is then passed to the product application. The product app must be able to validate this token. Your immediate task is to verify this entire flow end-to-end.
+*   **Top Priority:** The immediate task is to integrate code from three GitHub repositories. This is a large-scale change. The agent must carefully merge the files, add the new  product following existing patterns, and run comprehensive tests.
+*   **SSO Sensitivity:** The SSO system relies on a shared JWT secret key and a specific token payload structure defined in . Any changes to authentication must be tested across DataVision, FieldForce, and Survey360 to prevent breaking the login flow.
+*   **Large Codebases:** Be aware that  and  are very large and complex files. Isolate changes as much as possible.
+*   **Blocked Task:** The implementation of interactive demos is blocked pending the user providing the necessary GitHub components. Do not start this task until the user provides the required assets.
 
 **documents and test reports created in this job**
-No official documents or reports were created.
+*   : Contains the product requirements and has been updated throughout the session to track completed features.
+*   : JSON reports generated by the testing agent after running automated tests.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User:** Now can user register and sign in to all the solutions via DataVision SSO and be able to use the solutions? (PENDING VERIFICATION)
-2.  **User:** Remove the white space (on the Survey360 page). (COMPLETED)
-3.  **User:** Implement it like Filed Pro [sic] (make Survey360 look like FieldForce). (COMPLETED)
-4.  **User:** *Provides GitHub link for Survey360*. (HANDLED)
-5.  **User:** Now we need to put up the Survey360 web page just like the Field PR - We need to sync from Github AS IS. (COMPLETED)
-6.  **User:** The people who sign up should not be names as Users but Clients. (COMPLETED)
-7.  **User:** *Implies a request for a CMS dashboard to view users/clients*. (COMPLETED)
-8.  **User:** Proceed (with the two-step registration implementation). (HANDLED)
-9.  **User:** This is Okay - where will ypu put these so as to not make the onboarding process too long. (COMPLETED)
-10. **User:** This is Okay - for such solutions the registration can be made simple but we would like to get more details from the users so as we can better segment them... (COMPLETED)
+1.  **User:** Requests agent to pull code from 3 GitHub repos (, , ) to update existing products and add a new one. (IN PROGRESS)
+2.  **Agent:** Acknowledged the request and began inspecting the repositories.
+3.  **User:** Reported a font color bug and requested changes to the list of expert categories. (COMPLETED)
+4.  **Agent:** Confirmed completion of the Expert Network and Services pages.
+5.  **User:** Asked to create pages to showcase more services and an expert network. (COMPLETED)
+6.  **Agent:** Asked clarifying questions about the goals of the new pages.
+7.  **User:** Clarified the goals for the new pages. (COMPLETED)
+8.  **Agent:** Proposed a plan for implementing the pages.
+9.  **User:** Requested the technical specification for implementing interactive demos from GitHub. (COMPLETED)
+10. **Agent:** Provided the detailed technical specification.
 
 **Project Health Check:**
--   **Broken:** The end-to-end SSO authentication flow is not yet confirmed to be working from a user's perspective. It's the highest priority to test and fix if necessary.
--   **Mocked:** No mocked parts are active in the codebase.
+*   **Broken:** None. The application is in a stable state.
+*   **Mocked:** The ROI calculator on the product landing pages uses hardcoded data. The interactive demos, once built, will also rely on mock data.
 
 **3rd Party Integrations**
-None explicitly mentioned or configured.
+*   **Stripe (Payments)** — mentioned in the backend code (), requires a User API Key.
 
 **Testing status**
--   Testing agent used after significant changes: NO
--   Troubleshoot agent used after agent stuck in loop: NO
--   Test files created: []
--   Known regressions: []
+*   **Testing agent used after significant changes:** YES
+*   **Troubleshoot agent used after agent stuck in loop:** NO
+*   **Test files created:** None committed. The testing agent uses temporary files during execution.
+*   **Known regressions:** None.
 
 **Credentials to test flow:**
--   **CMS Admin Login:**  / 
--   **FieldForce Demo Login:**  / 
--   **Public Client:** A new client account must be created through the  page for testing the main flow.
+*   **Admin User:**  / 
+*   **Demo User:**  / 
 
 **What agent forgot to execute**
-The agent did not complete the final, crucial step of testing the entire end-to-end user journey after implementing all the pieces of the centralized authentication system. While individual backend APIs were checked, the full sequence of Register -> Login -> SSO -> Access Product App remains unverified.</analysis>
+*   The agent did not add trust badges and customer logos to the homepage as a distinct section, which was part of the initial plan for conversion optimization. However, it did add testimonials from high-profile organizations (World Bank, UNICEF), which serves a similar trust-building purpose.
+*   The full refactoring of  and  was consciously postponed due to complexity, not forgotten.</analysis>
