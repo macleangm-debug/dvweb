@@ -3219,7 +3219,7 @@ function App() {
             <Route path="/auth/register" element={<DataVisionRegister />} />
             <Route path="/network/join" element={<JoinExpertNetwork />} />
             <Route path="/experts/join" element={<JoinExpertNetwork />} />
-            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/our-services" element={<ServicesShowcase />} />
             <Route path="/solutions/survey360" element={<Survey360LandingPage />} />
             <Route path="/solutions/fieldforce" element={<FieldForceLandingPage />} />
             <Route path="*" element={
