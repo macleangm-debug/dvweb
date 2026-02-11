@@ -459,6 +459,70 @@ const Survey360LandingPage = () => {
         </div>
       </section>
 
+      {/* Customer Testimonials Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 bg-purple-500/20 text-purple-300 text-sm font-medium rounded-full mb-4">
+              Trusted Worldwide
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+              What Our Customers Say
+            </h2>
+            <p className="text-gray-400">
+              Organizations across the globe trust Survey360 for their survey needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "Survey360 made our employee feedback program seamless. The analytics dashboard gives us real-time insights we never had before.",
+                author: "Michael Chen",
+                role: "HR Director",
+                org: "TechCorp International",
+                logo: "💼"
+              },
+              {
+                quote: "We switched from Google Forms and never looked back. The question branching logic is incredibly powerful for our research.",
+                author: "Dr. Amina Okafor",
+                role: "Lead Researcher",
+                org: "African Research Institute",
+                logo: "🔬"
+              },
+              {
+                quote: "The multi-language support helped us collect feedback from customers across 12 countries. Response rates doubled!",
+                author: "Sophie Martinez",
+                role: "Customer Success Lead",
+                org: "Global Services Ltd",
+                logo: "🌍"
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-[#0d1d33] rounded-2xl p-6 border border-white/10 relative"
+              >
+                <div className="text-4xl mb-4 opacity-20 absolute top-4 right-4">"</div>
+                <p className="text-gray-300 mb-6 italic">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">
+                    {testimonial.logo}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">{testimonial.author}</p>
+                    <p className="text-sm text-gray-400">{testimonial.role}</p>
+                    <p className="text-sm text-purple-400">{testimonial.org}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
