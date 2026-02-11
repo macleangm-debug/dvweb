@@ -471,9 +471,10 @@ const Navbar = () => {
   const solutionLinks = [
     { name: 'All Solutions', path: '/solutions', icon: Layers, description: 'Software products overview' },
     { name: 'Survey360', path: '/solutions/survey360', icon: Target, description: 'Survey management platform' },
+    { name: 'FieldForce', path: '/solutions/fieldforce', icon: Smartphone, description: 'Mobile data collection' },
+    { name: 'DataPulse', path: '/solutions/datapulse', icon: Activity, description: 'Enterprise data collection' },
     { name: 'DataViz Studio', path: '/solutions/dataviz-studio', icon: PieChart, description: 'Analytics & visualization' },
     { name: 'M&E Tracker', path: '/solutions/me-tracker', icon: TrendingUp, description: 'M&E management system' },
-    { name: 'FieldForce', path: '/solutions/fieldforce', icon: Smartphone, description: 'Mobile data collection' },
     { name: 'AgriData Pro', path: '/solutions/agridata-pro', icon: Sprout, description: 'Agricultural intelligence' },
     { name: 'EduInsights', path: '/solutions/eduinsights', icon: GraduationCap, description: 'Education analytics' },
     { name: 'HealthPulse', path: '/solutions/healthpulse', icon: Heart, description: 'Healthcare analytics' },
