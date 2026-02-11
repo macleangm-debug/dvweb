@@ -1655,54 +1655,213 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Software Solutions Section - NEW */}
+      <section className="py-24 bg-gradient-to-b from-[#0a1628] to-[#0f1d32] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: 'radial-gradient(circle at 20% 80%, #2dd4bf 0%, transparent 30%), radial-gradient(circle at 80% 20%, #a855f7 0%, transparent 30%)'
+        }}></div>
+        <div className="container mx-auto px-6 lg:px-12 relative z-10">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block px-4 py-2 bg-white/10 rounded-full text-white/80 text-sm font-medium mb-4">
+                Powerful Software Solutions
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 font-serif">
+                Tools That Power Your Research
+              </h2>
+              <p className="text-white/70 max-w-2xl mx-auto text-lg">
+                Our suite of software products helps organizations collect, manage, and analyze data at scale. 
+                Used by leading research institutions across Africa.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* FieldForce Card */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group"
+            >
+              <div className="bg-gradient-to-br from-[#0d3d38] to-[#061a17] rounded-2xl p-8 border border-[#2dd4bf]/20 hover:border-[#2dd4bf]/50 transition-all duration-300 h-full">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-xl bg-[#2dd4bf]/20 flex items-center justify-center">
+                      <MapPin className="w-7 h-7 text-[#2dd4bf]" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">FieldForce</h3>
+                      <p className="text-[#2dd4bf] text-sm">Mobile Data Collection</p>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 bg-[#2dd4bf]/20 text-[#2dd4bf] text-xs font-medium rounded-full">
+                    Most Popular
+                  </span>
+                </div>
+                <p className="text-white/70 mb-6">
+                  Powerful offline-first data collection for field teams. GPS tracking, photo capture, 
+                  and seamless sync - all in one platform trusted by researchers across Africa.
+                </p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {[
+                    { icon: Smartphone, label: '100% Offline Ready' },
+                    { icon: MapPin, label: 'GPS & Geofencing' },
+                    { icon: Shield, label: '256-bit Encryption' },
+                    { icon: Zap, label: 'Real-time Sync' }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-white/60 text-sm">
+                      <feature.icon className="w-4 h-4 text-[#2dd4bf]" />
+                      {feature.label}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center gap-4">
+                  <Link 
+                    to="/solutions/fieldforce"
+                    className="bg-[#2dd4bf] text-[#0a1628] px-6 py-3 rounded-lg font-semibold hover:bg-[#14b8a6] transition-all group-hover:translate-x-1"
+                  >
+                    Start Free Trial →
+                  </Link>
+                  <Link 
+                    to="/solutions/fieldforce/app/login"
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    View Demo
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Survey360 Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group"
+            >
+              <div className="bg-gradient-to-br from-[#1a1033] to-[#0a0515] rounded-2xl p-8 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 h-full">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                      <FileText className="w-7 h-7 text-purple-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">Survey360</h3>
+                      <p className="text-purple-400 text-sm">Survey Management Platform</p>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">
+                    New
+                  </span>
+                </div>
+                <p className="text-white/70 mb-6">
+                  Create professional surveys in minutes. Collect responses anywhere. Get insights 
+                  instantly - all in one simple, powerful platform for research teams.
+                </p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {[
+                    { icon: Layers, label: '10+ Question Types' },
+                    { icon: BarChart3, label: 'Real-time Analytics' },
+                    { icon: Globe, label: 'Multi-language' },
+                    { icon: Shield, label: 'GDPR Compliant' }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-white/60 text-sm">
+                      <feature.icon className="w-4 h-4 text-purple-400" />
+                      {feature.label}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center gap-4">
+                  <Link 
+                    to="/solutions/survey360"
+                    className="bg-purple-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-600 transition-all group-hover:translate-x-1"
+                  >
+                    Start Free Trial →
+                  </Link>
+                  <Link 
+                    to="/solutions/survey360/login"
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    View Demo
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-16 text-center">
+            <p className="text-white/50 text-sm uppercase tracking-wider mb-6">Trusted by leading organizations</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
+              {['World Bank', 'UNICEF', 'USAID', 'Gates Foundation', 'WHO'].map((org, i) => (
+                <div key={i} className="text-white font-semibold text-lg">{org}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section - Updated for Multi-disciplinary Focus */}
       <section className="py-24 bg-[#f8fafc]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-[#e63946] font-semibold uppercase tracking-wider mb-4">About Us</p>
               <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] mb-6 font-serif">
-                Delivering Excellence in Data & Development Since 1998
+                Research, Technology & Development Excellence Since 1998
               </h2>
               <p className="text-[#64748b] mb-6">
-                DataVision International is a leading data analytics, research, and development consultancy 
-                headquartered in Dar es Salaam with a global reach. With over 25 years of experience, 
-                we specialize in data-driven solutions, complex surveys, monitoring 
-                and evaluation studies across diverse sectors.
+                DataVision International has evolved from a pioneering research consultancy into a 
+                comprehensive data solutions company. With over 25 years of experience, we now combine 
+                world-class research capabilities with cutting-edge software products to deliver 
+                end-to-end solutions for organizations worldwide.
               </p>
               <p className="text-[#64748b] mb-8">
-                Our expertise spans data analytics, technology solutions, research design, and 
-                implementation including planning, sampling, recruitment, training, field 
-                and remote data collection, data processing and analysis, report writing, 
-                and dissemination.
+                Our integrated approach spans custom software development, mobile data collection platforms, 
+                survey management systems, advanced analytics, and expert consulting services - all backed 
+                by deep sector expertise in agriculture, health, education, and development.
               </p>
-              <Link 
-                to="/about" 
-                className="inline-flex items-center gap-2 text-[#0a1628] font-semibold hover:text-[#e63946] transition-colors"
-              >
-                Learn More About Us <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-wrap gap-4 mb-8">
+                <Link 
+                  to="/about" 
+                  className="inline-flex items-center gap-2 text-[#0a1628] font-semibold hover:text-[#e63946] transition-colors"
+                >
+                  Learn More About Us <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link 
+                  to="/solutions" 
+                  className="inline-flex items-center gap-2 text-[#2a9d8f] font-semibold hover:text-[#238276] transition-colors"
+                >
+                  Explore Our Solutions <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
+              {/* Updated cards to reflect multi-disciplinary focus */}
               <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#e63946] transition-all">
-                <Sprout className="w-8 h-8 text-[#2a9d8f] mb-4" />
-                <h3 className="font-semibold text-[#0a1628] mb-2">Agriculture</h3>
-                <p className="text-sm text-[#64748b]">Food security & agricultural development research</p>
+                <Target className="w-8 h-8 text-[#e63946] mb-4" />
+                <h3 className="font-semibold text-[#0a1628] mb-2">Research & M&E</h3>
+                <p className="text-sm text-[#64748b]">Complex surveys, impact evaluations & monitoring systems</p>
               </div>
-              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#e63946] transition-all">
-                <BookOpen className="w-8 h-8 text-[#2a9d8f] mb-4" />
-                <h3 className="font-semibold text-[#0a1628] mb-2">Education</h3>
-                <p className="text-sm text-[#64748b]">Literacy programs & educational assessments</p>
+              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#2dd4bf] transition-all">
+                <Smartphone className="w-8 h-8 text-[#2dd4bf] mb-4" />
+                <h3 className="font-semibold text-[#0a1628] mb-2">Software Products</h3>
+                <p className="text-sm text-[#64748b]">FieldForce, Survey360 & custom data platforms</p>
               </div>
-              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#e63946] transition-all">
-                <Heart className="w-8 h-8 text-[#2a9d8f] mb-4" />
-                <h3 className="font-semibold text-[#0a1628] mb-2">Health</h3>
-                <p className="text-sm text-[#64748b]">Healthcare access & public health studies</p>
+              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#a855f7] transition-all">
+                <BarChart3 className="w-8 h-8 text-[#a855f7] mb-4" />
+                <h3 className="font-semibold text-[#0a1628] mb-2">Data Analytics</h3>
+                <p className="text-sm text-[#64748b]">Advanced analytics, AI/ML & business intelligence</p>
               </div>
-              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#e63946] transition-all">
-                <Droplets className="w-8 h-8 text-[#2a9d8f] mb-4" />
-                <h3 className="font-semibold text-[#0a1628] mb-2">WASH</h3>
-                <p className="text-sm text-[#64748b]">Water, sanitation & hygiene research</p>
+              <div className="bg-white p-6 border border-[#e2e8f0] hover:border-l-4 hover:border-l-[#f59e0b] transition-all">
+                <GraduationCap className="w-8 h-8 text-[#f59e0b] mb-4" />
+                <h3 className="font-semibold text-[#0a1628] mb-2">Capacity Building</h3>
+                <p className="text-sm text-[#64748b]">Training, technical assistance & knowledge transfer</p>
               </div>
             </div>
           </div>
