@@ -405,6 +405,7 @@ const JoinExpertNetwork = () => {
                     <option value="">Select your primary expertise</option>
                     <option value="research_me">Research & M&E</option>
                     <option value="data_science">Data Science & AI/ML</option>
+                    <option value="data_analytics">Data Analytics</option>
                     <option value="public_health">Public Health</option>
                     <option value="agriculture">Agriculture & Food Security</option>
                     <option value="education">Education & EdTech</option>
@@ -413,6 +414,12 @@ const JoinExpertNetwork = () => {
                     <option value="economics">Economics & Finance</option>
                     <option value="gis">GIS & Geospatial Analysis</option>
                     <option value="software">Software Development</option>
+                    <option value="statistics">Statistics</option>
+                    <option value="wash">WASH</option>
+                    <option value="inclusion_equality">Inclusion & Equality</option>
+                    <option value="oil_gas">Oil & Gas</option>
+                    <option value="nutrition">Nutrition</option>
+                    <option value="digital_transformation">Digital Transformation</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
