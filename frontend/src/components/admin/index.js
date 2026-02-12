@@ -6,3 +6,5 @@ export { default as MarketingSales } from './MarketingSales';
 export { default as CareersHR } from './CareersHR';
 export { default as ExpertNetwork } from './ExpertNetwork';
 export { default as ContentManagement } from './ContentManagement';
+export { default as ProjectsClients } from './ProjectsClients';
+export { default as AdminSettings } from './AdminSettings';
