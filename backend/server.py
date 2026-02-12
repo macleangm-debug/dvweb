@@ -2967,6 +2967,12 @@ async def notification_status(payload: dict = Depends(verify_token)):
         "connected_admins": notification_manager.get_connected_admins()
     }
 
+# ==================== AFFILIATE PROGRAM ROUTES ====================
+from routes.affiliate import create_affiliate_router
+
+affiliate_router = create_affiliate_router(db, verify_token, verify_admin_token)
+api_router.include_router(affiliate_router, prefix="/affiliates")
+
 # Then include api_router in app
 app.include_router(api_router)
 
