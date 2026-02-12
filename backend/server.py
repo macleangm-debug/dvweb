@@ -2896,6 +2896,10 @@ api_router.include_router(careers_router)
 create_content_routes(db)
 api_router.include_router(content_router)
 
+# Include Projects & Clients routes
+create_projects_routes(db)
+api_router.include_router(projects_router)
+
 # Then include api_router in app
 app.include_router(api_router)
 
