@@ -212,13 +212,13 @@ const CareersHR = ({ subSection }) => {
                     <span className="flex items-center gap-1"><Building2 className="w-4 h-4" /> {job.department}</span>
                     <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {job.location}</span>
                     <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {job.type}</span>
-                    <span className="flex items-center gap-1"><DollarSign className="w-4 h-4" /> {job.salary}</span>
+                    <span className="flex items-center gap-1"><DollarSign className="w-4 h-4" /> {job.salary_range || job.salary}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-slate-900">{job.applications} applications</p>
-                    <p className="text-xs text-slate-500">Posted {job.posted}</p>
+                    <p className="text-sm font-medium text-slate-900">{job.applications_count || job.applications || 0} applications</p>
+                    <p className="text-xs text-slate-500">Posted {job.posted_date || job.posted}</p>
                   </div>
                   <button className="p-2 hover:bg-slate-100 rounded-lg">
                     <MoreVertical className="w-4 h-4 text-slate-400" />
