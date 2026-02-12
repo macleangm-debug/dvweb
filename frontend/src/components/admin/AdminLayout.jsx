@@ -146,7 +146,11 @@ const AdminLayout = ({ user, logout, children, activeSection, setActiveSection, 
             {sidebarCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
           </button>
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold">Data<span className="text-red-500">Vision</span></span>
+            <img 
+              src="/datavision-logo-cropped.png" 
+              alt="DataVision" 
+              className="h-8 w-auto"
+            />
           </Link>
           <span className="text-slate-500">|</span>
           <span className="text-sm text-slate-400">Admin Console</span>
