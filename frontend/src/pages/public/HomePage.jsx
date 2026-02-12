@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import { 
   ArrowRight, MapPin, Users, Award, BookOpen, Droplets, Heart,
   Sprout, Quote, BarChart3, Globe, CheckCircle2, Target, PieChart,
   GraduationCap, Building2, TrendingUp, Shield, Utensils,
   Smartphone, Layers, Activity
 } from 'lucide-react';
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const HomePage = () => {
   const [stats, setStats] = useState([]);
