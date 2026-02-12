@@ -13,115 +13,67 @@ const CareersHR = ({ subSection }) => {
   const [applications, setApplications] = useState([]);
   const [showJobForm, setShowJobForm] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // Mock data
-    setJobs([
-      { 
-        id: 1, 
-        title: 'Senior Data Analyst', 
-        department: 'Research', 
-        location: 'Dar es Salaam', 
-        type: 'Full-time',
-        salary: '$45,000 - $65,000',
-        posted: '2024-02-01',
-        applications: 12,
-        status: 'active'
-      },
-      { 
-        id: 2, 
-        title: 'Software Engineer', 
-        department: 'Technology', 
-        location: 'Remote', 
-        type: 'Full-time',
-        salary: '$60,000 - $85,000',
-        posted: '2024-02-05',
-        applications: 28,
-        status: 'active'
-      },
-      { 
-        id: 3, 
-        title: 'Field Research Coordinator', 
-        department: 'Operations', 
-        location: 'Arusha', 
-        type: 'Contract',
-        salary: '$35,000 - $45,000',
-        posted: '2024-01-28',
-        applications: 8,
-        status: 'active'
-      },
-      { 
-        id: 4, 
-        title: 'UX Designer', 
-        department: 'Product', 
-        location: 'Dar es Salaam', 
-        type: 'Full-time',
-        salary: '$50,000 - $70,000',
-        posted: '2024-01-20',
-        applications: 15,
-        status: 'closed'
-      },
-    ]);
-
-    setApplications([
-      { 
-        id: 1, 
-        name: 'John Mwamba', 
-        email: 'john.mwamba@email.com',
-        phone: '+255 712 345 678',
-        job: 'Senior Data Analyst', 
-        applied: '2024-02-10',
-        experience: '5 years',
-        education: 'MSc Statistics',
-        status: 'new',
-        rating: 0,
-        resume: 'john_mwamba_cv.pdf',
-        coverLetter: true
-      },
-      { 
-        id: 2, 
-        name: 'Sarah Kimani', 
-        email: 'sarah.k@email.com',
-        phone: '+254 722 123 456',
-        job: 'Software Engineer', 
-        applied: '2024-02-09',
-        experience: '7 years',
-        education: 'BSc Computer Science',
-        status: 'reviewing',
-        rating: 4,
-        resume: 'sarah_kimani_cv.pdf',
-        coverLetter: true
-      },
-      { 
-        id: 3, 
-        name: 'Peter Ochieng', 
-        email: 'peter.o@email.com',
-        phone: '+254 733 456 789',
-        job: 'Software Engineer', 
-        applied: '2024-02-08',
-        experience: '4 years',
-        education: 'BSc Software Engineering',
-        status: 'interviewed',
-        rating: 5,
-        resume: 'peter_ochieng_cv.pdf',
-        coverLetter: false
-      },
-      { 
-        id: 4, 
-        name: 'Grace Mushi', 
-        email: 'grace.m@email.com',
-        phone: '+255 754 789 012',
-        job: 'Field Research Coordinator', 
-        applied: '2024-02-07',
-        experience: '6 years',
-        education: 'BA Social Sciences',
-        status: 'shortlisted',
-        rating: 4,
-        resume: 'grace_mushi_cv.pdf',
-        coverLetter: true
-      },
-    ]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('dv_token');
+        const headers = { Authorization: `Bearer ${token}` };
+        
+        const [jobsRes, appsRes] = await Promise.all([
+          axios.get(`${API}/api/careers/jobs?status=all`).catch(() => ({ data: [] })),
+          axios.get(`${API}/api/careers/applications`, { headers }).catch(() => ({ data: [] })),
+        ]);
+        
+        setJobs(jobsRes.data.length > 0 ? jobsRes.data : getMockJobs());
+        setApplications(appsRes.data.length > 0 ? appsRes.data : getMockApplications());
+      } catch (error) {
+        console.error('Error fetching careers data:', error);
+        setJobs(getMockJobs());
+        setApplications(getMockApplications());
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
   }, []);
+
+  const getMockJobs = () => [
+    { id: '1', title: 'Senior Data Analyst', department: 'Research', location: 'Dar es Salaam', type: 'Full-time', salary_range: '$45,000 - $65,000', posted_date: '2024-02-01', applications_count: 12, status: 'active' },
+    { id: '2', title: 'Software Engineer', department: 'Technology', location: 'Remote', type: 'Full-time', salary_range: '$60,000 - $85,000', posted_date: '2024-02-05', applications_count: 28, status: 'active' },
+  ];
+
+  const getMockApplications = () => [
+    { id: '1', name: 'John Mwamba', email: 'john.mwamba@email.com', phone: '+255 712 345 678', job_title: 'Senior Data Analyst', applied_date: '2024-02-10', experience: '5 years', education: 'MSc Statistics', status: 'new', rating: 0 },
+    { id: '2', name: 'Sarah Kimani', email: 'sarah.k@email.com', phone: '+254 722 123 456', job_title: 'Software Engineer', applied_date: '2024-02-09', experience: '7 years', education: 'BSc Computer Science', status: 'reviewing', rating: 4 },
+  ];
+
+  const handleCreateJob = async (jobData) => {
+    try {
+      const token = localStorage.getItem('dv_token');
+      const response = await axios.post(`${API}/api/careers/jobs`, jobData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setJobs([{ ...jobData, id: response.data.id, applications_count: 0, status: 'active', posted_date: new Date().toISOString().split('T')[0] }, ...jobs]);
+      setShowJobForm(false);
+    } catch (error) {
+      console.error('Error creating job:', error);
+    }
+  };
+
+  const handleUpdateApplicationStatus = async (appId, newStatus) => {
+    try {
+      const token = localStorage.getItem('dv_token');
+      await axios.put(`${API}/api/careers/applications/${appId}/status`, { status: newStatus }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setApplications(applications.map(a => a.id === appId ? { ...a, status: newStatus } : a));
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
 
   const JobForm = ({ onClose }) => (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
