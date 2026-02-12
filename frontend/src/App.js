@@ -23,6 +23,9 @@ import { AnimatedCounter, AfricaMap } from './components/utils';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
+// Public Pages
+import HomePage from './pages/public/HomePage';
+
 import {
   ResearchStatisticsPage,
   MonitoringEvaluationPage,
