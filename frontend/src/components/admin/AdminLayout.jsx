@@ -5,11 +5,15 @@ import {
   FolderOpen, Settings, LogOut, ChevronDown, ChevronRight, ExternalLink,
   Bell, Search, Menu, X, BarChart3, UserCheck, Newspaper, DollarSign
 } from 'lucide-react';
+import NotificationPanel from './NotificationPanel';
 
 const AdminLayout = ({ user, logout, children, activeSection, setActiveSection, activeSubSection, setActiveSubSection }) => {
   const navigate = useNavigate();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedSections, setExpandedSections] = useState(['dashboard']);
+  
+  // Get token for WebSocket auth
+  const token = localStorage.getItem('dv_token');
 
   const menuStructure = [
     {
