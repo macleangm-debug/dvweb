@@ -3045,12 +3045,7 @@ const AdminDashboard = () => {
       case 'experts':
         return <ExpertNetwork subSection={activeSubSection} />;
       case 'projects':
-        return (
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-4">Projects & Clients</h1>
-            <p className="text-slate-500">Project management features coming soon...</p>
-          </div>
-        );
+        return <ProjectsClients subSection={activeSubSection} />;
       case 'users':
         return (
           <div>
@@ -3059,12 +3054,7 @@ const AdminDashboard = () => {
           </div>
         );
       case 'settings':
-        return (
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-4">Settings</h1>
-            <p className="text-slate-500">System settings coming soon...</p>
-          </div>
-        );
+        return <AdminSettings subSection={activeSubSection} />;
       default:
         return <DashboardOverview />;
     }
