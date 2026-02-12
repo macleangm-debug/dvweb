@@ -25,6 +25,7 @@ import Footer from './components/layout/Footer';
 
 // Public Pages
 import HomePage from './pages/public/HomePage';
+import { AboutPage, ContactPage, ProjectsPage, NewsPage } from './pages/public';
 
 import {
   ResearchStatisticsPage,
