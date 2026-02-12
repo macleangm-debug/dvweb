@@ -8,3 +8,4 @@ export { default as ExpertNetwork } from './ExpertNetwork';
 export { default as ContentManagement } from './ContentManagement';
 export { default as ProjectsClients } from './ProjectsClients';
 export { default as AdminSettings } from './AdminSettings';
+export { default as NotificationPanel } from './NotificationPanel';
