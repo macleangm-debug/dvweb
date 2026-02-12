@@ -16,65 +16,104 @@ const ContentManagement = ({ subSection }) => {
   const [partners, setPartners] = useState([]);
   const [showEditor, setShowEditor] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data
-    setNews([
-      {
-        id: 1,
-        title: 'DataVision Partners with World Bank for Agricultural Data Initiative',
-        excerpt: 'Major partnership announced to transform agricultural data collection across East Africa...',
-        content: 'Full article content...',
-        author: 'John Kimani',
-        category: 'Partnership',
-        status: 'published',
-        publishedDate: '2024-02-10',
-        views: 1245,
-        image: '/api/placeholder/800/400'
-      },
-      {
-        id: 2,
-        title: 'Survey360 Launches New AI-Powered Quality Monitoring',
-        excerpt: 'Revolutionary feature uses machine learning to ensure data integrity in real-time...',
-        content: 'Full article content...',
-        author: 'Sarah Odhiambo',
-        category: 'Product Update',
-        status: 'published',
-        publishedDate: '2024-02-08',
-        views: 892,
-        image: '/api/placeholder/800/400'
-      },
-      {
-        id: 3,
-        title: 'DataVision Expands to Rwanda and Uganda',
-        excerpt: 'Company announces expansion plans with new offices in Kigali and Kampala...',
-        content: 'Full article content...',
-        author: 'Peter Mwangi',
-        category: 'Company News',
-        status: 'draft',
-        publishedDate: null,
-        views: 0,
-        image: '/api/placeholder/800/400'
-      },
-    ]);
-
-    setTeam([
-      { id: 1, name: 'Dr. John Kimani', role: 'CEO & Founder', image: '/api/placeholder/200/200', bio: 'Over 20 years in data analytics...' },
-      { id: 2, name: 'Sarah Odhiambo', role: 'CTO', image: '/api/placeholder/200/200', bio: 'Tech leader with expertise in...' },
-      { id: 3, name: 'Peter Mwangi', role: 'Head of Research', image: '/api/placeholder/200/200', bio: 'PhD in Statistics from...' },
-    ]);
-
-    setTestimonials([
-      { id: 1, name: 'Jane Smith', role: 'Program Director', company: 'World Bank', content: 'DataVision transformed our data collection...', rating: 5 },
-      { id: 2, name: 'Mark Johnson', role: 'M&E Specialist', company: 'UNICEF', content: 'Survey360 has been invaluable...', rating: 5 },
-    ]);
-
-    setPartners([
-      { id: 1, name: 'World Bank', logo: '/api/placeholder/200/80', type: 'Client' },
-      { id: 2, name: 'UNICEF', logo: '/api/placeholder/200/80', type: 'Client' },
-      { id: 3, name: 'GIZ', logo: '/api/placeholder/200/80', type: 'Partner' },
-    ]);
+    const fetchContent = async () => {
+      try {
+        const token = localStorage.getItem('dv_token');
+        const headers = { Authorization: `Bearer ${token}` };
+        
+        const [articlesRes, teamRes, testimonialsRes, partnersRes] = await Promise.all([
+          axios.get(`${API}/api/content/articles`, { headers }).catch(() => ({ data: [] })),
+          axios.get(`${API}/api/content/team`).catch(() => ({ data: [] })),
+          axios.get(`${API}/api/content/testimonials`).catch(() => ({ data: [] })),
+          axios.get(`${API}/api/content/partners`).catch(() => ({ data: [] })),
+        ]);
+        
+        setNews(articlesRes.data.length > 0 ? articlesRes.data : getMockArticles());
+        setTeam(teamRes.data.length > 0 ? teamRes.data : getMockTeam());
+        setTestimonials(testimonialsRes.data.length > 0 ? testimonialsRes.data : getMockTestimonials());
+        setPartners(partnersRes.data.length > 0 ? partnersRes.data : getMockPartners());
+      } catch (error) {
+        console.error('Error fetching content:', error);
+        setNews(getMockArticles());
+        setTeam(getMockTeam());
+        setTestimonials(getMockTestimonials());
+        setPartners(getMockPartners());
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchContent();
   }, []);
+
+  const getMockArticles = () => [
+    {
+      id: '1',
+      title: 'DataVision Partners with World Bank for Agricultural Data Initiative',
+      excerpt: 'Major partnership announced to transform agricultural data collection across East Africa...',
+      content: 'Full article content...',
+      author: 'John Kimani',
+      category: 'Partnership',
+      status: 'published',
+      published_date: '2024-02-10',
+      views: 1245,
+      image_url: '/api/placeholder/800/400'
+    },
+    {
+      id: '2',
+      title: 'Survey360 Launches New AI-Powered Quality Monitoring',
+      excerpt: 'Revolutionary feature uses machine learning to ensure data integrity in real-time...',
+      content: 'Full article content...',
+      author: 'Sarah Odhiambo',
+      category: 'Product Update',
+      status: 'published',
+      published_date: '2024-02-08',
+      views: 892,
+      image_url: '/api/placeholder/800/400'
+    },
+  ];
+
+  const getMockTeam = () => [
+    { id: '1', name: 'Dr. John Kimani', role: 'CEO & Founder', bio: 'Over 20 years in data analytics...' },
+    { id: '2', name: 'Sarah Odhiambo', role: 'CTO', bio: 'Tech leader with expertise in...' },
+  ];
+
+  const getMockTestimonials = () => [
+    { id: '1', name: 'Jane Smith', role: 'Program Director', company: 'World Bank', content: 'DataVision transformed our data collection...', rating: 5 },
+  ];
+
+  const getMockPartners = () => [
+    { id: '1', name: 'World Bank', type: 'Client' },
+    { id: '2', name: 'UNICEF', type: 'Client' },
+  ];
+
+  const handleCreateArticle = async (articleData) => {
+    try {
+      const token = localStorage.getItem('dv_token');
+      const response = await axios.post(`${API}/api/content/articles`, articleData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNews([{ ...articleData, id: response.data.id }, ...news]);
+      setShowEditor(false);
+    } catch (error) {
+      console.error('Error creating article:', error);
+    }
+  };
+
+  const handleDeleteArticle = async (articleId) => {
+    try {
+      const token = localStorage.getItem('dv_token');
+      await axios.delete(`${API}/api/content/articles/${articleId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNews(news.filter(a => a.id !== articleId));
+    } catch (error) {
+      console.error('Error deleting article:', error);
+    }
+  };
 
   const ArticleEditor = ({ article, onClose }) => (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
