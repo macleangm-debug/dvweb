@@ -9,7 +9,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar, Footer } from './components/common';
 
 // Public Pages
-import { HomePage, AboutPage, ContactPage, ProjectsPage } from './pages/public';
+import { HomePage, AboutPage, ContactPage, ProjectsPage, NewsPage } from './pages/public';
 
 // Service Pages
 import {
