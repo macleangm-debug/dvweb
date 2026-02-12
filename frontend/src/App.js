@@ -1,6 +1,7 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 
 // Context
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -9,7 +10,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar, Footer } from './components/common';
 
 // Public Pages
-import { HomePage, AboutPage, ContactPage } from './pages/public';
+import { HomePage, AboutPage, ContactPage, ProjectsPage, NewsPage } from './pages/public';
 
 // Service Pages
 import {
