@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, Header, WebSocket, WebSocketDisconnect
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -17,6 +17,9 @@ import bcrypt
 # Import from refactored modules (for future migration)
 # from models import *  # Models are still defined below for now
 # from services import calculate_match_score, calculate_verification_score
+
+# Import WebSocket manager for real-time notifications
+from websocket_manager import notification_manager, notify_expert_registration, notify_user_signup, notify_job_application, notify_new_lead
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
