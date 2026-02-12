@@ -76,12 +76,15 @@ User requested restructuring of the DataVision website navigation and services:
 - `/app/frontend/src/components/admin/CareersHR.jsx`
 - `/app/frontend/src/components/admin/ExpertNetwork.jsx`
 - `/app/frontend/src/components/admin/ContentManagement.jsx`
+- `/app/frontend/src/components/admin/ProjectsClients.jsx` (NEW)
+- `/app/frontend/src/components/admin/AdminSettings.jsx` (NEW)
 - `/app/frontend/src/components/admin/index.js`
 
 **Backend Files Created:**
 - `/app/backend/routes/admin_dashboard_routes.py`
 - `/app/backend/routes/careers_routes.py`
 - `/app/backend/routes/content_routes.py`
+- `/app/backend/routes/projects_routes.py` (NEW)
 
 ---
 
