@@ -294,9 +294,9 @@ const CareersHR = ({ subSection }) => {
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-slate-600">{app.job}</td>
+                <td className="px-6 py-4 text-slate-600">{app.job_title || app.job}</td>
                 <td className="px-6 py-4 text-slate-600">{app.experience}</td>
-                <td className="px-6 py-4 text-slate-500">{app.applied}</td>
+                <td className="px-6 py-4 text-slate-500">{app.applied_date || app.applied}</td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map(star => (
