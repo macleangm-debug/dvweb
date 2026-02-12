@@ -6,7 +6,7 @@ import {
   ArrowRight, MapPin, Users, Award, BookOpen, Droplets, Heart,
   Sprout, Quote, BarChart3, Globe, CheckCircle2, Target, PieChart,
   GraduationCap, Building2, TrendingUp, Shield, Utensils,
-  Smartphone, Layers, Activity, Zap
+  Smartphone, Layers, Activity, Zap, FileText
 } from 'lucide-react';
 import { AnimatedCounter, AfricaMap } from '../../components/utils';
 
