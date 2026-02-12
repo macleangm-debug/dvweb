@@ -1,17 +1,17 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-
-// Context
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-// Common Components
-import { Navbar, Footer } from './components/common';
-
-// Public Pages
-import { HomePage, AboutPage, ContactPage } from './pages/public';
-
-// Service Pages
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
+import { 
+  Menu, X, ChevronDown, ArrowRight, ArrowLeft, MapPin, Users, Award, 
+  BookOpen, Droplets, Heart, Sprout, Mail, Phone, Building2,
+  ExternalLink, Linkedin, Quote, BarChart3, Globe, CheckCircle2,
+  LogIn, LogOut, Settings, FileText, MessageSquare, PlusCircle,
+  Trash2, Edit, Eye, ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
+  Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
+  FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb,
+  Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Briefcase, Activity
+} from 'lucide-react';
 import {
   ResearchStatisticsPage,
   MonitoringEvaluationPage,
@@ -86,7 +86,6 @@ import {
   WASHMonitorPage,
   softwareSolutions
 } from './pages/SolutionsPages';
-import SolutionsLandingPage from './pages/SolutionsLandingPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
@@ -3159,7 +3158,7 @@ function App() {
                   <Route path="/industries/ngos" element={<NGOsIndustryPage />} />
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
                   <Route path="/industries/retail" element={<RetailIndustryPage />} />
-                  <Route path="/solutions" element={<SolutionsLandingPage />} />
+                  <Route path="/solutions" element={<SolutionsHubPage />} />
                   <Route path="/solutions/survey360/pricing" element={<Survey360PricingPage />} />
                   <Route path="/solutions/survey360/login" element={<Survey360LoginPage />} />
                   <Route path="/solutions/survey360/register" element={<Survey360RegisterPage />} />
