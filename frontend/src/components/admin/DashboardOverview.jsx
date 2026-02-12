@@ -3,10 +3,22 @@ import axios from 'axios';
 import {
   TrendingUp, TrendingDown, Users, DollarSign, Package, FileText,
   Activity, ArrowUpRight, ArrowDownRight, MoreHorizontal, Calendar,
-  Clock, CheckCircle, AlertCircle, UserPlus, Briefcase
+  Clock, CheckCircle, AlertCircle, UserPlus, Briefcase, BarChart3, PieChart
 } from 'lucide-react';
+import {
+  LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart as RechartsPie, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 
 const API = process.env.REACT_APP_BACKEND_URL;
+
+// Chart color palette
+const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#6366f1', '#8b5cf6'];
+const PRODUCT_COLORS = {
+  fieldforce: '#14b8a6',
+  survey360: '#8b5cf6', 
+  datapulse: '#f97316'
+};
 
 const StatCard = ({ title, value, change, changeType, icon: Icon, color, subtitle }) => (
   <div className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
