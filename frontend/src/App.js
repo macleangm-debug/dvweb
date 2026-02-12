@@ -162,6 +162,7 @@ import { AnalyticsPage as FFAnalyticsPage } from './solutions/fieldforce/app/pag
 import { TeamPage as FFTeamPage, CreateOrganizationPage as FFCreateOrganizationPage } from './solutions/fieldforce/app/pages/TeamPage';
 import { RBACPage as FFRBACPage } from './solutions/fieldforce/app/pages/RBACPage';
 import { TranslationsPage as FFTranslationsPage } from './solutions/fieldforce/app/pages/TranslationsPage';
+import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages/SettingsPage';
 // Research & Statistics Page (Main Focus)
 const ResearchPage = () => {
   return (
