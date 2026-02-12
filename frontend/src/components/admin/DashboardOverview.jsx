@@ -305,6 +305,163 @@ const DashboardOverview = () => {
         ))}
       </div>
 
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Revenue Trend Chart */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="font-semibold text-slate-900">Revenue Trend</h3>
+              <p className="text-sm text-slate-500">Daily revenue by product</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <select 
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+                className="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white"
+              >
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+              </select>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={chartData.revenue} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+              <defs>
+                <linearGradient id="colorFieldforce" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={PRODUCT_COLORS.fieldforce} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={PRODUCT_COLORS.fieldforce} stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorSurvey360" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={PRODUCT_COLORS.survey360} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={PRODUCT_COLORS.survey360} stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorDatapulse" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={PRODUCT_COLORS.datapulse} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={PRODUCT_COLORS.datapulse} stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+              <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `$${v/1000}k`} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
+                formatter={(value) => [`$${value.toLocaleString()}`, '']}
+              />
+              <Legend />
+              <Area type="monotone" dataKey="fieldforce" name="FieldForce" stroke={PRODUCT_COLORS.fieldforce} fillOpacity={1} fill="url(#colorFieldforce)" />
+              <Area type="monotone" dataKey="survey360" name="Survey360" stroke={PRODUCT_COLORS.survey360} fillOpacity={1} fill="url(#colorSurvey360)" />
+              <Area type="monotone" dataKey="datapulse" name="DataPulse" stroke={PRODUCT_COLORS.datapulse} fillOpacity={1} fill="url(#colorDatapulse)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* User Growth Chart */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="font-semibold text-slate-900">User Growth</h3>
+              <p className="text-sm text-slate-500">Cumulative users by product</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: PRODUCT_COLORS.fieldforce }}></div>
+                <span className="text-xs text-slate-500">FieldForce</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: PRODUCT_COLORS.survey360 }}></div>
+                <span className="text-xs text-slate-500">Survey360</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: PRODUCT_COLORS.datapulse }}></div>
+                <span className="text-xs text-slate-500">DataPulse</span>
+              </div>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <LineChart data={chartData.users} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+              <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
+              />
+              <Line type="monotone" dataKey="fieldforce" name="FieldForce" stroke={PRODUCT_COLORS.fieldforce} strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="survey360" name="Survey360" stroke={PRODUCT_COLORS.survey360} strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="datapulse" name="DataPulse" stroke={PRODUCT_COLORS.datapulse} strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Product Distribution & Revenue Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* User Distribution Pie Chart */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 className="font-semibold text-slate-900 mb-4">User Distribution</h3>
+          <ResponsiveContainer width="100%" height={220}>
+            <RechartsPie>
+              <Pie
+                data={chartData.products}
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {chartData.products.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color || COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [value.toLocaleString(), 'Users']} />
+            </RechartsPie>
+          </ResponsiveContainer>
+          <div className="flex justify-center gap-4 mt-2">
+            {chartData.products.map((product, idx) => (
+              <div key={idx} className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: product.color }}></div>
+                <span className="text-xs text-slate-600">{product.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Revenue by Product Bar Chart */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6 lg:col-span-2">
+          <h3 className="font-semibold text-slate-900 mb-4">Revenue by Product (MTD)</h3>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart 
+              data={[
+                { name: 'FieldForce', revenue: stats?.solutionStats?.fieldforce?.revenue || 89500, color: PRODUCT_COLORS.fieldforce },
+                { name: 'Survey360', revenue: stats?.solutionStats?.survey360?.revenue || 124300, color: PRODUCT_COLORS.survey360 },
+                { name: 'DataPulse', revenue: stats?.solutionStats?.datapulse?.revenue || 32090, color: PRODUCT_COLORS.datapulse },
+              ]} 
+              layout="vertical"
+              margin={{ top: 5, right: 30, left: 60, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
+              <XAxis type="number" tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `$${v/1000}k`} />
+              <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
+                formatter={(value) => [`$${value.toLocaleString()}`, 'Revenue']}
+              />
+              <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
+                {[
+                  { name: 'FieldForce', color: PRODUCT_COLORS.fieldforce },
+                  { name: 'Survey360', color: PRODUCT_COLORS.survey360 },
+                  { name: 'DataPulse', color: PRODUCT_COLORS.datapulse },
+                ].map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
       {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
