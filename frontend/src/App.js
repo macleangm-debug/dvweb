@@ -1701,56 +1701,57 @@ const HomePage = () => {
             </motion.div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* FieldForce Card */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0 }}
               className="group"
             >
-              <div className="bg-gradient-to-br from-[#0d3d38] to-[#061a17] rounded-2xl p-8 border border-[#2dd4bf]/20 hover:border-[#2dd4bf]/50 transition-all duration-300 h-full">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[#2dd4bf]/20 flex items-center justify-center">
-                      <MapPin className="w-7 h-7 text-[#2dd4bf]" />
+              <div className="bg-gradient-to-br from-[#0d3d38] to-[#061a17] rounded-2xl p-6 border border-[#2dd4bf]/20 hover:border-[#2dd4bf]/50 transition-all duration-300 h-full hover:scale-[1.02] hover:shadow-xl hover:shadow-[#2dd4bf]/10">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-[#2dd4bf]/20 flex items-center justify-center">
+                      <MapPin className="w-6 h-6 text-[#2dd4bf]" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white">FieldForce</h3>
-                      <p className="text-[#2dd4bf] text-sm">Mobile Data Collection</p>
+                      <h3 className="text-xl font-bold text-white">FieldForce</h3>
+                      <p className="text-[#2dd4bf] text-xs">Mobile Data Collection</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 bg-[#2dd4bf]/20 text-[#2dd4bf] text-xs font-medium rounded-full">
-                    Most Popular
+                  <span className="px-2 py-1 bg-[#2dd4bf]/20 text-[#2dd4bf] text-xs font-medium rounded-full">
+                    Popular
                   </span>
                 </div>
-                <p className="text-white/70 mb-6">
+                <p className="text-white/70 text-sm mb-5 line-clamp-3">
                   Powerful offline-first data collection for field teams. GPS tracking, photo capture, 
-                  and seamless sync - all in one platform trusted by researchers across Africa.
+                  and seamless sync - trusted by researchers across Africa.
                 </p>
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-5">
                   {[
-                    { icon: Smartphone, label: '100% Offline Ready' },
-                    { icon: MapPin, label: 'GPS & Geofencing' },
-                    { icon: Shield, label: '256-bit Encryption' },
+                    { icon: Smartphone, label: 'Offline Ready' },
+                    { icon: MapPin, label: 'GPS Tracking' },
+                    { icon: Shield, label: 'Encrypted' },
                     { icon: Zap, label: 'Real-time Sync' }
                   ].map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2 text-white/60 text-sm">
-                      <feature.icon className="w-4 h-4 text-[#2dd4bf]" />
+                    <div key={i} className="flex items-center gap-2 text-white/60 text-xs">
+                      <feature.icon className="w-3.5 h-3.5 text-[#2dd4bf]" />
                       {feature.label}
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <Link 
                     to="/solutions/fieldforce"
-                    className="bg-[#2dd4bf] text-[#0a1628] px-6 py-3 rounded-lg font-semibold hover:bg-[#14b8a6] transition-all group-hover:translate-x-1"
+                    className="bg-[#2dd4bf] text-[#0a1628] px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#14b8a6] transition-all"
                   >
                     Start Free Trial →
                   </Link>
                   <Link 
-                    to="/solutions/fieldforce/app/login"
-                    className="text-white/70 hover:text-white transition-colors"
+                    to="/solutions/fieldforce/demo"
+                    className="text-white/70 hover:text-white transition-colors text-sm"
                   >
                     View Demo
                   </Link>
@@ -1760,55 +1761,113 @@ const HomePage = () => {
 
             {/* Survey360 Card */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
               className="group"
             >
-              <div className="bg-gradient-to-br from-[#1a1033] to-[#0a0515] rounded-2xl p-8 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 h-full">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                      <FileText className="w-7 h-7 text-purple-400" />
+              <div className="bg-gradient-to-br from-[#1a1033] to-[#0a0515] rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 h-full hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/10">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                      <FileText className="w-6 h-6 text-purple-400" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white">Survey360</h3>
-                      <p className="text-purple-400 text-sm">Survey Management Platform</p>
+                      <h3 className="text-xl font-bold text-white">Survey360</h3>
+                      <p className="text-purple-400 text-xs">Survey Management</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">
+                  <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">
                     New
                   </span>
                 </div>
-                <p className="text-white/70 mb-6">
+                <p className="text-white/70 text-sm mb-5 line-clamp-3">
                   Create professional surveys in minutes. Collect responses anywhere. Get insights 
-                  instantly - all in one simple, powerful platform for research teams.
+                  instantly - a powerful platform for research teams.
                 </p>
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-5">
                   {[
                     { icon: Layers, label: '10+ Question Types' },
-                    { icon: BarChart3, label: 'Real-time Analytics' },
+                    { icon: BarChart3, label: 'Analytics' },
                     { icon: Globe, label: 'Multi-language' },
                     { icon: Shield, label: 'GDPR Compliant' }
                   ].map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2 text-white/60 text-sm">
-                      <feature.icon className="w-4 h-4 text-purple-400" />
+                    <div key={i} className="flex items-center gap-2 text-white/60 text-xs">
+                      <feature.icon className="w-3.5 h-3.5 text-purple-400" />
                       {feature.label}
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <Link 
                     to="/solutions/survey360"
-                    className="bg-purple-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-600 transition-all group-hover:translate-x-1"
+                    className="bg-purple-500 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-purple-600 transition-all"
                   >
                     Start Free Trial →
                   </Link>
                   <Link 
                     to="/solutions/survey360/login"
-                    className="text-white/70 hover:text-white transition-colors"
+                    className="text-white/70 hover:text-white transition-colors text-sm"
                   >
                     View Demo
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* DataPulse Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="group"
+            >
+              <div className="bg-gradient-to-br from-[#2d1a0d] to-[#150d05] rounded-2xl p-6 border border-orange-500/20 hover:border-orange-500/50 transition-all duration-300 h-full hover:scale-[1.02] hover:shadow-xl hover:shadow-orange-500/10">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                      <Activity className="w-6 h-6 text-orange-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">DataPulse</h3>
+                      <p className="text-orange-400 text-xs">Enterprise Platform</p>
+                    </div>
+                  </div>
+                  <span className="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs font-medium rounded-full">
+                    Enterprise
+                  </span>
+                </div>
+                <p className="text-white/70 text-sm mb-5 line-clamp-3">
+                  Enterprise-grade data collection infrastructure. Scalable, secure, and built for 
+                  organizations that need robust data management solutions.
+                </p>
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  {[
+                    { icon: Building2, label: 'Enterprise Scale' },
+                    { icon: Shield, label: 'SOC2 Compliant' },
+                    { icon: Zap, label: 'API Access' },
+                    { icon: Users, label: 'Team Management' }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-white/60 text-xs">
+                      <feature.icon className="w-3.5 h-3.5 text-orange-400" />
+                      {feature.label}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <Link 
+                    to="/solutions/datapulse"
+                    className="bg-orange-500 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-orange-600 transition-all"
+                  >
+                    Request Demo →
+                  </Link>
+                  <Link 
+                    to="/solutions/datapulse"
+                    className="text-white/70 hover:text-white transition-colors text-sm"
+                  >
+                    Learn More
                   </Link>
                 </div>
               </div>
