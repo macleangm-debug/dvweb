@@ -2991,45 +2991,36 @@ const LoginPage = () => {
   );
 };
 
-// Admin Dashboard
+// Admin Dashboard - Comprehensive CMS
+import {
+  AdminLayout,
+  DashboardOverview,
+  SolutionsManagement,
+  MarketingSales,
+  CareersHR,
+  ExpertNetwork,
+  ContentManagement
+} from './components/admin';
+
 const AdminDashboard = () => {
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('inquiries');
-  const [inquiries, setInquiries] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [stats, setStats] = useState([]);
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeSubSection, setActiveSubSection] = useState('overview');
 
   useEffect(() => {
-    // Wait for auth loading to complete before redirecting
     if (loading) return;
-    
     if (!user) {
       navigate('/login');
-      return;
     }
-
-    const token = localStorage.getItem('dv_token');
-    const headers = { Authorization: `Bearer ${token}` };
-
-    Promise.all([
-      axios.get(`${API}/admin/inquiries`, { headers }),
-      axios.get(`${API}/projects`),
-      axios.get(`${API}/statistics`)
-    ]).then(([inqRes, projRes, statsRes]) => {
-      setInquiries(inqRes.data);
-      setProjects(projRes.data);
-      setStats(statsRes.data);
-    }).catch(console.error);
   }, [user, navigate, loading]);
 
-  // Show loading while auth is being verified
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-[#e63946] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking authentication...</p>
+          <div className="w-8 h-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading admin panel...</p>
         </div>
       </div>
     );
@@ -3037,174 +3028,57 @@ const AdminDashboard = () => {
 
   if (!user) return null;
 
-  const tabs = [
-    { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
-    { id: 'users', label: 'Clients', icon: Users },
-    { id: 'content', label: 'Content Manager', icon: PenTool },
-    { id: 'experts', label: 'Expert Network', icon: Users },
-    { id: 'verification', label: 'Verification', icon: Shield },
-    { id: 'matching', label: 'Project Matching', icon: Target },
-    { id: 'projects', label: 'Projects', icon: FileText },
-    { id: 'statistics', label: 'Statistics', icon: BarChart3 },
-  ];
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return <DashboardOverview />;
+      case 'content':
+        return <ContentManagement subSection={activeSubSection} />;
+      case 'solutions':
+        return <SolutionsManagement subSection={activeSubSection} />;
+      case 'marketing':
+        return <MarketingSales subSection={activeSubSection} />;
+      case 'careers':
+        return <CareersHR subSection={activeSubSection} />;
+      case 'experts':
+        return <ExpertNetwork subSection={activeSubSection} />;
+      case 'projects':
+        return (
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-4">Projects & Clients</h1>
+            <p className="text-slate-500">Project management features coming soon...</p>
+          </div>
+        );
+      case 'users':
+        return (
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-4">User Management</h1>
+            <AdminUsersManagement token={localStorage.getItem('dv_token')} />
+          </div>
+        );
+      case 'settings':
+        return (
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-4">Settings</h1>
+            <p className="text-slate-500">System settings coming soon...</p>
+          </div>
+        );
+      default:
+        return <DashboardOverview />;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
-      {/* Admin Header */}
-      <header className="bg-[#0a1628] text-white px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-xl font-bold font-serif">
-            Data<span className="text-[#e63946]">Vision</span>
-          </Link>
-          <span className="text-white/50">|</span>
-          <span className="text-sm text-white/70">Admin Panel</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-white/70">{user.email}</span>
-          <button 
-            onClick={logout}
-            className="text-sm text-white/70 hover:text-[#e63946] flex items-center gap-1"
-          >
-            <LogOut className="w-4 h-4" /> Logout
-          </button>
-        </div>
-      </header>
-
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 bg-white border-r min-h-[calc(100vh-64px)] p-4">
-          <nav className="space-y-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all ${
-                  activeTab === tab.id 
-                    ? 'bg-[#0a1628] text-white' 
-                    : 'text-[#64748b] hover:bg-[#f8fafc]'
-                }`}
-              >
-                <tab.icon className="w-5 h-5" />
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-          <div className="mt-8 pt-8 border-t">
-            <Link 
-              to="/" 
-              className="flex items-center gap-2 text-sm text-[#64748b] hover:text-[#e63946]"
-            >
-              <ExternalLink className="w-4 h-4" /> View Website
-            </Link>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 p-8">
-          {activeTab === 'inquiries' && (
-            <div>
-              <h2 className="text-2xl font-bold text-[#0a1628] mb-6 font-serif">Inquiries</h2>
-              <div className="bg-white border border-[#e2e8f0]">
-                {inquiries.length === 0 ? (
-                  <p className="p-8 text-center text-[#64748b]">No inquiries yet.</p>
-                ) : (
-                  <div className="divide-y">
-                    {inquiries.map((inquiry) => (
-                      <div key={inquiry.id} className="p-6 hover:bg-[#f8fafc]">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h3 className="font-semibold text-[#0a1628]">{inquiry.subject}</h3>
-                            <p className="text-sm text-[#64748b] mt-1">
-                              From: {inquiry.name} ({inquiry.email})
-                              {inquiry.company && ` - ${inquiry.company}`}
-                            </p>
-                            <p className="text-sm text-[#64748b] mt-2">{inquiry.message}</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className={`text-xs px-2 py-1 ${
-                              inquiry.status === 'new' 
-                                ? 'bg-[#e63946]/10 text-[#e63946]' 
-                                : 'bg-[#2a9d8f]/10 text-[#2a9d8f]'
-                            }`}>
-                              {inquiry.status}
-                            </span>
-                            <span className="text-xs text-[#64748b]">
-                              {new Date(inquiry.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'experts' && (
-            <AdminExpertManagement token={localStorage.getItem('dv_token')} />
-          )}
-
-          {activeTab === 'users' && (
-            <AdminUsersManagement token={localStorage.getItem('dv_token')} />
-          )}
-
-          {activeTab === 'content' && (
-            <div>
-              <h2 className="text-2xl font-bold text-[#0a1628] mb-6 font-serif">Content Manager</h2>
-              <CMSContentManager />
-            </div>
-          )}
-
-          {activeTab === 'verification' && (
-            <AdminVerificationDashboard token={localStorage.getItem('dv_token')} />
-          )}
-
-          {activeTab === 'matching' && (
-            <AdminProjectMatching token={localStorage.getItem('dv_token')} />
-          )}
-
-          {activeTab === 'projects' && (
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-[#0a1628] font-serif">Projects</h2>
-              </div>
-              <div className="bg-white border border-[#e2e8f0]">
-                {projects.map((project) => (
-                  <div key={project.id} className="p-6 border-b last:border-b-0 hover:bg-[#f8fafc]">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-semibold text-[#0a1628]">{project.title}</h3>
-                        <p className="text-sm text-[#64748b] mt-1">{project.client} • {project.year}</p>
-                      </div>
-                      <span className="text-xs px-2 py-1 bg-[#2a9d8f]/10 text-[#2a9d8f]">
-                        {project.sector}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'statistics' && (
-            <div>
-              <h2 className="text-2xl font-bold text-[#0a1628] mb-6 font-serif">Statistics</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat) => (
-                  <div key={stat.id} className="bg-white p-6 border border-[#e2e8f0]">
-                    <p className="text-4xl font-bold text-[#0a1628] font-serif">
-                      {stat.prefix}{stat.value}{stat.suffix}
-                    </p>
-                    <p className="text-sm text-[#64748b] mt-2">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <AdminLayout
+      user={user}
+      logout={logout}
+      activeSection={activeSection}
+      setActiveSection={setActiveSection}
+      activeSubSection={activeSubSection}
+      setActiveSubSection={setActiveSubSection}
+    >
+      {renderContent()}
+    </AdminLayout>
   );
 };
 
