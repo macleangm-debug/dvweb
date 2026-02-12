@@ -2999,7 +2999,9 @@ import {
   MarketingSales,
   CareersHR,
   ExpertNetwork,
-  ContentManagement
+  ContentManagement,
+  ProjectsClients,
+  AdminSettings
 } from './components/admin';
 
 const AdminDashboard = () => {
