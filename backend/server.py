@@ -2868,6 +2868,9 @@ from routes.careers_routes import router as careers_router, create_careers_route
 # Import Content Management routes
 from routes.content_routes import router as content_router, create_content_routes
 
+# Import Projects & Clients routes
+from routes.projects_routes import router as projects_router, create_projects_routes
+
 # Include Survey360 basic router (for existing frontend compatibility)
 api_router.include_router(survey360_basic_router)
 
