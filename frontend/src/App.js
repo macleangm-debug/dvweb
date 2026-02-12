@@ -13,8 +13,14 @@ import {
   Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Briefcase, Activity
 } from 'lucide-react';
 
+// Context
+import { AuthProvider, useAuth } from './context/AuthContext';
+
 // Utility Components
 import { AnimatedCounter, AfricaMap } from './components/utils';
+
+// Layout Components
+import Navbar from './components/layout/Navbar';
 
 import {
   ResearchStatisticsPage,
