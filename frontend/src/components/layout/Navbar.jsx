@@ -5,7 +5,7 @@ import {
   Menu, X, ChevronDown, ArrowLeft, ChevronRight,
   Globe, BarChart3, Target, Users, PieChart, Building2,
   FileText, GraduationCap, Compass, Sprout, BookOpen, Heart,
-  Droplets, Utensils, Shield, HandHeld, Scale, TrendingUp,
+  Droplets, Utensils, Shield, HandHeart, Scale, TrendingUp,
   AlertTriangle, Truck, Factory, Landmark, Zap, Smartphone,
   Pickaxe, Plane, ShoppingCart, Layers, Activity, Map,
   MessageCircle, PenTool, Workflow, Calculator, FolderOpen,
