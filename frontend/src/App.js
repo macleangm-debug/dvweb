@@ -3159,7 +3159,7 @@ function App() {
                   <Route path="/industries/ngos" element={<NGOsIndustryPage />} />
                   <Route path="/industries/manufacturing" element={<ManufacturingIndustryPage />} />
                   <Route path="/industries/retail" element={<RetailIndustryPage />} />
-                  <Route path="/solutions" element={<SolutionsHubPage />} />
+                  <Route path="/solutions" element={<SolutionsLandingPage />} />
                   <Route path="/solutions/survey360/pricing" element={<Survey360PricingPage />} />
                   <Route path="/solutions/survey360/login" element={<Survey360LoginPage />} />
                   <Route path="/solutions/survey360/register" element={<Survey360RegisterPage />} />
