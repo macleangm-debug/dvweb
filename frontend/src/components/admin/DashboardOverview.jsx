@@ -36,7 +36,7 @@ const StatCard = ({ title, value, change, changeType, icon: Icon, color, subtitl
   </div>
 );
 
-const ActivityItem = ({ icon: Icon, title, description, time, type }) => {
+const ActivityItem = ({ icon: Icon, title, description, time, type, category }) => {
   const colors = {
     success: 'bg-emerald-100 text-emerald-600',
     warning: 'bg-amber-100 text-amber-600',
@@ -44,10 +44,27 @@ const ActivityItem = ({ icon: Icon, title, description, time, type }) => {
     error: 'bg-red-100 text-red-600',
   };
 
+  // Map activity types to icons if no icon is provided
+  const getIcon = () => {
+    if (Icon) return Icon;
+    // Default icons based on type
+    const iconMap = {
+      expert_registration: UserPlus,
+      new_lead: DollarSign,
+      job_application: Briefcase,
+      project_completed: CheckCircle,
+      default: Activity
+    };
+    return iconMap[type] || iconMap.default;
+  };
+
+  const IconComponent = getIcon();
+  const colorKey = category || type || 'info';
+
   return (
     <div className="flex items-start gap-4 py-4 border-b border-slate-100 last:border-0">
-      <div className={`w-10 h-10 rounded-lg ${colors[type]} flex items-center justify-center flex-shrink-0`}>
-        <Icon className="w-5 h-5" />
+      <div className={`w-10 h-10 rounded-lg ${colors[colorKey] || colors.info} flex items-center justify-center flex-shrink-0`}>
+        {IconComponent && <IconComponent className="w-5 h-5" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-slate-900">{title}</p>
