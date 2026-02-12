@@ -5,14 +5,14 @@ import {
   Menu, X, ChevronDown, ArrowLeft, ChevronRight,
   Globe, BarChart3, Target, Users, PieChart, Building2,
   FileText, GraduationCap, Compass, Sprout, BookOpen, Heart,
-  Droplets, Utensils, Shield, HandHeart, Scale, TrendingUp,
+  Droplets, Utensils, Shield, HandHeld, Scale, TrendingUp,
   AlertTriangle, Truck, Factory, Landmark, Zap, Smartphone,
   Pickaxe, Plane, ShoppingCart, Layers, Activity, Map,
   MessageCircle, PenTool, Workflow, Calculator, FolderOpen,
   LogIn, LogOut, Settings
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
-// useAuth hook to be passed as prop or imported from context
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
