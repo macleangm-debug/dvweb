@@ -260,7 +260,6 @@ def create_admin_dashboard_routes(db):
     async def get_dashboard_charts(period: int = 30, payload: dict = Depends(verify_admin_token)):
         """Get chart data for dashboard visualization."""
         import random
-        from datetime import datetime, timezone, timedelta
         
         # Generate date range
         end_date = datetime.now(timezone.utc)
@@ -274,7 +273,7 @@ def create_admin_dashboard_routes(db):
             ff_count = await db.fieldforce_users.count_documents({}) or 456
             s360_count = await db.survey360_users.count_documents({}) or 612
             dp_count = await db.datapulse_users.count_documents({}) or 179
-        except:
+        except Exception:
             ff_count, s360_count, dp_count = 456, 612, 179
         
         # Generate time series data
