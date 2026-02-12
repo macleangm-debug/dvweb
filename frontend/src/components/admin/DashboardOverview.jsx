@@ -91,6 +91,12 @@ const DashboardOverview = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState([]);
+  const [chartData, setChartData] = useState({
+    revenue: [],
+    users: [],
+    products: []
+  });
+  const [selectedPeriod, setSelectedPeriod] = useState('30');
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -99,15 +105,15 @@ const DashboardOverview = () => {
         const headers = { Authorization: `Bearer ${token}` };
         
         // Fetch multiple endpoints in parallel
-        const [statsRes, activityRes] = await Promise.all([
+        const [statsRes, activityRes, chartsRes] = await Promise.all([
           axios.get(`${API}/api/admin/dashboard/stats`, { headers }).catch(() => ({ data: null })),
           axios.get(`${API}/api/admin/dashboard/activity`, { headers }).catch(() => ({ data: [] })),
+          axios.get(`${API}/api/admin/dashboard/charts?period=${selectedPeriod}`, { headers }).catch(() => ({ data: null })),
         ]);
 
         if (statsRes.data) {
           setStats(statsRes.data);
         } else {
-          // Mock data for demonstration
           setStats({
             totalRevenue: 245890,
             revenueChange: 12.5,
@@ -124,10 +130,23 @@ const DashboardOverview = () => {
           });
         }
 
+        if (chartsRes.data) {
+          setChartData(chartsRes.data);
+        } else {
+          // Generate mock chart data
+          const mockRevenue = generateMockRevenueData(parseInt(selectedPeriod));
+          const mockUsers = generateMockUserData(parseInt(selectedPeriod));
+          const mockProducts = [
+            { name: 'FieldForce', value: 456, color: PRODUCT_COLORS.fieldforce },
+            { name: 'Survey360', value: 612, color: PRODUCT_COLORS.survey360 },
+            { name: 'DataPulse', value: 179, color: PRODUCT_COLORS.datapulse },
+          ];
+          setChartData({ revenue: mockRevenue, users: mockUsers, products: mockProducts });
+        }
+
         if (activityRes.data?.length) {
           setRecentActivity(activityRes.data);
         } else {
-          // Mock activity
           setRecentActivity([
             { icon: UserPlus, title: 'New Expert Registration', description: 'Dr. Sarah Kimani registered as Health Research Expert', time: '2 mins ago', type: 'info' },
             { icon: DollarSign, title: 'New Subscription', description: 'UNICEF Tanzania subscribed to Survey360 Enterprise', time: '15 mins ago', type: 'success' },
@@ -145,7 +164,47 @@ const DashboardOverview = () => {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [selectedPeriod]);
+
+  // Helper functions to generate mock data
+  const generateMockRevenueData = (days) => {
+    const data = [];
+    const now = new Date();
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      const base = 5000 + Math.random() * 3000;
+      data.push({
+        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        fieldforce: Math.round(base * 0.4 + Math.random() * 500),
+        survey360: Math.round(base * 0.5 + Math.random() * 800),
+        datapulse: Math.round(base * 0.15 + Math.random() * 300),
+        total: Math.round(base + Math.random() * 1500)
+      });
+    }
+    return data;
+  };
+
+  const generateMockUserData = (days) => {
+    const data = [];
+    const now = new Date();
+    let cumulative = { fieldforce: 380, survey360: 520, datapulse: 120 };
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      cumulative.fieldforce += Math.round(Math.random() * 5);
+      cumulative.survey360 += Math.round(Math.random() * 6);
+      cumulative.datapulse += Math.round(Math.random() * 4);
+      data.push({
+        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        fieldforce: cumulative.fieldforce,
+        survey360: cumulative.survey360,
+        datapulse: cumulative.datapulse,
+        total: cumulative.fieldforce + cumulative.survey360 + cumulative.datapulse
+      });
+    }
+    return data;
+  };
 
   if (loading) {
     return (
