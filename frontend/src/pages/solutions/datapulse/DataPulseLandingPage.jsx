@@ -188,7 +188,7 @@ const DataPulseLandingPage = () => {
               Enterprise-Grade Data Collection Platform
             </span>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Field Data Collection
               <br />
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
