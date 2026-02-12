@@ -2859,6 +2859,15 @@ from fieldforce.fieldforce_main import fieldforce_router
 # Import and include DataPulse routes
 from routes.datapulse_routes import router as datapulse_router, create_datapulse_routes
 
+# Import Admin Dashboard routes
+from routes.admin_dashboard_routes import router as admin_dashboard_router, create_admin_dashboard_routes
+
+# Import Careers routes
+from routes.careers_routes import router as careers_router, create_careers_routes
+
+# Import Content Management routes
+from routes.content_routes import router as content_router, create_content_routes
+
 # Include Survey360 basic router (for existing frontend compatibility)
 api_router.include_router(survey360_basic_router)
 
@@ -2871,6 +2880,18 @@ api_router.include_router(fieldforce_router)
 # Include DataPulse router
 create_datapulse_routes(db)
 api_router.include_router(datapulse_router)
+
+# Include Admin Dashboard routes
+create_admin_dashboard_routes(db)
+api_router.include_router(admin_dashboard_router)
+
+# Include Careers routes
+create_careers_routes(db)
+api_router.include_router(careers_router)
+
+# Include Content Management routes
+create_content_routes(db)
+api_router.include_router(content_router)
 
 # Then include api_router in app
 app.include_router(api_router)
