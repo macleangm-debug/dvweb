@@ -86,6 +86,7 @@ import {
   WASHMonitorPage,
   softwareSolutions
 } from './pages/SolutionsPages';
+import SolutionsLandingPage from './pages/SolutionsLandingPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
