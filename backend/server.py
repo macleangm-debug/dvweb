@@ -2903,6 +2903,69 @@ api_router.include_router(content_router)
 create_projects_routes(db)
 api_router.include_router(projects_router)
 
+# ==================== WEBSOCKET NOTIFICATIONS ====================
+
+@app.websocket("/ws/notifications")
+async def websocket_notifications(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time admin notifications.
+    Connect from frontend: new WebSocket('ws://host/ws/notifications')
+    """
+    admin_email = None
+    try:
+        # Accept connection
+        await notification_manager.connect(websocket, admin_email)
+        
+        while True:
+            # Keep connection alive and handle incoming messages
+            data = await websocket.receive_text()
+            try:
+                message = json.loads(data)
+                # Handle authentication message
+                if message.get("type") == "auth" and message.get("token"):
+                    try:
+                        payload = jwt.decode(message["token"], SECRET_KEY, algorithms=[ALGORITHM])
+                        admin_email = payload.get("sub")
+                        # Re-register with email
+                        notification_manager.disconnect(websocket, None)
+                        await notification_manager.connect(websocket, admin_email)
+                        await websocket.send_json({"type": "auth", "status": "authenticated", "email": admin_email})
+                    except:
+                        await websocket.send_json({"type": "auth", "status": "failed"})
+                # Handle ping/pong for keepalive
+                elif message.get("type") == "ping":
+                    await websocket.send_json({"type": "pong", "timestamp": datetime.now(timezone.utc).isoformat()})
+            except:
+                pass
+                
+    except WebSocketDisconnect:
+        notification_manager.disconnect(websocket, admin_email)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        notification_manager.disconnect(websocket, admin_email)
+
+
+@api_router.get("/notifications/test")
+async def test_notification(payload: dict = Depends(verify_token)):
+    """Test endpoint to trigger a sample notification."""
+    await notification_manager.send_notification(
+        notification_type="test",
+        title="Test Notification",
+        description="This is a test notification from the admin panel.",
+        data={"test": True},
+        priority="normal"
+    )
+    return {"message": "Test notification sent", "connections": notification_manager.get_connection_count()}
+
+
+@api_router.get("/notifications/status")
+async def notification_status(payload: dict = Depends(verify_token)):
+    """Get WebSocket connection status."""
+    return {
+        "active_connections": notification_manager.get_connection_count(),
+        "connected_admins": notification_manager.get_connected_admins()
+    }
+
 # Then include api_router in app
 app.include_router(api_router)
 
