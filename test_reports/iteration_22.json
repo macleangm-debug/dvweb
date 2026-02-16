@@ -1,0 +1,89 @@
+{
+  "summary": "Tested Affiliate Partner Program for DataVision. All 17 backend API tests passed. Frontend affiliate page displays correctly with 10% commission rate and 12-month duration. Application form works with multi-step flow (Basic Info -> Payment Info). All 4 payment methods (Bank Transfer, PayPal, M-Pesa, Crypto) show correctly. Footer contains 'Affiliate Program' link under Company section.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_affiliate_api.py",
+    "/app/test_reports/pytest/affiliate_api_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_affiliate_api.py"
+  ],
+  "success_rate": {
+    "backend": "100% - 17/17 tests passed",
+    "frontend": "100% - All UI tests passed"
+  },
+  "test_credentials": {},
+  "seed_data_creation": "Test affiliate applications created during testing (prefixed with TEST_)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Affiliate program fully implemented and working. Backend routes at /api/affiliates/*. Frontend route at /affiliate. Commission is flat 10% for 12 months. All 4 payment methods work.",
+  "features_tested": {
+    "program_info_api": {
+      "endpoint": "GET /api/affiliates/program-info",
+      "status": "PASS",
+      "details": "Returns 10% commission_rate, 12 commission_duration_months, 3 tiers, 4 payment methods"
+    },
+    "affiliate_application_api": {
+      "endpoint": "POST /api/affiliates/apply",
+      "status": "PASS",
+      "details": "Creates affiliate applications with payment info. Returns referral_code and pending status"
+    },
+    "affiliate_page_ui": {
+      "route": "/affiliate",
+      "status": "PASS",
+      "details": "Hero shows '10% Commission', stats show 10%, 12 Month Duration, $50 Min Payout, 3 Products"
+    },
+    "application_form_step1": {
+      "component": "ApplicationForm",
+      "status": "PASS",
+      "details": "Basic info form with full_name, email, phone, company_name, website_url, audience_size fields"
+    },
+    "application_form_step2": {
+      "component": "ApplicationForm",
+      "status": "PASS",
+      "details": "Payment info form shows 4 payment methods: Bank Transfer, PayPal, M-Pesa, Cryptocurrency"
+    },
+    "bank_transfer_fields": {
+      "component": "renderPaymentFields",
+      "status": "PASS",
+      "details": "Bank Transfer shows: Bank Name, Account Holder Name, Account Number, SWIFT Code (optional)"
+    },
+    "footer_affiliate_link": {
+      "component": "Footer",
+      "status": "PASS",
+      "details": "Footer Company section contains 'Affiliate Program' link to /affiliate"
+    }
+  },
+  "api_verification": {
+    "GET /api/affiliates/program-info": {
+      "status_code": 200,
+      "response_fields": ["tiers", "products", "referral_benefits", "payout_settings", "commission_rate", "commission_duration_months", "highlights"]
+    },
+    "POST /api/affiliates/apply": {
+      "status_code": 200,
+      "with_bank_transfer": "PASS",
+      "with_paypal": "PASS",
+      "with_mpesa": "PASS",
+      "with_crypto": "PASS",
+      "without_terms": "400 - correctly rejected",
+      "duplicate_email": "400 - correctly rejected"
+    },
+    "GET /api/affiliates/track/{code}": {
+      "invalid_code": "404 - correctly rejected"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}
