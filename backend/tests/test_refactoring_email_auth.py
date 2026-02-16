@@ -106,6 +106,7 @@ class TestEmailEndpointsWithPydantic:
     
     def test_send_product_email_endpoint(self, api_client):
         """Test /api/email/send-product-email with JSON body (Pydantic model)"""
+        # Note: Resend test API can only send to verified email: macleangm@datavision.co.tz
         response = api_client.post(f"{BASE_URL}/api/email/send-product-email", json={
             "to_email": "macleangm@datavision.co.tz",
             "name": "Test User",
@@ -122,14 +123,11 @@ class TestEmailEndpointsWithPydantic:
                 }
             }
         })
-        # Should work if email service is configured
-        assert response.status_code in [200, 500], f"Unexpected status: {response.status_code}"
+        # Should return 200 for valid request (email may or may not send based on test mode)
+        assert response.status_code == 200, f"Unexpected status: {response.status_code}, Response: {response.text}"
         data = response.json()
-        if response.status_code == 200:
-            assert data.get("status") in ["sent", "success", "delivered"]
-            print(f"SEND-PRODUCT-EMAIL: Success - {data}")
-        else:
-            print(f"SEND-PRODUCT-EMAIL: Email service may not be fully configured: {data}")
+        assert data.get("status") in ["sent", "success", "delivered", "queued"]
+        print(f"SEND-PRODUCT-EMAIL: Success - {data}")
     
     def test_send_product_email_invalid_product(self, api_client):
         """Test /api/email/send-product-email with invalid product"""
