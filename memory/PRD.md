@@ -930,6 +930,7 @@ DataVision International is a research and statistics consultancy based in Tanza
 - `notification-bell` - Admin notification bell
 
 ## Completed Tasks ✅
+- **Affiliate Partner Program (P0)** - Full affiliate system with 10% commission, 12-month duration (Feb 16, 2026)
 - **Dashboard Charts (P0)** - Recharts integration with 4 chart types (Feb 12, 2026)
 - **Real-Time Notifications (P0)** - WebSocket system with NotificationPanel (Feb 12, 2026)
 - **Advanced Analytics (P1)** - Analytics overview API (Feb 12, 2026)
@@ -947,4 +948,41 @@ DataVision International is a research and statistics consultancy based in Tanza
 1. **Individual Solution Demo Pages** - Add demo videos/screenshots to solution detail pages
 2. **SEO Optimizations** - Meta tags, structured data
 3. **Performance Optimization** - Code splitting, lazy loading
+
+## Affiliate Program Details (Implemented Feb 16, 2026)
+
+### Commission Model
+- **Commission Rate:** 10% flat rate on all referrals
+- **Duration:** 12 months max earning period per referral
+- **Cookie Duration:** 90 days attribution
+
+### Partner Tiers
+1. **Partner** (0-10 referrals): 10% commission, Monthly payouts
+2. **Pro Partner** (11-50 referrals): 10% commission, Bi-weekly payouts, Priority support
+3. **Elite Partner** (51+ referrals): 10% commission, Weekly payouts, Dedicated manager
+
+### Payment Methods Supported
+- Bank Transfer (with SWIFT support)
+- PayPal
+- M-Pesa
+- Cryptocurrency (BTC, ETH, USDT-TRC20, USDT-ERC20, USDC)
+
+### API Endpoints
+- `GET /api/affiliates/program-info` - Public program info
+- `POST /api/affiliates/apply` - Submit affiliate application
+- `GET /api/affiliates/track/{code}` - Track referral click
+- `GET /api/affiliates/my-profile` - Get affiliate profile (auth required)
+- `GET /api/affiliates/my-referrals` - Get referrals (auth required)
+- `GET /api/affiliates/my-commissions` - Get commissions (auth required)
+- `POST /api/affiliates/request-payout` - Request payout (auth required)
+- `GET /api/affiliates/admin/applications` - Admin: Get applications
+- `PUT /api/affiliates/admin/affiliates/{id}` - Admin: Update affiliate
+- `GET /api/affiliates/admin/payouts` - Admin: Get payouts
+- `PUT /api/affiliates/admin/payouts/{id}` - Admin: Process payout
+
+### Files
+- `/app/backend/routes/affiliate/` - Backend module
+- `/app/frontend/src/pages/affiliate/AffiliateProgramPage.jsx` - Frontend page
+- Route: `/affiliate`
+- Footer link: Company section
 
