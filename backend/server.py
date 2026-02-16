@@ -3222,6 +3222,11 @@ api_router.include_router(affiliate_router, prefix="/affiliates")
 from routes.email_routes import router as email_router
 api_router.include_router(email_router)
 
+# ==================== EMAIL PREFERENCES ROUTES ====================
+from routes.email_preferences_routes import create_email_preferences_router
+email_prefs_router = create_email_preferences_router(db, verify_token)
+api_router.include_router(email_prefs_router)
+
 # ==================== SHORTENED REFERRAL LINK REDIRECT ====================
 from fastapi.responses import RedirectResponse
 
