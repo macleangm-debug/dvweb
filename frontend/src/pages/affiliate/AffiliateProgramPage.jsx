@@ -607,11 +607,11 @@ const AffiliateProgramPage = () => {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-369|              Earn{' '}
-370|              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
-371|                10% Commission
-372|              </span>
-373|              {' '}on Every Referral
+              Earn{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                10% Commission
+              </span>
+              {' '}on Every Referral
             </h1>
 
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-8">
