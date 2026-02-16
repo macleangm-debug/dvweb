@@ -438,7 +438,7 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             try:
                 click_time = datetime.fromisoformat(click["timestamp"].replace('Z', '+00:00'))
                 day_key = click_time.strftime("%Y-%m-%d")
-            except:
+            except (ValueError, TypeError, KeyError):
                 continue
             
             # Count by day
@@ -458,7 +458,7 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
                     from urllib.parse import urlparse
                     parsed = urlparse(referer)
                     referer = parsed.netloc if parsed.netloc else "direct"
-                except:
+                except (ValueError, TypeError):
                     referer = "unknown"
             
             if referer not in sources:
@@ -485,7 +485,6 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         
         # Calculate totals and rates
         total_clicks = len(clicks)
-        total_referrals = affiliate.get("total_referrals", 0)
         
         # Get referrals in period
         referrals_cursor = db.referrals.find({
