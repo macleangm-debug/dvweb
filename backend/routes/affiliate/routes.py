@@ -75,8 +75,11 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
                 "currency": PAYOUT_SETTINGS["currency"]
             },
             "cookie_duration_days": REFERRAL_COOKIE_DAYS,
+            "commission_rate": DEFAULT_COMMISSION_RATE,
+            "commission_duration_months": DEFAULT_DURATION_MONTHS,
             "highlights": [
-                f"Earn up to {TIERS[-1]['commission_rate']}% commission",
+                f"Earn {DEFAULT_COMMISSION_RATE}% commission on all referrals",
+                f"Commission valid for {DEFAULT_DURATION_MONTHS} months per referral",
                 f"Get paid via {', '.join(PAYOUT_SETTINGS['payment_methods'][:3])}",
                 f"{REFERRAL_COOKIE_DAYS}-day cookie duration",
                 f"Referred users get {REFERRAL_BENEFITS['discount_percent']}% off"
