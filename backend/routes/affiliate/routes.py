@@ -582,6 +582,10 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         """Get affiliate KPI metrics for performance tracking"""
         start_date = (datetime.now(timezone.utc) - timedelta(days=period_days)).isoformat()
         
+        # KPI thresholds
+        min_referrals_per_month = 5  # KPI threshold
+        min_conversion_rate = 5.0    # KPI threshold (5%)
+        
         # Get all approved/active affiliates
         affiliates = await db.affiliates.find(
             {"status": {"$in": [AffiliateStatus.APPROVED, "active"]}},
@@ -627,9 +631,6 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             earnings_in_period = earnings_result[0]["total"] if earnings_result else 0
             
             # Determine performance status
-            min_referrals_per_month = 5  # KPI threshold
-            min_conversion_rate = 5.0    # KPI threshold (5%)
-            
             is_underperforming = (
                 (period_days >= 30 and referrals_in_period < min_referrals_per_month) or
                 (clicks_in_period >= 100 and conversion_rate < min_conversion_rate)
