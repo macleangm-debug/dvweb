@@ -572,4 +572,357 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             }
         }
     
+    # ==================== KPI TRACKING ENDPOINTS ====================
+    
+    @router.get("/admin/kpi")
+    async def get_affiliate_kpi(
+        payload: dict = Depends(verify_admin_token),
+        period_days: int = Query(30, ge=7, le=365)
+    ):
+        """Get affiliate KPI metrics for performance tracking"""
+        start_date = (datetime.now(timezone.utc) - timedelta(days=period_days)).isoformat()
+        
+        # Get all approved/active affiliates
+        affiliates = await db.affiliates.find(
+            {"status": {"$in": [AffiliateStatus.APPROVED, "active"]}},
+            {"_id": 0}
+        ).to_list(1000)
+        
+        # Calculate KPIs for each affiliate
+        kpi_data = []
+        for affiliate in affiliates:
+            affiliate_id = affiliate.get("id")
+            
+            # Get referrals in period
+            referrals_in_period = await db.affiliate_referrals.count_documents({
+                "affiliate_id": affiliate_id,
+                "signup_date": {"$gte": start_date}
+            })
+            
+            # Get clicks in period
+            clicks_in_period = await db.affiliate_clicks.count_documents({
+                "affiliate_id": affiliate_id,
+                "timestamp": {"$gte": start_date}
+            })
+            
+            # Get conversions (referrals with status 'converted')
+            conversions = await db.affiliate_referrals.count_documents({
+                "affiliate_id": affiliate_id,
+                "status": "converted",
+                "signup_date": {"$gte": start_date}
+            })
+            
+            # Calculate conversion rate
+            conversion_rate = (conversions / clicks_in_period * 100) if clicks_in_period > 0 else 0
+            
+            # Get earnings in period
+            earnings_pipeline = [
+                {"$match": {
+                    "affiliate_id": affiliate_id,
+                    "created_at": {"$gte": start_date}
+                }},
+                {"$group": {"_id": None, "total": {"$sum": "$amount"}}}
+            ]
+            earnings_result = await db.affiliate_commissions.aggregate(earnings_pipeline).to_list(1)
+            earnings_in_period = earnings_result[0]["total"] if earnings_result else 0
+            
+            # Determine performance status
+            min_referrals_per_month = 5  # KPI threshold
+            min_conversion_rate = 5.0    # KPI threshold (5%)
+            
+            is_underperforming = (
+                (period_days >= 30 and referrals_in_period < min_referrals_per_month) or
+                (clicks_in_period >= 100 and conversion_rate < min_conversion_rate)
+            )
+            
+            kpi_data.append({
+                "affiliate_id": affiliate_id,
+                "full_name": affiliate.get("full_name"),
+                "email": affiliate.get("email"),
+                "status": affiliate.get("status"),
+                "tier": affiliate.get("tier"),
+                "referrals_in_period": referrals_in_period,
+                "clicks_in_period": clicks_in_period,
+                "conversions_in_period": conversions,
+                "conversion_rate": round(conversion_rate, 2),
+                "earnings_in_period": earnings_in_period,
+                "total_referrals": affiliate.get("total_referrals", 0),
+                "total_earnings": affiliate.get("total_earnings", 0),
+                "is_underperforming": is_underperforming,
+                "approved_at": affiliate.get("approved_at"),
+                "last_referral_date": None  # Could be enhanced
+            })
+        
+        # Sort by performance (underperforming first for admin attention)
+        kpi_data.sort(key=lambda x: (not x["is_underperforming"], -x["referrals_in_period"]))
+        
+        # Summary stats
+        total_active = len(affiliates)
+        underperforming_count = sum(1 for a in kpi_data if a["is_underperforming"])
+        
+        return {
+            "period_days": period_days,
+            "kpi_thresholds": {
+                "min_referrals_per_month": min_referrals_per_month,
+                "min_conversion_rate": min_conversion_rate
+            },
+            "summary": {
+                "total_active_affiliates": total_active,
+                "underperforming_count": underperforming_count,
+                "performance_rate": round((total_active - underperforming_count) / total_active * 100, 1) if total_active > 0 else 0
+            },
+            "affiliates": kpi_data
+        }
+    
+    @router.put("/admin/affiliates/{affiliate_id}/suspend")
+    async def suspend_affiliate(
+        affiliate_id: str,
+        reason: str = Query(..., min_length=10, description="Reason for suspension"),
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Suspend an underperforming or violating affiliate"""
+        affiliate = await db.affiliates.find_one({"id": affiliate_id})
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate not found")
+        
+        if affiliate.get("status") == AffiliateStatus.SUSPENDED:
+            raise HTTPException(status_code=400, detail="Affiliate is already suspended")
+        
+        await db.affiliates.update_one(
+            {"id": affiliate_id},
+            {"$set": {
+                "status": AffiliateStatus.SUSPENDED,
+                "suspension_reason": reason,
+                "suspended_at": datetime.now(timezone.utc).isoformat(),
+                "suspended_by": payload.get("sub"),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        return {
+            "message": "Affiliate suspended",
+            "affiliate_id": affiliate_id,
+            "reason": reason
+        }
+    
+    @router.put("/admin/affiliates/{affiliate_id}/reactivate")
+    async def reactivate_affiliate(
+        affiliate_id: str,
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Reactivate a suspended affiliate"""
+        affiliate = await db.affiliates.find_one({"id": affiliate_id})
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate not found")
+        
+        if affiliate.get("status") != AffiliateStatus.SUSPENDED:
+            raise HTTPException(status_code=400, detail="Affiliate is not suspended")
+        
+        await db.affiliates.update_one(
+            {"id": affiliate_id},
+            {"$set": {
+                "status": AffiliateStatus.APPROVED,
+                "reactivated_at": datetime.now(timezone.utc).isoformat(),
+                "reactivated_by": payload.get("sub"),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            },
+            "$unset": {
+                "suspension_reason": "",
+                "suspended_at": "",
+                "suspended_by": ""
+            }}
+        )
+        
+        return {
+            "message": "Affiliate reactivated",
+            "affiliate_id": affiliate_id
+        }
+    
+    # ==================== PROMO CODE ENDPOINTS ====================
+    
+    @router.post("/admin/promo-codes")
+    async def create_promo_code(
+        promo: PromoCodeCreate,
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Create a new promotional code (admin-only)"""
+        # Check if code already exists
+        existing = await db.promo_codes.find_one({"code": promo.code.upper()})
+        if existing:
+            raise HTTPException(status_code=400, detail="Promo code already exists")
+        
+        # Validate dates
+        try:
+            start = datetime.fromisoformat(promo.start_date.replace('Z', '+00:00'))
+            end = datetime.fromisoformat(promo.end_date.replace('Z', '+00:00'))
+            if end <= start:
+                raise HTTPException(status_code=400, detail="End date must be after start date")
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date format. Use ISO format.")
+        
+        promo_data = {
+            "id": str(uuid.uuid4()),
+            "code": promo.code.upper(),
+            "name": promo.name,
+            "description": promo.description,
+            "discount_type": promo.discount_type,
+            "discount_value": promo.discount_value,
+            "max_uses": promo.max_uses,
+            "max_uses_per_user": promo.max_uses_per_user,
+            "min_order_value": promo.min_order_value,
+            "applicable_products": promo.applicable_products,
+            "start_date": promo.start_date,
+            "end_date": promo.end_date,
+            "is_active": promo.is_active,
+            "status": PromoCodeStatus.ACTIVE if promo.is_active else PromoCodeStatus.INACTIVE,
+            "times_used": 0,
+            "total_discount_given": 0.0,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_by": payload.get("sub"),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.promo_codes.insert_one(promo_data)
+        
+        return {
+            "message": "Promo code created",
+            "id": promo_data["id"],
+            "code": promo_data["code"]
+        }
+    
+    @router.get("/admin/promo-codes")
+    async def get_promo_codes(
+        payload: dict = Depends(verify_admin_token),
+        status: Optional[str] = None,
+        include_expired: bool = False
+    ):
+        """Get all promo codes (admin)"""
+        query = {}
+        if status:
+            query["status"] = status
+        
+        if not include_expired:
+            query["end_date"] = {"$gte": datetime.now(timezone.utc).isoformat()}
+        
+        promo_codes = await db.promo_codes.find(
+            query, {"_id": 0}
+        ).sort("created_at", -1).to_list(100)
+        
+        # Update status for expired codes
+        now = datetime.now(timezone.utc).isoformat()
+        for code in promo_codes:
+            if code.get("end_date") < now and code.get("status") == PromoCodeStatus.ACTIVE:
+                code["status"] = PromoCodeStatus.EXPIRED
+        
+        # Stats
+        stats = {
+            "total": len(promo_codes),
+            "active": sum(1 for c in promo_codes if c.get("status") == PromoCodeStatus.ACTIVE),
+            "inactive": sum(1 for c in promo_codes if c.get("status") == PromoCodeStatus.INACTIVE),
+            "expired": sum(1 for c in promo_codes if c.get("status") == PromoCodeStatus.EXPIRED or c.get("end_date") < now)
+        }
+        
+        return {"promo_codes": promo_codes, "stats": stats}
+    
+    @router.get("/admin/promo-codes/{promo_id}")
+    async def get_promo_code(
+        promo_id: str,
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Get single promo code details (admin)"""
+        promo = await db.promo_codes.find_one({"id": promo_id}, {"_id": 0})
+        if not promo:
+            raise HTTPException(status_code=404, detail="Promo code not found")
+        
+        # Get usage history
+        usage = await db.promo_code_usage.find(
+            {"promo_code_id": promo_id}, {"_id": 0}
+        ).sort("used_at", -1).limit(50).to_list(50)
+        
+        return {"promo_code": promo, "usage_history": usage}
+    
+    @router.put("/admin/promo-codes/{promo_id}")
+    async def update_promo_code(
+        promo_id: str,
+        update: PromoCodeUpdate,
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Update a promo code (admin)"""
+        promo = await db.promo_codes.find_one({"id": promo_id})
+        if not promo:
+            raise HTTPException(status_code=404, detail="Promo code not found")
+        
+        update_data = {"updated_at": datetime.now(timezone.utc).isoformat()}
+        
+        for field, value in update.model_dump(exclude_unset=True).items():
+            if value is not None:
+                update_data[field] = value
+        
+        # Update status based on is_active
+        if "is_active" in update_data:
+            update_data["status"] = PromoCodeStatus.ACTIVE if update_data["is_active"] else PromoCodeStatus.INACTIVE
+        
+        await db.promo_codes.update_one(
+            {"id": promo_id},
+            {"$set": update_data}
+        )
+        
+        return {"message": "Promo code updated", "id": promo_id}
+    
+    @router.delete("/admin/promo-codes/{promo_id}")
+    async def delete_promo_code(
+        promo_id: str,
+        payload: dict = Depends(verify_admin_token)
+    ):
+        """Delete a promo code (admin)"""
+        result = await db.promo_codes.delete_one({"id": promo_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Promo code not found")
+        
+        return {"message": "Promo code deleted", "id": promo_id}
+    
+    # Public endpoint to validate promo code
+    @router.get("/promo-codes/validate/{code}")
+    async def validate_promo_code(code: str, product: Optional[str] = None):
+        """Validate a promo code (public)"""
+        promo = await db.promo_codes.find_one(
+            {"code": code.upper()},
+            {"_id": 0}
+        )
+        
+        if not promo:
+            raise HTTPException(status_code=404, detail="Invalid promo code")
+        
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # Check if active
+        if not promo.get("is_active") or promo.get("status") == PromoCodeStatus.INACTIVE:
+            raise HTTPException(status_code=400, detail="This promo code is not active")
+        
+        # Check dates
+        if promo.get("start_date") > now:
+            raise HTTPException(status_code=400, detail="This promo code is not yet valid")
+        
+        if promo.get("end_date") < now:
+            raise HTTPException(status_code=400, detail="This promo code has expired")
+        
+        # Check max uses
+        if promo.get("max_uses") and promo.get("times_used", 0) >= promo.get("max_uses"):
+            raise HTTPException(status_code=400, detail="This promo code has reached its usage limit")
+        
+        # Check product applicability
+        applicable_products = promo.get("applicable_products", [])
+        if applicable_products and product and product not in applicable_products:
+            raise HTTPException(status_code=400, detail="This promo code is not valid for this product")
+        
+        return {
+            "valid": True,
+            "code": promo.get("code"),
+            "name": promo.get("name"),
+            "discount_type": promo.get("discount_type"),
+            "discount_value": promo.get("discount_value"),
+            "min_order_value": promo.get("min_order_value"),
+            "applicable_products": applicable_products
+        }
+    
     return router
