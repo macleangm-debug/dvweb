@@ -516,6 +516,7 @@ const AffiliateManagement = ({ subSection }) => {
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Code</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Name</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Discount</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Products</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Valid Period</th>
                   <th className="text-center px-4 py-3 text-xs font-medium text-slate-500 uppercase">Usage</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase">Status</th>
@@ -525,13 +526,23 @@ const AffiliateManagement = ({ subSection }) => {
               <tbody className="divide-y divide-slate-100">
                 {promoCodes.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="px-4 py-8 text-center text-slate-500">
+                    <td colSpan="8" className="px-4 py-8 text-center text-slate-500">
                       No promo codes yet. Create one to get started!
                     </td>
                   </tr>
                 ) : (
                   promoCodes.map((promo) => {
                     const isExpired = new Date(promo.end_date) < new Date();
+                    const productLabels = {
+                      fieldforce: 'FF',
+                      survey360: 'S360',
+                      datapulse: 'DP'
+                    };
+                    const productColors = {
+                      fieldforce: 'bg-teal-100 text-teal-700',
+                      survey360: 'bg-purple-100 text-purple-700',
+                      datapulse: 'bg-orange-100 text-orange-700'
+                    };
                     return (
                       <tr key={promo.id} className={`hover:bg-slate-50 ${isExpired ? 'bg-slate-50' : ''}`}>
                         <td className="px-4 py-3">
@@ -549,6 +560,23 @@ const AffiliateManagement = ({ subSection }) => {
                           <span className="font-semibold text-slate-900">
                             {promo.discount_type === 'percentage' ? `${promo.discount_value}%` : `$${promo.discount_value}`}
                           </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          {promo.applicable_products && promo.applicable_products.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {promo.applicable_products.map((product) => (
+                                <span 
+                                  key={product} 
+                                  className={`px-1.5 py-0.5 rounded text-xs font-medium ${productColors[product] || 'bg-slate-100 text-slate-700'}`}
+                                  title={product === 'fieldforce' ? 'FieldForce' : product === 'survey360' ? 'Survey360' : 'DataPulse'}
+                                >
+                                  {productLabels[product] || product}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-xs text-slate-500">All Products</span>
+                          )}
                         </td>
                         <td className="px-4 py-3 text-sm text-slate-600">
                           <div>{new Date(promo.start_date).toLocaleDateString()}</div>
