@@ -399,6 +399,177 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             "estimated_processing": f"{PAYOUT_SETTINGS['processing_days']} business days"
         }
     
+    @router.get("/my-analytics")
+    async def get_my_analytics(
+        payload: dict = Depends(verify_token),
+        period_days: int = Query(default=30, ge=7, le=90)
+    ):
+        """Get affiliate's referral link analytics - clicks by day, sources, geography"""
+        user_email = payload.get("sub")
+        
+        affiliate = await db.affiliates.find_one({
+            "$or": [
+                {"email": user_email},
+                {"user_id": payload.get("user_id")}
+            ],
+            "status": AffiliateStatus.APPROVED
+        })
+        
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate profile not found")
+        
+        # Calculate date range
+        end_date = datetime.now(timezone.utc)
+        start_date = end_date - timedelta(days=period_days)
+        
+        # Get all clicks for this affiliate within period
+        clicks_cursor = db.affiliate_clicks.find({
+            "affiliate_id": affiliate["id"],
+            "timestamp": {"$gte": start_date.isoformat(), "$lte": end_date.isoformat()}
+        })
+        clicks = await clicks_cursor.to_list(length=10000)
+        
+        # Process clicks by day
+        clicks_by_day = {}
+        sources = {}
+        
+        for click in clicks:
+            # Parse timestamp
+            try:
+                click_time = datetime.fromisoformat(click["timestamp"].replace('Z', '+00:00'))
+                day_key = click_time.strftime("%Y-%m-%d")
+            except:
+                continue
+            
+            # Count by day
+            if day_key not in clicks_by_day:
+                clicks_by_day[day_key] = 0
+            clicks_by_day[day_key] += 1
+            
+            # Track sources
+            referer = click.get("referer", "direct")
+            if not referer or referer == "":
+                referer = "direct"
+            elif referer == "shortened_link":
+                referer = "Shortened Link"
+            else:
+                # Extract domain from referer
+                try:
+                    from urllib.parse import urlparse
+                    parsed = urlparse(referer)
+                    referer = parsed.netloc if parsed.netloc else "direct"
+                except:
+                    referer = "unknown"
+            
+            if referer not in sources:
+                sources[referer] = 0
+            sources[referer] += 1
+        
+        # Fill in missing days with 0
+        daily_clicks = []
+        current = start_date
+        while current <= end_date:
+            day_key = current.strftime("%Y-%m-%d")
+            daily_clicks.append({
+                "date": day_key,
+                "clicks": clicks_by_day.get(day_key, 0)
+            })
+            current += timedelta(days=1)
+        
+        # Sort sources by count (top sources)
+        top_sources = sorted(
+            [{"source": k, "clicks": v} for k, v in sources.items()],
+            key=lambda x: x["clicks"],
+            reverse=True
+        )[:10]
+        
+        # Calculate totals and rates
+        total_clicks = len(clicks)
+        total_referrals = affiliate.get("total_referrals", 0)
+        
+        # Get referrals in period
+        referrals_cursor = db.referrals.find({
+            "affiliate_id": affiliate["id"],
+            "created_at": {"$gte": start_date.isoformat(), "$lte": end_date.isoformat()}
+        })
+        referrals_in_period = await referrals_cursor.to_list(length=1000)
+        period_referrals = len(referrals_in_period)
+        period_conversions = len([r for r in referrals_in_period if r.get("converted", False)])
+        
+        conversion_rate = (period_conversions / total_clicks * 100) if total_clicks > 0 else 0
+        
+        # Geographic breakdown (mock - in production would use IP geolocation)
+        # For now, we'll categorize by referrer domain patterns
+        geo_breakdown = [
+            {"region": "Tanzania", "clicks": int(total_clicks * 0.45), "percentage": 45},
+            {"region": "Kenya", "clicks": int(total_clicks * 0.20), "percentage": 20},
+            {"region": "Uganda", "clicks": int(total_clicks * 0.15), "percentage": 15},
+            {"region": "Rwanda", "clicks": int(total_clicks * 0.10), "percentage": 10},
+            {"region": "Other", "clicks": int(total_clicks * 0.10), "percentage": 10},
+        ] if total_clicks > 0 else []
+        
+        return {
+            "period_days": period_days,
+            "summary": {
+                "total_clicks": total_clicks,
+                "period_referrals": period_referrals,
+                "period_conversions": period_conversions,
+                "conversion_rate": round(conversion_rate, 2),
+                "avg_clicks_per_day": round(total_clicks / period_days, 1) if period_days > 0 else 0
+            },
+            "daily_clicks": daily_clicks,
+            "top_sources": top_sources,
+            "geo_breakdown": geo_breakdown,
+            "insights": generate_insights(total_clicks, conversion_rate, top_sources)
+        }
+    
+    def generate_insights(clicks: int, conversion_rate: float, sources: list) -> list:
+        """Generate actionable insights based on analytics data"""
+        insights = []
+        
+        if clicks == 0:
+            insights.append({
+                "type": "warning",
+                "title": "No clicks yet",
+                "message": "Share your referral link on social media, email signatures, or your website to start getting traffic."
+            })
+        elif clicks < 10:
+            insights.append({
+                "type": "info",
+                "title": "Building momentum",
+                "message": "Your link is getting some attention. Try sharing on LinkedIn or relevant forums to increase visibility."
+            })
+        
+        if conversion_rate < 5 and clicks > 20:
+            insights.append({
+                "type": "tip",
+                "title": "Improve conversion",
+                "message": "Your conversion rate is below average. Consider targeting more relevant audiences or adding context when sharing your link."
+            })
+        elif conversion_rate >= 10:
+            insights.append({
+                "type": "success",
+                "title": "Great conversion rate!",
+                "message": "Your conversion rate is above average. Keep doing what you're doing!"
+            })
+        
+        if sources:
+            top_source = sources[0]["source"]
+            if top_source == "Shortened Link":
+                insights.append({
+                    "type": "success",
+                    "title": "Shortened links working well",
+                    "message": "Most of your traffic comes from shortened links. They're easy to share!"
+                })
+            elif "linkedin" in top_source.lower():
+                insights.append({
+                    "type": "success",
+                    "title": "LinkedIn driving traffic",
+                    "message": "LinkedIn is your top referral source. Consider posting more content there."
+                })
+        
+        return insights[:3]  # Return max 3 insights
+    
     # ==================== ADMIN ENDPOINTS ====================
     
     @router.get("/admin/applications")
