@@ -3117,6 +3117,8 @@ const AdminDashboard = () => {
             <AdminUsersManagement token={localStorage.getItem('dv_token')} />
           </div>
         );
+      case 'affiliates':
+        return <AffiliateManagement subSection={activeSubSection} />;
       case 'settings':
         return <AdminSettings subSection={activeSubSection} />;
       default:
