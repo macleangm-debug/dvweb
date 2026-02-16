@@ -32,6 +32,24 @@ class CommissionStatus(str, Enum):
 
 # ==================== REQUEST MODELS ====================
 
+class PaymentInfoModel(BaseModel):
+    """Payment information for affiliate payouts"""
+    payment_method: str  # bank_transfer, paypal, mpesa, crypto
+    # Bank details
+    bank_name: Optional[str] = None
+    account_name: Optional[str] = None
+    account_number: Optional[str] = None
+    swift_code: Optional[str] = None
+    # PayPal
+    paypal_email: Optional[str] = None
+    # M-Pesa
+    mpesa_phone: Optional[str] = None
+    mpesa_name: Optional[str] = None
+    # Crypto
+    crypto_wallet: Optional[str] = None
+    crypto_network: Optional[str] = None  # BTC, ETH, USDT, etc.
+
+
 class AffiliateApplicationRequest(BaseModel):
     """Application to join affiliate program"""
     full_name: str = Field(..., min_length=2, max_length=100)
@@ -44,6 +62,7 @@ class AffiliateApplicationRequest(BaseModel):
     audience_description: Optional[str] = None
     promotion_methods: List[str] = []  # ["blog", "social", "email", "youtube"]
     why_join: Optional[str] = None
+    payment_info: Optional[PaymentInfoModel] = None  # Payment information for payouts
     agreed_to_terms: bool = False
 
 

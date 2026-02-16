@@ -5,46 +5,39 @@ Edit these settings to customize your affiliate program
 
 # ==================== COMMISSION MODELS ====================
 # Options: "lifetime", "capped_lifetime", "time_limited", "first_purchase"
-DEFAULT_COMMISSION_MODEL = "capped_lifetime"
+DEFAULT_COMMISSION_MODEL = "time_limited"
 
 # Commission settings
-DEFAULT_COMMISSION_RATE = 15  # Base commission percentage
-DEFAULT_CAP_AMOUNT = 500.0    # Max earnings per referral (for capped_lifetime)
-DEFAULT_DURATION_MONTHS = 24   # Duration for time_limited model
+DEFAULT_COMMISSION_RATE = 10  # Base commission percentage (10% as requested)
+DEFAULT_CAP_AMOUNT = 1000.0   # Max earnings per referral (for capped_lifetime)
+DEFAULT_DURATION_MONTHS = 12  # Duration for time_limited model (1 year max earning period)
 
 # ==================== TIER SYSTEM ====================
+# Flat 10% commission for all affiliates (no tiered rates)
 TIERS = [
     {
-        "name": "Bronze",
+        "name": "Partner",
         "min_referrals": 0,
-        "max_referrals": 5,
+        "max_referrals": 10,
         "commission_rate": 10,
-        "color": "#CD7F32",
-        "benefits": ["Basic dashboard", "Monthly payouts"]
+        "color": "#10b981",
+        "benefits": ["10% commission on all referrals", "Monthly payouts", "Basic dashboard"]
     },
     {
-        "name": "Silver", 
-        "min_referrals": 6,
-        "max_referrals": 20,
-        "commission_rate": 15,
-        "color": "#C0C0C0",
-        "benefits": ["Priority support", "Bi-weekly payouts", "Custom referral links"]
-    },
-    {
-        "name": "Gold",
-        "min_referrals": 21,
+        "name": "Pro Partner", 
+        "min_referrals": 11,
         "max_referrals": 50,
-        "commission_rate": 20,
-        "color": "#FFD700",
-        "benefits": ["Dedicated account manager", "Weekly payouts", "Co-marketing opportunities"]
+        "commission_rate": 10,
+        "color": "#3b82f6",
+        "benefits": ["10% commission", "Bi-weekly payouts", "Priority support", "Custom referral links"]
     },
     {
-        "name": "Platinum",
+        "name": "Elite Partner",
         "min_referrals": 51,
         "max_referrals": None,  # Unlimited
-        "commission_rate": 25,
-        "color": "#E5E4E2",
-        "benefits": ["VIP support", "Instant payouts", "Revenue share bonuses", "Early access to features"]
+        "commission_rate": 10,
+        "color": "#8b5cf6",
+        "benefits": ["10% commission", "Weekly payouts", "Dedicated account manager", "Co-marketing opportunities"]
     }
 ]
 
