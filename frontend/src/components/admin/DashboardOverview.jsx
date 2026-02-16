@@ -538,13 +538,6 @@ const DashboardOverview = ({ subSection = 'overview' }) => {
           </button>
         </div>
       </div>
-            Last 30 Days
-          </button>
-          <button className="px-4 py-2 text-sm bg-slate-900 text-white rounded-lg hover:bg-slate-800">
-            Download Report
-          </button>
-        </div>
-      </div>
 
       {/* Main Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
