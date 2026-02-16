@@ -148,8 +148,10 @@ def create_referral_routes(db, verify_token, email_service=None):
         if existing:
             raise HTTPException(status_code=400, detail="You've already invited this email address")
         
-        # Check if email is already a user
+        # Check if email is already a user (check both user collections)
         existing_user = await db.datavision_users.find_one({"email": invite.email})
+        if not existing_user:
+            existing_user = await db.admins.find_one({"email": invite.email})
         if existing_user:
             raise HTTPException(status_code=400, detail="This person already has an account")
         
