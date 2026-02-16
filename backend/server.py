@@ -3218,6 +3218,11 @@ from routes.affiliate import create_affiliate_router
 affiliate_router = create_affiliate_router(db, verify_token, verify_admin_token)
 api_router.include_router(affiliate_router, prefix="/affiliates")
 
+# ==================== AUTH ROUTES (MODULARIZED) ====================
+from routes.auth_routes import create_auth_routes
+auth_router = create_auth_routes(db)
+api_router.include_router(auth_router)
+
 # ==================== EMAIL SERVICE ROUTES ====================
 from routes.email_routes import router as email_router
 api_router.include_router(email_router)
