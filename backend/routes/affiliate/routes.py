@@ -18,7 +18,8 @@ from .config import (
 )
 from .models import (
     AffiliateApplicationRequest, PayoutRequestModel, UpdateAffiliateRequest,
-    AffiliateStatus, PayoutStatus, CommissionStatus
+    AffiliateStatus, PayoutStatus, CommissionStatus,
+    PromoCodeCreate, PromoCodeUpdate, PromoCodeType, PromoCodeStatus
 )
 
 
