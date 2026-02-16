@@ -160,6 +160,9 @@ import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages
 import AffiliateProgramPage from './pages/affiliate/AffiliateProgramPage';
 import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
 
+// Extracted Page Components
+import HomePage from './pages/HomePage';
+
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // ==================== CONTEXT ====================
