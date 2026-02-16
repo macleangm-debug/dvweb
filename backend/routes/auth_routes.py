@@ -1,6 +1,6 @@
 """
 DataVision International - Authentication Routes
-Handles user registration, login, profile, and SSO
+Handles user registration, login, profile, SSO, and password management
 """
 
 from fastapi import APIRouter, HTTPException, Depends, Header
@@ -9,8 +9,10 @@ import jwt
 import bcrypt
 import os
 import uuid
+import secrets
+import asyncio
 from datetime import datetime, timezone, timedelta
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
 
 router = APIRouter(tags=["Authentication"])
