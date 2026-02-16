@@ -42,6 +42,17 @@ class DataVisionUserProfile(BaseModel):
     phone: Optional[str] = None
     how_heard: Optional[str] = None
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
 class DataVisionUser(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: str
