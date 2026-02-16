@@ -149,6 +149,9 @@ import { RBACPage as FFRBACPage } from './solutions/fieldforce/app/pages/RBACPag
 import { TranslationsPage as FFTranslationsPage } from './solutions/fieldforce/app/pages/TranslationsPage';
 import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages/SettingsPage';
 
+// Affiliate Program Page
+import AffiliateProgramPage from './pages/affiliate/AffiliateProgramPage';
+
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // ==================== CONTEXT ====================
