@@ -6,8 +6,13 @@ import {
   DollarSign, Users, TrendingUp, Copy, Check, ExternalLink,
   Clock, CreditCard, Building2, Smartphone, Globe, Award,
   ArrowRight, Download, Filter, Calendar, ChevronDown,
-  Wallet, Target, BarChart3, Share2, Link as LinkIcon
+  Wallet, Target, BarChart3, Share2, Link as LinkIcon,
+  MousePointer, Eye, Lightbulb, AlertCircle, CheckCircle, Info
 } from 'lucide-react';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, PieChart, Pie, Cell
+} from 'recharts';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -16,6 +21,9 @@ const AffiliateDashboard = () => {
   const [referrals, setReferrals] = useState([]);
   const [commissions, setCommissions] = useState([]);
   const [payouts, setPayouts] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
+  const [analyticsPeriod, setAnalyticsPeriod] = useState(30);
+  const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState({ code: false, link: false, short: false });
