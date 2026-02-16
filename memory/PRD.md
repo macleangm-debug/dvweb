@@ -1469,3 +1469,106 @@ GET  /api/email-preferences/unsubscribe/{token}
 - **Demo User:** demo@fieldforce.io / Test123!
 - **Resend API Key:** re_KSHtNZVu_5R1m3FiSGTV5Jav2rqGSmCvJ (test mode - sends to macleangm@datavision.co.tz only)
 
+---
+
+### February 16, 2026 - Session 2: Email Preferences UI, User Referral System, Further Refactoring (COMPLETED)
+
+**1. Email Preferences UI Created:**
+- New `/settings` page with full email notification management
+- 10 email categories (Security, Billing, Product Updates, Tips, Company News, Survey Activity, Field Activity, Reports Ready, Weekly Summary, Monthly Report)
+- Global unsubscribe toggle (marketing emails only, security/billing always enabled)
+- Quiet hours configuration (pause non-urgent emails during sleep hours)
+- 3 tabs: Notifications, Account, Security
+- Reset to defaults functionality
+
+**Files Created:**
+- `/app/frontend/src/pages/UserSettings.jsx` (NEW - 370+ lines)
+
+**2. User Referral System Implemented:**
+- Separate from affiliate program - users earn credits (not commissions)
+- Referrer gets: $10 when referred user signs up, $25 when they make first purchase
+- Referee gets: $5 welcome bonus credits
+- 8-character unique referral codes generated per user
+- Multiple referral links (main, signup, product-specific)
+- Invite friends via email with personal message
+- Credit history tracking and balance management
+
+**Backend Endpoints:**
+- `GET /api/referrals/my-stats` - Get referral statistics
+- `GET /api/referrals/my-code` - Get referral code and links
+- `POST /api/referrals/invite` - Send invitation email
+- `GET /api/referrals/my-invites` - List sent invitations
+- `GET /api/referrals/credits/history` - Credit transaction history
+- `POST /api/referrals/credits/redeem` - Redeem credits for product discounts
+- `POST /api/referrals/internal/process-signup` - Internal endpoint for signup processing
+
+**Files Created:**
+- `/app/backend/routes/referral_routes.py` (NEW - 350+ lines)
+- `/app/frontend/src/pages/ReferralDashboard.jsx` (NEW - 380+ lines)
+
+**3. Continued App.js Refactoring:**
+- Extracted `AboutPage` to `/app/frontend/src/pages/AboutPage.jsx` (310 lines)
+- Created `ProjectsPage` at `/app/frontend/src/pages/ProjectsPage.jsx` (120 lines)
+- Created `NewsPage` at `/app/frontend/src/pages/NewsPage.jsx` (110 lines)
+- **App.js reduced from ~1461 to 844 lines (617 more lines extracted)**
+
+**Total App.js Reduction:** From ~2233 lines (original) to 844 lines (**62% reduction**)
+
+**Testing:** 100% pass rate - All 23 backend tests passed, frontend 100%
+
+**Bugs Fixed by Testing Agent:**
+- `/api/projects` 500 error due to FieldForce projects schema mismatch
+- Referral invite not checking admins collection for existing users
+
+---
+
+## Current Architecture Summary
+
+```
+/app
+├── backend/ (3190 lines total in server.py + routes)
+│   ├── server.py (~3100 lines - still primary file)
+│   ├── services/
+│   │   └── email_service.py (Resend integration)
+│   └── routes/
+│       ├── auth_routes.py (602 lines - password management)
+│       ├── email_routes.py (Product email endpoints)
+│       ├── email_preferences_routes.py (Email preferences)
+│       ├── referral_routes.py (NEW - User referral system)
+│       └── affiliate/routes.py (Affiliate program)
+├── frontend/
+│   └── src/
+│       ├── App.js (844 lines - 62% reduction)
+│       ├── pages/
+│       │   ├── HomePage.jsx (789 lines - extracted)
+│       │   ├── AboutPage.jsx (310 lines - extracted)
+│       │   ├── ProjectsPage.jsx (120 lines - new)
+│       │   ├── NewsPage.jsx (110 lines - new)
+│       │   ├── UserSettings.jsx (370 lines - new)
+│       │   └── ReferralDashboard.jsx (380 lines - new)
+│       └── components/
+│           └── admin/
+│               ├── DashboardOverview.jsx (Analytics + Activity views)
+│               └── AffiliateManagement.jsx (Product-linked promo codes)
+```
+
+---
+
+## Pending/In Progress Tasks
+
+### P1 - High Priority
+1. **Continue Backend Modularization** - Move more routes from server.py to dedicated files
+2. **Real Analytics Integration** - Replace mock data with actual analytics tracking
+3. **Email Invite Integration** - Fix email service kwargs (html -> html_content)
+
+### P2 - Medium Priority
+1. **Referral Processing Integration** - Call `/api/referrals/internal/process-signup` during user registration
+2. **Credit Redemption Flow** - Connect credit redemption to product checkout
+3. **Resend Domain Verification** - Add DNS records for datavision.co.tz
+
+### P3 - Future/Backlog
+1. **Payment Gateway Integration** - Stripe for subscriptions
+2. **Product-Specific Promo Code Validation** - Validate during checkout
+3. **Advanced Admin Panel Analytics** - Detailed user behavior reports
+
+
