@@ -162,127 +162,150 @@ async def send_product_notification(request: ProductNotificationRequest):
     return result
 
 
+# ==================== PRODUCT-SPECIFIC REQUEST MODELS ====================
+
+class Survey360InviteRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    survey_name: str
+    survey_link: str
+    deadline: Optional[str] = None
+
+class Survey360CompleteRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    survey_name: str
+    responses_count: int
+
+class FieldForceDataSyncRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    records_synced: int
+    project_name: str
+
+class FieldForceAssignmentRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    project_name: str
+    location: str
+    due_date: str
+
+class DataPulsePipelineRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    pipeline_name: str
+    status: str
+    records_processed: Optional[int] = None
+
+class DataPulseReportRequest(BaseModel):
+    to_email: EmailStr
+    name: str
+    report_name: str
+    report_link: str
+
+class GenericProductEmailRequest(BaseModel):
+    """Generic endpoint for products to send customized branded emails"""
+    to_email: EmailStr
+    name: str
+    product: str  # survey360, fieldforce, datapulse
+    subject: str
+    template_type: str = "notification"  # notification, alert, success, info
+    template_data: Dict[str, Any] = {}  # Custom template variables
+
+
 # ==================== PRODUCT-SPECIFIC CONVENIENCE ENDPOINTS ====================
 
 @router.post("/survey360/survey-invite")
-async def send_survey_invite(
-    to_email: EmailStr,
-    name: str,
-    survey_name: str,
-    survey_link: str,
-    deadline: Optional[str] = None
-):
+async def send_survey_invite(request: Survey360InviteRequest):
     """Send Survey360 survey invitation"""
-    details = {"Survey Name": survey_name}
-    if deadline:
-        details["Deadline"] = deadline
+    details = {"Survey Name": request.survey_name}
+    if request.deadline:
+        details["Deadline"] = request.deadline
     
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="survey360",
-        subject=f"You're Invited: {survey_name}",
+        subject=f"You're Invited: {request.survey_name}",
         message="you have been invited to participate in a survey. Your feedback is valuable to us.",
         action_text="Take Survey",
-        action_link=survey_link,
+        action_link=request.survey_link,
         details=details
     )
     return result
 
 
 @router.post("/survey360/survey-complete")
-async def send_survey_complete(
-    to_email: EmailStr,
-    name: str,
-    survey_name: str,
-    responses_count: int
-):
+async def send_survey_complete(request: Survey360CompleteRequest):
     """Send Survey360 survey completion notification"""
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="survey360",
-        subject=f"Survey Complete: {survey_name}",
-        message=f"your survey '{survey_name}' has been completed with {responses_count} responses.",
+        subject=f"Survey Complete: {request.survey_name}",
+        message=f"your survey '{request.survey_name}' has been completed with {request.responses_count} responses.",
         action_text="View Results",
         action_link="https://datavision.co.tz/solutions/survey360/app/dashboard",
         details={
-            "Survey Name": survey_name,
-            "Total Responses": str(responses_count)
+            "Survey Name": request.survey_name,
+            "Total Responses": str(request.responses_count)
         }
     )
     return result
 
 
 @router.post("/fieldforce/data-sync")
-async def send_fieldforce_sync_notification(
-    to_email: EmailStr,
-    name: str,
-    records_synced: int,
-    project_name: str
-):
+async def send_fieldforce_sync_notification(request: FieldForceDataSyncRequest):
     """Send FieldForce data sync notification"""
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="fieldforce",
-        subject=f"Data Synced: {project_name}",
+        subject=f"Data Synced: {request.project_name}",
         message=f"your field data has been successfully synced to the cloud.",
         action_text="View Data",
         action_link="https://datavision.co.tz/solutions/fieldforce/app/dashboard",
         details={
-            "Project": project_name,
-            "Records Synced": str(records_synced)
+            "Project": request.project_name,
+            "Records Synced": str(request.records_synced)
         }
     )
     return result
 
 
 @router.post("/fieldforce/assignment")
-async def send_fieldforce_assignment(
-    to_email: EmailStr,
-    name: str,
-    project_name: str,
-    location: str,
-    due_date: str
-):
+async def send_fieldforce_assignment(request: FieldForceAssignmentRequest):
     """Send FieldForce field assignment notification"""
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="fieldforce",
-        subject=f"New Assignment: {project_name}",
+        subject=f"New Assignment: {request.project_name}",
         message="you have been assigned a new field data collection task.",
         action_text="View Assignment",
         action_link="https://datavision.co.tz/solutions/fieldforce/app/assignments",
         details={
-            "Project": project_name,
-            "Location": location,
-            "Due Date": due_date
+            "Project": request.project_name,
+            "Location": request.location,
+            "Due Date": request.due_date
         }
     )
     return result
 
 
 @router.post("/datapulse/pipeline-status")
-async def send_datapulse_pipeline_status(
-    to_email: EmailStr,
-    name: str,
-    pipeline_name: str,
-    status: str,
-    records_processed: Optional[int] = None
-):
+async def send_datapulse_pipeline_status(request: DataPulsePipelineRequest):
     """Send DataPulse pipeline status notification"""
-    details = {"Pipeline": pipeline_name, "Status": status}
-    if records_processed:
-        details["Records Processed"] = str(records_processed)
+    details = {"Pipeline": request.pipeline_name, "Status": request.status}
+    if request.records_processed:
+        details["Records Processed"] = str(request.records_processed)
     
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="datapulse",
-        subject=f"Pipeline {status.capitalize()}: {pipeline_name}",
-        message=f"your data pipeline '{pipeline_name}' has {status}.",
+        subject=f"Pipeline {request.status.capitalize()}: {request.pipeline_name}",
+        message=f"your data pipeline '{request.pipeline_name}' has {request.status}.",
         action_text="View Pipeline",
         action_link="https://datavision.co.tz/solutions/datapulse/app/pipelines",
         details=details
@@ -291,21 +314,52 @@ async def send_datapulse_pipeline_status(
 
 
 @router.post("/datapulse/report-ready")
-async def send_datapulse_report_ready(
-    to_email: EmailStr,
-    name: str,
-    report_name: str,
-    report_link: str
-):
+async def send_datapulse_report_ready(request: DataPulseReportRequest):
     """Send DataPulse report ready notification"""
     result = await email_service.send_product_notification(
-        to_email=to_email,
-        name=name,
+        to_email=request.to_email,
+        name=request.name,
         product="datapulse",
-        subject=f"Report Ready: {report_name}",
-        message=f"your report '{report_name}' is ready for download.",
+        subject=f"Report Ready: {request.report_name}",
+        message=f"your report '{request.report_name}' is ready for download.",
         action_text="Download Report",
-        action_link=report_link,
-        details={"Report Name": report_name}
+        action_link=request.report_link,
+        details={"Report Name": request.report_name}
     )
+    return result
+
+
+@router.post("/send-product-email")
+async def send_generic_product_email(request: GenericProductEmailRequest):
+    """
+    Generic endpoint for products to send customized branded emails.
+    Products can specify custom template data for rich email content.
+    """
+    valid_products = ["survey360", "fieldforce", "datapulse"]
+    if request.product not in valid_products:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid product. Must be one of: {valid_products}"
+        )
+    
+    # Extract template data
+    message = request.template_data.get("message", "You have a new notification.")
+    action_text = request.template_data.get("action_text")
+    action_link = request.template_data.get("action_link")
+    details = request.template_data.get("details", {})
+    
+    result = await email_service.send_product_notification(
+        to_email=request.to_email,
+        name=request.name,
+        product=request.product,
+        subject=request.subject,
+        message=message,
+        action_text=action_text,
+        action_link=action_link,
+        details=details
+    )
+    
+    if result["status"] == "error":
+        raise HTTPException(status_code=500, detail=result["message"])
+    
     return result
