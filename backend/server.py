@@ -2988,20 +2988,15 @@ from routes.affiliate import create_affiliate_router
 affiliate_router = create_affiliate_router(db, verify_token, verify_admin_token)
 api_router.include_router(affiliate_router, prefix="/affiliates")
 
-# Then include api_router in app
-app.include_router(api_router)
-
 # ==================== SHORTENED REFERRAL LINK REDIRECT ====================
 from fastapi.responses import RedirectResponse
 
-@app.get("/r/{referral_code}")
+@api_router.get("/r/{referral_code}")
 async def redirect_referral_link(referral_code: str):
     """
     Shortened referral link redirect.
-    /r/CODE -> tracks click and redirects to main site with ref parameter
+    /api/r/CODE -> tracks click and redirects to main site with ref parameter
     """
-    from fastapi import Request
-    
     # Find affiliate by referral code
     affiliate = await db.affiliates.find_one({
         "referral_code": referral_code.upper(),
@@ -3020,7 +3015,7 @@ async def redirect_referral_link(referral_code: str):
         "ip_address": "redirect",
         "user_agent": "",
         "referer": "shortened_link",
-        "landing_page": f"/r/{referral_code}",
+        "landing_page": f"/api/r/{referral_code}",
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
     await db.affiliate_clicks.insert_one(click_data)
@@ -3034,6 +3029,9 @@ async def redirect_referral_link(referral_code: str):
     # Redirect to main site with ref parameter
     redirect_url = f"https://datavision.co.tz/?ref={referral_code.upper()}"
     return RedirectResponse(url=redirect_url, status_code=302)
+
+# Then include api_router in app
+app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
