@@ -711,9 +711,9 @@ const AffiliateProgramPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {programInfo?.tiers?.map((tier, idx) => (
-              <TierCard key={idx} tier={tier} isHighlighted={tier.name === 'Gold'} />
+              <TierCard key={idx} tier={tier} isHighlighted={tier.name === 'Pro Partner'} />
             ))}
           </div>
         </div>
