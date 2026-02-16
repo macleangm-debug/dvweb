@@ -1105,3 +1105,112 @@ DataVision International is a research and statistics consultancy based in Tanza
 - `/app/frontend/src/App.js` - Added route `/affiliate/dashboard`
 
 ### Testing: 100% pass rate - 35/35 backend tests passed, all UI tabs working
+
+---
+
+## February 16, 2026 - Shortened Referral Links & App.js Refactoring (COMPLETED)
+
+### 1. Shortened Referral Links for Affiliates (NEW)
+
+**Feature:**
+- Affiliates now get a shortened referral link in addition to their promo code
+- Format: `{BACKEND_URL}/api/r/{CODE}` (e.g., `https://example.com/api/r/JOHN4X7K`)
+- Easier to share on social media and SMS compared to full URLs
+
+**Implementation:**
+- Endpoint: `GET /api/r/{referral_code}`
+- Behavior:
+  - Valid code: Returns 302 redirect to `https://datavision.co.tz/?ref={CODE}`
+  - Invalid code: Returns 302 redirect to `https://datavision.co.tz` (graceful degradation)
+- Click tracking: Logs click in `affiliate_clicks` collection
+- Updates affiliate's `total_clicks` counter
+
+**Frontend Update:**
+- AffiliateDashboard now shows two links:
+  - **Shortened Referral Link** (NEW) - prominently displayed with copy button
+  - **Full Referral Link** - shown below in a secondary style
+- Added "NEW" badge to highlight shortened link feature
+
+**Files Updated:**
+- `/app/backend/server.py` - Added `/api/r/{referral_code}` endpoint
+- `/app/frontend/src/pages/affiliate/AffiliateDashboard.jsx` - Updated UI with shortened link
+
+### 2. App.js Refactoring - Navbar & Footer Extraction (COMPLETED)
+
+**Problem:** App.js was ~3,200+ lines, making it difficult to maintain.
+
+**Solution:** Extracted Navbar (~824 lines) and Footer (~144 lines) into separate components.
+
+**Files Created:**
+- `/app/frontend/src/components/layout/Navbar.jsx` - Full navigation component with:
+  - Desktop mega menu (Services, Solutions, Industries, Practice Areas tabs)
+  - Mobile sliding menu
+  - Auth integration (user, logout props)
+  - Product page detection (minimal navbar for Survey360, FieldForce, DataPulse)
+  
+- `/app/frontend/src/components/layout/Footer.jsx` - Footer component with:
+  - Services, Solutions, Industries, Company links
+  - Contact information
+  - Social links
+  
+- `/app/frontend/src/components/layout/index.js` - Barrel export file
+
+**App.js Changes:**
+- Added `NavbarWithAuth` wrapper component to inject auth context
+- Reduced file size from ~3,200 lines to ~2,231 lines (~30% reduction)
+- Added imports for extracted components
+
+**Architecture:**
+```
+/app/frontend/src/components/
+├── layout/
+│   ├── Navbar.jsx     (NEW - 833 lines)
+│   ├── Footer.jsx     (NEW - 152 lines)
+│   └── index.js       (NEW)
+├── common/
+│   ├── AnimatedCounter.jsx
+│   └── AfricaMap.jsx
+└── admin/
+    └── ...
+```
+
+### Testing: 100% pass rate
+- Backend: 11/13 tests passed (1 pre-existing issue, 1 skipped)
+- Frontend: All UI tests passed
+- Navbar navigation working correctly
+- Footer rendering correctly
+- Shortened referral link redirect working
+
+---
+
+## Priority Backlog
+
+### P0 (Immediate)
+- *(None - current session complete)*
+
+### P1 (High Priority)
+1. **Continue App.js Refactoring** - Extract HomePage component
+2. **Continue server.py Modularization** - Move more routes to `/backend/routes/`
+3. **Clarify Referral vs Affiliate System** - User question pending
+
+### P2 (Medium Priority)
+1. **Link Promo Codes to Products** - Product-specific discounts
+2. **Build Admin Analytics Dashboard** - Currently placeholder UI
+3. **Projects API Fix** - Mixed schema issue causing 500 errors
+
+### P3 (Future/Backlog)
+1. Complete DataPulse integration
+2. Add more SSO product integrations
+3. Implement advanced reporting
+
+---
+
+## Tech Stack
+
+- **Frontend:** React 18, React Router 6, Zustand, Tailwind CSS, Framer Motion, Recharts
+- **Backend:** FastAPI, Motor (async MongoDB), Pydantic, WebSockets
+- **Database:** MongoDB
+- **Auth:** JWT-based SSO with role verification
+
+## Test Credentials
+- **Admin:** admin@datavision.co.tz / admin123
