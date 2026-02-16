@@ -54,6 +54,7 @@ const TierCard = ({ tier, isHighlighted }) => (
 
 // Application form component
 const ApplicationForm = ({ onSubmit, loading }) => {
+  const [step, setStep] = useState(1); // 1: Basic Info, 2: Payment Info
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -65,6 +66,18 @@ const ApplicationForm = ({ onSubmit, loading }) => {
     promotion_methods: [],
     why_join: '',
     social_profiles: { linkedin: '', twitter: '', youtube: '' },
+    payment_info: {
+      payment_method: '',
+      bank_name: '',
+      account_name: '',
+      account_number: '',
+      swift_code: '',
+      paypal_email: '',
+      mpesa_phone: '',
+      mpesa_name: '',
+      crypto_wallet: '',
+      crypto_network: ''
+    },
     agreed_to_terms: false
   });
 
@@ -75,6 +88,13 @@ const ApplicationForm = ({ onSubmit, loading }) => {
     { id: 'youtube', label: 'YouTube', icon: Smartphone },
     { id: 'podcast', label: 'Podcast', icon: Zap },
     { id: 'courses', label: 'Online Courses', icon: Building2 }
+  ];
+
+  const paymentMethods = [
+    { id: 'bank_transfer', label: 'Bank Transfer', icon: Building2 },
+    { id: 'paypal', label: 'PayPal', icon: CreditCard },
+    { id: 'mpesa', label: 'M-Pesa', icon: Smartphone },
+    { id: 'crypto', label: 'Cryptocurrency', icon: Globe }
   ];
 
   const handleChange = (e) => {
@@ -96,6 +116,13 @@ const ApplicationForm = ({ onSubmit, loading }) => {
     }
   };
 
+  const handlePaymentChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      payment_info: { ...prev.payment_info, [field]: value }
+    }));
+  };
+
   const handleSocialChange = (platform, value) => {
     setFormData(prev => ({
       ...prev,
@@ -105,172 +132,385 @@ const ApplicationForm = ({ onSubmit, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (step === 1) {
+      setStep(2);
+      return;
+    }
     onSubmit({
       ...formData,
       audience_size: formData.audience_size ? parseInt(formData.audience_size) : null
     });
   };
 
+  const renderPaymentFields = () => {
+    const method = formData.payment_info.payment_method;
+    
+    switch (method) {
+      case 'bank_transfer':
+        return (
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Bank Name *</label>
+              <input
+                type="text"
+                value={formData.payment_info.bank_name}
+                onChange={(e) => handlePaymentChange('bank_name', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="e.g., CRDB Bank, NMB Bank"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Account Holder Name *</label>
+              <input
+                type="text"
+                value={formData.payment_info.account_name}
+                onChange={(e) => handlePaymentChange('account_name', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="Full name as on bank account"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Account Number *</label>
+              <input
+                type="text"
+                value={formData.payment_info.account_number}
+                onChange={(e) => handlePaymentChange('account_number', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="Your bank account number"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">SWIFT Code (for international transfers)</label>
+              <input
+                type="text"
+                value={formData.payment_info.swift_code}
+                onChange={(e) => handlePaymentChange('swift_code', e.target.value)}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="Optional"
+              />
+            </div>
+          </div>
+        );
+      case 'paypal':
+        return (
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">PayPal Email *</label>
+              <input
+                type="email"
+                value={formData.payment_info.paypal_email}
+                onChange={(e) => handlePaymentChange('paypal_email', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="your-paypal@email.com"
+              />
+            </div>
+          </div>
+        );
+      case 'mpesa':
+        return (
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">M-Pesa Phone Number *</label>
+              <input
+                type="tel"
+                value={formData.payment_info.mpesa_phone}
+                onChange={(e) => handlePaymentChange('mpesa_phone', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="+255 7XX XXX XXX"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Registered Name *</label>
+              <input
+                type="text"
+                value={formData.payment_info.mpesa_name}
+                onChange={(e) => handlePaymentChange('mpesa_name', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="Name registered with M-Pesa"
+              />
+            </div>
+          </div>
+        );
+      case 'crypto':
+        return (
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Crypto Network *</label>
+              <select
+                value={formData.payment_info.crypto_network}
+                onChange={(e) => handlePaymentChange('crypto_network', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:border-red-500 focus:outline-none"
+              >
+                <option value="">Select network</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="USDT-TRC20">USDT (TRC20)</option>
+                <option value="USDT-ERC20">USDT (ERC20)</option>
+                <option value="USDC">USDC</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Wallet Address *</label>
+              <input
+                type="text"
+                value={formData.payment_info.crypto_wallet}
+                onChange={(e) => handlePaymentChange('crypto_wallet', e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none font-mono text-sm"
+                placeholder="Your wallet address"
+              />
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Full Name *</label>
-          <input
-            type="text"
-            name="full_name"
-            required
-            value={formData.full_name}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-            placeholder="John Doe"
-          />
+      {/* Step indicator */}
+      <div className="flex items-center justify-center gap-4 mb-8">
+        <div className={`flex items-center gap-2 ${step === 1 ? 'text-red-400' : 'text-slate-500'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 1 ? 'bg-red-500 text-white' : 'bg-slate-700 text-slate-400'}`}>1</div>
+          <span className="text-sm font-medium">Basic Info</span>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Email *</label>
-          <input
-            type="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-            placeholder="john@example.com"
-          />
+        <div className="w-12 h-0.5 bg-slate-700" />
+        <div className={`flex items-center gap-2 ${step === 2 ? 'text-red-400' : 'text-slate-500'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 2 ? 'bg-red-500 text-white' : 'bg-slate-700 text-slate-400'}`}>2</div>
+          <span className="text-sm font-medium">Payment Info</span>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-            placeholder="+255 123 456 789"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Company/Organization</label>
-          <input
-            type="text"
-            name="company_name"
-            value={formData.company_name}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-            placeholder="Your Company"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Website URL</label>
-        <input
-          type="url"
-          name="website_url"
-          value={formData.website_url}
-          onChange={handleChange}
-          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-          placeholder="https://yourwebsite.com"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Audience Size (estimated)</label>
-        <input
-          type="number"
-          name="audience_size"
-          value={formData.audience_size}
-          onChange={handleChange}
-          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
-          placeholder="10000"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-3">How will you promote DataVision?</label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {promotionOptions.map(option => (
-            <label 
-              key={option.id}
-              className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                formData.promotion_methods.includes(option.id)
-                  ? 'bg-red-500/20 border-red-500/50 text-white'
-                  : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
-              }`}
-            >
+      {step === 1 ? (
+        <>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Full Name *</label>
               <input
-                type="checkbox"
-                name={option.id}
-                checked={formData.promotion_methods.includes(option.id)}
+                type="text"
+                name="full_name"
+                required
+                value={formData.full_name}
                 onChange={handleChange}
-                className="hidden"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="John Doe"
               />
-              <option.icon className="w-4 h-4" />
-              <span className="text-sm">{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Email *</label>
+              <input
+                type="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="john@example.com"
+              />
+            </div>
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Tell us about your audience</label>
-        <textarea
-          name="audience_description"
-          value={formData.audience_description}
-          onChange={handleChange}
-          rows={3}
-          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none resize-none"
-          placeholder="Describe your audience demographics, interests, and why they'd be interested in data collection tools..."
-        />
-      </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="+255 123 456 789"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Company/Organization</label>
+              <input
+                type="text"
+                name="company_name"
+                value={formData.company_name}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                placeholder="Your Company"
+              />
+            </div>
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Why do you want to join?</label>
-        <textarea
-          name="why_join"
-          value={formData.why_join}
-          onChange={handleChange}
-          rows={3}
-          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none resize-none"
-          placeholder="Tell us why you're excited to partner with DataVision..."
-        />
-      </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Website URL</label>
+            <input
+              type="url"
+              name="website_url"
+              value={formData.website_url}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+              placeholder="https://yourwebsite.com"
+            />
+          </div>
 
-      <div className="flex items-start gap-3">
-        <input
-          type="checkbox"
-          name="agreed_to_terms"
-          checked={formData.agreed_to_terms}
-          onChange={handleChange}
-          required
-          className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-red-500 focus:ring-red-500"
-        />
-        <label className="text-sm text-slate-400">
-          I agree to the <Link to="/terms" className="text-red-400 hover:underline">Terms of Service</Link> and{' '}
-          <Link to="/privacy" className="text-red-400 hover:underline">Affiliate Agreement</Link>
-        </label>
-      </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Audience Size (estimated)</label>
+            <input
+              type="number"
+              name="audience_size"
+              value={formData.audience_size}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none"
+              placeholder="10000"
+            />
+          </div>
 
-      <button
-        type="submit"
-        disabled={loading || !formData.agreed_to_terms}
-        className="w-full py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:from-red-600 hover:to-orange-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-      >
-        {loading ? (
-          <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Submitting...
-          </>
-        ) : (
-          <>
-            Submit Application
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-3">How will you promote DataVision?</label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {promotionOptions.map(option => (
+                <label 
+                  key={option.id}
+                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                    formData.promotion_methods.includes(option.id)
+                      ? 'bg-red-500/20 border-red-500/50 text-white'
+                      : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    name={option.id}
+                    checked={formData.promotion_methods.includes(option.id)}
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+                  <option.icon className="w-4 h-4" />
+                  <span className="text-sm">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Tell us about your audience</label>
+            <textarea
+              name="audience_description"
+              value={formData.audience_description}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none resize-none"
+              placeholder="Describe your audience demographics, interests, and why they'd be interested in data collection tools..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Why do you want to join?</label>
+            <textarea
+              name="why_join"
+              value={formData.why_join}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-red-500 focus:outline-none resize-none"
+              placeholder="Tell us why you're excited to partner with DataVision..."
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:from-red-600 hover:to-orange-600 transition-all flex items-center justify-center gap-2"
+          >
+            Continue to Payment Info
             <ArrowRight className="w-5 h-5" />
-          </>
-        )}
-      </button>
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-emerald-400 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium text-emerald-300">Payment Information Required</h4>
+                <p className="text-xs text-slate-400 mt-1">
+                  Provide your payment details now so we can pay your commissions. You earn 10% on every referred customer's payment for up to 12 months.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-3">Select Payment Method *</label>
+            <div className="grid grid-cols-2 gap-3">
+              {paymentMethods.map(method => (
+                <label 
+                  key={method.id}
+                  className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${
+                    formData.payment_info.payment_method === method.id
+                      ? 'bg-red-500/20 border-red-500/50 text-white'
+                      : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment_method"
+                    value={method.id}
+                    checked={formData.payment_info.payment_method === method.id}
+                    onChange={(e) => handlePaymentChange('payment_method', e.target.value)}
+                    className="hidden"
+                  />
+                  <method.icon className="w-5 h-5" />
+                  <span className="font-medium">{method.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {renderPaymentFields()}
+
+          <div className="flex items-start gap-3 mt-6">
+            <input
+              type="checkbox"
+              name="agreed_to_terms"
+              checked={formData.agreed_to_terms}
+              onChange={handleChange}
+              required
+              className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-red-500 focus:ring-red-500"
+            />
+            <label className="text-sm text-slate-400">
+              I agree to the <Link to="/terms" className="text-red-400 hover:underline">Terms of Service</Link> and{' '}
+              <Link to="/privacy" className="text-red-400 hover:underline">Affiliate Agreement</Link>
+            </label>
+          </div>
+
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="flex-1 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={loading || !formData.agreed_to_terms || !formData.payment_info.payment_method}
+              className="flex-1 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:from-red-600 hover:to-orange-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  Submit Application
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </div>
+        </>
+      )}
     </form>
   );
 };
