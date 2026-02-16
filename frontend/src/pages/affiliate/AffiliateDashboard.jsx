@@ -18,7 +18,7 @@ const AffiliateDashboard = () => {
   const [payouts, setPayouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [copied, setCopied] = useState({ code: false, link: false });
+  const [copied, setCopied] = useState({ code: false, link: false, short: false });
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [payoutAmount, setPayoutAmount] = useState('');
   const [payoutLoading, setPayoutLoading] = useState(false);
