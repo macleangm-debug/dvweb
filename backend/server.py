@@ -611,11 +611,37 @@ async def register_user(user_data: DataVisionUserRegister):
 async def login(credentials: AdminLogin):
     """
     Login for DataVision users and administrators.
+    TRIGGER: Sends security alert on successful login (new device detection)
     """
+    from services.email_service import email_service
+    
     # First check DataVision users collection
     user = await db.datavision_users.find_one({"email": credentials.email}, {"_id": 0})
     if user and verify_password(credentials.password, user["password"]):
         token = create_access_token({"sub": user["email"], "id": user["id"], "is_admin": user.get("is_admin", False)})
+        
+        # Check if this is a new login and send security alert
+        last_login = user.get("last_login")
+        current_time = datetime.now(timezone.utc).isoformat()
+        
+        # Update last login time
+        await db.datavision_users.update_one(
+            {"email": credentials.email},
+            {"$set": {"last_login": current_time}}
+        )
+        
+        # TRIGGER: Send new login security alert (if not first login)
+        if last_login:
+            asyncio.create_task(email_service.send_security_alert(
+                to_email=user["email"],
+                name=user.get("name", "User"),
+                alert_type="new_login",
+                details={
+                    "Time": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                    "Platform": "DataVision Web"
+                }
+            ))
+        
         return UserTokenResponse(
             access_token=token,
             user=DataVisionUser(
@@ -630,6 +656,28 @@ async def login(credentials: AdminLogin):
     admin = await db.admins.find_one({"email": credentials.email}, {"_id": 0})
     if admin and verify_password(credentials.password, admin["password"]):
         token = create_access_token({"sub": admin["email"], "id": admin["id"], "is_admin": True})
+        
+        # Update last login for admin
+        current_time = datetime.now(timezone.utc).isoformat()
+        last_login = admin.get("last_login")
+        
+        await db.admins.update_one(
+            {"email": credentials.email},
+            {"$set": {"last_login": current_time}}
+        )
+        
+        # TRIGGER: Send new login security alert for admin (if not first login)
+        if last_login:
+            asyncio.create_task(email_service.send_security_alert(
+                to_email=admin["email"],
+                name=admin.get("name", "Administrator"),
+                alert_type="new_login",
+                details={
+                    "Time": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                    "Platform": "DataVision Admin"
+                }
+            ))
+        
         return UserTokenResponse(
             access_token=token,
             user=DataVisionUser(
