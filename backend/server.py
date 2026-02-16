@@ -3062,6 +3062,12 @@ from routes.email_preferences_routes import create_email_preferences_router
 email_prefs_router = create_email_preferences_router(db, verify_token)
 api_router.include_router(email_prefs_router)
 
+# ==================== USER REFERRAL ROUTES ====================
+from routes.referral_routes import create_referral_routes
+from services.email_service import email_service
+referral_router = create_referral_routes(db, verify_token, email_service)
+api_router.include_router(referral_router)
+
 # ==================== SHORTENED REFERRAL LINK REDIRECT ====================
 from fastapi.responses import RedirectResponse
 
