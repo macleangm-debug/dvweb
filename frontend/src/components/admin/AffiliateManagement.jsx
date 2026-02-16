@@ -763,6 +763,43 @@ const AffiliateManagement = ({ subSection }) => {
                   </label>
                 </div>
 
+                {/* Applicable Products Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Applicable Products</label>
+                  <div className="space-y-2">
+                    {['fieldforce', 'survey360', 'datapulse'].map((product) => (
+                      <label key={product} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={promoForm.applicable_products.includes(product)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setPromoForm({
+                                ...promoForm,
+                                applicable_products: [...promoForm.applicable_products, product]
+                              });
+                            } else {
+                              setPromoForm({
+                                ...promoForm,
+                                applicable_products: promoForm.applicable_products.filter(p => p !== product)
+                              });
+                            }
+                          }}
+                          className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-sm text-slate-700 capitalize">
+                          {product === 'fieldforce' ? 'FieldForce' : product === 'survey360' ? 'Survey360' : 'DataPulse'}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">
+                    {promoForm.applicable_products.length === 0 
+                      ? 'Leave empty to apply to all products' 
+                      : `Applies to: ${promoForm.applicable_products.map(p => p === 'fieldforce' ? 'FieldForce' : p === 'survey360' ? 'Survey360' : 'DataPulse').join(', ')}`}
+                  </p>
+                </div>
+
                 <div className="flex gap-3 pt-4 border-t border-slate-200">
                   <button
                     onClick={() => {
