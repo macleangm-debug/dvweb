@@ -887,24 +887,5 @@ const DashboardOverview = ({ subSection = 'overview' }) => {
     return <ActivityView />;
   }
 
-  // Default Overview
+  // Default Overview - original dashboard content
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
-          <p className="text-slate-500 mt-1">Welcome back! Here's what's happening today.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            Last 30 Days
-          </button>
-          <button className="px-4 py-2 text-sm bg-slate-900 text-white rounded-lg hover:bg-slate-800">
-            Download Report
-          </button>
-        </div>
-      </div>
-
-export default DashboardOverview;
