@@ -202,11 +202,12 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
     async def get_my_affiliate_profile(payload: dict = Depends(verify_token)):
         """Get current user's affiliate profile"""
         user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")  # Support both 'user_id' and 'id' from JWT
         
         affiliate = await db.affiliates.find_one({
             "$or": [
                 {"email": user_email},
-                {"user_id": payload.get("user_id")}
+                {"user_id": user_id}
             ],
             "status": AffiliateStatus.APPROVED
         })
