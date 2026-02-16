@@ -70,6 +70,38 @@ const AffiliateDashboard = () => {
       const payoutsRes = await axios.get(`${API}/api/affiliates/my-payouts`, { headers });
       setPayouts(payoutsRes.data.payouts || []);
 
+      // Fetch analytics
+      const analyticsRes = await axios.get(`${API}/api/affiliates/my-analytics?period_days=${analyticsPeriod}`, { headers });
+      setAnalytics(analyticsRes.data);
+
+    } catch (err) {
+      console.error('Error fetching affiliate data:', err);
+      if (err.response?.status === 404) {
+        setError('not_affiliate');
+      } else {
+        setError('fetch_error');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Refresh analytics when period changes
+  useEffect(() => {
+    if (profile && token) {
+      const fetchAnalytics = async () => {
+        try {
+          const headers = { Authorization: `Bearer ${token}` };
+          const analyticsRes = await axios.get(`${API}/api/affiliates/my-analytics?period_days=${analyticsPeriod}`, { headers });
+          setAnalytics(analyticsRes.data);
+        } catch (err) {
+          console.error('Error fetching analytics:', err);
+        }
+      };
+      fetchAnalytics();
+    }
+  }, [analyticsPeriod]);
+
     } catch (err) {
       console.error('Error fetching affiliate data:', err);
       if (err.response?.status === 404) {
