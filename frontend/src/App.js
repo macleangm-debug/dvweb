@@ -162,6 +162,7 @@ import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
 
 // Extracted Page Components
 import HomePage from './pages/HomePage';
+import UserSettings from './pages/UserSettings';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
