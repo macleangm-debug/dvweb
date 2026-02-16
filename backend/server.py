@@ -1268,7 +1268,7 @@ async def root():
 
 @api_router.get("/projects", response_model=List[Project])
 async def get_projects(featured: Optional[bool] = None, sector: Optional[str] = None):
-    query = {}
+    query = {"title": {"$exists": True}}  # Filter out FieldForce projects (different schema)
     if featured is not None:
         query["featured"] = featured
     if sector:
