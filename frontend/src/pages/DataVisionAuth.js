@@ -195,6 +195,13 @@ export const DataVisionLogin = () => {
           </form>
 
           <div className="mt-6 text-center space-y-4">
+            <Link 
+              to="/auth/forgot-password" 
+              className="text-gray-400 hover:text-red-400 text-sm font-medium transition-colors"
+              data-testid="forgot-password-link"
+            >
+              Forgot your password?
+            </Link>
             <p className="text-gray-400 text-sm">
               Don't have an account?{' '}
               <Link to={`/auth/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`} className="text-red-400 hover:text-red-300 font-medium">
