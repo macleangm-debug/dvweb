@@ -161,8 +161,8 @@ const AffiliateDashboard = () => {
     );
   }
 
-  // Shortened link uses the API base URL
-  const shortenedLink = `${API.replace('/api', '')}/r/${profile?.referral_code}`;
+  // Shortened link uses /api/r/ path
+  const shortenedLink = `${API}/r/${profile?.referral_code}`;
   const fullReferralLink = profile?.referral_link || `https://datavision.co.tz/?ref=${profile?.referral_code}`;
   const conversionRate = profile?.total_clicks > 0 
     ? ((profile?.total_referrals / profile?.total_clicks) * 100).toFixed(1) 
