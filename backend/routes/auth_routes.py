@@ -448,4 +448,155 @@ def create_auth_routes(db):
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=401, detail="Invalid token")
 
+    # ==================== PASSWORD MANAGEMENT ====================
+
+    @router.post("/auth/forgot-password")
+    async def forgot_password(request: ForgotPasswordRequest):
+        """TRIGGER: Forgot Password - sends password reset email"""
+        from services.email_service import email_service
+        
+        # Check if user exists in either collection
+        user = await db.datavision_users.find_one({"email": request.email}, {"_id": 0})
+        if not user:
+            user = await db.admins.find_one({"email": request.email}, {"_id": 0})
+        
+        # Always return success to prevent email enumeration attacks
+        if not user:
+            return {"message": "If an account exists with this email, you will receive a password reset link."}
+        
+        # Generate reset token
+        reset_token = secrets.token_urlsafe(32)
+        expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+        
+        # Store reset token
+        await db.password_resets.insert_one({
+            "id": str(uuid.uuid4()),
+            "email": request.email,
+            "token": reset_token,
+            "expires_at": expires_at.isoformat(),
+            "used": False,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        })
+        
+        # Build reset link
+        reset_link = f"https://datavision.co.tz/auth/reset-password?token={reset_token}"
+        
+        # TRIGGER: Send password reset email
+        asyncio.create_task(email_service.send_password_reset(
+            to_email=request.email,
+            name=user.get("name", "User"),
+            reset_link=reset_link
+        ))
+        
+        return {"message": "If an account exists with this email, you will receive a password reset link."}
+
+    @router.post("/auth/reset-password")
+    async def reset_password(request: ResetPasswordRequest):
+        """Reset password using token from email"""
+        from services.email_service import email_service
+        
+        # Find valid reset token
+        reset_record = await db.password_resets.find_one({
+            "token": request.token,
+            "used": False
+        }, {"_id": 0})
+        
+        if not reset_record:
+            raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+        
+        # Check if token is expired
+        expires_at = datetime.fromisoformat(reset_record["expires_at"].replace('Z', '+00:00'))
+        if datetime.now(timezone.utc) > expires_at:
+            raise HTTPException(status_code=400, detail="Reset token has expired")
+        
+        email = reset_record["email"]
+        
+        # Hash new password
+        hashed_password = hash_password(request.new_password)
+        
+        # Update password in datavision_users or admins
+        result = await db.datavision_users.update_one(
+            {"email": email},
+            {"$set": {"password": hashed_password}}
+        )
+        
+        if result.modified_count == 0:
+            await db.admins.update_one(
+                {"email": email},
+                {"$set": {"password": hashed_password}}
+            )
+        
+        # Mark token as used
+        await db.password_resets.update_one(
+            {"token": request.token},
+            {"$set": {"used": True}}
+        )
+        
+        # Get user name for email
+        user = await db.datavision_users.find_one({"email": email}, {"_id": 0})
+        if not user:
+            user = await db.admins.find_one({"email": email}, {"_id": 0})
+        
+        # TRIGGER: Send security alert about password change
+        if user:
+            asyncio.create_task(email_service.send_security_alert(
+                to_email=email,
+                name=user.get("name", "User"),
+                alert_type="password_changed",
+                details={
+                    "Time": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                    "Method": "Password Reset Link"
+                }
+            ))
+        
+        return {"message": "Password has been reset successfully. You can now login with your new password."}
+
+    @router.post("/auth/change-password")
+    async def change_password(request: ChangePasswordRequest, payload: dict = Depends(verify_token)):
+        """Change password for logged-in user (requires current password)"""
+        from services.email_service import email_service
+        
+        user_email = payload.get("sub")
+        
+        # Find user
+        user = await db.datavision_users.find_one({"email": user_email}, {"_id": 0})
+        collection = "datavision_users"
+        if not user:
+            user = await db.admins.find_one({"email": user_email}, {"_id": 0})
+            collection = "admins"
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Verify current password
+        if not verify_password(request.current_password, user["password"]):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+        
+        # Update password
+        hashed_password = hash_password(request.new_password)
+        
+        if collection == "datavision_users":
+            await db.datavision_users.update_one(
+                {"email": user_email},
+                {"$set": {"password": hashed_password}}
+            )
+        else:
+            await db.admins.update_one(
+                {"email": user_email},
+                {"$set": {"password": hashed_password}}
+            )
+        
+        # TRIGGER: Send security alert about password change
+        asyncio.create_task(email_service.send_security_alert(
+            to_email=user_email,
+            name=user.get("name", "User"),
+            alert_type="password_changed",
+            details={
+                "Time": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                "Method": "Changed via Account Settings"
+            }
+        ))
+        
+        return {"message": "Password changed successfully"}
+
     return router
