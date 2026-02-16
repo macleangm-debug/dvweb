@@ -222,6 +222,304 @@ const DashboardOverview = ({ subSection = 'overview' }) => {
     );
   }
 
+  // Analytics Section Component
+  const AnalyticsView = () => {
+    // Generate mock analytics data
+    const mockPageViews = [];
+    const now = new Date();
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      mockPageViews.push({
+        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        views: Math.round(1000 + Math.random() * 2000),
+        uniqueVisitors: Math.round(600 + Math.random() * 1200),
+        bounceRate: Math.round(30 + Math.random() * 25)
+      });
+    }
+
+    const mockTrafficSources = [
+      { name: 'Organic Search', value: 45, color: '#22c55e' },
+      { name: 'Direct', value: 25, color: '#3b82f6' },
+      { name: 'Social Media', value: 15, color: '#8b5cf6' },
+      { name: 'Referral', value: 10, color: '#f97316' },
+      { name: 'Email', value: 5, color: '#ef4444' },
+    ];
+
+    const mockTopPages = [
+      { page: '/solutions/fieldforce', views: 4523, avgTime: '3:45', bounce: '32%' },
+      { page: '/solutions/survey360', views: 3821, avgTime: '4:12', bounce: '28%' },
+      { page: '/', views: 3654, avgTime: '2:15', bounce: '45%' },
+      { page: '/about', views: 2134, avgTime: '2:58', bounce: '38%' },
+      { page: '/contact', views: 1876, avgTime: '1:45', bounce: '52%' },
+      { page: '/careers', views: 1543, avgTime: '3:22', bounce: '35%' },
+    ];
+
+    const mockDeviceData = [
+      { name: 'Desktop', value: 58, color: '#3b82f6' },
+      { name: 'Mobile', value: 35, color: '#22c55e' },
+      { name: 'Tablet', value: 7, color: '#f97316' },
+    ];
+
+    const mockGeoData = [
+      { country: 'Tanzania', visitors: 4521, percentage: 38 },
+      { country: 'Kenya', visitors: 2134, percentage: 18 },
+      { country: 'Uganda', visitors: 1876, percentage: 16 },
+      { country: 'Rwanda', visitors: 1234, percentage: 10 },
+      { country: 'Ethiopia', visitors: 987, percentage: 8 },
+      { country: 'Other', visitors: 1189, percentage: 10 },
+    ];
+
+    const mockConversionFunnel = [
+      { stage: 'Website Visits', value: 12450, percentage: 100 },
+      { stage: 'Product Page Views', value: 6225, percentage: 50 },
+      { stage: 'Demo Requests', value: 935, percentage: 7.5 },
+      { stage: 'Trial Signups', value: 467, percentage: 3.8 },
+      { stage: 'Paid Conversions', value: 187, percentage: 1.5 },
+    ];
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Analytics Dashboard</h1>
+            <p className="text-slate-500 mt-1">Detailed insights into user behavior and traffic</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <select 
+              value={selectedPeriod}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
+              className="px-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+            </select>
+            <button className="px-4 py-2 text-sm bg-slate-900 text-white rounded-lg hover:bg-slate-800">Export Report</button>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-slate-500">Total Page Views</div>
+              <Activity className="w-5 h-5 text-blue-500" />
+            </div>
+            <div className="text-2xl font-bold text-slate-900 mt-2">48,234</div>
+            <div className="flex items-center gap-1 mt-2 text-sm">
+              <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+              <span className="text-emerald-500">12.5%</span>
+              <span className="text-slate-400">vs last period</span>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-slate-500">Unique Visitors</div>
+              <Users className="w-5 h-5 text-purple-500" />
+            </div>
+            <div className="text-2xl font-bold text-slate-900 mt-2">12,847</div>
+            <div className="flex items-center gap-1 mt-2 text-sm">
+              <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+              <span className="text-emerald-500">8.3%</span>
+              <span className="text-slate-400">vs last period</span>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-slate-500">Avg. Session Duration</div>
+              <Clock className="w-5 h-5 text-teal-500" />
+            </div>
+            <div className="text-2xl font-bold text-slate-900 mt-2">3:24</div>
+            <div className="flex items-center gap-1 mt-2 text-sm">
+              <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+              <span className="text-emerald-500">5.2%</span>
+              <span className="text-slate-400">vs last period</span>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-slate-500">Bounce Rate</div>
+              <AlertCircle className="w-5 h-5 text-amber-500" />
+            </div>
+            <div className="text-2xl font-bold text-slate-900 mt-2">38.2%</div>
+            <div className="flex items-center gap-1 mt-2 text-sm">
+              <ArrowDownRight className="w-4 h-4 text-emerald-500" />
+              <span className="text-emerald-500">-3.1%</span>
+              <span className="text-slate-400">vs last period</span>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">Page Views & Visitors</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={mockPageViews}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="date" stroke="#94a3b8" fontSize={12} />
+              <YAxis stroke="#94a3b8" fontSize={12} />
+              <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }} />
+              <Legend />
+              <Area type="monotone" dataKey="views" name="Page Views" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} />
+              <Area type="monotone" dataKey="uniqueVisitors" name="Unique Visitors" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.2} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Traffic Sources</h3>
+            <div className="flex items-center gap-8">
+              <ResponsiveContainer width={180} height={180}>
+                <RechartsPie>
+                  <Pie data={mockTrafficSources} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2} dataKey="value">
+                    {mockTrafficSources.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
+                  </Pie>
+                  <Tooltip />
+                </RechartsPie>
+              </ResponsiveContainer>
+              <div className="flex-1 space-y-3">
+                {mockTrafficSources.map((source, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: source.color }}></div>
+                      <span className="text-sm text-slate-600">{source.name}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-slate-900">{source.value}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Device Breakdown</h3>
+            <div className="flex items-center gap-8">
+              <ResponsiveContainer width={180} height={180}>
+                <RechartsPie>
+                  <Pie data={mockDeviceData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2} dataKey="value">
+                    {mockDeviceData.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
+                  </Pie>
+                  <Tooltip />
+                </RechartsPie>
+              </ResponsiveContainer>
+              <div className="flex-1 space-y-4">
+                {mockDeviceData.map((device, index) => (
+                  <div key={index}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm text-slate-600">{device.name}</span>
+                      <span className="text-sm font-semibold text-slate-900">{device.value}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="h-2 rounded-full" style={{ width: `${device.value}%`, backgroundColor: device.color }}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Top Pages</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-100">
+                    <th className="text-left text-xs font-medium text-slate-500 uppercase py-3">Page</th>
+                    <th className="text-right text-xs font-medium text-slate-500 uppercase py-3">Views</th>
+                    <th className="text-right text-xs font-medium text-slate-500 uppercase py-3">Avg Time</th>
+                    <th className="text-right text-xs font-medium text-slate-500 uppercase py-3">Bounce</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockTopPages.map((page, index) => (
+                    <tr key={index} className="border-b border-slate-50 last:border-0">
+                      <td className="py-3 text-sm text-slate-900 font-medium truncate max-w-[200px]">{page.page}</td>
+                      <td className="py-3 text-sm text-slate-600 text-right">{page.views.toLocaleString()}</td>
+                      <td className="py-3 text-sm text-slate-600 text-right">{page.avgTime}</td>
+                      <td className="py-3 text-sm text-slate-600 text-right">{page.bounce}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Conversion Funnel</h3>
+            <div className="space-y-4">
+              {mockConversionFunnel.map((stage, index) => (
+                <div key={index}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-slate-600">{stage.stage}</span>
+                    <div className="text-right">
+                      <span className="text-sm font-semibold text-slate-900">{stage.value.toLocaleString()}</span>
+                      <span className="text-xs text-slate-400 ml-2">({stage.percentage}%)</span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-3">
+                    <div className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" style={{ width: `${stage.percentage}%` }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">Geographic Distribution</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {mockGeoData.map((country, index) => (
+              <div key={index} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                <div>
+                  <p className="font-medium text-slate-900">{country.country}</p>
+                  <p className="text-sm text-slate-500">{country.visitors.toLocaleString()} visitors</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-lg font-bold text-slate-900">{country.percentage}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Activity Log View
+  const ActivityView = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Recent Activity</h1>
+          <p className="text-slate-500 mt-1">Track all system activity and user actions</p>
+        </div>
+        <button className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50">Export Log</button>
+      </div>
+      <div className="bg-white rounded-xl border border-slate-200">
+        <div className="p-4 border-b border-slate-100">
+          <div className="flex items-center gap-4">
+            <select className="px-3 py-2 text-sm border border-slate-200 rounded-lg">
+              <option>All Categories</option>
+              <option>User Actions</option>
+              <option>System Events</option>
+              <option>Admin Actions</option>
+            </select>
+            <input type="text" placeholder="Search activity..." className="flex-1 px-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
+          </div>
+        </div>
+        <div className="p-4 max-h-[600px] overflow-y-auto">
+          {recentActivity.map((activity, index) => (
+            <ActivityItem key={index} title={activity.title} description={activity.description} time={activity.time} type={activity.type} category={activity.category} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render based on subSection
+  if (subSection === 'analytics') {
+    return <AnalyticsView />;
+  }
+  if (subSection === 'activity') {
+    return <ActivityView />;
+  }
+
+  // Default Overview
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -233,6 +531,13 @@ const DashboardOverview = ({ subSection = 'overview' }) => {
         <div className="flex items-center gap-2">
           <button className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 flex items-center gap-2">
             <Calendar className="w-4 h-4" />
+            Last 30 Days
+          </button>
+          <button className="px-4 py-2 text-sm bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+            Download Report
+          </button>
+        </div>
+      </div>
             Last 30 Days
           </button>
           <button className="px-4 py-2 text-sm bg-slate-900 text-white rounded-lg hover:bg-slate-800">
