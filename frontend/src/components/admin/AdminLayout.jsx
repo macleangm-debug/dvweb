@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Package, TrendingUp, Briefcase, Users,
   FolderOpen, Settings, LogOut, ChevronDown, ChevronRight, ExternalLink,
-  Bell, Search, Menu, X, BarChart3, UserCheck, Newspaper, DollarSign
+  Bell, Search, Menu, X, BarChart3, UserCheck, Newspaper, DollarSign, Award
 } from 'lucide-react';
 import NotificationPanel from './NotificationPanel';
 
