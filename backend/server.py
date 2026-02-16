@@ -589,6 +589,13 @@ async def register_user(user_data: DataVisionUserRegister):
     # Generate token
     token = create_access_token({"sub": user_data.email, "id": user_id, "is_admin": False})
     
+    # TRIGGER: Send welcome email (non-blocking)
+    from services.email_service import email_service
+    asyncio.create_task(email_service.send_welcome_email(
+        to_email=user_data.email,
+        name=user_data.name
+    ))
+    
     return UserTokenResponse(
         access_token=token,
         user=DataVisionUser(
