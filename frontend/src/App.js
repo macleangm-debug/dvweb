@@ -2096,6 +2096,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth/login" element={<DataVisionLogin />} />
             <Route path="/auth/register" element={<DataVisionRegister />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/network/join" element={<JoinExpertNetwork />} />
             <Route path="/experts/join" element={<JoinExpertNetwork />} />
             <Route path="/our-services" element={<ServicesShowcase />} />
