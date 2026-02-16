@@ -3273,6 +3273,7 @@ function App() {
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/contact-us" element={<ContactPage />} />
+                  <Route path="/affiliate" element={<AffiliateProgramPage />} />
                 </Routes>
                 <Footer />
               </>
