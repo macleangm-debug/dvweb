@@ -606,15 +606,16 @@ const AffiliateProgramPage = () => {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              Earn Up to{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
-                25% Commission
-              </span>
+369|              Earn{' '}
+370|              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+371|                10% Commission
+372|              </span>
+373|              {' '}on Every Referral
             </h1>
 
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-8">
-              Partner with DataVision and earn recurring commissions by promoting our powerful 
-              data collection and analytics solutions. Join Africa's leading research tech affiliate program.
+              Partner with DataVision and earn 10% commission on all payments from your referrals for up to 12 months.
+              Join Africa's leading research tech affiliate program.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
