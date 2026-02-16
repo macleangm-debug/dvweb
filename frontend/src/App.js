@@ -12,6 +12,10 @@ import {
   FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator, Lightbulb,
   Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Briefcase, Activity
 } from 'lucide-react';
+
+// Extracted Common Components
+import { AnimatedCounter, AfricaMap } from './components/common';
+
 import {
   ResearchStatisticsPage,
   MonitoringEvaluationPage,
