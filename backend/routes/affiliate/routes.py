@@ -12,7 +12,7 @@ import random
 import string
 
 from .config import (
-    TIERS, DEFAULT_COMMISSION_RATE, DEFAULT_CAP_AMOUNT,
+    TIERS, DEFAULT_COMMISSION_RATE, DEFAULT_CAP_AMOUNT, DEFAULT_DURATION_MONTHS,
     PAYOUT_SETTINGS, AFFILIATE_PRODUCTS, REFERRAL_BENEFITS,
     REFERRAL_COOKIE_DAYS, APPLICATION_REQUIREMENTS
 )
@@ -115,13 +115,16 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             "referral_code": referral_code,
             "status": AffiliateStatus.PENDING,
             "tier": TIERS[0]["name"],
-            "commission_rate": TIERS[0]["commission_rate"],
+            "commission_rate": DEFAULT_COMMISSION_RATE,  # Flat 10% for all
             "custom_commission_rate": None,
             "company_name": application.company_name,
             "website_url": application.website_url,
             "social_profiles": application.social_profiles or {},
             "audience_size": application.audience_size,
             "promotion_methods": application.promotion_methods,
+            "payment_info": application.payment_info.model_dump() if application.payment_info else None,
+            "commission_duration_months": DEFAULT_DURATION_MONTHS,  # Max 12 months earning period
+            "commission_end_date": None,  # Set when approved
             "total_clicks": 0,
             "total_referrals": 0,
             "active_referrals": 0,
