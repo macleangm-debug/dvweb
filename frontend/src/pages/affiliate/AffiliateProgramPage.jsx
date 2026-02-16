@@ -564,16 +564,16 @@ const AffiliateProgramPage = () => {
   };
 
   const stats = [
-    { value: '25%', label: 'Max Commission', icon: DollarSign },
-    { value: '90', label: 'Day Cookie', icon: Clock },
+    { value: '10%', label: 'Commission Rate', icon: DollarSign },
+    { value: '12', label: 'Month Duration', icon: Clock },
     { value: '$50', label: 'Min Payout', icon: CreditCard },
     { value: '3', label: 'Products', icon: Target }
   ];
 
   const howItWorks = [
-    { step: 1, title: 'Apply & Get Approved', description: 'Submit your application and get approved within 24-48 hours', icon: User },
+    { step: 1, title: 'Apply & Get Approved', description: 'Submit your application with payment info and get approved within 24-48 hours', icon: User },
     { step: 2, title: 'Share Your Link', description: 'Get your unique referral link and start sharing with your audience', icon: LinkIcon },
-    { step: 3, title: 'Earn Commissions', description: 'Earn up to 25% on every sale from your referrals', icon: DollarSign },
+    { step: 3, title: 'Earn 10% Commissions', description: 'Earn 10% on every payment from your referrals for up to 12 months', icon: DollarSign },
     { step: 4, title: 'Get Paid', description: 'Request payouts via bank transfer, PayPal, M-Pesa, or crypto', icon: CreditCard }
   ];
 
