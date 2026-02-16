@@ -705,9 +705,9 @@ const AffiliateProgramPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Commission Tiers</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Partner Tiers</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              The more you refer, the more you earn. Unlock higher commission rates as you grow.
+              All partners earn 10% commission. Unlock better perks as you grow your referrals.
             </p>
           </motion.div>
 
