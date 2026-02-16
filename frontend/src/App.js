@@ -2107,7 +2107,7 @@ function App() {
             <Route path="/solutions/datapulse/register" element={<DataPulseRegisterPage />} />
             <Route path="*" element={
               <>
-                <Navbar />
+                <NavbarWithAuth />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
