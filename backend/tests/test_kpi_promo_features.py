@@ -28,8 +28,8 @@ def admin_token():
         "password": ADMIN_PASSWORD
     })
     if response.status_code == 200:
-        token = response.json().get("token")
-        print(f"Admin login successful")
+        token = response.json().get("access_token")  # API returns access_token not token
+        print(f"Admin login successful, token: {token[:30]}...")
         return token
     else:
         pytest.skip(f"Admin login failed: {response.status_code} - {response.text}")
