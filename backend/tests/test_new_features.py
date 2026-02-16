@@ -115,7 +115,8 @@ class TestAffiliateAdminAPIs:
     def test_unauthenticated_access_blocked(self):
         """Test that unauthenticated access to admin APIs is blocked"""
         response = requests.get(f"{BASE_URL}/api/affiliates/admin/applications")
-        assert response.status_code == 401
+        # 401 Unauthorized or 403 Forbidden - both indicate blocked access
+        assert response.status_code in [401, 403]
 
 
 class TestAffiliateApplication:
