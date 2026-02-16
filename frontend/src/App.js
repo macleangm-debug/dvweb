@@ -3064,7 +3064,8 @@ import {
   ExpertNetwork,
   ContentManagement,
   ProjectsClients,
-  AdminSettings
+  AdminSettings,
+  AffiliateManagement
 } from './components/admin';
 
 const AdminDashboard = () => {
