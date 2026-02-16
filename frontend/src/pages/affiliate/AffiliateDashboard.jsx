@@ -102,18 +102,6 @@ const AffiliateDashboard = () => {
     }
   }, [analyticsPeriod]);
 
-    } catch (err) {
-      console.error('Error fetching affiliate data:', err);
-      if (err.response?.status === 404) {
-        setError('not_affiliate');
-      } else {
-        setError('fetch_error');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const copyToClipboard = (text, type) => {
     navigator.clipboard.writeText(text);
     setCopied({ ...copied, [type]: true });
