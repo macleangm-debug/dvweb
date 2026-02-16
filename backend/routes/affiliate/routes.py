@@ -926,12 +926,24 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         
         # Validate dates
         try:
-            start = datetime.fromisoformat(promo.start_date.replace('Z', '+00:00'))
-            end = datetime.fromisoformat(promo.end_date.replace('Z', '+00:00'))
+            # Parse dates and ensure they're timezone-aware for comparison
+            start_str = promo.start_date.replace('Z', '+00:00')
+            end_str = promo.end_date.replace('Z', '+00:00')
+            
+            # Handle dates with or without timezone info
+            start = datetime.fromisoformat(start_str)
+            end = datetime.fromisoformat(end_str)
+            
+            # Make both timezone-aware if one is naive
+            if start.tzinfo is None:
+                start = start.replace(tzinfo=timezone.utc)
+            if end.tzinfo is None:
+                end = end.replace(tzinfo=timezone.utc)
+                
             if end <= start:
                 raise HTTPException(status_code=400, detail="End date must be after start date")
-        except ValueError:
-            raise HTTPException(status_code=400, detail="Invalid date format. Use ISO format.")
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=f"Invalid date format. Use ISO format. Error: {str(e)}")
         
         promo_data = {
             "id": str(uuid.uuid4()),
