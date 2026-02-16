@@ -6,7 +6,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://commission-hub-32.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://kpi-tracker-58.preview.emergentagent.com').rstrip('/')
 
 class TestFieldForceHealth:
     """Health check tests"""

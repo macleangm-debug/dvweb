@@ -11,7 +11,7 @@ import requests
 import os
 
 # Use REACT_APP_BACKEND_URL from environment
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://commission-hub-32.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://kpi-tracker-58.preview.emergentagent.com')
 
 class TestPaymentPackages:
     """Test payment packages endpoint"""
@@ -120,7 +120,7 @@ class TestCheckoutEndpoint:
             f"{BASE_URL}/api/payments/checkout",
             json={
                 "package_id": "survey360_monthly",
-                "origin_url": "https://commission-hub-32.preview.emergentagent.com",
+                "origin_url": "https://kpi-tracker-58.preview.emergentagent.com",
                 "user_email": "test@example.com",
                 "metadata": {
                     "source": "test_script",
@@ -152,7 +152,7 @@ class TestCheckoutEndpoint:
             f"{BASE_URL}/api/payments/checkout",
             json={
                 "package_id": "fieldforce_10seats",
-                "origin_url": "https://commission-hub-32.preview.emergentagent.com"
+                "origin_url": "https://kpi-tracker-58.preview.emergentagent.com"
             }
         )
         assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.text}"
@@ -173,7 +173,7 @@ class TestPaymentStatus:
             f"{BASE_URL}/api/payments/checkout",
             json={
                 "package_id": "survey360_monthly",
-                "origin_url": "https://commission-hub-32.preview.emergentagent.com"
+                "origin_url": "https://kpi-tracker-58.preview.emergentagent.com"
             }
         )
         
