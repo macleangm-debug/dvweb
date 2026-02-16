@@ -165,6 +165,8 @@ import HomePage from './pages/HomePage';
 import UserSettings from './pages/UserSettings';
 import ReferralDashboard from './pages/ReferralDashboard';
 import AboutPage from './pages/AboutPage';
+import ProjectsPage from './pages/ProjectsPage';
+import NewsPage from './pages/NewsPage';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
