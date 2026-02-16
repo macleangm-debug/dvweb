@@ -9,3 +9,4 @@ export { default as ContentManagement } from './ContentManagement';
 export { default as ProjectsClients } from './ProjectsClients';
 export { default as AdminSettings } from './AdminSettings';
 export { default as NotificationPanel } from './NotificationPanel';
+export { default as AffiliateManagement } from './AffiliateManagement';
