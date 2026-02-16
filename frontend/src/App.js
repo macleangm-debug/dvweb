@@ -3179,6 +3179,7 @@ function App() {
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/contact-us" element={<ContactPage />} />
                   <Route path="/affiliate" element={<AffiliateProgramPage />} />
+                  <Route path="/affiliate/dashboard" element={<AffiliateDashboard />} />
                 </Routes>
                 <Footer />
               </>
