@@ -97,7 +97,7 @@ import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
 // DataVision Central Auth Pages
-import { DataVisionLogin, DataVisionRegister } from './pages/DataVisionAuth';
+import { DataVisionLogin, DataVisionRegister, ForgotPassword, ResetPassword } from './pages/DataVisionAuth';
 
 // User Dashboard
 import UserDashboard from './pages/UserDashboard';
