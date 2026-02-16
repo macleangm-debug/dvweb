@@ -106,6 +106,16 @@ const AdminLayout = ({ user, logout, children, activeSection, setActiveSection, 
       ]
     },
     {
+      id: 'affiliates',
+      label: 'Affiliate Program',
+      icon: Award,
+      subItems: [
+        { id: 'applications', label: 'Applications' },
+        { id: 'payouts', label: 'Payouts' },
+        { id: 'performance', label: 'Performance' },
+      ]
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: Settings,
