@@ -407,11 +407,12 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
     ):
         """Get affiliate's referral link analytics - clicks by day, sources, geography"""
         user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")  # Support both 'user_id' and 'id' from JWT
         
         affiliate = await db.affiliates.find_one({
             "$or": [
                 {"email": user_email},
-                {"user_id": payload.get("user_id")}
+                {"user_id": user_id}
             ],
             "status": AffiliateStatus.APPROVED
         })
