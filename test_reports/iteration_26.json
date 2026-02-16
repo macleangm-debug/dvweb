@@ -1,0 +1,107 @@
+{
+  "summary": "Testing of Affiliate Analytics Dashboard feature - click-through rates by day, top referral sources, geographic breakdown. All 16 backend tests passed. All frontend UI elements working correctly. Period selector (7/14/30/60/90 days) correctly updates analytics data.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_affiliate_analytics.py",
+    "/app/test_reports/pytest/affiliate_analytics_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_affiliate_analytics.py"
+  ],
+  "success_rate": {
+    "backend": "100% - 16/16 tests passed",
+    "frontend": "100% - All UI tests passed"
+  },
+  "test_credentials": {
+    "admin": "admin@datavision.co.tz / admin123"
+  },
+  "seed_data_creation": "None - used existing seeded data (145 clicks for admin user)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Affiliate analytics dashboard fully implemented and tested. API returns summary, daily_clicks, top_sources, geo_breakdown (MOCKED), and insights. Frontend correctly displays all data with Recharts AreaChart for clicks over time. Period selector works for 7/14/30/60/90 day periods.",
+  "features_tested": {
+    "affiliate_analytics_api": {
+      "endpoint": "GET /api/affiliates/my-analytics?period_days={7|14|30|60|90}",
+      "status": "PASS",
+      "response_fields": ["summary", "daily_clicks", "top_sources", "geo_breakdown", "insights"],
+      "tests_passed": 16
+    },
+    "affiliate_dashboard_overview": {
+      "route": "/affiliate/dashboard",
+      "status": "PASS",
+      "elements_verified": [
+        "Promo Code section (ADMINRBJY)",
+        "Shortened Referral Link with NEW badge",
+        "Full referral link with Copy button",
+        "Stats cards (Total Clicks, Referrals, Conversion, Earnings)",
+        "Available Balance ($250.00) with Request Payout button",
+        "Tier progress bar (Bronze → Pro Partner)",
+        "Commission Period Active notification"
+      ]
+    },
+    "affiliate_analytics_tab": {
+      "status": "PASS",
+      "elements_verified": [
+        "Link Performance Analytics title",
+        "Period selector dropdown (7/14/30/60/90 days)",
+        "Summary cards (Total Clicks, Referrals, Conversions, Conv Rate, Avg/Day)",
+        "Clicks Over Time AreaChart with date labels",
+        "Top Referral Sources (direct, Shortened Link)",
+        "Geographic Breakdown (Tanzania 45%, Kenya 20%, Uganda 15%, Rwanda 10%, Other 10%)",
+        "Performance Insights section with actionable tips"
+      ]
+    },
+    "period_selector": {
+      "status": "PASS",
+      "test_cases": [
+        "7 days - UI updates correctly",
+        "14 days - UI updates correctly",
+        "30 days (default) - UI shows correctly",
+        "60 days - UI updates correctly",
+        "90 days - UI updates correctly, Avg/Day recalculated"
+      ]
+    },
+    "admin_login_jwt": {
+      "status": "PASS",
+      "details": "JWT lookup supports both 'id' and 'user_id' fields"
+    }
+  },
+  "api_verification": {
+    "GET /api/affiliates/my-profile": {
+      "status_code": 200,
+      "returns": "is_affiliate, referral_code, total_clicks, total_referrals, tier, commission_rate, etc."
+    },
+    "GET /api/affiliates/my-analytics": {
+      "status_code": 200,
+      "returns": "period_days, summary, daily_clicks, top_sources, geo_breakdown, insights"
+    },
+    "GET /api/affiliates/my-referrals": {
+      "status_code": 200,
+      "returns": "referrals array, total count"
+    },
+    "GET /api/affiliates/my-commissions": {
+      "status_code": 200,
+      "returns": "commissions array"
+    },
+    "GET /api/affiliates/my-payouts": {
+      "status_code": 200,
+      "returns": "payouts array"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": true,
+    "mocked_apis_list": [
+      "Geographic breakdown uses mock percentages (45% Tanzania, 20% Kenya, 15% Uganda, 10% Rwanda, 10% Other) - in production would use IP geolocation"
+    ]
+  }
+}
