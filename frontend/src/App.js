@@ -243,11 +243,12 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+
 // ==================== COMPONENTS ====================
+// Note: Navbar and Footer have been extracted to /components/layout/
 // Note: AnimatedCounter and AfricaMap have been extracted to /components/common/
 
-// Navigation Component
-const Navbar = () => {
+// ==================== PAGES ====================
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
