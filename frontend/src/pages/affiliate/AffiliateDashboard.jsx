@@ -477,7 +477,256 @@ const AffiliateDashboard = () => {
           </motion.div>
         )}
 
-        {/* Recent Referrals */}
+        {/* Tab Navigation */}
+        <div className="flex gap-2 mb-6 border-b border-slate-800 overflow-x-auto">
+          {[
+            { id: 'overview', label: 'Referrals', icon: Users },
+            { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+            { id: 'commissions', label: 'Commissions', icon: DollarSign },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all border-b-2 -mb-px ${
+                activeTab === tab.id
+                  ? 'text-red-400 border-red-500'
+                  : 'text-slate-400 border-transparent hover:text-white'
+              }`}
+              data-testid={`tab-${tab.id}`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Analytics Tab Content */}
+        {activeTab === 'analytics' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            {/* Period Selector */}
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Link Performance Analytics</h3>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-slate-400" />
+                <select
+                  value={analyticsPeriod}
+                  onChange={(e) => setAnalyticsPeriod(Number(e.target.value))}
+                  className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white"
+                  data-testid="analytics-period-select"
+                >
+                  <option value={7}>Last 7 days</option>
+                  <option value={14}>Last 14 days</option>
+                  <option value={30}>Last 30 days</option>
+                  <option value={60}>Last 60 days</option>
+                  <option value={90}>Last 90 days</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Analytics Summary Cards */}
+            {analytics && (
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MousePointer className="w-4 h-4 text-blue-400" />
+                    <span className="text-xs text-slate-400">Total Clicks</span>
+                  </div>
+                  <p className="text-xl font-bold">{analytics.summary.total_clicks}</p>
+                </div>
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Users className="w-4 h-4 text-emerald-400" />
+                    <span className="text-xs text-slate-400">Referrals</span>
+                  </div>
+                  <p className="text-xl font-bold">{analytics.summary.period_referrals}</p>
+                </div>
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    <span className="text-xs text-slate-400">Conversions</span>
+                  </div>
+                  <p className="text-xl font-bold">{analytics.summary.period_conversions}</p>
+                </div>
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <TrendingUp className="w-4 h-4 text-amber-400" />
+                    <span className="text-xs text-slate-400">Conv. Rate</span>
+                  </div>
+                  <p className="text-xl font-bold">{analytics.summary.conversion_rate}%</p>
+                </div>
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Eye className="w-4 h-4 text-purple-400" />
+                    <span className="text-xs text-slate-400">Avg/Day</span>
+                  </div>
+                  <p className="text-xl font-bold">{analytics.summary.avg_clicks_per_day}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Clicks Over Time Chart */}
+            {analytics?.daily_clicks && (
+              <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <h4 className="font-semibold mb-4">Clicks Over Time</h4>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={analytics.daily_clicks}>
+                      <defs>
+                        <linearGradient id="clickGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis 
+                        dataKey="date" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 11 }}
+                        tickFormatter={(value) => {
+                          const date = new Date(value);
+                          return `${date.getMonth()+1}/${date.getDate()}`;
+                        }}
+                      />
+                      <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#1e293b', 
+                          border: '1px solid #334155',
+                          borderRadius: '8px'
+                        }}
+                        labelStyle={{ color: '#94a3b8' }}
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="clicks" 
+                        stroke="#ef4444" 
+                        strokeWidth={2}
+                        fill="url(#clickGradient)" 
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            )}
+
+            {/* Top Sources & Geographic Breakdown */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Top Referral Sources */}
+              {analytics?.top_sources && analytics.top_sources.length > 0 && (
+                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                  <h4 className="font-semibold mb-4 flex items-center gap-2">
+                    <Share2 className="w-4 h-4 text-blue-400" />
+                    Top Referral Sources
+                  </h4>
+                  <div className="space-y-3">
+                    {analytics.top_sources.map((source, index) => {
+                      const maxClicks = analytics.top_sources[0]?.clicks || 1;
+                      const percentage = (source.clicks / maxClicks) * 100;
+                      return (
+                        <div key={index}>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm text-slate-300 truncate max-w-[200px]" title={source.source}>
+                              {source.source}
+                            </span>
+                            <span className="text-sm font-medium text-white">{source.clicks} clicks</span>
+                          </div>
+                          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {analytics.top_sources.length === 0 && (
+                    <p className="text-sm text-slate-400 text-center py-4">No source data yet</p>
+                  )}
+                </div>
+              )}
+
+              {/* Geographic Breakdown */}
+              {analytics?.geo_breakdown && analytics.geo_breakdown.length > 0 && (
+                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                  <h4 className="font-semibold mb-4 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-emerald-400" />
+                    Geographic Breakdown
+                  </h4>
+                  <div className="space-y-3">
+                    {analytics.geo_breakdown.map((region, index) => (
+                      <div key={index}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm text-slate-300">{region.region}</span>
+                          <span className="text-sm text-slate-400">{region.percentage}% ({region.clicks} clicks)</span>
+                        </div>
+                        <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all"
+                            style={{ width: `${region.percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* AI-Generated Insights */}
+            {analytics?.insights && analytics.insights.length > 0 && (
+              <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl p-6 border border-purple-500/20">
+                <h4 className="font-semibold mb-4 flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-yellow-400" />
+                  Performance Insights
+                </h4>
+                <div className="space-y-3">
+                  {analytics.insights.map((insight, index) => (
+                    <div 
+                      key={index} 
+                      className={`flex items-start gap-3 p-3 rounded-lg ${
+                        insight.type === 'success' ? 'bg-emerald-500/10' :
+                        insight.type === 'warning' ? 'bg-amber-500/10' :
+                        insight.type === 'tip' ? 'bg-blue-500/10' :
+                        'bg-slate-800/50'
+                      }`}
+                    >
+                      {insight.type === 'success' && <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />}
+                      {insight.type === 'warning' && <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />}
+                      {insight.type === 'tip' && <Lightbulb className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />}
+                      {insight.type === 'info' && <Info className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />}
+                      <div>
+                        <p className="font-medium text-sm text-white">{insight.title}</p>
+                        <p className="text-xs text-slate-400 mt-0.5">{insight.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {(!analytics || analytics.summary.total_clicks === 0) && (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <BarChart3 className="w-8 h-8 text-slate-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">No Analytics Data Yet</h3>
+                <p className="text-slate-400 text-sm max-w-md mx-auto">
+                  Share your referral link to start tracking clicks and conversions. 
+                  Analytics will appear here once your link gets some traffic.
+                </p>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* Recent Referrals - Only show on overview tab */}
+        {activeTab === 'overview' && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
