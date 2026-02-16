@@ -533,14 +533,15 @@ const AffiliateProgramPage = () => {
         // Use default data if API fails
         setProgramInfo({
           tiers: [
-            { name: 'Bronze', min_referrals: 0, max_referrals: 5, commission_rate: 10, color: '#CD7F32', benefits: ['Basic dashboard', 'Monthly payouts'] },
-            { name: 'Silver', min_referrals: 6, max_referrals: 20, commission_rate: 15, color: '#C0C0C0', benefits: ['Priority support', 'Bi-weekly payouts', 'Custom links'] },
-            { name: 'Gold', min_referrals: 21, max_referrals: 50, commission_rate: 20, color: '#FFD700', benefits: ['Dedicated manager', 'Weekly payouts', 'Co-marketing'] },
-            { name: 'Platinum', min_referrals: 51, max_referrals: null, commission_rate: 25, color: '#E5E4E2', benefits: ['VIP support', 'Instant payouts', 'Revenue bonuses'] }
+            { name: 'Partner', min_referrals: 0, max_referrals: 10, commission_rate: 10, color: '#10b981', benefits: ['10% commission on all referrals', 'Monthly payouts', 'Basic dashboard'] },
+            { name: 'Pro Partner', min_referrals: 11, max_referrals: 50, commission_rate: 10, color: '#3b82f6', benefits: ['10% commission', 'Bi-weekly payouts', 'Priority support', 'Custom links'] },
+            { name: 'Elite Partner', min_referrals: 51, max_referrals: null, commission_rate: 10, color: '#8b5cf6', benefits: ['10% commission', 'Weekly payouts', 'Dedicated account manager', 'Co-marketing'] }
           ],
-          highlights: ['Earn up to 25% commission', 'Get paid via Bank, PayPal, M-Pesa', '90-day cookie duration', 'Referred users get 20% off'],
+          highlights: ['Earn 10% commission on all referrals', 'Commission valid for 12 months per referral', 'Get paid via Bank, PayPal, M-Pesa', '90-day cookie duration', 'Referred users get 20% off'],
           payout_settings: { min_threshold: 50, payment_methods: ['bank_transfer', 'paypal', 'mpesa', 'crypto'], currency: 'USD' },
-          referral_benefits: { discount_percent: 20, extended_trial_days: 14 }
+          referral_benefits: { discount_percent: 20, extended_trial_days: 14 },
+          commission_rate: 10,
+          commission_duration_months: 12
         });
       } finally {
         setLoading(false);
