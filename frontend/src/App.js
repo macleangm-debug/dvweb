@@ -164,6 +164,7 @@ import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
 import HomePage from './pages/HomePage';
 import UserSettings from './pages/UserSettings';
 import ReferralDashboard from './pages/ReferralDashboard';
+import AboutPage from './pages/AboutPage';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
