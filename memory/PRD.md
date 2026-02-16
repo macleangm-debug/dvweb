@@ -1214,3 +1214,40 @@ DataVision International is a research and statistics consultancy based in Tanza
 
 ## Test Credentials
 - **Admin:** admin@datavision.co.tz / admin123
+
+---
+
+## February 16, 2026 - Affiliate Analytics Dashboard (COMPLETED)
+
+### Feature: Referral Link Analytics
+
+**Backend - New Endpoint:**
+- `GET /api/affiliates/my-analytics?period_days={7|14|30|60|90}`
+- Returns:
+  - `summary`: total_clicks, period_referrals, period_conversions, conversion_rate, avg_clicks_per_day
+  - `daily_clicks`: Array of {date, clicks} for time series chart
+  - `top_sources`: Top 10 referral sources with click counts
+  - `geo_breakdown`: Geographic distribution (MOCKED - would use IP geolocation in production)
+  - `insights`: AI-generated actionable performance tips
+
+**Frontend - Analytics Tab:**
+- Period selector dropdown (7/14/30/60/90 days)
+- Summary metric cards (5 KPIs)
+- Clicks Over Time chart (Recharts AreaChart)
+- Top Referral Sources (bar chart with progress bars)
+- Geographic Breakdown (region percentages with progress bars)
+- Performance Insights section with categorized tips (success/warning/tip/info)
+
+**Bug Fix:**
+- Fixed JWT lookup to support both `id` and `user_id` fields for admin users
+
+**Files Updated:**
+- `/app/backend/routes/affiliate/routes.py` - Added my-analytics endpoint
+- `/app/frontend/src/pages/affiliate/AffiliateDashboard.jsx` - Added Analytics tab
+
+**Testing:** 100% pass rate
+- Backend: 16/16 tests passed
+- Frontend: All UI tests passed
+
+**Note:** Geographic breakdown is MOCKED (45% Tanzania, 20% Kenya, etc.). Production would use IP geolocation.
+
