@@ -1030,3 +1030,77 @@ DataVision International is a research and statistics consultancy based in Tanza
 - Route: `/affiliate`
 - Footer link: Company section
 
+
+
+---
+
+## February 16, 2026 - Affiliate Dashboard, KPI Tracking & Promo Codes (COMPLETED)
+
+### Features Implemented
+
+**1. Affiliate Dashboard (`/affiliate/dashboard`)**
+- Dedicated portal for approved affiliates
+- Shows unique promo code and referral link with copy functionality
+- Performance stats: Total Referrals, Conversions, Earnings, Pending Balance
+- Referral tracking table
+- Payout request functionality
+- Requires authentication (redirects to login if not authenticated)
+
+**2. Admin KPI Tracking for Affiliates**
+- New "KPI Tracking" tab in Admin Panel > Affiliate Program
+- Stats cards: Active Affiliates, Underperforming count, Performance Rate, Period
+- KPI Thresholds alert: 5 referrals/month minimum, 5% conversion rate minimum
+- Period selector: 7, 30, 60, 90 days
+- Affiliate Performance table with referrals, clicks, conversion, earnings
+- Performance indicator (Good/Low) based on KPIs
+- **Suspend button** for underperforming affiliates
+- **Reactivate button** for suspended affiliates
+
+**3. Admin Promo Code Management**
+- New "Promo Codes" tab in Admin Panel > Affiliate Program
+- Stats cards: Total Codes, Active, Inactive, Expired
+- "Create Promo Code" button (purple)
+- Promo codes table with code, name, discount, valid period, usage, status, actions
+- Toggle (activate/deactivate), Edit, Delete actions
+- Create/Edit modal with fields:
+  - Code (auto-uppercase)
+  - Name, Description
+  - Discount type (percentage/fixed_amount)
+  - Discount value
+  - Start/End dates
+  - Max uses, Max uses per user
+  - Min order value
+  - Active checkbox
+- Supports holiday/seasonal discounts (e.g., NEWYEAR25, HOLIDAY25)
+
+### API Endpoints Added
+
+**KPI Tracking:**
+- `GET /api/affiliates/admin/kpi?period_days=30` - Get affiliate KPI metrics
+
+**Suspend/Reactivate:**
+- `PUT /api/affiliates/admin/affiliates/{id}/suspend?reason=...` - Suspend affiliate
+- `PUT /api/affiliates/admin/affiliates/{id}/reactivate` - Reactivate suspended affiliate
+
+**Promo Codes CRUD:**
+- `POST /api/affiliates/admin/promo-codes` - Create promo code
+- `GET /api/affiliates/admin/promo-codes` - List all promo codes
+- `GET /api/affiliates/admin/promo-codes/{id}` - Get single promo code
+- `PUT /api/affiliates/admin/promo-codes/{id}` - Update promo code
+- `DELETE /api/affiliates/admin/promo-codes/{id}` - Delete promo code
+
+**Public Validation:**
+- `GET /api/affiliates/promo-codes/validate/{code}` - Validate promo code (public, no auth)
+
+### Files Created/Updated
+
+**Backend:**
+- `/app/backend/routes/affiliate/routes.py` - Added KPI, suspend, reactivate, promo code endpoints
+- `/app/backend/routes/affiliate/models.py` - Added PromoCodeCreate, PromoCodeUpdate, PromoCodeType, PromoCodeStatus
+
+**Frontend:**
+- `/app/frontend/src/components/admin/AffiliateManagement.jsx` - Complete rewrite with 4 tabs
+- `/app/frontend/src/pages/affiliate/AffiliateDashboard.jsx` - Affiliate portal (existing, route added)
+- `/app/frontend/src/App.js` - Added route `/affiliate/dashboard`
+
+### Testing: 100% pass rate - 35/35 backend tests passed, all UI tabs working
