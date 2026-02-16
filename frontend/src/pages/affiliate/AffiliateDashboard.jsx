@@ -782,69 +782,124 @@ const AffiliateDashboard = () => {
             </table>
           </div>
         </motion.div>
+        )}
 
-        {/* Payout History */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-slate-900/50 rounded-xl border border-slate-800"
-        >
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-            <h3 className="font-semibold">Payout History</h3>
-            <span className="text-sm text-slate-400">{payouts.length} payouts</span>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-slate-800/50">
-                <tr>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Amount</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Method</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Status</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Requested</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Processed</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {payouts.length === 0 ? (
-                  <tr>
-                    <td colSpan="5" className="px-4 py-8 text-center text-slate-500">
-                      No payouts yet
-                    </td>
-                  </tr>
-                ) : (
-                  payouts.map((payout, idx) => (
-                    <tr key={payout.id || idx} className="hover:bg-slate-800/30">
-                      <td className="px-4 py-3 text-sm font-semibold">${payout.amount?.toFixed(2)}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2 text-sm">
-                          {getPaymentMethodIcon(payout.payment_method)}
-                          <span className="capitalize">{payout.payment_method?.replace('_', ' ')}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          payout.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
-                          payout.status === 'processing' ? 'bg-blue-500/20 text-blue-400' :
-                          payout.status === 'pending' ? 'bg-amber-500/20 text-amber-400' :
-                          'bg-red-500/20 text-red-400'
-                        }`}>
-                          {payout.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-slate-400">
-                        {new Date(payout.requested_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-slate-400">
-                        {payout.processed_at ? new Date(payout.processed_at).toLocaleDateString() : '-'}
-                      </td>
+        {/* Commissions Tab */}
+        {activeTab === 'commissions' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            {/* Commissions Table */}
+            <div className="bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="font-semibold">Commission History</h3>
+                <span className="text-sm text-slate-400">{commissions.length} commissions</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-800/50">
+                    <tr>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Referral</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Amount</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Status</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Date</th>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800">
+                    {commissions.length === 0 ? (
+                      <tr>
+                        <td colSpan="4" className="px-4 py-8 text-center text-slate-500">
+                          No commissions yet. Get referrals to start earning!
+                        </td>
+                      </tr>
+                    ) : (
+                      commissions.map((commission, idx) => (
+                        <tr key={commission.id || idx} className="hover:bg-slate-800/30">
+                          <td className="px-4 py-3 text-sm">{commission.referral_email || 'N/A'}</td>
+                          <td className="px-4 py-3 text-sm font-semibold text-emerald-400">
+                            +${commission.amount?.toFixed(2)}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              commission.status === 'paid' ? 'bg-emerald-500/20 text-emerald-400' :
+                              commission.status === 'pending' ? 'bg-amber-500/20 text-amber-400' :
+                              'bg-slate-500/20 text-slate-400'
+                            }`}>
+                              {commission.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-slate-400">
+                            {commission.created_at ? new Date(commission.created_at).toLocaleDateString() : '-'}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Payout History in Commissions Tab */}
+            <div className="bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="font-semibold">Payout History</h3>
+                <span className="text-sm text-slate-400">{payouts.length} payouts</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-800/50">
+                    <tr>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Amount</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Method</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Status</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Requested</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase">Processed</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800">
+                    {payouts.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-4 py-8 text-center text-slate-500">
+                          No payouts yet
+                        </td>
+                      </tr>
+                    ) : (
+                      payouts.map((payout, idx) => (
+                        <tr key={payout.id || idx} className="hover:bg-slate-800/30">
+                          <td className="px-4 py-3 text-sm font-semibold">${payout.amount?.toFixed(2)}</td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2 text-sm">
+                              {getPaymentMethodIcon(payout.payment_method)}
+                              <span className="capitalize">{payout.payment_method?.replace('_', ' ')}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              payout.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
+                              payout.status === 'processing' ? 'bg-blue-500/20 text-blue-400' :
+                              payout.status === 'pending' ? 'bg-amber-500/20 text-amber-400' :
+                              'bg-red-500/20 text-red-400'
+                            }`}>
+                              {payout.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-slate-400">
+                            {new Date(payout.requested_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-slate-400">
+                            {payout.processed_at ? new Date(payout.processed_at).toLocaleDateString() : '-'}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Payout Request Modal */}
