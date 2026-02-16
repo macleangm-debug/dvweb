@@ -436,6 +436,9 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             update_data["status"] = update.status
             if update.status == AffiliateStatus.APPROVED:
                 update_data["approved_at"] = datetime.now(timezone.utc).isoformat()
+                # Set commission end date (12 months from approval)
+                commission_end = datetime.now(timezone.utc) + timedelta(days=365)
+                update_data["commission_end_date"] = commission_end.isoformat()
         
         if update.tier:
             tier = next((t for t in TIERS if t["name"] == update.tier), None)
