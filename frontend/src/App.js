@@ -1448,6 +1448,7 @@ function App() {
                   <Route path="/contact-us" element={<ContactPage />} />
                   <Route path="/affiliate" element={<AffiliateProgramPage />} />
                   <Route path="/affiliate/dashboard" element={<AffiliateDashboard />} />
+                  <Route path="/settings" element={<UserSettings />} />
                 </Routes>
                 <Footer />
               </>
