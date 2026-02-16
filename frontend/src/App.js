@@ -1450,6 +1450,7 @@ function App() {
                   <Route path="/affiliate" element={<AffiliateProgramPage />} />
                   <Route path="/affiliate/dashboard" element={<AffiliateDashboard />} />
                   <Route path="/settings" element={<UserSettings />} />
+                  <Route path="/referrals" element={<ReferralDashboard />} />
                 </Routes>
                 <Footer />
               </>
