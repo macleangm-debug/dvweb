@@ -1251,3 +1251,110 @@ DataVision International is a research and statistics consultancy based in Tanza
 
 **Note:** Geographic breakdown is MOCKED (45% Tanzania, 20% Kenya, etc.). Production would use IP geolocation.
 
+
+---
+
+## February 16, 2026 - Centralized Email Service & Password Reset (COMPLETED)
+
+### 1. Centralized Email Service with Resend
+
+**Architecture:**
+- SSO handles ALL emails centrally
+- Products call SSO email endpoints for customized notifications
+- Single Resend integration point
+
+**Email Types Implemented:**
+- Welcome email (with product branding)
+- Password reset
+- Email verification
+- Security alerts (new login, password changed)
+- Product notifications (Survey360, FieldForce, DataPulse)
+
+**API Endpoints:**
+```
+GET  /api/email/status
+POST /api/email/welcome
+POST /api/email/password-reset
+POST /api/email/verification
+POST /api/email/security-alert
+POST /api/email/product-notification
+POST /api/email/survey360/survey-invite
+POST /api/email/survey360/survey-complete
+POST /api/email/fieldforce/data-sync
+POST /api/email/fieldforce/assignment
+POST /api/email/datapulse/pipeline-status
+POST /api/email/datapulse/report-ready
+```
+
+**Files Created:**
+- `/app/backend/services/email_service.py` - Email templates and service
+- `/app/backend/routes/email_routes.py` - Email API endpoints
+
+### 2. Forgot Password Flow
+
+**Backend Endpoints:**
+- `POST /api/auth/forgot-password` - Sends reset link
+- `POST /api/auth/reset-password` - Validates token, updates password
+- `POST /api/auth/change-password` - For logged-in users
+
+**Frontend Pages:**
+- `/auth/forgot-password` - Email input form
+- `/auth/reset-password?token=xxx` - New password form
+
+**Security:**
+- Tokens expire in 1 hour
+- Single-use tokens (marked as used after reset)
+- No email enumeration (same response for valid/invalid emails)
+
+### 3. Login Security Alerts
+
+- Sends email on every login (after first login)
+- Tracks last_login timestamp
+- Includes login time and platform info
+
+### 4. Tier-Based Email Preferences
+
+**Tiers:**
+| Tier | Product Updates | Activity | Weekly Summary |
+|------|-----------------|----------|----------------|
+| Free | Monthly | Daily | Off |
+| Pro | Weekly | Immediate | Weekly |
+| Enterprise | Immediate | Immediate | Weekly |
+
+**Email Categories (10):**
+- Security (mandatory)
+- Billing (mandatory)
+- Product Updates
+- Tips & Tutorials
+- Company News
+- Survey Activity
+- Field Activity
+- Reports Ready
+- Weekly Summary
+- Monthly Report
+
+**Preferences API:**
+```
+GET  /api/email-preferences/
+PUT  /api/email-preferences/category
+PUT  /api/email-preferences/bulk
+POST /api/email-preferences/unsubscribe-all
+POST /api/email-preferences/resubscribe
+PUT  /api/email-preferences/quiet-hours
+GET  /api/email-preferences/reset-to-defaults
+GET  /api/email-preferences/unsubscribe/{token}
+```
+
+**Files Created:**
+- `/app/backend/services/email_preferences.py` - Preferences model
+- `/app/backend/routes/email_preferences_routes.py` - Preferences API
+
+### Configuration
+- Resend API Key: Configured in backend/.env
+- Sender: onboarding@resend.dev (DataVision International)
+
+### Testing
+- Email sending verified via Resend test endpoint
+- Forgot password flow tested end-to-end
+- Email preferences API tested
+
