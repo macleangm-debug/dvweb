@@ -14,7 +14,7 @@ import os
 import time
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://admin-insights-hub.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://commission-hub-32.preview.emergentagent.com')
 
 class TestDataVisionAuth:
     """DataVision Authentication endpoint tests"""
