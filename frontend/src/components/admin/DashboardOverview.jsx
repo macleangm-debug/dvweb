@@ -887,5 +887,5 @@ const DashboardOverview = ({ subSection = 'overview' }) => {
     return <ActivityView />;
   }
 
-  // Default Overview - original dashboard content
-  return (
+  // Default Overview
+  const OverviewContent = (
