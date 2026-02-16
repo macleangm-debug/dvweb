@@ -87,7 +87,7 @@ const ActivityItem = ({ icon: Icon, title, description, time, type, category }) 
   );
 };
 
-const DashboardOverview = () => {
+const DashboardOverview = ({ subSection = 'overview' }) => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState([]);
@@ -97,6 +97,14 @@ const DashboardOverview = () => {
     products: []
   });
   const [selectedPeriod, setSelectedPeriod] = useState('30');
+  const [analyticsData, setAnalyticsData] = useState({
+    pageViews: [],
+    userSources: [],
+    topPages: [],
+    conversionFunnel: [],
+    deviceBreakdown: [],
+    geoData: []
+  });
 
   useEffect(() => {
     const fetchDashboardData = async () => {
