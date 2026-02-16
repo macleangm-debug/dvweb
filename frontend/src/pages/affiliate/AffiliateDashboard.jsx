@@ -161,7 +161,9 @@ const AffiliateDashboard = () => {
     );
   }
 
-  const referralLink = profile?.referral_link || `https://datavision.co.tz/?ref=${profile?.referral_code}`;
+  // Shortened link uses the API base URL
+  const shortenedLink = `${API.replace('/api', '')}/r/${profile?.referral_code}`;
+  const fullReferralLink = profile?.referral_link || `https://datavision.co.tz/?ref=${profile?.referral_code}`;
   const conversionRate = profile?.total_clicks > 0 
     ? ((profile?.total_referrals / profile?.total_clicks) * 100).toFixed(1) 
     : 0;
@@ -185,7 +187,7 @@ const AffiliateDashboard = () => {
           </div>
         </div>
 
-        {/* Promo Code & Referral Link - Prominent */}
+        {/* Promo Code & Referral Links - Prominent */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Promo Code */}
           <motion.div
@@ -206,6 +208,7 @@ const AffiliateDashboard = () => {
                 className={`p-3 rounded-xl transition-all ${
                   copied.code ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 hover:bg-white/20'
                 }`}
+                data-testid="copy-promo-code-btn"
               >
                 {copied.code ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
@@ -215,35 +218,66 @@ const AffiliateDashboard = () => {
             </p>
           </motion.div>
 
-          {/* Referral Link */}
+          {/* Shortened Referral Link */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl p-6 border border-blue-500/20"
+            className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl p-6 border border-emerald-500/20"
           >
             <div className="flex items-center gap-2 mb-4">
-              <LinkIcon className="w-5 h-5 text-blue-400" />
-              <h3 className="font-semibold text-lg">Your Referral Link</h3>
+              <LinkIcon className="w-5 h-5 text-emerald-400" />
+              <h3 className="font-semibold text-lg">Shortened Referral Link</h3>
+              <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs font-medium rounded-full">NEW</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex-1 bg-slate-900/50 rounded-xl px-4 py-3 text-sm text-slate-300 truncate">
-                {referralLink}
+              <div className="flex-1 bg-slate-900/50 rounded-xl px-4 py-3 font-mono text-base text-emerald-300 truncate">
+                {shortenedLink}
               </div>
               <button
-                onClick={() => copyToClipboard(referralLink, 'link')}
+                onClick={() => copyToClipboard(shortenedLink, 'short')}
                 className={`p-3 rounded-xl transition-all ${
-                  copied.link ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 hover:bg-white/20'
+                  copied.short ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 hover:bg-white/20'
                 }`}
+                data-testid="copy-short-link-btn"
               >
-                {copied.link ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                {copied.short ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
             </div>
             <p className="text-sm text-slate-400 mt-3">
-              Anyone who clicks this link will be tracked as your referral for 90 days.
+              Easy to share shortened link. Perfect for social media & SMS!
             </p>
           </motion.div>
         </div>
+
+        {/* Full Referral Link */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-slate-900/30 rounded-xl p-4 border border-slate-800 mb-8"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <LinkIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
+              <span className="text-sm text-slate-500">Full Link:</span>
+              <span className="text-sm text-slate-400 truncate">{fullReferralLink}</span>
+            </div>
+            <button
+              onClick={() => copyToClipboard(fullReferralLink, 'link')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 flex-shrink-0 ${
+                copied.link ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/5 hover:bg-white/10 text-slate-400'
+              }`}
+              data-testid="copy-full-link-btn"
+            >
+              {copied.link ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              {copied.link ? 'Copied!' : 'Copy'}
+            </button>
+          </div>
+          <p className="text-xs text-slate-500 mt-2 pl-7">
+            90-day cookie tracking • Auto-attributed referrals
+          </p>
+        </motion.div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
