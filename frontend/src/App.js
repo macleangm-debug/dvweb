@@ -1239,6 +1239,7 @@ const Footer = () => {
     { name: 'Careers', path: '/careers' },
     { name: 'Insights', path: '/insights' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Affiliate Program', path: '/affiliate' },
   ];
 
   return (
