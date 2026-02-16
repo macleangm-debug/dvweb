@@ -1263,7 +1263,7 @@ const AdminDashboard = () => {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <DashboardOverview />;
+        return <DashboardOverview subSection={activeSubSection} />;
       case 'content':
         return <ContentManagement subSection={activeSubSection} />;
       case 'solutions':
