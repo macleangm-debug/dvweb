@@ -16,6 +16,9 @@ import {
 // Extracted Common Components
 import { AnimatedCounter, AfricaMap } from './components/common';
 
+// Extracted Layout Components
+import { Navbar, Footer } from './components/layout';
+
 import {
   ResearchStatisticsPage,
   MonitoringEvaluationPage,
