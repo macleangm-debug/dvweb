@@ -930,6 +930,7 @@ DataVision International is a research and statistics consultancy based in Tanza
 - `notification-bell` - Admin notification bell
 
 ## Completed Tasks ✅
+- **Affiliate Dashboard & KPI Tracking (P0)** - Affiliate portal, admin KPI tracking with suspend/reactivate, promo codes (Feb 16, 2026)
 - **Trust Badges & Customer Logos (P1)** - Added partner organization logos on homepage (Feb 16, 2026)
 - **Affiliate Admin Dashboard (P0)** - Full admin panel for managing affiliate applications and payouts (Feb 16, 2026)
 - **Frontend Refactoring - Phase 1 (P1)** - Extracted AnimatedCounter & AfricaMap to /components/common/ (Feb 16, 2026)
