@@ -30,6 +30,50 @@ class CommissionStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
+class PromoCodeType(str, Enum):
+    PERCENTAGE = "percentage"
+    FIXED_AMOUNT = "fixed_amount"
+
+
+class PromoCodeStatus(str, Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    EXPIRED = "expired"
+
+
+# ==================== PROMO CODE MODELS ====================
+
+class PromoCodeCreate(BaseModel):
+    """Create a promotional code (admin-only)"""
+    code: str = Field(..., min_length=3, max_length=20)
+    name: str = Field(..., min_length=2, max_length=100)
+    description: Optional[str] = None
+    discount_type: PromoCodeType = PromoCodeType.PERCENTAGE
+    discount_value: float = Field(..., gt=0)  # Percentage or fixed amount
+    max_uses: Optional[int] = None  # None = unlimited
+    max_uses_per_user: int = 1
+    min_order_value: Optional[float] = None
+    applicable_products: List[str] = []  # Empty = all products
+    start_date: str  # ISO format
+    end_date: str    # ISO format
+    is_active: bool = True
+
+
+class PromoCodeUpdate(BaseModel):
+    """Update a promotional code"""
+    name: Optional[str] = None
+    description: Optional[str] = None
+    discount_type: Optional[PromoCodeType] = None
+    discount_value: Optional[float] = None
+    max_uses: Optional[int] = None
+    max_uses_per_user: Optional[int] = None
+    min_order_value: Optional[float] = None
+    applicable_products: Optional[List[str]] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
 # ==================== REQUEST MODELS ====================
 
 class PaymentInfoModel(BaseModel):
