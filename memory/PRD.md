@@ -1358,3 +1358,114 @@ GET  /api/email-preferences/unsubscribe/{token}
 - Forgot password flow tested end-to-end
 - Email preferences API tested
 
+
+---
+
+### February 16, 2026 - Major Refactoring & New Features (COMPLETED)
+
+**1. Email Endpoints Refactored to Use Pydantic Models:**
+- `/api/email/send-product-email` - Generic product email endpoint (JSON body)
+- `/api/email/survey360/survey-invite` - Survey invite endpoint (JSON body)
+- `/api/email/survey360/survey-complete` - Survey completion (JSON body)
+- `/api/email/fieldforce/data-sync` - Field data sync notification (JSON body)
+- `/api/email/fieldforce/assignment` - Assignment notification (JSON body)
+- `/api/email/datapulse/pipeline-status` - Pipeline status (JSON body)
+- `/api/email/datapulse/report-ready` - Report ready notification (JSON body)
+
+**Files Updated:**
+- `/app/backend/routes/email_routes.py` - Pydantic models for all product email endpoints
+
+**2. Frontend App.js Refactoring:**
+- Extracted `HomePage` component to `/app/frontend/src/pages/HomePage.jsx` (789 lines)
+- Reduced `App.js` from ~2233 lines to ~1461 lines (772 lines extracted)
+- `HomePage` component now imported and used in App.js routing
+
+**Files Created/Updated:**
+- `/app/frontend/src/pages/HomePage.jsx` (NEW - 789 lines)
+- `/app/frontend/src/App.js` (Updated - imports HomePage)
+
+**3. Backend Auth Routes Modularization:**
+- Moved password reset endpoints from `server.py` to `auth_routes.py`
+- `/api/auth/forgot-password` - Trigger password reset email
+- `/api/auth/reset-password` - Reset password with token
+- `/api/auth/change-password` - Change password for logged-in users
+- Reduced `server.py` from ~3350 lines to ~3182 lines (165+ lines moved)
+
+**Files Updated:**
+- `/app/backend/routes/auth_routes.py` - Now includes password management endpoints
+- `/app/backend/server.py` - Imports and uses auth_routes.py
+
+**4. Admin Analytics Dashboard:**
+- New Analytics view in Dashboard section with:
+  - Quick stats: Total Page Views, Unique Visitors, Avg. Session Duration, Bounce Rate
+  - Page Views & Visitors chart (Area chart over 30 days)
+  - Traffic Sources pie chart (Organic, Direct, Social, Referral, Email)
+  - Device Breakdown pie chart (Desktop, Mobile, Tablet)
+  - Top Pages table with views, avg time, and bounce rate
+  - Conversion Funnel visualization
+  - Geographic Distribution by country
+- Activity Log view with recent activity feed
+
+**Note:** Analytics data uses MOCK DATA for demonstration purposes
+
+**Files Updated:**
+- `/app/frontend/src/components/admin/DashboardOverview.jsx` - Added Analytics and Activity views
+
+**5. Promo Codes Linked to Products:**
+- Added product selection UI in promo code modal (FieldForce, Survey360, DataPulse)
+- Promo codes can now be linked to specific products or all products
+- Product labels displayed in promo codes table (FF, S360, DP)
+
+**Files Updated:**
+- `/app/frontend/src/components/admin/AffiliateManagement.jsx` - Product selection in promo codes
+
+**Testing:** 100% pass rate - All 18 backend tests passed
+
+---
+
+## Pending/In Progress Tasks
+
+### P1 - High Priority
+1. **Create Frontend for Email Preferences** - Build UI for users to manage notification preferences
+2. **Continue `App.js` Refactoring** - Extract AboutPage and other large components
+3. **Implement User Referral System** - Separate from affiliates, users get credits for referrals
+
+### P2 - Medium Priority
+1. **Real Analytics Integration** - Replace mock data with actual analytics tracking
+2. **Resend Domain Verification** - Add DNS records for datavision.co.tz
+3. **Product-Specific Promo Code Validation** - Validate promo codes during checkout
+
+### P3 - Future/Backlog
+1. **Clarify Referral vs Affiliate System** - User gets credits (referral) vs Partner gets commission (affiliate)
+2. **Advanced Admin Panel Analytics** - Detailed reports on user and site activity
+3. **Payment Gateway Integration** - Stripe for subscriptions and one-time payments
+
+## Architecture Summary
+
+```
+/app
+├── backend/
+│   ├── server.py (3182 lines - refactored)
+│   ├── services/
+│   │   └── email_service.py
+│   └── routes/
+│       ├── auth_routes.py (602 lines - with password management)
+│       ├── email_routes.py (Pydantic models for product emails)
+│       ├── email_preferences_routes.py
+│       └── affiliate/routes.py
+├── frontend/
+│   └── src/
+│       ├── App.js (1461 lines - refactored)
+│       ├── pages/
+│       │   └── HomePage.jsx (789 lines - extracted)
+│       └── components/
+│           └── admin/
+│               ├── DashboardOverview.jsx (Analytics + Activity views)
+│               └── AffiliateManagement.jsx (Product-linked promo codes)
+```
+
+## Credentials for Testing
+- **Admin:** admin@datavision.co.tz / admin123
+- **Demo User:** demo@fieldforce.io / Test123!
+- **Resend API Key:** re_KSHtNZVu_5R1m3FiSGTV5Jav2rqGSmCvJ (test mode - sends to macleangm@datavision.co.tz only)
+
