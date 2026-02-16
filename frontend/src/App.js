@@ -248,6 +248,12 @@ const AuthProvider = ({ children }) => {
 // Note: Navbar and Footer have been extracted to /components/layout/
 // Note: AnimatedCounter and AfricaMap have been extracted to /components/common/
 
+// Navbar wrapper to inject auth context props
+const NavbarWithAuth = () => {
+  const { user, logout } = useAuth();
+  return <Navbar user={user} logout={logout} />;
+};
+
 // ==================== PAGES ====================
 
 // Home Page
