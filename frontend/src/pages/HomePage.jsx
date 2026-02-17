@@ -5,7 +5,7 @@ import axios from 'axios';
 import { 
   MapPin, Building2, FileText, BarChart3, Shield, Users,
   Quote, Smartphone, Target, Zap, Layers, GraduationCap,
-  CheckCircle2, Activity
+  CheckCircle2, Activity, Award, Star, Trophy
 } from 'lucide-react';
 import { AnimatedCounter, AfricaMap } from '../components/common';
 
