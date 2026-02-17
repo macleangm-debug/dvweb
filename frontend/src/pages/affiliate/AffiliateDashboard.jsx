@@ -429,33 +429,6 @@ const AffiliateDashboard = () => {
           </motion.div>
         </div>
 
-        {/* Tier Progress */}
-        {profile?.next_tier && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-            className="bg-slate-900/50 rounded-xl p-6 border border-slate-800 mb-8"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Progress to {profile.next_tier}</h3>
-              <span className="text-sm text-slate-400">{profile.referrals_to_next_tier} more referrals needed</span>
-            </div>
-            <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full transition-all duration-500"
-                style={{ 
-                  width: `${Math.min(100, ((profile.total_referrals / (profile.total_referrals + profile.referrals_to_next_tier)) * 100))}%` 
-                }}
-              />
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-slate-400">
-              <span>{profile.tier}</span>
-              <span>{profile.next_tier}</span>
-            </div>
-          </motion.div>
-        )}
-
         {/* Commission End Date Warning */}
         {profile?.commission_end_date && (
           <motion.div
