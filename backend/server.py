@@ -61,6 +61,7 @@ class DataVisionUserRegister(BaseModel):
     email: str
     password: str
     name: str
+    referral_code: Optional[str] = None  # For user referral program
 
 class DataVisionUserProfile(BaseModel):
     country: Optional[str] = None
