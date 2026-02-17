@@ -1255,6 +1255,55 @@ const AffiliateDashboard = () => {
           </motion.div>
         </div>
       )}
+
+      {/* Badge Detail Modal */}
+      {showBadgeModal && selectedBadge && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-slate-900 rounded-2xl max-w-sm w-full p-6 border border-slate-800 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", delay: 0.1 }}
+              className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center"
+              style={{ backgroundColor: `${selectedBadge.color}30` }}
+            >
+              {selectedBadge.icon === 'star' && <Star className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'trending-up' && <TrendingUp className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'award' && <Award className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'crown' && <Crown className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'zap' && <Zap className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'target' && <Target className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'calendar' && <Calendar className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'dollar-sign' && <DollarSign className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'rocket' && <Rocket className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+              {selectedBadge.icon === 'trophy' && <Trophy className="w-10 h-10" style={{ color: selectedBadge.color }} />}
+            </motion.div>
+            
+            <h3 className="text-2xl font-bold mb-2" style={{ color: selectedBadge.color }}>
+              {selectedBadge.name}
+            </h3>
+            <p className="text-slate-400 mb-4">{selectedBadge.description}</p>
+            
+            <div className="px-4 py-2 bg-slate-800/50 rounded-lg inline-block mb-6">
+              <span className="text-sm text-slate-300">{selectedBadge.requirement}</span>
+            </div>
+            
+            <button
+              onClick={() => {
+                setShowBadgeModal(false);
+                setSelectedBadge(null);
+              }}
+              className="w-full py-3 bg-slate-800 rounded-lg font-medium hover:bg-slate-700 transition-colors"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
