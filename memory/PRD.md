@@ -1692,7 +1692,7 @@ GET  /api/email-preferences/unsubscribe/{token}
 │       ├── email_routes.py
 │       ├── email_preferences_routes.py
 │       ├── referral_routes.py
-│       ├── public_content_routes.py (Ready to import)
+│       ├── public_content_routes.py (387 lines - INTEGRATED)
 │       └── affiliate/routes.py (Performance, Badges, Leaderboard, Monthly Rewards)
 ├── frontend/
 │   └── src/
