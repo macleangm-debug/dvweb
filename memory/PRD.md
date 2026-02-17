@@ -1752,6 +1752,25 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ---
 
+## February 17, 2026 - Partner of the Month Homepage Feature (COMPLETED)
+
+**Feature Implemented:**
+- Added "Partner of the Month" spotlight section to the homepage
+- Displays featured partner with tier badge, company name, referral count
+- Golden gradient design with trophy icon
+- CTA to join partner program
+- Only shows when a featured partner is set
+
+**Technical Details:**
+- Frontend fetches from `/api/affiliates/featured-partner` endpoint
+- Admin can set featured partner via monthly rewards processing
+- Gracefully handles no featured partner (section hidden)
+
+**Files Updated:**
+- `/app/frontend/src/pages/HomePage.jsx` - Added Partner of the Month section
+
+---
+
 ## February 17, 2026 - Backend Modularization & Affiliate Dashboard Fix (COMPLETED)
 
 **1. Affiliate Dashboard Tier UI Verified:**
