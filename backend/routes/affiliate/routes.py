@@ -1381,6 +1381,254 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             "reward_config": MONTHLY_REWARDS
         }
     
+    # Performance tips based on partner stats
+    PERFORMANCE_TIPS = [
+        {
+            "id": "share_more",
+            "title": "Share on social media",
+            "description": "Partners who share on 3+ platforms get 40% more referrals",
+            "condition": lambda stats: stats.get("total_clicks", 0) < 50
+        },
+        {
+            "id": "optimize_link",
+            "title": "Use your shortened link",
+            "description": "Short links get 25% higher click-through rates on social",
+            "condition": lambda stats: True  # Always relevant
+        },
+        {
+            "id": "increase_conversion",
+            "title": "Improve your conversion rate",
+            "description": "Try targeting audiences who already know DataVision products",
+            "condition": lambda stats: stats.get("conversion_rate", 0) < 10
+        },
+        {
+            "id": "reach_next_tier",
+            "title": "Push for the next tier",
+            "description": "Higher tiers mean higher commission rates - you're close!",
+            "condition": lambda stats: stats.get("referrals_to_next_tier", 100) < 10
+        },
+        {
+            "id": "consistency",
+            "title": "Stay consistent",
+            "description": "Partners who refer weekly earn 3x more than sporadic referrers",
+            "condition": lambda stats: True
+        },
+        {
+            "id": "leverage_content",
+            "title": "Create content about DataVision",
+            "description": "Blog posts and tutorials convert 5x better than direct links",
+            "condition": lambda stats: stats.get("total_referrals", 0) < 20
+        },
+        {
+            "id": "email_list",
+            "title": "Build an email list",
+            "description": "Email referrals have the highest conversion rates",
+            "condition": lambda stats: stats.get("conversion_rate", 0) < 15
+        },
+    ]
+    
+    def get_tips_for_partner(stats: dict, count: int = 3) -> list:
+        """Get personalized tips based on partner's performance"""
+        relevant_tips = []
+        for tip in PERFORMANCE_TIPS:
+            if tip["condition"](stats):
+                relevant_tips.append({
+                    "title": tip["title"],
+                    "description": tip["description"]
+                })
+            if len(relevant_tips) >= count:
+                break
+        return relevant_tips
+    
+    @router.post("/admin/send-monthly-digest")
+    async def send_monthly_digest(
+        payload: dict = Depends(verify_admin_token),
+        month: Optional[str] = None,  # Format: "2026-02" - defaults to previous month
+        dry_run: bool = Query(default=True),
+        partner_id: Optional[str] = None  # Optional: send to specific partner only
+    ):
+        """
+        Send monthly digest emails to all partners (or a specific partner).
+        Includes: rank, stats, tips, tier progress.
+        """
+        from services.email_service import email_service
+        
+        # Determine which month
+        if month:
+            try:
+                year, month_num = map(int, month.split("-"))
+                target_date = datetime(year, month_num, 1, tzinfo=timezone.utc)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid month format. Use YYYY-MM")
+        else:
+            today = datetime.now(timezone.utc)
+            if today.month == 1:
+                target_date = datetime(today.year - 1, 12, 1, tzinfo=timezone.utc)
+            else:
+                target_date = datetime(today.year, today.month - 1, 1, tzinfo=timezone.utc)
+        
+        month_str = target_date.strftime("%Y-%m")
+        month_display = target_date.strftime("%B %Y")
+        
+        # Get all approved affiliates (or specific one)
+        query = {"status": AffiliateStatus.APPROVED}
+        if partner_id:
+            query["id"] = partner_id
+        
+        affiliates = await db.affiliates.find(query, {"_id": 0}).to_list(1000)
+        
+        if not affiliates:
+            return {"message": "No affiliates found", "emails_sent": 0}
+        
+        # Get all affiliates for ranking
+        all_affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "id": 1, "total_referrals": 1}
+        ).to_list(1000)
+        
+        sorted_affiliates = sorted(all_affiliates, key=lambda x: x.get("total_referrals", 0), reverse=True)
+        total_partners = len(sorted_affiliates)
+        
+        # Create ranking map
+        rank_map = {a["id"]: i + 1 for i, a in enumerate(sorted_affiliates)}
+        
+        emails_to_send = []
+        emails_sent = []
+        
+        for affiliate in affiliates:
+            # Calculate stats for this partner
+            affiliate_id = affiliate["id"]
+            rank = rank_map.get(affiliate_id, total_partners)
+            
+            # Get monthly stats (from commissions or referrals)
+            month_referrals = 0
+            month_earnings = 0.0
+            
+            # Count referrals in the target month
+            if target_date.month == 12:
+                end_date = datetime(target_date.year + 1, 1, 1, tzinfo=timezone.utc)
+            else:
+                end_date = datetime(target_date.year, target_date.month + 1, 1, tzinfo=timezone.utc)
+            
+            month_referrals = await db.referrals.count_documents({
+                "affiliate_id": affiliate_id,
+                "created_at": {"$gte": target_date.isoformat(), "$lt": end_date.isoformat()}
+            })
+            
+            # Get earnings for the month
+            month_commissions = await db.affiliate_commissions.find({
+                "affiliate_id": affiliate_id,
+                "created_at": {"$gte": target_date.isoformat(), "$lt": end_date.isoformat()}
+            }, {"_id": 0, "amount": 1}).to_list(100)
+            month_earnings = sum(c.get("amount", 0) for c in month_commissions)
+            
+            # Calculate conversion rate
+            total_clicks = affiliate.get("total_clicks", 0)
+            total_referrals = affiliate.get("total_referrals", 0)
+            conversion_rate = (total_referrals / total_clicks * 100) if total_clicks > 0 else 0
+            
+            # Get tier info
+            tier = affiliate.get("tier", "Bronze")
+            tier_color = affiliate.get("tier_color", "#CD7F32")
+            commission_rate = affiliate.get("commission_rate", 10)
+            
+            # Find current and next tier
+            current_tier_idx = next((i for i, t in enumerate(TIERS) if t["name"] == tier), 0)
+            next_tier = TIERS[current_tier_idx + 1] if current_tier_idx < len(TIERS) - 1 else None
+            
+            referrals_to_next = 0
+            if next_tier:
+                referrals_to_next = max(0, next_tier["min_referrals"] - total_referrals)
+            
+            stats = {
+                "month_referrals": month_referrals,
+                "month_earnings": month_earnings,
+                "total_referrals": total_referrals,
+                "total_clicks": total_clicks,
+                "conversion_rate": conversion_rate,
+                "commission_rate": commission_rate,
+                "referrals_to_next_tier": referrals_to_next
+            }
+            
+            # Get personalized tips
+            tips = get_tips_for_partner(stats)
+            
+            email_data = {
+                "to_email": affiliate.get("email"),
+                "name": affiliate.get("name", "Partner"),
+                "month": month_display,
+                "stats": stats,
+                "rank": rank,
+                "total_partners": total_partners,
+                "tips": tips,
+                "tier": tier,
+                "tier_color": tier_color,
+                "next_tier": next_tier
+            }
+            
+            emails_to_send.append(email_data)
+        
+        if dry_run:
+            return {
+                "month": month_display,
+                "dry_run": True,
+                "message": f"Would send {len(emails_to_send)} digest emails",
+                "preview": emails_to_send[:3],  # Preview first 3
+                "total_partners": total_partners
+            }
+        
+        # Actually send emails
+        for email_data in emails_to_send:
+            try:
+                result = await email_service.send_monthly_digest_email(**email_data)
+                emails_sent.append({
+                    "email": email_data["to_email"],
+                    "status": result.get("status"),
+                    "rank": email_data["rank"]
+                })
+            except Exception as e:
+                emails_sent.append({
+                    "email": email_data["to_email"],
+                    "status": "error",
+                    "error": str(e)
+                })
+        
+        # Record digest was sent
+        await db.digest_history.insert_one({
+            "id": str(uuid.uuid4()),
+            "month": month_str,
+            "month_display": month_display,
+            "total_sent": len([e for e in emails_sent if e.get("status") != "error"]),
+            "total_failed": len([e for e in emails_sent if e.get("status") == "error"]),
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "sent_by": payload.get("sub")
+        })
+        
+        return {
+            "month": month_display,
+            "dry_run": False,
+            "message": f"Successfully sent {len([e for e in emails_sent if e.get('status') != 'error'])} digest emails",
+            "emails_sent": emails_sent,
+            "total_partners": total_partners
+        }
+    
+    @router.get("/admin/digest-history")
+    async def get_digest_history(
+        payload: dict = Depends(verify_admin_token),
+        limit: int = Query(default=12, ge=1, le=50)
+    ):
+        """Get history of sent monthly digests"""
+        
+        history = await db.digest_history.find(
+            {},
+            {"_id": 0}
+        ).sort("sent_at", -1).to_list(limit)
+        
+        return {
+            "history": history,
+            "total_digests_sent": len(history)
+        }
+    
     # ==================== ADMIN ENDPOINTS ====================
     
     @router.get("/admin/applications")
