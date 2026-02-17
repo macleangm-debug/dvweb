@@ -1,16 +1,9 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
-// Auth Context - shared with App.js
-const AuthContext = createContext(null);
-
-export const useAuth = () => useContext(AuthContext);
-
-const LoginPage = () => {
+// Note: useAuth must be passed as prop or imported from shared context
+const LoginPage = ({ useAuth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
