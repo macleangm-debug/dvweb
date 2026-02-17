@@ -1262,7 +1262,7 @@ const AffiliateDashboard = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-slate-900 rounded-2xl max-w-sm w-full p-6 border border-slate-800 text-center"
+            className="bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-800 text-center"
           >
             <motion.div
               initial={{ scale: 0 }}
@@ -1290,6 +1290,53 @@ const AffiliateDashboard = () => {
             
             <div className="px-4 py-2 bg-slate-800/50 rounded-lg inline-block mb-6">
               <span className="text-sm text-slate-300">{selectedBadge.requirement}</span>
+            </div>
+            
+            {/* Social Share Section */}
+            <div className="mb-6">
+              <p className="text-xs text-slate-500 mb-3">Share your achievement</p>
+              <div className="flex justify-center gap-3">
+                <button
+                  onClick={() => {
+                    const text = encodeURIComponent(`🏆 I just earned the '${selectedBadge.name}' badge on @DataVisionTZ Partner Program! ${selectedBadge.description} #DataVisionPartner #Achievement`);
+                    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+                  }}
+                  className="p-3 bg-[#1DA1F2]/20 rounded-xl hover:bg-[#1DA1F2]/30 transition-all"
+                  data-testid="share-twitter"
+                >
+                  <Twitter className="w-5 h-5 text-[#1DA1F2]" />
+                </button>
+                <button
+                  onClick={() => {
+                    const text = encodeURIComponent(`Excited to share that I've earned the '${selectedBadge.name}' badge as a DataVision Partner! ${selectedBadge.description}`);
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https://datavision.co.tz/affiliate&summary=${text}`, '_blank');
+                  }}
+                  className="p-3 bg-[#0A66C2]/20 rounded-xl hover:bg-[#0A66C2]/30 transition-all"
+                  data-testid="share-linkedin"
+                >
+                  <Linkedin className="w-5 h-5 text-[#0A66C2]" />
+                </button>
+                <button
+                  onClick={() => {
+                    const text = encodeURIComponent(`🎉 Achievement Unlocked! I earned the '${selectedBadge.name}' badge on DataVision Partner Program. ${selectedBadge.description}`);
+                    window.open(`https://www.facebook.com/sharer/sharer.php?quote=${text}`, '_blank');
+                  }}
+                  className="p-3 bg-[#1877F2]/20 rounded-xl hover:bg-[#1877F2]/30 transition-all"
+                  data-testid="share-facebook"
+                >
+                  <Facebook className="w-5 h-5 text-[#1877F2]" />
+                </button>
+                <button
+                  onClick={() => {
+                    const text = encodeURIComponent(`🏆 Just earned the '${selectedBadge.name}' badge on DataVision Partner Program! ${selectedBadge.description} Join here: https://datavision.co.tz/affiliate`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                  }}
+                  className="p-3 bg-[#25D366]/20 rounded-xl hover:bg-[#25D366]/30 transition-all"
+                  data-testid="share-whatsapp"
+                >
+                  <MessageCircle className="w-5 h-5 text-[#25D366]" />
+                </button>
+              </div>
             </div>
             
             <button
