@@ -2706,18 +2706,55 @@ async def get_payment_status(session_id: str, http_request: Request):
     if status.payment_status == "paid":
         transaction = await db.payment_transactions.find_one({"session_id": session_id})
         if transaction and transaction.get("payment_status") != "paid":
-            # First time marking as paid - create product access
+            package_id = transaction.get("package_id")
+            plan_info = PACKAGE_TO_PLAN.get(package_id, {})
+            
+            # Calculate expiry date
+            duration_days = plan_info.get("duration_days", 365)
+            expires_at = (datetime.now(timezone.utc) + timedelta(days=duration_days)).isoformat()
+            
+            # First time marking as paid - create/update subscription
+            subscription_record = {
+                "id": str(uuid.uuid4()),
+                "user_email": transaction.get("user_email"),
+                "product_id": transaction.get("product_id"),
+                "package_id": package_id,
+                "plan": plan_info.get("plan", "professional"),
+                "plan_name": SOFTWARE_PACKAGES.get(package_id, {}).get("name", "Unknown"),
+                "amount_paid": transaction.get("amount"),
+                "currency": "usd",
+                "transaction_id": transaction.get("id"),
+                "stripe_session_id": session_id,
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "expires_at": expires_at,
+                "status": "active",
+                "auto_renew": True
+            }
+            
+            # Upsert - update existing or create new subscription
+            await db.user_subscriptions.update_one(
+                {"user_email": transaction.get("user_email"), "product_id": transaction.get("product_id")},
+                {"$set": subscription_record},
+                upsert=True
+            )
+            
+            # Also create product_access record for backward compatibility
             access_record = {
                 "id": str(uuid.uuid4()),
                 "user_email": transaction.get("user_email"),
                 "product_id": transaction.get("product_id"),
-                "package_id": transaction.get("package_id"),
+                "package_id": package_id,
+                "plan": plan_info.get("plan", "professional"),
                 "transaction_id": transaction.get("id"),
                 "granted_at": datetime.now(timezone.utc).isoformat(),
-                "expires_at": None,  # Will be set based on package type
+                "expires_at": expires_at,
                 "status": "active"
             }
-            await db.product_access.insert_one(access_record)
+            await db.product_access.update_one(
+                {"user_email": transaction.get("user_email"), "product_id": transaction.get("product_id")},
+                {"$set": access_record},
+                upsert=True
+            )
     
     await db.payment_transactions.update_one(
         {"session_id": session_id},
