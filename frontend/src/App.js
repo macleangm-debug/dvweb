@@ -159,6 +159,7 @@ import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages
 // Affiliate Program Pages
 import AffiliateProgramPage from './pages/affiliate/AffiliateProgramPage';
 import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
+import PartnerLeaderboard from './pages/affiliate/PartnerLeaderboard';
 
 // Extracted Page Components
 import HomePage from './pages/HomePage';
