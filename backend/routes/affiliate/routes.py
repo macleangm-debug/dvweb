@@ -850,6 +850,216 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             "total_available": len(BADGES)
         }
     
+    @router.get("/badge-share/{badge_id}")
+    async def get_badge_share_data(badge_id: str, payload: dict = Depends(verify_token)):
+        """Get shareable badge data for social media"""
+        user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")
+        
+        affiliate = await db.affiliates.find_one({
+            "$or": [
+                {"email": user_email},
+                {"user_id": user_id}
+            ],
+            "status": AffiliateStatus.APPROVED
+        }, {"_id": 0})
+        
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate profile not found")
+        
+        # Find the badge
+        badge = next((b for b in BADGES if b["id"] == badge_id), None)
+        if not badge:
+            raise HTTPException(status_code=404, detail="Badge not found")
+        
+        # Check if user has earned this badge
+        all_affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "total_referrals": 1}
+        ).to_list(length=1000)
+        
+        sorted_by_referrals = sorted([a.get("total_referrals", 0) for a in all_affiliates], reverse=True)
+        top_10_index = max(0, int(len(sorted_by_referrals) * 0.1) - 1)
+        top_10_threshold = sorted_by_referrals[top_10_index] if sorted_by_referrals else 0
+        
+        all_affiliates_stats = {"top_10_threshold": top_10_threshold}
+        earned_badge_ids = calculate_badges(affiliate, all_affiliates_stats)
+        
+        if badge_id not in earned_badge_ids:
+            raise HTTPException(status_code=403, detail="You haven't earned this badge yet")
+        
+        # Generate share data
+        partner_name = affiliate.get("company_name") or affiliate.get("name", "Partner")
+        
+        share_text = {
+            "twitter": f"🏆 I just earned the '{badge['name']}' badge on @DataVisionTZ Partner Program! {badge['description']} #DataVisionPartner #Achievement",
+            "linkedin": f"Excited to share that I've earned the '{badge['name']}' badge as a DataVision Partner! {badge['description']}. Join the program and start earning: https://datavision.co.tz/affiliate",
+            "facebook": f"🎉 Achievement Unlocked! I earned the '{badge['name']}' badge on DataVision Partner Program. {badge['description']}",
+            "whatsapp": f"🏆 Just earned the '{badge['name']}' badge on DataVision Partner Program! {badge['description']} Join here: https://datavision.co.tz/affiliate"
+        }
+        
+        return {
+            "badge": badge,
+            "partner_name": partner_name,
+            "share_text": share_text,
+            "share_url": "https://datavision.co.tz/affiliate",
+            "image_url": f"https://datavision.co.tz/badges/{badge_id}.png"  # Badge image for OG tags
+        }
+    
+    @router.get("/leaderboard")
+    async def get_public_leaderboard(
+        period: str = Query(default="all_time", regex="^(weekly|monthly|all_time)$"),
+        limit: int = Query(default=20, ge=5, le=50)
+    ):
+        """Get public partner leaderboard - no auth required"""
+        
+        # Calculate date range based on period
+        end_date = datetime.now(timezone.utc)
+        if period == "weekly":
+            start_date = end_date - timedelta(days=7)
+            period_label = "This Week"
+        elif period == "monthly":
+            start_date = end_date - timedelta(days=30)
+            period_label = "This Month"
+        else:
+            start_date = None
+            period_label = "All Time"
+        
+        # Get all approved affiliates
+        affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "id": 1, "company_name": 1, "name": 1, "tier": 1, "tier_color": 1,
+             "total_referrals": 1, "total_earnings": 1, "created_at": 1}
+        ).to_list(length=1000)
+        
+        # If period-based, calculate period stats from referrals collection
+        if start_date:
+            leaderboard_data = []
+            for affiliate in affiliates:
+                # Count referrals in period
+                period_referrals = await db.referrals.count_documents({
+                    "affiliate_id": affiliate["id"],
+                    "created_at": {"$gte": start_date.isoformat(), "$lte": end_date.isoformat()}
+                })
+                
+                if period_referrals > 0:  # Only include active partners
+                    leaderboard_data.append({
+                        "id": affiliate["id"],
+                        "name": affiliate.get("company_name") or affiliate.get("name", "Partner"),
+                        "tier": affiliate.get("tier", "Bronze"),
+                        "tier_color": affiliate.get("tier_color", "#3b82f6"),
+                        "referrals": period_referrals,
+                        "total_referrals": affiliate.get("total_referrals", 0)
+                    })
+            
+            # Sort by period referrals
+            leaderboard_data.sort(key=lambda x: x["referrals"], reverse=True)
+        else:
+            # All time - use total_referrals
+            leaderboard_data = []
+            for affiliate in affiliates:
+                if affiliate.get("total_referrals", 0) > 0:
+                    leaderboard_data.append({
+                        "id": affiliate["id"],
+                        "name": affiliate.get("company_name") or affiliate.get("name", "Partner"),
+                        "tier": affiliate.get("tier", "Bronze"),
+                        "tier_color": affiliate.get("tier_color", "#3b82f6"),
+                        "referrals": affiliate.get("total_referrals", 0),
+                        "total_referrals": affiliate.get("total_referrals", 0)
+                    })
+            
+            leaderboard_data.sort(key=lambda x: x["referrals"], reverse=True)
+        
+        # Add rank
+        for i, entry in enumerate(leaderboard_data[:limit]):
+            entry["rank"] = i + 1
+        
+        # Calculate stats
+        total_partners = len(affiliates)
+        active_partners = len([a for a in affiliates if a.get("total_referrals", 0) > 0])
+        total_referrals = sum(a.get("total_referrals", 0) for a in affiliates)
+        
+        return {
+            "period": period,
+            "period_label": period_label,
+            "leaderboard": leaderboard_data[:limit],
+            "stats": {
+                "total_partners": total_partners,
+                "active_partners": active_partners,
+                "total_referrals": total_referrals
+            },
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+    
+    @router.get("/leaderboard/my-position")
+    async def get_my_leaderboard_position(
+        payload: dict = Depends(verify_token),
+        period: str = Query(default="all_time", regex="^(weekly|monthly|all_time)$")
+    ):
+        """Get authenticated partner's position on leaderboard"""
+        user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")
+        
+        affiliate = await db.affiliates.find_one({
+            "$or": [
+                {"email": user_email},
+                {"user_id": user_id}
+            ],
+            "status": AffiliateStatus.APPROVED
+        }, {"_id": 0})
+        
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate profile not found")
+        
+        # Get all affiliates for ranking
+        all_affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "id": 1, "total_referrals": 1}
+        ).to_list(length=1000)
+        
+        # Calculate rank
+        my_referrals = affiliate.get("total_referrals", 0)
+        rank = sum(1 for a in all_affiliates if a.get("total_referrals", 0) > my_referrals) + 1
+        total = len(all_affiliates)
+        
+        # Find neighbors on leaderboard
+        sorted_affiliates = sorted(all_affiliates, key=lambda x: x.get("total_referrals", 0), reverse=True)
+        my_index = next((i for i, a in enumerate(sorted_affiliates) if a["id"] == affiliate["id"]), -1)
+        
+        above = None
+        below = None
+        if my_index > 0:
+            above_affiliate = await db.affiliates.find_one({"id": sorted_affiliates[my_index - 1]["id"]}, {"_id": 0})
+            if above_affiliate:
+                above = {
+                    "rank": my_index,
+                    "name": above_affiliate.get("company_name") or above_affiliate.get("name", "Partner"),
+                    "referrals": above_affiliate.get("total_referrals", 0),
+                    "gap": above_affiliate.get("total_referrals", 0) - my_referrals
+                }
+        
+        if my_index < len(sorted_affiliates) - 1:
+            below_affiliate = await db.affiliates.find_one({"id": sorted_affiliates[my_index + 1]["id"]}, {"_id": 0})
+            if below_affiliate:
+                below = {
+                    "rank": my_index + 2,
+                    "name": below_affiliate.get("company_name") or below_affiliate.get("name", "Partner"),
+                    "referrals": below_affiliate.get("total_referrals", 0),
+                    "gap": my_referrals - below_affiliate.get("total_referrals", 0)
+                }
+        
+        return {
+            "your_position": {
+                "rank": rank,
+                "total": total,
+                "referrals": my_referrals,
+                "percentile": round((1 - (rank / total)) * 100 if total > 0 else 0, 1)
+            },
+            "above_you": above,
+            "below_you": below,
+            "referrals_to_next_rank": above["gap"] if above else 0
+        }
+    
     # ==================== ADMIN ENDPOINTS ====================
     
     @router.get("/admin/applications")
