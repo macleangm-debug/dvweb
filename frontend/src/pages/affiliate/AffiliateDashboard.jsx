@@ -78,6 +78,14 @@ const AffiliateDashboard = () => {
       const analyticsRes = await axios.get(`${API}/api/affiliates/my-analytics?period_days=${analyticsPeriod}`, { headers });
       setAnalytics(analyticsRes.data);
 
+      // Fetch performance & badges
+      try {
+        const performanceRes = await axios.get(`${API}/api/affiliates/my-performance`, { headers });
+        setPerformance(performanceRes.data);
+      } catch (perfErr) {
+        console.log('Performance data not available yet');
+      }
+
     } catch (err) {
       console.error('Error fetching affiliate data:', err);
       if (err.response?.status === 404) {
