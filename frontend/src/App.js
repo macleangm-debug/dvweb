@@ -94,6 +94,7 @@ import {
   softwareSolutions
 } from './pages/SolutionsPages';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import BillingPage from './pages/BillingPage';
 import { Survey360ProductPage } from './components/solutions/survey360';
 
 // DataVision Central Auth Pages
