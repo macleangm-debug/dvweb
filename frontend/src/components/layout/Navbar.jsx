@@ -394,6 +394,14 @@ const Navbar = ({ user, logout }) => {
             {user ? (
               <>
                 <Link
+                  to="/billing"
+                  className="hidden lg:flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#0a1628]"
+                  data-testid="billing-link"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Billing
+                </Link>
+                <Link
                   to="/admin"
                   className="hidden lg:flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#0a1628]"
                 >
