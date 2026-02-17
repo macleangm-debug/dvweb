@@ -23,6 +23,7 @@ const AffiliateDashboard = () => {
   const [commissions, setCommissions] = useState([]);
   const [payouts, setPayouts] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  const [performance, setPerformance] = useState(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState(30);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,8 @@ const AffiliateDashboard = () => {
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [payoutAmount, setPayoutAmount] = useState('');
   const [payoutLoading, setPayoutLoading] = useState(false);
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('dv_token');
