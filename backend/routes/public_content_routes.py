@@ -40,17 +40,18 @@ class ProjectCreate(BaseModel):
 class TeamMember(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
-    title: str
+    position: str
     bio: str
-    photo_url: Optional[str] = None
+    image_url: Optional[str] = None
     linkedin_url: Optional[str] = None
     order: int = 0
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class TeamMemberCreate(BaseModel):
     name: str
-    title: str
+    position: str
     bio: str
-    photo_url: Optional[str] = None
+    image_url: Optional[str] = None
     linkedin_url: Optional[str] = None
     order: int = 0
 
