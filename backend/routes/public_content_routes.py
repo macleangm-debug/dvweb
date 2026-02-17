@@ -56,20 +56,21 @@ class TeamMemberCreate(BaseModel):
 
 class Testimonial(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    organization: str
-    role: str
     quote: str
-    photo_url: Optional[str] = None
-    featured: bool = False
+    author_name: str
+    author_title: str
+    organization: str
+    image_url: Optional[str] = None
+    featured: bool = True
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class TestimonialCreate(BaseModel):
-    name: str
-    organization: str
-    role: str
     quote: str
-    photo_url: Optional[str] = None
-    featured: bool = False
+    author_name: str
+    author_title: str
+    organization: str
+    image_url: Optional[str] = None
+    featured: bool = True
 
 class Statistic(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
