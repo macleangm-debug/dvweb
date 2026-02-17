@@ -1273,6 +1273,7 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
     DataVision SSO to FieldForce.
     Allows DataVision authenticated users to access FieldForce without re-login.
     Creates FieldForce user if doesn't exist.
+    Includes subscription information from centralized billing.
     """
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -1284,6 +1285,10 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
         
         if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Get user's subscription for FieldForce
+        subscription = await get_user_subscription(user_email, "fieldforce")
+        plan = subscription["plan"] if subscription else "starter"
         
         # Track product access for marketing
         await db.datavision_users.update_one(
@@ -1304,16 +1309,22 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
                 dv_user = await db.admins.find_one({"email": user_email}, {"_id": 0})
             user_name = dv_user.get("name", user_email.split("@")[0]) if dv_user else user_email.split("@")[0]
             
+            # Get seat limit from plan
+            plan_info = PRODUCT_PLANS.get("fieldforce", {}).get(plan, {})
+            seats = plan_info.get("seats", 10)
+            
             # Create FieldForce user with SSO
             new_user_id = str(uuid.uuid4())
             org_id = str(uuid.uuid4())
             
-            # Create organization
+            # Create organization with plan info
             await db.organizations.insert_one({
                 "id": org_id,
                 "name": f"{user_name}'s Organization",
                 "slug": f"{user_email.split('@')[0]}-org",
                 "owner_id": new_user_id,
+                "plan": plan,
+                "seats_limit": seats,
                 "created_at": datetime.now(timezone.utc).isoformat()
             })
             
@@ -1328,13 +1339,22 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
             await db.users.insert_one(ff_user)
+        else:
+            # Update existing org plan if subscription changed
+            if subscription:
+                plan_info = PRODUCT_PLANS.get("fieldforce", {}).get(plan, {})
+                await db.organizations.update_one(
+                    {"id": ff_user.get("organization_id")},
+                    {"$set": {"plan": plan, "seats_limit": plan_info.get("seats", 10)}}
+                )
         
-        # Generate FieldForce token
+        # Generate FieldForce token with subscription info
         ff_token = jwt.encode(
             {
                 "user_id": ff_user["id"],
                 "exp": datetime.now(timezone.utc).timestamp() + 86400,
                 "product": "fieldforce",
+                "plan": plan,
                 "sso": True
             },
             SECRET_KEY,
@@ -1349,6 +1369,7 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
                 "organization_id": ff_user.get("organization_id")
             },
             "access_token": ff_token,
+            "subscription": subscription,
             "sso": True,
             "provider": "datavision"
         }
