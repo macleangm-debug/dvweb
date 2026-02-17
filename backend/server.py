@@ -3298,6 +3298,353 @@ async def get_all_subscriptions(
     
     return {"subscriptions": subscriptions, "total": len(subscriptions)}
 
+# ==================== USER BILLING ENDPOINTS ====================
+
+@api_router.get("/billing/subscription")
+async def get_user_subscription_details(
+    product_id: str,
+    payload: dict = Depends(verify_token)
+):
+    """Get user's current subscription for a product"""
+    user_email = payload.get("sub")
+    
+    subscription = await db.user_subscriptions.find_one(
+        {"user_email": user_email, "product_id": product_id},
+        {"_id": 0}
+    )
+    
+    if not subscription:
+        return None
+    
+    # Check for pending downgrade
+    pending = await db.pending_plan_changes.find_one(
+        {"user_email": user_email, "product_id": product_id, "status": "pending"},
+        {"_id": 0}
+    )
+    
+    if pending:
+        subscription["pending_downgrade"] = {
+            "new_plan": pending.get("new_plan"),
+            "effective_date": pending.get("effective_date")
+        }
+    
+    # Get amount from plan
+    plan_id = subscription.get("plan")
+    if product_id in PRODUCT_PRICING:
+        for plan in PRODUCT_PRICING[product_id]["plans"]:
+            if plan.get("id") == subscription.get("plan_id") or plan.get("name", "").lower() == plan_id:
+                subscription["amount"] = plan.get("price", 0)
+                subscription["plan_name"] = plan.get("name")
+                break
+    
+    return subscription
+
+@api_router.get("/billing/invoices")
+async def get_user_invoices(
+    product_id: Optional[str] = None,
+    payload: dict = Depends(verify_token)
+):
+    """Get user's invoice/payment history"""
+    user_email = payload.get("sub")
+    
+    query = {"user_email": user_email, "payment_status": "paid"}
+    if product_id:
+        query["product_id"] = product_id
+    
+    transactions = await db.payment_transactions.find(
+        query,
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(50)
+    
+    # Add package names
+    for t in transactions:
+        pkg_id = t.get("package_id")
+        if pkg_id and pkg_id in SOFTWARE_PACKAGES:
+            t["package_name"] = SOFTWARE_PACKAGES[pkg_id]["name"]
+    
+    return {"invoices": transactions}
+
+@api_router.post("/billing/upgrade")
+async def upgrade_subscription(
+    request: dict,
+    payload: dict = Depends(verify_token)
+):
+    """
+    Upgrade to a higher plan.
+    Calculates prorate and charges the difference via Stripe.
+    """
+    user_email = payload.get("sub")
+    product_id = request.get("product_id")
+    new_plan_id = request.get("new_plan_id")
+    package_id = request.get("package_id")
+    
+    if not all([product_id, new_plan_id]):
+        raise HTTPException(status_code=400, detail="Missing required fields")
+    
+    # Get current subscription
+    current_sub = await db.user_subscriptions.find_one(
+        {"user_email": user_email, "product_id": product_id, "status": "active"}
+    )
+    
+    if not current_sub:
+        raise HTTPException(status_code=400, detail="No active subscription found")
+    
+    # Get current and new plan prices
+    current_price = 0
+    new_price = 0
+    new_plan_name = ""
+    
+    if product_id in PRODUCT_PRICING:
+        for plan in PRODUCT_PRICING[product_id]["plans"]:
+            if plan.get("id") == current_sub.get("plan_id") or plan.get("name", "").lower() == current_sub.get("plan", "").lower():
+                current_price = plan.get("price", 0)
+            if plan.get("id") == new_plan_id:
+                new_price = plan.get("price", 0)
+                new_plan_name = plan.get("name", "")
+                if not package_id:
+                    package_id = plan.get("package_id")
+    
+    if new_price <= current_price:
+        raise HTTPException(status_code=400, detail="New plan must be higher tier. Use downgrade endpoint instead.")
+    
+    # Calculate days remaining and prorate
+    expires_at = current_sub.get("expires_at")
+    if expires_at:
+        expiry_date = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+        days_remaining = (expiry_date - datetime.now(timezone.utc)).days
+        days_remaining = max(0, days_remaining)
+    else:
+        days_remaining = 30
+    
+    # Prorate calculation (simple: difference * days_remaining / 30)
+    prorate_amount = ((new_price - current_price) * days_remaining) / 30
+    prorate_amount = round(prorate_amount, 2)
+    
+    if prorate_amount <= 0:
+        # No charge needed, just upgrade
+        await db.user_subscriptions.update_one(
+            {"_id": current_sub["_id"]},
+            {"$set": {
+                "plan": new_plan_name.lower(),
+                "plan_id": new_plan_id,
+                "plan_name": new_plan_name,
+                "upgraded_at": datetime.now(timezone.utc).isoformat(),
+                "upgraded_from": current_sub.get("plan")
+            }}
+        )
+        return {"message": f"Upgraded to {new_plan_name} successfully!", "prorated_amount": 0}
+    
+    # Create Stripe checkout for the prorated amount
+    if package_id and package_id in SOFTWARE_PACKAGES:
+        # Create a special prorate transaction
+        transaction_id = str(uuid.uuid4())
+        
+        # Store pending upgrade
+        await db.pending_plan_changes.insert_one({
+            "id": transaction_id,
+            "user_email": user_email,
+            "product_id": product_id,
+            "change_type": "upgrade",
+            "current_plan": current_sub.get("plan"),
+            "new_plan": new_plan_name.lower(),
+            "new_plan_id": new_plan_id,
+            "prorate_amount": prorate_amount,
+            "status": "pending_payment",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        })
+        
+        # Create checkout session
+        try:
+            from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionRequest
+            api_key = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIPE_API_KEY")
+            if not api_key:
+                raise HTTPException(status_code=500, detail="Payment system not configured")
+            
+            success_url = f"{request.get('origin_url', 'https://datavision.co.tz')}/billing?upgrade=success"
+            cancel_url = f"{request.get('origin_url', 'https://datavision.co.tz')}/billing?upgrade=cancelled"
+            
+            stripe_checkout = StripeCheckout(api_key=api_key)
+            checkout_request = CheckoutSessionRequest(
+                product_name=f"Upgrade to {new_plan_name} (Prorated)",
+                unit_amount=int(prorate_amount * 100),
+                currency="usd",
+                quantity=1,
+                success_url=success_url,
+                cancel_url=cancel_url,
+                metadata={
+                    "type": "upgrade",
+                    "transaction_id": transaction_id,
+                    "user_email": user_email,
+                    "product_id": product_id,
+                    "new_plan_id": new_plan_id
+                }
+            )
+            
+            session = await stripe_checkout.create_checkout_session(checkout_request)
+            
+            # Update pending change with session ID
+            await db.pending_plan_changes.update_one(
+                {"id": transaction_id},
+                {"$set": {"stripe_session_id": session.session_id}}
+            )
+            
+            return {
+                "checkout_url": session.url,
+                "prorated_amount": prorate_amount,
+                "message": f"Pay ${prorate_amount} to upgrade to {new_plan_name}"
+            }
+        except Exception as e:
+            logger.error(f"Stripe checkout error: {e}")
+            raise HTTPException(status_code=500, detail="Failed to create checkout session")
+    
+    raise HTTPException(status_code=400, detail="Invalid package configuration")
+
+@api_router.post("/billing/downgrade")
+async def downgrade_subscription(
+    request: dict,
+    payload: dict = Depends(verify_token)
+):
+    """
+    Schedule a downgrade to a lower plan.
+    Takes effect at the end of current billing period.
+    """
+    user_email = payload.get("sub")
+    product_id = request.get("product_id")
+    new_plan_id = request.get("new_plan_id")
+    
+    if not all([product_id, new_plan_id]):
+        raise HTTPException(status_code=400, detail="Missing required fields")
+    
+    # Get current subscription
+    current_sub = await db.user_subscriptions.find_one(
+        {"user_email": user_email, "product_id": product_id, "status": "active"}
+    )
+    
+    if not current_sub:
+        raise HTTPException(status_code=400, detail="No active subscription found")
+    
+    # Verify it's actually a downgrade
+    current_price = 0
+    new_price = 0
+    new_plan_name = ""
+    
+    if product_id in PRODUCT_PRICING:
+        for plan in PRODUCT_PRICING[product_id]["plans"]:
+            if plan.get("id") == current_sub.get("plan_id") or plan.get("name", "").lower() == current_sub.get("plan", "").lower():
+                current_price = plan.get("price", 0)
+            if plan.get("id") == new_plan_id:
+                new_price = plan.get("price", 0)
+                new_plan_name = plan.get("name", "")
+    
+    if new_price >= current_price:
+        raise HTTPException(status_code=400, detail="New plan must be lower tier. Use upgrade endpoint instead.")
+    
+    # Check for existing pending downgrade
+    existing = await db.pending_plan_changes.find_one(
+        {"user_email": user_email, "product_id": product_id, "status": "pending"}
+    )
+    
+    if existing:
+        # Update existing pending downgrade
+        await db.pending_plan_changes.update_one(
+            {"_id": existing["_id"]},
+            {"$set": {
+                "new_plan": new_plan_name.lower(),
+                "new_plan_id": new_plan_id,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+    else:
+        # Create pending downgrade
+        await db.pending_plan_changes.insert_one({
+            "id": str(uuid.uuid4()),
+            "user_email": user_email,
+            "product_id": product_id,
+            "change_type": "downgrade",
+            "current_plan": current_sub.get("plan"),
+            "new_plan": new_plan_name.lower(),
+            "new_plan_id": new_plan_id,
+            "effective_date": current_sub.get("expires_at"),
+            "status": "pending",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        })
+    
+    return {
+        "message": f"Downgrade to {new_plan_name} scheduled",
+        "effective_date": current_sub.get("expires_at"),
+        "current_plan": current_sub.get("plan"),
+        "new_plan": new_plan_name
+    }
+
+@api_router.post("/billing/cancel")
+async def cancel_subscription(
+    request: dict,
+    payload: dict = Depends(verify_token)
+):
+    """
+    Cancel subscription.
+    Access continues until end of billing period.
+    """
+    user_email = payload.get("sub")
+    product_id = request.get("product_id")
+    
+    if not product_id:
+        raise HTTPException(status_code=400, detail="Product ID required")
+    
+    # Get current subscription
+    current_sub = await db.user_subscriptions.find_one(
+        {"user_email": user_email, "product_id": product_id, "status": "active"}
+    )
+    
+    if not current_sub:
+        raise HTTPException(status_code=400, detail="No active subscription found")
+    
+    # Mark as cancelled (will not renew)
+    await db.user_subscriptions.update_one(
+        {"_id": current_sub["_id"]},
+        {"$set": {
+            "status": "cancelled",
+            "cancelled_at": datetime.now(timezone.utc).isoformat(),
+            "cancellation_effective_date": current_sub.get("expires_at")
+        }}
+    )
+    
+    # Remove any pending plan changes
+    await db.pending_plan_changes.delete_many(
+        {"user_email": user_email, "product_id": product_id}
+    )
+    
+    return {
+        "message": "Subscription cancelled",
+        "access_until": current_sub.get("expires_at")
+    }
+
+@api_router.post("/billing/reactivate")
+async def reactivate_subscription(
+    request: dict,
+    payload: dict = Depends(verify_token)
+):
+    """Reactivate a cancelled subscription before it expires"""
+    user_email = payload.get("sub")
+    product_id = request.get("product_id")
+    
+    if not product_id:
+        raise HTTPException(status_code=400, detail="Product ID required")
+    
+    result = await db.user_subscriptions.update_one(
+        {"user_email": user_email, "product_id": product_id, "status": "cancelled"},
+        {"$set": {
+            "status": "active",
+            "reactivated_at": datetime.now(timezone.utc).isoformat()
+        },
+        "$unset": {"cancelled_at": "", "cancellation_effective_date": ""}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=400, detail="No cancelled subscription found to reactivate")
+    
+    return {"message": "Subscription reactivated"}
+
 # Import and include Survey360 routes (ALL 46 route modules from GitHub)
 from survey360.survey360_main import survey360_router as survey360_full_router, init_survey360_db
 # Keep the basic routes for backward compatibility with existing frontend
