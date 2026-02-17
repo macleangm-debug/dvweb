@@ -303,6 +303,10 @@ export function DashboardLayout({ children }) {
                   <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/billing')}>
+                  <CreditCard className="w-4 h-4 mr-2" />
+                  Billing
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/settings')}>
                   <Settings className="w-4 h-4 mr-2" />
                   Settings
