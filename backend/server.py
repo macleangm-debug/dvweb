@@ -3081,6 +3081,12 @@ async def notification_status(payload: dict = Depends(verify_token)):
         "connected_admins": notification_manager.get_connected_admins()
     }
 
+# ==================== PUBLIC CONTENT ROUTES (MODULARIZED) ====================
+from routes.public_content_routes import create_public_content_router
+
+public_content_router = create_public_content_router(db, verify_admin_token)
+api_router.include_router(public_content_router)
+
 # ==================== AFFILIATE PROGRAM ROUTES ====================
 from routes.affiliate import create_affiliate_router
 
