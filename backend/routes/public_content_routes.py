@@ -3,7 +3,7 @@ Public Content API Routes
 Endpoints for public website content - projects, team, news, testimonials, etc.
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import Optional, List
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field
