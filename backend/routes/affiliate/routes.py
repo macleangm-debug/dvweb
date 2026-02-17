@@ -669,7 +669,6 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
                 earned_badges.append("consistent_performer")
         
         # Quick Starter - 5 referrals in first month
-        created_at = affiliate.get("created_at", "")
         first_month_referrals = affiliate.get("first_month_referrals", 0)
         if first_month_referrals >= 5:
             earned_badges.append("quick_starter")
