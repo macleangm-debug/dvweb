@@ -208,7 +208,7 @@ def security_alert_template(name: str, alert_type: str, details: Dict[str, Any])
         "new_login": {
             "title": "New Login Detected",
             "icon": "🔐",
-            "message": f"A new login was detected on your DataVision account.",
+            "message": "A new login was detected on your DataVision account.",
         },
         "password_changed": {
             "title": "Password Changed",
