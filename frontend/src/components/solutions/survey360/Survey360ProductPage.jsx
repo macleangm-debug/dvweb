@@ -555,7 +555,7 @@ const PricingTab = () => {
                 plan.popular
                   ? 'bg-teal-600 text-white ring-4 ring-teal-300 scale-105'
                   : 'bg-white text-gray-900 border border-gray-200'
-              }`}}
+              }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
