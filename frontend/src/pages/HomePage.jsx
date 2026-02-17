@@ -16,21 +16,24 @@ const HomePage = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [projects, setProjects] = useState([]);
   const [partners, setPartners] = useState([]);
+  const [featuredPartner, setFeaturedPartner] = useState(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsRes, testimonialsRes, projectsRes, partnersRes] = await Promise.all([
+        const [statsRes, testimonialsRes, projectsRes, partnersRes, featuredPartnerRes] = await Promise.all([
           axios.get(`${API}/statistics`),
           axios.get(`${API}/testimonials?featured=true`),
           axios.get(`${API}/projects?featured=true`),
-          axios.get(`${API}/partners`)
+          axios.get(`${API}/partners`),
+          axios.get(`${API}/affiliates/featured-partner`).catch(() => ({ data: { featured_partner: null } }))
         ]);
         setStats(statsRes.data);
         setTestimonials(testimonialsRes.data);
         setProjects(projectsRes.data);
         setPartners(partnersRes.data);
+        setFeaturedPartner(featuredPartnerRes.data.featured_partner);
       } catch (err) {
         console.error('Failed to fetch data:', err);
       }
