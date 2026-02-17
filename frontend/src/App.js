@@ -614,6 +614,7 @@ import {
   AdminSettings,
   AffiliateManagement
 } from './components/admin';
+import ReferralManagement from './components/admin/ReferralManagement';
 
 const AdminDashboard = () => {
   const { user, logout, loading } = useAuth();
