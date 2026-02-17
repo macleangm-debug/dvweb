@@ -501,6 +501,301 @@ const AffiliateDashboard = () => {
           ))}
         </div>
 
+        {/* Performance Tab Content */}
+        {activeTab === 'performance' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            {/* Performance vs Platform Average */}
+            <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-semibold">Your Performance vs Platform Average</h3>
+                  <p className="text-sm text-slate-400 mt-1">See how you compare to other partners</p>
+                </div>
+                {performance?.leaderboard_position && (
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-amber-400">
+                      #{performance.leaderboard_position.rank}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      of {performance.leaderboard_position.total} partners
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {performance ? (
+                <div className="grid md:grid-cols-4 gap-4">
+                  {/* Referrals Comparison */}
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-400">Referrals</span>
+                      <Users className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <p className="text-2xl font-bold">{performance.your_stats.total_referrals}</p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <span className={`text-xs font-medium ${
+                        performance.comparison.referrals_vs_avg >= 0 ? 'text-emerald-400' : 'text-red-400'
+                      }`}>
+                        {performance.comparison.referrals_vs_avg >= 0 ? '+' : ''}{performance.comparison.referrals_vs_avg.toFixed(1)}%
+                      </span>
+                      <span className="text-xs text-slate-500">vs avg ({performance.platform_average.avg_referrals})</span>
+                    </div>
+                    <div className="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all ${
+                          performance.comparison.referrals_vs_avg >= 0 ? 'bg-emerald-500' : 'bg-red-500'
+                        }`}
+                        style={{ 
+                          width: `${Math.min(100, Math.max(5, 50 + performance.comparison.referrals_vs_avg / 2))}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clicks Comparison */}
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-400">Total Clicks</span>
+                      <MousePointer className="w-4 h-4 text-purple-400" />
+                    </div>
+                    <p className="text-2xl font-bold">{performance.your_stats.total_clicks}</p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <span className={`text-xs font-medium ${
+                        performance.comparison.clicks_vs_avg >= 0 ? 'text-emerald-400' : 'text-red-400'
+                      }`}>
+                        {performance.comparison.clicks_vs_avg >= 0 ? '+' : ''}{performance.comparison.clicks_vs_avg.toFixed(1)}%
+                      </span>
+                      <span className="text-xs text-slate-500">vs avg ({performance.platform_average.avg_clicks})</span>
+                    </div>
+                    <div className="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all ${
+                          performance.comparison.clicks_vs_avg >= 0 ? 'bg-emerald-500' : 'bg-red-500'
+                        }`}
+                        style={{ 
+                          width: `${Math.min(100, Math.max(5, 50 + performance.comparison.clicks_vs_avg / 2))}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Conversion Rate */}
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-400">Conversion Rate</span>
+                      <TrendingUp className="w-4 h-4 text-amber-400" />
+                    </div>
+                    <p className="text-2xl font-bold">{performance.your_stats.conversion_rate}%</p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <span className={`text-xs font-medium ${
+                        performance.comparison.conversion_vs_avg >= 0 ? 'text-emerald-400' : 'text-red-400'
+                      }`}>
+                        {performance.comparison.conversion_vs_avg >= 0 ? '+' : ''}{performance.comparison.conversion_vs_avg.toFixed(2)}%
+                      </span>
+                      <span className="text-xs text-slate-500">vs avg ({performance.platform_average.avg_conversion_rate}%)</span>
+                    </div>
+                    <div className="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all ${
+                          performance.comparison.conversion_vs_avg >= 0 ? 'bg-emerald-500' : 'bg-red-500'
+                        }`}
+                        style={{ 
+                          width: `${Math.min(100, Math.max(5, 50 + performance.comparison.conversion_vs_avg * 5))}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Earnings Comparison */}
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-400">Total Earnings</span>
+                      <DollarSign className="w-4 h-4 text-green-400" />
+                    </div>
+                    <p className="text-2xl font-bold">${performance.your_stats.total_earnings}</p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <span className={`text-xs font-medium ${
+                        performance.comparison.earnings_vs_avg >= 0 ? 'text-emerald-400' : 'text-red-400'
+                      }`}>
+                        {performance.comparison.earnings_vs_avg >= 0 ? '+' : ''}{performance.comparison.earnings_vs_avg.toFixed(1)}%
+                      </span>
+                      <span className="text-xs text-slate-500">vs avg (${performance.platform_average.avg_earnings})</span>
+                    </div>
+                    <div className="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all ${
+                          performance.comparison.earnings_vs_avg >= 0 ? 'bg-emerald-500' : 'bg-red-500'
+                        }`}
+                        style={{ 
+                          width: `${Math.min(100, Math.max(5, 50 + performance.comparison.earnings_vs_avg / 2))}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8 text-slate-400">
+                  <TrendingUp className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>Performance data will be available once you start getting referrals</p>
+                </div>
+              )}
+            </div>
+
+            {/* Badges Section */}
+            <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Trophy className="w-5 h-5 text-amber-400" />
+                    Achievement Badges
+                  </h3>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Earn badges by reaching milestones
+                  </p>
+                </div>
+                {performance?.badges && (
+                  <div className="px-3 py-1 bg-amber-500/20 rounded-full">
+                    <span className="text-amber-400 font-semibold">
+                      {performance.badges.total_earned}/{performance.badges.total_available}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Earned Badges */}
+              {performance?.badges?.earned?.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-medium text-slate-300 mb-3">Earned Badges</h4>
+                  <div className="flex flex-wrap gap-3">
+                    {performance.badges.earned.map((badge) => (
+                      <motion.button
+                        key={badge.id}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          setSelectedBadge(badge);
+                          setShowBadgeModal(true);
+                        }}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl border transition-all"
+                        style={{ 
+                          backgroundColor: `${badge.color}15`,
+                          borderColor: `${badge.color}40`
+                        }}
+                        data-testid={`badge-${badge.id}`}
+                      >
+                        <div 
+                          className="w-10 h-10 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: `${badge.color}30` }}
+                        >
+                          {badge.icon === 'star' && <Star className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'trending-up' && <TrendingUp className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'award' && <Award className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'crown' && <Crown className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'zap' && <Zap className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'target' && <Target className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'calendar' && <Calendar className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'dollar-sign' && <DollarSign className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'rocket' && <Rocket className="w-5 h-5" style={{ color: badge.color }} />}
+                          {badge.icon === 'trophy' && <Trophy className="w-5 h-5" style={{ color: badge.color }} />}
+                        </div>
+                        <div className="text-left">
+                          <p className="font-semibold text-sm" style={{ color: badge.color }}>{badge.name}</p>
+                          <p className="text-xs text-slate-400">{badge.requirement}</p>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Next Badges to Earn */}
+              {performance?.badges?.next_to_earn?.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-slate-300 mb-3">Next Badges to Unlock</h4>
+                  <div className="space-y-3">
+                    {performance.badges.next_to_earn.map((item, idx) => {
+                      const progressPercent = (item.progress / item.target) * 100;
+                      return (
+                        <div 
+                          key={idx}
+                          className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl"
+                        >
+                          <div 
+                            className="w-12 h-12 rounded-full flex items-center justify-center opacity-50"
+                            style={{ backgroundColor: `${item.badge.color}20` }}
+                          >
+                            {item.badge.icon === 'star' && <Star className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'trending-up' && <TrendingUp className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'award' && <Award className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'crown' && <Crown className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'zap' && <Zap className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'target' && <Target className="w-6 h-6" style={{ color: item.badge.color }} />}
+                            {item.badge.icon === 'dollar-sign' && <DollarSign className="w-6 h-6" style={{ color: item.badge.color }} />}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="font-medium text-slate-300">{item.badge.name}</p>
+                              <p className="text-sm text-slate-400">
+                                {typeof item.progress === 'number' && item.progress < 100 
+                                  ? `${item.progress}/${item.target}` 
+                                  : `${item.progress}% / ${item.target}%`}
+                              </p>
+                            </div>
+                            <p className="text-xs text-slate-500 mb-2">{item.badge.description}</p>
+                            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${Math.min(progressPercent, 100)}%` }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: item.badge.color }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* No badges yet */}
+              {(!performance?.badges?.earned || performance.badges.earned.length === 0) && 
+               (!performance?.badges?.next_to_earn || performance.badges.next_to_earn.length === 0) && (
+                <div className="text-center py-8 text-slate-400">
+                  <Medal className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>Start referring to earn achievement badges!</p>
+                </div>
+              )}
+            </div>
+
+            {/* Leaderboard Position */}
+            {performance?.leaderboard_position?.is_top_10_percent && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-2xl p-6 border border-amber-500/30"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-amber-500/30 rounded-full flex items-center justify-center">
+                    <Trophy className="w-8 h-8 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-amber-400">Top 10% Partner!</h3>
+                    <p className="text-slate-300">
+                      You're in the top {performance.your_stats.percentile}% of all partners. Keep up the great work!
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+
         {/* Analytics Tab Content */}
         {activeTab === 'analytics' && (
           <motion.div
