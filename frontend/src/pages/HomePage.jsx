@@ -758,6 +758,87 @@ const HomePage = () => {
         </section>
       )}
 
+      {/* Partner of the Month */}
+      {featuredPartner && (
+        <section className="py-16 bg-gradient-to-br from-amber-50 via-white to-amber-50/30 border-t border-b border-amber-100">
+          <div className="container mx-auto px-6 lg:px-12">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mx-auto"
+            >
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full mb-4">
+                  <Trophy className="w-5 h-5 text-amber-600" />
+                  <span className="text-amber-800 font-semibold text-sm uppercase tracking-wider">Partner of the Month</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] font-serif">
+                  Celebrating Our Top Partner
+                </h2>
+              </div>
+              
+              <div className="bg-white rounded-2xl shadow-xl border border-amber-200/50 overflow-hidden">
+                <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 h-2" />
+                <div className="p-8 md:p-10">
+                  <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                    {/* Partner Avatar */}
+                    <div className="relative">
+                      <div 
+                        className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex items-center justify-center shadow-lg"
+                        style={{ backgroundColor: `${featuredPartner.tier_color}20` }}
+                      >
+                        <Award className="w-12 h-12 md:w-14 md:h-14" style={{ color: featuredPartner.tier_color }} />
+                      </div>
+                      <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Star className="w-5 h-5 text-white fill-white" />
+                      </div>
+                    </div>
+                    
+                    {/* Partner Info */}
+                    <div className="flex-1 text-center md:text-left">
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#0a1628] mb-2">
+                        {featuredPartner.name}
+                      </h3>
+                      <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
+                        <span 
+                          className="px-3 py-1 rounded-full text-sm font-semibold"
+                          style={{ 
+                            backgroundColor: `${featuredPartner.tier_color}20`,
+                            color: featuredPartner.tier_color 
+                          }}
+                        >
+                          {featuredPartner.tier} Partner
+                        </span>
+                        {featuredPartner.featured_month && (
+                          <span className="text-sm text-[#64748b]">
+                            {new Date(featuredPartner.featured_month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[#64748b] mb-4">
+                        Recognized for outstanding performance with <span className="font-semibold text-[#0a1628]">{featuredPartner.total_referrals} successful referrals</span>
+                      </p>
+                      <Link 
+                        to="/affiliate/program"
+                        className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold transition-colors"
+                      >
+                        Join our Partner Program
+                        <span className="text-lg">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-center text-sm text-[#64748b] mt-6">
+                Want to be featured? <Link to="/affiliate/program" className="text-[#e63946] hover:underline font-medium">Become a partner</Link> and climb the leaderboard!
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* CTA Section */}
       <section className="py-24 bg-[#f8fafc]">
         <div className="container mx-auto px-6 lg:px-12 text-center">
