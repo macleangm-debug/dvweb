@@ -571,6 +571,224 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         
         return insights[:3]  # Return max 3 insights
     
+    # ==================== PARTNER PERFORMANCE & GAMIFICATION ====================
+    
+    # Badge definitions
+    BADGES = [
+        {"id": "first_referral", "name": "First Referral", "description": "Made your first successful referral", "icon": "star", "color": "#f59e0b", "requirement": "1 referral"},
+        {"id": "five_referrals", "name": "Rising Star", "description": "Reached 5 successful referrals", "icon": "trending-up", "color": "#3b82f6", "requirement": "5 referrals"},
+        {"id": "ten_referrals", "name": "Growth Champion", "description": "Reached 10 successful referrals", "icon": "award", "color": "#8b5cf6", "requirement": "10 referrals"},
+        {"id": "twenty_five_referrals", "name": "Elite Partner", "description": "Reached 25 successful referrals", "icon": "crown", "color": "#f97316", "requirement": "25 referrals"},
+        {"id": "fifty_referrals", "name": "Legend", "description": "Reached 50 successful referrals", "icon": "zap", "color": "#ef4444", "requirement": "50 referrals"},
+        {"id": "high_converter", "name": "Conversion Master", "description": "Achieved 20%+ conversion rate", "icon": "target", "color": "#10b981", "requirement": "20%+ conversion"},
+        {"id": "consistent_performer", "name": "Consistent Performer", "description": "Made referrals 3 months in a row", "icon": "calendar", "color": "#6366f1", "requirement": "3 months active"},
+        {"id": "top_earner", "name": "Top Earner", "description": "Earned $1,000+ in commissions", "icon": "dollar-sign", "color": "#22c55e", "requirement": "$1,000+ earned"},
+        {"id": "quick_starter", "name": "Quick Starter", "description": "Made 5 referrals in first month", "icon": "rocket", "color": "#ec4899", "requirement": "5 referrals in month 1"},
+        {"id": "top_10_percent", "name": "Top 10%", "description": "In the top 10% of all partners", "icon": "trophy", "color": "#eab308", "requirement": "Top 10% performance"},
+    ]
+    
+    def calculate_badges(affiliate: dict, all_affiliates_stats: dict) -> list:
+        """Calculate which badges an affiliate has earned"""
+        earned_badges = []
+        total_referrals = affiliate.get("total_referrals", 0)
+        total_clicks = affiliate.get("total_clicks", 0)
+        total_earnings = affiliate.get("total_earnings", 0)
+        conversion_rate = (total_referrals / total_clicks * 100) if total_clicks > 0 else 0
+        
+        # Referral milestones
+        if total_referrals >= 1:
+            earned_badges.append("first_referral")
+        if total_referrals >= 5:
+            earned_badges.append("five_referrals")
+        if total_referrals >= 10:
+            earned_badges.append("ten_referrals")
+        if total_referrals >= 25:
+            earned_badges.append("twenty_five_referrals")
+        if total_referrals >= 50:
+            earned_badges.append("fifty_referrals")
+        
+        # Performance badges
+        if conversion_rate >= 20:
+            earned_badges.append("high_converter")
+        if total_earnings >= 1000:
+            earned_badges.append("top_earner")
+        
+        # Top 10% badge
+        if all_affiliates_stats.get("top_10_threshold", 0) > 0:
+            if total_referrals >= all_affiliates_stats["top_10_threshold"]:
+                earned_badges.append("top_10_percent")
+        
+        return earned_badges
+    
+    @router.get("/my-performance")
+    async def get_my_performance(
+        payload: dict = Depends(verify_token),
+        period_days: int = Query(default=30, ge=7, le=90)
+    ):
+        """Get partner's performance compared to platform average with badges"""
+        user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")
+        
+        affiliate = await db.affiliates.find_one({
+            "$or": [
+                {"email": user_email},
+                {"user_id": user_id}
+            ],
+            "status": AffiliateStatus.APPROVED
+        }, {"_id": 0})
+        
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate profile not found")
+        
+        # Get all approved affiliates for comparison
+        all_affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "total_referrals": 1, "total_clicks": 1, "total_earnings": 1}
+        ).to_list(length=1000)
+        
+        # Calculate platform averages
+        total_affiliates = len(all_affiliates)
+        if total_affiliates > 0:
+            avg_referrals = sum(a.get("total_referrals", 0) for a in all_affiliates) / total_affiliates
+            avg_clicks = sum(a.get("total_clicks", 0) for a in all_affiliates) / total_affiliates
+            avg_earnings = sum(a.get("total_earnings", 0) for a in all_affiliates) / total_affiliates
+            
+            # Calculate conversion rates
+            total_platform_clicks = sum(a.get("total_clicks", 0) for a in all_affiliates)
+            total_platform_referrals = sum(a.get("total_referrals", 0) for a in all_affiliates)
+            platform_conversion_rate = (total_platform_referrals / total_platform_clicks * 100) if total_platform_clicks > 0 else 0
+            
+            # Top 10% threshold
+            sorted_by_referrals = sorted([a.get("total_referrals", 0) for a in all_affiliates], reverse=True)
+            top_10_index = max(0, int(len(sorted_by_referrals) * 0.1) - 1)
+            top_10_threshold = sorted_by_referrals[top_10_index] if sorted_by_referrals else 0
+            
+            # Calculate rank
+            my_referrals = affiliate.get("total_referrals", 0)
+            rank = sum(1 for a in all_affiliates if a.get("total_referrals", 0) > my_referrals) + 1
+        else:
+            avg_referrals = avg_clicks = avg_earnings = 0
+            platform_conversion_rate = 0
+            top_10_threshold = 0
+            rank = 1
+        
+        # Partner's stats
+        my_clicks = affiliate.get("total_clicks", 0)
+        my_referrals = affiliate.get("total_referrals", 0)
+        my_earnings = affiliate.get("total_earnings", 0)
+        my_conversion_rate = (my_referrals / my_clicks * 100) if my_clicks > 0 else 0
+        
+        # Performance comparison (percentage vs platform average)
+        referrals_vs_avg = ((my_referrals / avg_referrals) * 100 - 100) if avg_referrals > 0 else 0
+        clicks_vs_avg = ((my_clicks / avg_clicks) * 100 - 100) if avg_clicks > 0 else 0
+        earnings_vs_avg = ((my_earnings / avg_earnings) * 100 - 100) if avg_earnings > 0 else 0
+        conversion_vs_avg = my_conversion_rate - platform_conversion_rate
+        
+        # Calculate badges
+        all_affiliates_stats = {"top_10_threshold": top_10_threshold}
+        earned_badge_ids = calculate_badges(affiliate, all_affiliates_stats)
+        
+        # Get full badge details for earned badges
+        earned_badges = [b for b in BADGES if b["id"] in earned_badge_ids]
+        next_badges = []
+        
+        # Determine next badges to earn
+        if my_referrals < 1:
+            next_badges.append({"badge": BADGES[0], "progress": 0, "target": 1})
+        elif my_referrals < 5:
+            next_badges.append({"badge": BADGES[1], "progress": my_referrals, "target": 5})
+        elif my_referrals < 10:
+            next_badges.append({"badge": BADGES[2], "progress": my_referrals, "target": 10})
+        elif my_referrals < 25:
+            next_badges.append({"badge": BADGES[3], "progress": my_referrals, "target": 25})
+        elif my_referrals < 50:
+            next_badges.append({"badge": BADGES[4], "progress": my_referrals, "target": 50})
+        
+        if my_conversion_rate < 20 and my_clicks > 10:
+            next_badges.append({"badge": BADGES[5], "progress": round(my_conversion_rate, 1), "target": 20})
+        
+        if my_earnings < 1000:
+            next_badges.append({"badge": BADGES[7], "progress": round(my_earnings, 2), "target": 1000})
+        
+        return {
+            "your_stats": {
+                "total_referrals": my_referrals,
+                "total_clicks": my_clicks,
+                "total_earnings": round(my_earnings, 2),
+                "conversion_rate": round(my_conversion_rate, 2),
+                "rank": rank,
+                "total_partners": total_affiliates,
+                "percentile": round((1 - (rank / total_affiliates)) * 100 if total_affiliates > 0 else 0, 1)
+            },
+            "platform_average": {
+                "avg_referrals": round(avg_referrals, 1),
+                "avg_clicks": round(avg_clicks, 1),
+                "avg_earnings": round(avg_earnings, 2),
+                "avg_conversion_rate": round(platform_conversion_rate, 2)
+            },
+            "comparison": {
+                "referrals_vs_avg": round(referrals_vs_avg, 1),
+                "clicks_vs_avg": round(clicks_vs_avg, 1),
+                "earnings_vs_avg": round(earnings_vs_avg, 1),
+                "conversion_vs_avg": round(conversion_vs_avg, 2),
+                "is_above_average": referrals_vs_avg >= 0
+            },
+            "badges": {
+                "earned": earned_badges,
+                "total_earned": len(earned_badges),
+                "total_available": len(BADGES),
+                "next_to_earn": next_badges[:3]  # Show up to 3 upcoming badges
+            },
+            "leaderboard_position": {
+                "rank": rank,
+                "total": total_affiliates,
+                "is_top_10_percent": my_referrals >= top_10_threshold if top_10_threshold > 0 else False
+            }
+        }
+    
+    @router.get("/badges")
+    async def get_all_badges(payload: dict = Depends(verify_token)):
+        """Get all available badges with their requirements"""
+        user_email = payload.get("sub")
+        user_id = payload.get("user_id") or payload.get("id")
+        
+        affiliate = await db.affiliates.find_one({
+            "$or": [
+                {"email": user_email},
+                {"user_id": user_id}
+            ],
+            "status": AffiliateStatus.APPROVED
+        }, {"_id": 0})
+        
+        if not affiliate:
+            raise HTTPException(status_code=404, detail="Affiliate profile not found")
+        
+        # Get stats for badge calculation
+        all_affiliates = await db.affiliates.find(
+            {"status": AffiliateStatus.APPROVED},
+            {"_id": 0, "total_referrals": 1}
+        ).to_list(length=1000)
+        
+        sorted_by_referrals = sorted([a.get("total_referrals", 0) for a in all_affiliates], reverse=True)
+        top_10_index = max(0, int(len(sorted_by_referrals) * 0.1) - 1)
+        top_10_threshold = sorted_by_referrals[top_10_index] if sorted_by_referrals else 0
+        
+        all_affiliates_stats = {"top_10_threshold": top_10_threshold}
+        earned_badge_ids = calculate_badges(affiliate, all_affiliates_stats)
+        
+        # Return all badges with earned status
+        badges_with_status = []
+        for badge in BADGES:
+            badge_copy = badge.copy()
+            badge_copy["earned"] = badge["id"] in earned_badge_ids
+            badges_with_status.append(badge_copy)
+        
+        return {
+            "badges": badges_with_status,
+            "total_earned": len(earned_badge_ids),
+            "total_available": len(BADGES)
+        }
+    
     # ==================== ADMIN ENDPOINTS ====================
     
     @router.get("/admin/applications")
