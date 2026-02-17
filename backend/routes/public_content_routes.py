@@ -385,7 +385,3 @@ def create_public_content_router(db, verify_admin_token):
         return {"message": "Partner deleted"}
     
     return router
-
-
-# Add Depends import
-from fastapi import Depends
