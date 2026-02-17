@@ -2538,6 +2538,45 @@ from typing import Dict
 from fastapi import Request
 
 # Software Product Packages - defined server-side for security
+# Software Product Packages - defined server-side for security
+# Plan tiers for each product
+PRODUCT_PLANS = {
+    "survey360": {
+        "free": {"name": "Free", "surveys_limit": 3, "responses_limit": 100, "features": ["basic_analytics"]},
+        "starter": {"name": "Starter", "surveys_limit": 10, "responses_limit": 1000, "features": ["basic_analytics", "export"]},
+        "professional": {"name": "Professional", "surveys_limit": 50, "responses_limit": 10000, "features": ["advanced_analytics", "export", "branching", "api_access"]},
+        "enterprise": {"name": "Enterprise", "surveys_limit": -1, "responses_limit": -1, "features": ["all"]}
+    },
+    "fieldforce": {
+        "starter": {"name": "Starter", "seats": 10, "features": ["offline_mode", "basic_forms"]},
+        "professional": {"name": "Professional", "seats": 50, "features": ["offline_mode", "advanced_forms", "gps_tracking", "photo_capture"]},
+        "enterprise": {"name": "Enterprise", "seats": -1, "features": ["all"]}
+    },
+    "datapulse": {
+        "starter": {"name": "Starter", "dashboards": 3, "features": ["basic_charts"]},
+        "professional": {"name": "Professional", "dashboards": 20, "features": ["advanced_charts", "real_time", "export"]},
+        "enterprise": {"name": "Enterprise", "dashboards": -1, "features": ["all"]}
+    }
+}
+
+# Package to plan mapping
+PACKAGE_TO_PLAN = {
+    "survey360_monthly": {"product_id": "survey360", "plan": "professional", "duration_days": 30},
+    "survey360_annual": {"product_id": "survey360", "plan": "professional", "duration_days": 365},
+    "survey360_enterprise": {"product_id": "survey360", "plan": "enterprise", "duration_days": 365},
+    "fieldforce_10seats": {"product_id": "fieldforce", "plan": "starter", "duration_days": 365},
+    "fieldforce_50seats": {"product_id": "fieldforce", "plan": "professional", "duration_days": 365},
+    "fieldforce_unlimited": {"product_id": "fieldforce", "plan": "enterprise", "duration_days": 365},
+    "dataviz_monthly": {"product_id": "datapulse", "plan": "professional", "duration_days": 30},
+    "dataviz_annual": {"product_id": "datapulse", "plan": "professional", "duration_days": 365},
+    "me_tracker_monthly": {"product_id": "me-tracker", "plan": "professional", "duration_days": 30},
+    "me_tracker_annual": {"product_id": "me-tracker", "plan": "professional", "duration_days": 365},
+    "agridata_annual": {"product_id": "agridata-pro", "plan": "professional", "duration_days": 365},
+    "eduinsights_annual": {"product_id": "eduinsights", "plan": "professional", "duration_days": 365},
+    "healthpulse_annual": {"product_id": "healthpulse", "plan": "professional", "duration_days": 365},
+    "wash_monitor_annual": {"product_id": "wash-monitor", "plan": "professional", "duration_days": 365},
+}
+
 SOFTWARE_PACKAGES = {
     # Survey360 - Subscription
     "survey360_monthly": {"name": "Survey360 Monthly", "amount": 99.00, "type": "subscription", "product_id": "survey360"},
