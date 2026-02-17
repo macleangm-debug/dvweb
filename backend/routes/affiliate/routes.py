@@ -58,7 +58,14 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         if current_idx < len(TIERS) - 1:
             next_tier = TIERS[current_idx + 1]
             needed = next_tier["min_referrals"] - referral_count
-            return next_tier["name"], max(0, needed)
+            # Return full tier info for frontend
+            return {
+                "name": next_tier["name"],
+                "min_referrals": next_tier["min_referrals"],
+                "commission_rate": next_tier["commission_rate"],
+                "color": next_tier["color"],
+                "benefits": next_tier["benefits"]
+            }, max(0, needed)
         return None, 0
     
     # ==================== PUBLIC ENDPOINTS ====================
