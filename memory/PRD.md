@@ -1685,7 +1685,7 @@ GET  /api/email-preferences/unsubscribe/{token}
 ├── backend/
 │   ├── server.py (~3100 lines)
 │   ├── services/
-│   │   └── email_service.py (Resend integration)
+│   │   └── email_service.py (Resend + Winner Emails)
 │   └── routes/
 │       ├── admin_referral_routes.py (434 lines)
 │       ├── auth_routes.py (602 lines)
@@ -1693,26 +1693,69 @@ GET  /api/email-preferences/unsubscribe/{token}
 │       ├── email_preferences_routes.py
 │       ├── referral_routes.py
 │       ├── public_content_routes.py (Ready to import)
-│       └── affiliate/routes.py (Full: Performance, Badges, Leaderboard, Sharing)
+│       └── affiliate/routes.py (Performance, Badges, Leaderboard, Monthly Rewards)
 ├── frontend/
 │   └── src/
-│       ├── App.js (621 lines)
+│       ├── App.js (622 lines)
 │       ├── pages/
 │       │   ├── HomePage.jsx, AboutPage.jsx, ProjectsPage.jsx, NewsPage.jsx
 │       │   ├── ContactPage.jsx, UserSettings.jsx, ReferralDashboard.jsx
 │       │   └── affiliate/
 │       │       ├── AffiliateDashboard.jsx (Performance, Badges, Social Sharing)
-│       │       └── PartnerLeaderboard.jsx (NEW)
+│       │       └── PartnerLeaderboard.jsx (Leaderboard + Monthly Rewards)
 │       └── components/admin/...
 ```
+
+---
+
+## February 17, 2026 - Monthly Rewards System (COMPLETED)
+
+**Features Implemented:**
+
+### 1. Monthly Rewards Configuration
+- **1st Place**: $100 bonus credits + Tier upgrade + Featured Partner spotlight
+- **2nd Place**: $50 bonus credits
+- **3rd Place**: $25 bonus credits
+- Automatic email notifications to winners
+
+### 2. Admin Endpoints
+- **`POST /api/affiliates/admin/process-monthly-rewards`**
+  - Parameters: `month` (YYYY-MM), `dry_run` (boolean, default true)
+  - Awards credits, tier upgrades, sets featured partner
+  - Sends congratulatory emails to winners
+  - Prevents duplicate processing for same month
+- **`GET /api/affiliates/admin/monthly-rewards-history`**
+  - Returns all processed rewards grouped by month
+
+### 3. Public Endpoints
+- **`GET /api/affiliates/leaderboard/previous-winners`** - Show past winners
+- **`GET /api/affiliates/featured-partner`** - Get current featured partner for homepage
+
+### 4. Email Templates
+- `send_leaderboard_winner_email()` - Congratulates winners with rank, prize details, CTA
+- `send_featured_partner_email()` - Notifies featured partner of spotlight status
+
+### 5. Frontend Updates
+- Monthly Rewards section on leaderboard page with prize breakdown
+- Previous Winners display (when available)
+- Featured Partner spotlight card (when set)
+
+**Files Updated:**
+- `/app/backend/routes/affiliate/routes.py` (Added ~300 lines)
+- `/app/backend/services/email_service.py` (Added 2 email methods)
+- `/app/frontend/src/pages/affiliate/PartnerLeaderboard.jsx` (Added rewards UI)
+
+**Testing:** 100% pass rate
+- Backend: 17/17 API tests passed
+- Frontend: All UI tests passed
+- Test report: `/app/test_reports/iteration_32.json`
 
 ---
 
 ## Pending/In Progress Tasks
 
 ### P1 - High Priority
-1. **Complete Backend Modularization** - Import public_content_routes.py to reduce server.py size
-2. **Real Analytics Integration** - Replace mock geo data in affiliate analytics
+1. **Schedule Monthly Rewards Processing** - Set up cron job or manual reminder for month-end
 
 ### P2 - Medium Priority
 1. **Credit Redemption Flow** - Connect credit redemption to product checkout
