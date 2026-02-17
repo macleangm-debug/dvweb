@@ -562,6 +562,7 @@ async def register_user(user_data: DataVisionUserRegister):
     """
     Register a new DataVision user.
     Users can then use SSO to access FieldForce and Survey360.
+    Processes referral code if provided.
     """
     # Check if user already exists
     existing_user = await db.datavision_users.find_one({"email": user_data.email})
@@ -583,8 +584,45 @@ async def register_user(user_data: DataVisionUserRegister):
         "password": hashed_password,
         "name": user_data.name,
         "is_admin": False,
+        "referred_by": None,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
+    
+    # Process referral code if provided (User Referral Program)
+    if user_data.referral_code:
+        referral_code = user_data.referral_code.upper().strip()
+        # Find the referrer
+        referrer = await db.referrals.find_one({"referral_code": referral_code})
+        if referrer:
+            new_user["referred_by"] = referrer["user_id"]
+            
+            # Update referrer's stats
+            await db.referrals.update_one(
+                {"referral_code": referral_code},
+                {
+                    "$push": {"referred_users": user_id},
+                    "$inc": {"total_referrals": 1}
+                }
+            )
+            
+            # Award credit to referrer (default: $5 per referral)
+            REFERRAL_CREDIT_AMOUNT = 5.0
+            await db.user_credits.update_one(
+                {"user_id": referrer["user_id"]},
+                {
+                    "$inc": {"balance": REFERRAL_CREDIT_AMOUNT},
+                    "$push": {
+                        "history": {
+                            "id": str(uuid.uuid4()),
+                            "type": "earned",
+                            "amount": REFERRAL_CREDIT_AMOUNT,
+                            "description": f"Referral bonus for {user_data.name}",
+                            "timestamp": datetime.now(timezone.utc).isoformat()
+                        }
+                    }
+                },
+                upsert=True
+            )
     
     await db.datavision_users.insert_one(new_user)
     
