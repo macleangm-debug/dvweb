@@ -116,6 +116,16 @@ const AdminLayout = ({ user, logout, children, activeSection, setActiveSection, 
       ]
     },
     {
+      id: 'referrals',
+      label: 'Referral Program',
+      icon: Gift,
+      subItems: [
+        { id: 'leaderboard', label: 'Leaderboard' },
+        { id: 'credits', label: 'Credit Management' },
+        { id: 'conversions', label: 'Conversions' },
+      ]
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: Settings,
