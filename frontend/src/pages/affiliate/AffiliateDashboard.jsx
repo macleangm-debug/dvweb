@@ -8,7 +8,7 @@ import {
   ArrowRight, Download, Filter, Calendar, ChevronDown,
   Wallet, Target, BarChart3, Share2, Link as LinkIcon,
   MousePointer, Eye, Lightbulb, AlertCircle, CheckCircle, Info,
-  Trophy, Star, Zap, Crown, Rocket, Medal
+  Trophy, Star, Zap, Crown, Rocket, Medal, Twitter, Linkedin, Facebook, MessageCircle
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
