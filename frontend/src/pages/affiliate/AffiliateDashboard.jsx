@@ -7,11 +7,12 @@ import {
   Clock, CreditCard, Building2, Smartphone, Globe, Award,
   ArrowRight, Download, Filter, Calendar, ChevronDown,
   Wallet, Target, BarChart3, Share2, Link as LinkIcon,
-  MousePointer, Eye, Lightbulb, AlertCircle, CheckCircle, Info
+  MousePointer, Eye, Lightbulb, AlertCircle, CheckCircle, Info,
+  Trophy, Star, Zap, Crown, Rocket, Medal
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell
+  BarChart, Bar, PieChart, Pie, Cell, RadialBarChart, RadialBar
 } from 'recharts';
 
 const API = process.env.REACT_APP_BACKEND_URL;
