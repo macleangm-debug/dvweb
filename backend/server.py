@@ -3131,6 +3131,41 @@ async def get_available_packages():
         })
     return {"packages": packages}
 
+# ==================== CENTRALIZED PRICING API ====================
+
+@api_router.get("/pricing")
+async def get_all_pricing():
+    """Get pricing for all products - single source of truth"""
+    return {
+        "products": PRODUCT_PRICING,
+        "currency": "usd",
+        "last_updated": datetime.now(timezone.utc).isoformat()
+    }
+
+@api_router.get("/pricing/{product_id}")
+async def get_product_pricing(product_id: str):
+    """
+    Get pricing for a specific product.
+    Products should fetch their pricing from this endpoint to ensure consistency.
+    """
+    if product_id not in PRODUCT_PRICING:
+        raise HTTPException(status_code=404, detail=f"Product '{product_id}' not found")
+    
+    pricing = PRODUCT_PRICING[product_id]
+    
+    # Add package amounts from SOFTWARE_PACKAGES for verification
+    for plan in pricing["plans"]:
+        if plan.get("package_id") and plan["package_id"] in SOFTWARE_PACKAGES:
+            plan["verified_amount"] = SOFTWARE_PACKAGES[plan["package_id"]]["amount"]
+        if plan.get("annual_package_id") and plan["annual_package_id"] in SOFTWARE_PACKAGES:
+            plan["verified_annual_amount"] = SOFTWARE_PACKAGES[plan["annual_package_id"]]["amount"]
+    
+    return {
+        **pricing,
+        "currency": "usd",
+        "last_updated": datetime.now(timezone.utc).isoformat()
+    }
+
 @api_router.get("/user/products")
 async def get_user_products(email: str):
     """Get products a user has access to"""
