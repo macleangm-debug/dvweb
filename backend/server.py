@@ -1116,6 +1116,51 @@ async def get_current_user(payload: dict = Depends(verify_token)):
 
 # ==================== DATAVISION SSO FOR PRODUCTS ====================
 
+async def get_user_subscription(user_email: str, product_id: str):
+    """
+    Get active subscription for a user and product.
+    Returns subscription details including plan, expiry, and features.
+    """
+    subscription = await db.user_subscriptions.find_one(
+        {
+            "user_email": user_email,
+            "product_id": product_id,
+            "status": "active"
+        },
+        {"_id": 0}
+    )
+    
+    if subscription:
+        # Check if subscription is expired
+        expires_at = subscription.get("expires_at")
+        if expires_at:
+            expiry_date = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+            if expiry_date < datetime.now(timezone.utc):
+                # Subscription expired
+                await db.user_subscriptions.update_one(
+                    {"id": subscription["id"]},
+                    {"$set": {"status": "expired"}}
+                )
+                return None
+        
+        # Get plan features
+        plan = subscription.get("plan", "free")
+        plan_features = PRODUCT_PLANS.get(product_id, {}).get(plan, {})
+        
+        return {
+            "subscription_id": subscription.get("id"),
+            "plan": plan,
+            "plan_name": subscription.get("plan_name"),
+            "status": "active",
+            "started_at": subscription.get("started_at"),
+            "expires_at": subscription.get("expires_at"),
+            "auto_renew": subscription.get("auto_renew", False),
+            "features": plan_features.get("features", []),
+            "limits": {k: v for k, v in plan_features.items() if k != "features" and k != "name"}
+        }
+    
+    return None
+
 @api_router.post("/auth/sso/survey360")
 async def datavision_to_survey360_sso(authorization: str = Header(None)):
     """
