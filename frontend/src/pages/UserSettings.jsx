@@ -216,6 +216,7 @@ const UserSettings = () => {
                   <tab.icon className="w-5 h-5" />
                   <span className="font-medium">{tab.label}</span>
                 </button>
+                )
               ))}
             </div>
           </nav>
