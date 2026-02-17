@@ -2856,14 +2856,26 @@ PRODUCT_PLANS = {
 
 # Package to plan mapping
 PACKAGE_TO_PLAN = {
+    # Survey360
+    "survey360_starter_monthly": {"product_id": "survey360", "plan": "starter", "duration_days": 30},
+    "survey360_starter_annual": {"product_id": "survey360", "plan": "starter", "duration_days": 365},
     "survey360_monthly": {"product_id": "survey360", "plan": "professional", "duration_days": 30},
     "survey360_annual": {"product_id": "survey360", "plan": "professional", "duration_days": 365},
-    "survey360_enterprise": {"product_id": "survey360", "plan": "enterprise", "duration_days": 365},
+    "survey360_business_monthly": {"product_id": "survey360", "plan": "business", "duration_days": 30},
+    "survey360_business_annual": {"product_id": "survey360", "plan": "business", "duration_days": 365},
+    # FieldForce
+    "fieldforce_starter_monthly": {"product_id": "fieldforce", "plan": "starter", "duration_days": 30},
     "fieldforce_10seats": {"product_id": "fieldforce", "plan": "starter", "duration_days": 365},
+    "fieldforce_pro_monthly": {"product_id": "fieldforce", "plan": "professional", "duration_days": 30},
     "fieldforce_50seats": {"product_id": "fieldforce", "plan": "professional", "duration_days": 365},
+    "fieldforce_enterprise_monthly": {"product_id": "fieldforce", "plan": "enterprise", "duration_days": 30},
     "fieldforce_unlimited": {"product_id": "fieldforce", "plan": "enterprise", "duration_days": 365},
+    # DataPulse
+    "datapulse_starter_monthly": {"product_id": "datapulse", "plan": "starter", "duration_days": 30},
+    "datapulse_starter_annual": {"product_id": "datapulse", "plan": "starter", "duration_days": 365},
     "dataviz_monthly": {"product_id": "datapulse", "plan": "professional", "duration_days": 30},
     "dataviz_annual": {"product_id": "datapulse", "plan": "professional", "duration_days": 365},
+    # Other products
     "me_tracker_monthly": {"product_id": "me-tracker", "plan": "professional", "duration_days": 30},
     "me_tracker_annual": {"product_id": "me-tracker", "plan": "professional", "duration_days": 365},
     "agridata_annual": {"product_id": "agridata-pro", "plan": "professional", "duration_days": 365},
@@ -2873,23 +2885,31 @@ PACKAGE_TO_PLAN = {
 }
 
 SOFTWARE_PACKAGES = {
-    # Survey360 - Subscription
-    "survey360_monthly": {"name": "Survey360 Monthly", "amount": 99.00, "type": "subscription", "product_id": "survey360"},
-    "survey360_annual": {"name": "Survey360 Annual", "amount": 990.00, "type": "subscription", "product_id": "survey360"},
-    "survey360_enterprise": {"name": "Survey360 Enterprise", "amount": 0.00, "type": "enterprise", "product_id": "survey360"},
+    # Survey360 - Subscription (prices match PRODUCT_PRICING)
+    "survey360_starter_monthly": {"name": "Survey360 Starter Monthly", "amount": 19.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_starter_annual": {"name": "Survey360 Starter Annual", "amount": 190.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_monthly": {"name": "Survey360 Professional Monthly", "amount": 49.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_annual": {"name": "Survey360 Professional Annual", "amount": 490.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_business_monthly": {"name": "Survey360 Business Monthly", "amount": 99.00, "type": "subscription", "product_id": "survey360"},
+    "survey360_business_annual": {"name": "Survey360 Business Annual", "amount": 990.00, "type": "subscription", "product_id": "survey360"},
     
-    # DataViz Studio - Subscription
-    "dataviz_monthly": {"name": "DataViz Studio Monthly", "amount": 79.00, "type": "subscription", "product_id": "dataviz-studio"},
-    "dataviz_annual": {"name": "DataViz Studio Annual", "amount": 790.00, "type": "subscription", "product_id": "dataviz-studio"},
+    # FieldForce - Per-seat licensing (prices match PRODUCT_PRICING)
+    "fieldforce_starter_monthly": {"name": "FieldForce Starter Monthly", "amount": 49.00, "type": "subscription", "product_id": "fieldforce"},
+    "fieldforce_10seats": {"name": "FieldForce Starter Annual (10 seats)", "amount": 499.00, "type": "package", "product_id": "fieldforce"},
+    "fieldforce_pro_monthly": {"name": "FieldForce Professional Monthly", "amount": 149.00, "type": "subscription", "product_id": "fieldforce"},
+    "fieldforce_50seats": {"name": "FieldForce Professional Annual (50 seats)", "amount": 1499.00, "type": "package", "product_id": "fieldforce"},
+    "fieldforce_enterprise_monthly": {"name": "FieldForce Enterprise Monthly", "amount": 399.00, "type": "subscription", "product_id": "fieldforce"},
+    "fieldforce_unlimited": {"name": "FieldForce Enterprise Annual (Unlimited)", "amount": 3999.00, "type": "package", "product_id": "fieldforce"},
+    
+    # DataPulse - Subscription (prices match PRODUCT_PRICING)
+    "datapulse_starter_monthly": {"name": "DataPulse Starter Monthly", "amount": 29.00, "type": "subscription", "product_id": "datapulse"},
+    "datapulse_starter_annual": {"name": "DataPulse Starter Annual", "amount": 290.00, "type": "subscription", "product_id": "datapulse"},
+    "dataviz_monthly": {"name": "DataPulse Professional Monthly", "amount": 79.00, "type": "subscription", "product_id": "datapulse"},
+    "dataviz_annual": {"name": "DataPulse Professional Annual", "amount": 790.00, "type": "subscription", "product_id": "datapulse"},
     
     # M&E Tracker - Subscription
     "me_tracker_monthly": {"name": "M&E Tracker Monthly", "amount": 149.00, "type": "subscription", "product_id": "me-tracker"},
     "me_tracker_annual": {"name": "M&E Tracker Annual", "amount": 1490.00, "type": "subscription", "product_id": "me-tracker"},
-    
-    # FieldForce - Per-seat licensing
-    "fieldforce_10seats": {"name": "FieldForce (10 seats)", "amount": 499.00, "type": "package", "product_id": "fieldforce"},
-    "fieldforce_50seats": {"name": "FieldForce (50 seats)", "amount": 1999.00, "type": "package", "product_id": "fieldforce"},
-    "fieldforce_unlimited": {"name": "FieldForce Unlimited", "amount": 4999.00, "type": "package", "product_id": "fieldforce"},
     
     # Sectoral Solutions - Annual license
     "agridata_annual": {"name": "AgriData Pro Annual", "amount": 1999.00, "type": "subscription", "product_id": "agridata-pro"},
