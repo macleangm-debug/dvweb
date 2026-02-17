@@ -1167,6 +1167,7 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
     DataVision SSO to Survey360.
     Allows DataVision authenticated users to access Survey360 without re-login.
     Creates Survey360 user if doesn't exist.
+    Includes subscription information from centralized billing.
     """
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -1179,6 +1180,10 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
         
         if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Get user's subscription for Survey360
+        subscription = await get_user_subscription(user_email, "survey360")
+        plan = subscription["plan"] if subscription else "free"
         
         # Track product access for marketing
         await db.datavision_users.update_one(
@@ -1203,11 +1208,11 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
             new_user_id = str(uuid.uuid4())
             org_id = str(uuid.uuid4())
             
-            # Create organization for the user
+            # Create organization for the user with plan from subscription
             await db.survey360_orgs.insert_one({
                 "id": org_id,
                 "name": f"{user_name}'s Organization",
-                "plan": "professional",
+                "plan": plan,
                 "owner_id": new_user_id,
                 "created_at": datetime.now(timezone.utc).isoformat()
             })
@@ -1223,13 +1228,21 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
             await db.survey360_users.insert_one(survey360_user)
+        else:
+            # Update existing org plan if subscription changed
+            if subscription:
+                await db.survey360_orgs.update_one(
+                    {"id": survey360_user.get("org_id")},
+                    {"$set": {"plan": plan}}
+                )
         
-        # Generate Survey360 token
+        # Generate Survey360 token with subscription info
         survey360_token = jwt.encode(
             {
                 "user_id": survey360_user["id"],
                 "exp": datetime.now(timezone.utc).timestamp() + 86400,
                 "product": "survey360",
+                "plan": plan,
                 "sso": True
             },
             SECRET_KEY,
@@ -1244,6 +1257,7 @@ async def datavision_to_survey360_sso(authorization: str = Header(None)):
                 "org_id": survey360_user.get("org_id")
             },
             "access_token": survey360_token,
+            "subscription": subscription,
             "sso": True,
             "provider": "datavision"
         }
