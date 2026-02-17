@@ -13,6 +13,8 @@ const PartnerLeaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [stats, setStats] = useState(null);
   const [myPosition, setMyPosition] = useState(null);
+  const [previousWinners, setPreviousWinners] = useState([]);
+  const [featuredPartner, setFeaturedPartner] = useState(null);
   const [period, setPeriod] = useState('all_time');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -21,6 +23,8 @@ const PartnerLeaderboard = () => {
 
   useEffect(() => {
     fetchLeaderboard();
+    fetchPreviousWinners();
+    fetchFeaturedPartner();
   }, [period]);
 
   const fetchLeaderboard = async () => {
@@ -45,6 +49,24 @@ const PartnerLeaderboard = () => {
       console.error('Error fetching leaderboard:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPreviousWinners = async () => {
+    try {
+      const res = await axios.get(`${API}/api/affiliates/leaderboard/previous-winners?months=3`);
+      setPreviousWinners(res.data.history || []);
+    } catch (err) {
+      console.log('No previous winners data');
+    }
+  };
+
+  const fetchFeaturedPartner = async () => {
+    try {
+      const res = await axios.get(`${API}/api/affiliates/featured-partner`);
+      setFeaturedPartner(res.data.featured_partner);
+    } catch (err) {
+      console.log('No featured partner');
     }
   };
 
