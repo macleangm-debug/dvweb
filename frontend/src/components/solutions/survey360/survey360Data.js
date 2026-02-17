@@ -169,7 +169,9 @@ export const testimonials = [
   }
 ];
 
-// Pricing plans
+// Pricing plans - FALLBACK ONLY
+// Actual pricing should be fetched from /api/pricing/survey360
+// These values serve as fallback if API fails
 export const pricingPlans = [
   {
     id: 'survey360_free',
@@ -177,6 +179,7 @@ export const pricingPlans = [
     price: 0,
     period: 'forever',
     description: 'For individuals getting started',
+    package_id: null,
     features: [
       '3 surveys',
       '100 responses/month',
@@ -190,14 +193,16 @@ export const pricingPlans = [
   {
     id: 'survey360_starter',
     name: 'Starter',
-    price: 12,
+    price: 19,
     period: '/month',
-    annualPrice: 144,
+    annual_price: 190,
     description: 'For freelancers and small teams',
+    package_id: 'survey360_starter_monthly',
+    annual_package_id: 'survey360_starter_annual',
     features: [
       'Unlimited surveys',
-      '500 responses/month',
-      '10 question types',
+      '1,000 responses/month',
+      'All question types',
       'Skip logic',
       'Basic analytics',
       'Email support',
@@ -208,37 +213,42 @@ export const pricingPlans = [
   {
     id: 'survey360_professional',
     name: 'Professional',
-    price: 32,
+    price: 49,
     period: '/month',
-    annualPrice: 384,
+    annual_price: 490,
     description: 'For growing businesses',
+    package_id: 'survey360_monthly',
+    annual_package_id: 'survey360_annual',
     features: [
       'Unlimited surveys',
-      '2,500 responses/month',
+      '10,000 responses/month',
       'Everything in Starter',
-      'Logo upload',
+      'Custom branding',
       'Advanced analytics',
       'Priority support',
       'API access'
     ],
     popular: true,
-    savings: 'Save 20% annually'
+    savings: 'Save 17% annually'
   },
   {
     id: 'survey360_business',
     name: 'Business',
-    price: 65,
+    price: 99,
     period: '/month',
-    annualPrice: 780,
+    annual_price: 990,
     description: 'For larger teams and agencies',
+    package_id: 'survey360_business_monthly',
+    annual_package_id: 'survey360_business_annual',
     features: [
       'Unlimited surveys',
-      '10,000 responses/month',
+      'Unlimited responses',
       'Everything in Professional',
       'Unlimited team members',
       'Custom integrations',
       'Dedicated support',
-      'White-label option'
+      'White-label option',
+      'SSO'
     ],
     popular: false
   }
