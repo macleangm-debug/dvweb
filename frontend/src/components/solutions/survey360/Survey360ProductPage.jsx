@@ -465,8 +465,36 @@ const TestimonialsTab = () => (
 const PricingTab = () => {
   const [purchaseLoading, setPurchaseLoading] = useState(null);
   const [purchaseError, setPurchaseError] = useState(null);
+  const [plans, setPlans] = useState(pricingPlans); // Start with fallback
+  const [pricingLoaded, setPricingLoaded] = useState(false);
+
+  // Fetch pricing from centralized API
+  useEffect(() => {
+    const fetchPricing = async () => {
+      try {
+        const response = await fetch(`${API}/pricing/survey360`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.plans && data.plans.length > 0) {
+            setPlans(data.plans);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch pricing, using fallback:', error);
+      } finally {
+        setPricingLoaded(true);
+      }
+    };
+    fetchPricing();
+  }, []);
 
   const handlePurchase = async (packageId) => {
+    if (!packageId) {
+      // Free plan - redirect to signup
+      window.location.href = '/solutions/survey360/app';
+      return;
+    }
+    
     setPurchaseLoading(packageId);
     setPurchaseError(null);
     
@@ -516,7 +544,7 @@ const PricingTab = () => {
         )}
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {pricingPlans.map((plan, index) => (
+          {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
               initial={{ opacity: 0, y: 20 }}
@@ -527,7 +555,7 @@ const PricingTab = () => {
                 plan.popular
                   ? 'bg-teal-600 text-white ring-4 ring-teal-300 scale-105'
                   : 'bg-white text-gray-900 border border-gray-200'
-              }`}
+              }`}}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
