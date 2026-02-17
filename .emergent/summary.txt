@@ -17,85 +17,83 @@ This involves:
 14. **Affiliate Analytics:** Add an analytics section to the affiliate dashboard showing clicks, sources, and geo-data.
 15. **Centralized Email Service:** Implement a centralized email service using Resend for all system and product emails, with triggers for registration, password reset, and security alerts.
 16. **Email Preference Management:** An industry-standard system for users to manage their email notification preferences.
+17. **User Referral System:** A system for regular users to refer others and earn in-system credits.
+18. **Admin Referral Management:** A section in the admin panel to manage the user referral program.
 
 **User's preferred language**: English
 
 **what currently exists?**
-A full-stack application with a React frontend and FastAPI backend. Key features include:
-- A functional JWT-based SSO system.
-- An affiliate program with a frontend application page.
-- A comprehensive admin panel with affiliate management and promo code CRUD.
-- An affiliate-facing dashboard with performance stats, referral links (full and shortened), and a detailed analytics section (clicks over time, sources, geo-breakdown).
-- A centralized backend email service integrated with Resend for transactional emails (welcome, password reset).
-- A Forgot Password and Reset Password UI flow.
-- The initial refactoring of  has progressed, with the  and  components successfully extracted.
-- Backend APIs for managing user email preferences.
+A full-stack application with a React frontend and FastAPI backend. Recent additions and changes include:
+- The backend product email endpoints have been fixed to use Pydantic models instead of query parameters.
+- The admin panel now features a functional analytics dashboard with charts and key metrics.
+- The admin panel also includes UI for managing product-specific promo codes.
+- A user-facing referral system has been implemented, allowing users to generate referral codes and track their referrals via a dedicated dashboard.
+- A user settings page for managing email preferences has been created.
+- The monolithic  has been significantly refactored, with  and  extracted into separate components.
+- The backend  has been modularized by moving password reset routes into .
+- An admin-facing Referral Management dashboard is partially built, with a functional Leaderboard view.
 
 **Last working item**:
-- **Last item agent was working:** The agent was refactoring the  endpoint in . The original implementation incorrectly used query parameters to receive data, which is not suitable for complex payloads. The agent was in the process of converting it to use a Pydantic model for the request body to allow for structured data like  and .
+- **Last item agent was working:** Implementing the Referral Program management section within the admin panel. The agent created the backend APIs () and the frontend component (). The UI has been integrated into the admin dashboard, and the Leaderboard tab was successfully tested via screenshot. The agent was about to verify the Credit Management tab.
 - **Status:** IN PROGRESS
 - **Agent Testing Done:** N
-- **Which testing method agent to use?** backend testing agent
+- **Which testing method agent to use?** both
 - **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
-- **Issue 1: Fix Product Email Endpoint (P0)**
-    - The  endpoint is currently broken because it was designed to use query parameters instead of a request body. This needs to be fixed to allow products to send customized, branded emails.
-    - **Attempted fixes:** The agent started converting the endpoint to use a Pydantic model but did not complete the implementation.
+- **Issue 1: Placeholder Pages on Frontend (P1)**
+    - **Description:** During the refactoring of , the inline  and  components were removed. To prevent the app from crashing, placeholder components were created (, ). These pages are currently blank.
     - **Next debug checklist:**
-        1. Define a Pydantic model in  for the product email payload (e.g., ).
-        2. Update the endpoint signature to accept this Pydantic model in the request body.
-        3. Modify the call to  to pass the data from the Pydantic model.
-        4. Test the endpoint using  with a JSON body to confirm it works.
-    - **Why fix this issue and what will be achieved with the fix?** This is critical for enabling the centralized email service to be used by individual products (, ), a core user requirement.
-    - **Status:** IN PROGRESS
+        1.  Determine the required content and functionality for the Projects and News pages.
+        2.  Implement the UI and any necessary backend logic for these pages.
+        3.  Replace the placeholder components with the full implementations.
+    - **Why fix this issue and what will be achieved with the fix?** To restore full functionality to the site's navigation and present complete information to users.
+    - **Status:** NOT STARTED
     - **Is recurring issue?** N
-    - **Should Test frontend/backend/both after fix?** backend
+    - **Should Test frontend/backend/both after fix?** both
     - **Blocked on other issue:** None
 
 **In progress Task List**:
-- **Task 1: Complete Email Trigger Implementation (P1)**
+- **Task 1: Complete Admin Referral Management (P0)**
     - **Where to resume:**
-        - **Security Alerts:** The backend logic to track devices and send a New Login alert was added to , but it has not been tested. The content and trigger conditions should be verified.
-        - **Tier-based Emails:** The backend API and database models for email preferences exist (). However, there is no frontend interface for users to manage these settings. A new page or a section in the user profile is needed.
-    - **What will be achieved with this?** A complete, production-ready notification system that enhances security and user engagement.
+        1.  The frontend component  has been created.
+        2.  The Leaderboard view is functional.
+        3.  The next step is to implement and verify the Credit Management and Conversions tabs. This involves building out the UI and connecting to the backend endpoints (, etc.).
+    - **What will be achieved with this?** Admins will be able to fully manage the user referral program, track performance, and award credits.
     - **Status:** IN PROGRESS
     - **Should Test frontend/backend/both after fix?** both
-    - **Blocked on something:** None.
+    - **Blocked on something:** None
+
+- **Task 2: Continue  Refactoring (P1)**
+    - **Where to resume:**  has been reduced from over 2200 lines to ~840 lines, but it still contains multiple inline page components and all the routing logic. The next step is to extract the remaining inline pages (e.g., , ) into their own files under .
+    - **What will be achieved with this?** A fully modular, maintainable, and scalable frontend architecture.
+    - **Status:** IN PROGRESS
+    - **Should Test frontend/backend/both after fix?** frontend
+    - **Blocked on something:** None
 
 **Upcoming and Future Tasks**
 *   **Upcoming Tasks:**
-    *   **Task 1: Create Frontend for Email Preferences (P1):** Build a UI (e.g., in a user settings page) that consumes the  endpoints, allowing users to view and update their notification settings.
-    *   **Task 2: Continue  Refactoring (P1):** The file is still over 2,000 lines. The next logical step is to extract the  component ().
-    *   **Task 3: Continue Backend Modularization (P1):** Move more routing logic from  into dedicated files within the  directory. The auth routes (, , ) are good candidates.
-
+    *   **Task 1: Continue Backend Modularization (P1):** The  file is still large (~3,000 lines). More logic should be extracted into dedicated route files in the  directory.
 *   **Future Tasks:**
-    *   **Task 1: Clarify and Implement Referral vs. Affiliate System (P1):** The user questioned the difference between a normal user referral and an affiliate. This needs clarification to determine if a separate, simpler referral system is required for non-affiliate users.
-    *   **Task 2: Link Promo Codes to Products (P2):** The current system is for site-wide discounts. This task involves implementing logic to associate promo codes with specific products or services.
-    *   **Task 3: Implement Admin Panel Analytics Dashboard (P2):** The Analytics section in the admin panel is a UI placeholder. This needs to be built out with detailed reports on user and site activity.
-    *   **Task 4: Implement Resend Domain Verification (P2):** The user was guided on how to add DNS records (SPF, DKIM) in Cloudflare. Once they do, the email service should be updated to send from  instead of the test domain.
+    *   **Task 1: Implement Resend Domain Verification (P2):** The user was guided on how to add DNS records (SPF, DKIM). Once they do, the email service should be updated to send from  instead of the test domain.
+    *   **Task 2: Link Promo Codes to User Actions (P2):** The current system allows creating promo codes. Future work could involve applying these codes at checkout or linking them to specific user actions.
 
 **Completed work in this session**
-- **Shortened Affiliate Referral Links (DONE):**
-  - Created a backend endpoint  that redirects to the homepage with the referral parameter.
-  - Updated  to display the new shortened link.
-- **Affiliate Analytics Dashboard (DONE):**
-  - Added a backend endpoint  to track and aggregate click data.
-  - Created a new Analytics tab in the  with charts and stats for Clicks Over Time, Top Referral Sources, and Geographic Breakdown.
-- ** Refactoring (IN PROGRESS):**
-  - Extracted the  and  components into .
-  - Reduced  line count by approximately 970 lines.
-- **Centralized Email Service (IN PROGRESS):**
-  - Integrated  for sending transactional emails.
-  - Created a reusable  module and  routes.
-- **Forgot Password Flow (DONE):**
-  - Implemented the full backend logic and frontend UI for the forgot password/reset password flow.
-  - Connected the flow to the new email service to send reset links.
+- **Product Email Endpoint Fixed (DONE):** Refactored product-specific email endpoints in  to use Pydantic request bodies instead of query parameters.
+- **Admin Panel Analytics Dashboard (DONE):** Implemented a full analytics dashboard in  with charts for page views, traffic sources, and device breakdown.
+- **Product-Specific Promo Codes (DONE):** Updated the admin promo code management UI in  to allow associating promo codes with specific products.
+- ** Refactoring (IN PROGRESS):** Extracted  and  from  into , reducing the file size by over 60%.
+- ** Modularization (IN PROGRESS):** Moved  and  routes from  to .
+- **User Referral System (DONE):**
+  - Created backend endpoints and models in .
+  - Created a user-facing dashboard in .
+- **User Email Preferences UI (DONE):** Created a settings page at  for users to manage their email notifications.
+- **Admin Referral Management (IN PROGRESS):** Created backend APIs and a frontend dashboard for admins to manage the user referral program.
 
 **Earlier issues found/mentioned but not fixed**
 - **Issue 1:  Refactoring Complexity**
-  - **Debug checklist:** The file still contains the entire  component and routing logic. The next step is to extract  into its own file in  and update  to import and render it.
-  - **Why to solve this issue and what will be achieved with this?** The  file is the biggest source of technical debt in the frontend. Refactoring improves code organization, readability, and developer velocity.
+  - **Debug checklist:** While significantly improved,  still contains several inline page components and all top-level routing. The plan to extract remaining components should be followed.
+  - **Why to solve this issue and what will be achieved with this?** The  file is still a major source of technical debt. Further refactoring improves code organization, readability, and developer velocity.
   - **Should Test frontend/backend/both after fix:** frontend
   - **Is recurring issue?** Y
 
@@ -113,62 +111,59 @@ N/A
 *   **Database:** MongoDB.
 
 **key DB schema**
-*   **affiliates**: , , , , 
-*   **promo_codes**: , , , , , 
-*   **audit_logs**: , , , 
-*   **referral_clicks**: (New) , , , , , 
-*   **email_preferences**: (New) ,  (e.g., )
-*   **login_devices**: (New) , , 
+*   **referrals**: (New) , ,  (list of user IDs), 
+*   **user_credits**: (New) , ,  (list of transactions)
+*   **referral_clicks**: , , , , , 
+*   **email_preferences**: , 
 
 **changes in tech stack**
-- **Resend** was added for email services.
+- No changes in this session.
 
 **All files of reference**
 *    (Current work)
-*    (Email logic)
-*    (Affiliate UI)
+*    (Current work)
 *    (Refactoring target)
 *    (Refactoring target)
+*    (Admin analytics)
+*    (User referrals)
+*    (User email settings)
 
 **Areas that need refactoring**:
-*   ****: High priority. Still a large, monolithic file.
-*   ****: Contains auth routing logic that should be modularized.
+*   ****: High priority. Still contains routing logic and some inline page components.
+*   ****: High priority. Contains non-auth routing logic that should be modularized.
 
 **key api endpoints**
-*   : **(NEW)** GET to redirect a shortened referral link.
-*   : **(NEW)** GET affiliate performance analytics.
-*   : **(NEW)** POST to send a generic email.
-*   : **(NEW/IN PROGRESS)** POST to send a product-branded email.
-*   : **(NEW)** POST to trigger a password reset email.
-*   : **(NEW)** POST to set a new password using a token.
-*   : **(NEW)** GET/PUT to manage a user's email settings.
+*   : **(NEW)** GET to retrieve a user's referral code.
+*   : **(NEW)** GET to retrieve a user's referral stats.
+*   : **(NEW)** GET for admin referral program overview stats.
+*   : **(NEW)** GET for the top referrers leaderboard.
+*   : **(FIXED)** POST to send a product-branded email.
 
 **Critical Info for New Agent**
-*   **Resend Integration:** The Resend integration is functional using the test key  and sends emails from . The user is aware they need to add DNS records to use their custom domain () but has opted to proceed without it for now.
-*   **JWT uid=0(root) gid=0(root) groups=0(root) vs :** A critical bug was fixed where the backend affiliate lookup expected  in the JWT payload, but the token contains uid=0(root) gid=0(root) groups=0(root). This was corrected in . Be mindful of this pattern if adding new protected routes.
-*   **Database Environment:** The backend runs against , not the  database. Ensure any manual database checks or seeding scripts target the correct database.
+*   **Resend Integration:** The Resend integration is functional using the test key  and sends emails from . The user is aware they need to add DNS records to use their custom domain but has opted to proceed without it for now.
+*   **JWT uid=0(root) gid=0(root) groups=0(root) vs :** Be mindful that the JWT payload uses uid=0(root) gid=0(root) groups=0(root) for the user's identifier. Some older backend code may have expected .
+*   **Database Environment:** The backend runs against . Ensure any manual database checks or seeding scripts target the correct database.
 
 **documents and test reports created in this job**
-*   : Updated to reflect completed tasks and new requirements.
-*   : Successful test run for affiliate shortened links and  refactoring.
-*   : Successful test run for the affiliate analytics dashboard.
+*   : Updated with completed tasks.
+*   : Test report for email endpoint fix, refactoring, and admin analytics.
+*   : Test report for user referral system and further refactoring.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User:** Provided Resend API key. (COMPLETED)
-2.  **User:** Saw a redirect to Cloudflare from Resend and was confused. (ADDRESSED - Agent explained it's for DNS verification and the user agreed to proceed without it for now).
-3.  **User:** Asked if the system is now ready to send branded emails from products. (PENDING - This led to the discovery that the endpoint needs fixing).
-4.  **User:** Confirmed they want to proceed with fixing the product email endpoint. (PENDING - This is the current task).
+1.  **User (Initial):** Approved fixing the email endpoint and then simultaneously working on  refactoring and backend modularization. Also requested the admin analytics dashboard and clarified the referral system. (ADDRESSED)
+2.  **User:** Approved the plan to proceed with the next set of tasks after the first batch was completed. (ADDRESSED)
+3.  **User:** Requested to proceed with work on the admin panel after the user referral system was built. (CURRENT TASK)
 
 **Project Health Check:**
-*   **Broken:**
-    *    endpoint.
+*   **Broken:** None.
 *   **Mocked:**
-    *   The Advanced Analytics section in the main admin panel.
-    *   The frontend UI for user email preference management.
+    *    (placeholder component).
+    *    (placeholder component).
+    *   Credit Management and Conversions tabs in the Admin Referral Management dashboard.
 
 **3rd Party Integrations**
 *   **Stripe (Payments)** — Requires User API Key (partially integrated for affiliate payouts).
-*   **Recharts** (Charting) — Implemented and active in admin dashboard.
+*   **Recharts** (Charting) — Implemented and active in admin/affiliate dashboards.
 *   **WebSockets** — Implemented and active for real-time admin notifications.
 *   **Resend (Email)** — Implemented with a test key for transactional emails.
 
@@ -184,5 +179,4 @@ N/A
 *   **Resend API Key:** 
 
 **What agent forgot to execute**
-*   **Referral vs. Affiliate Distinction:** The user's query about the difference between a referral and an affiliate was acknowledged but has not been addressed. A simpler referral mechanism for regular users may be needed and should be clarified.
-*   **Product-Specific Promo Codes:** The user mentioned promo codes for product discounts. The agent implemented generic, site-wide percentage discounts. The logic to tie promo codes to specific products has not been implemented.</analysis>
+*   The agent successfully implemented the user-facing referral system and started the admin management part, but the placeholder pages (, ) created as a side effect of refactoring have not been built out. This creates dead links in the application.</analysis>
