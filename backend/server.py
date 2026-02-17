@@ -1305,71 +1305,12 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
 async def root():
     return {"message": "DataVision International API", "status": "operational"}
 
-@api_router.get("/projects", response_model=List[Project])
-async def get_projects(featured: Optional[bool] = None, sector: Optional[str] = None):
-    query = {"title": {"$exists": True}}  # Filter out FieldForce projects (different schema)
-    if featured is not None:
-        query["featured"] = featured
-    if sector:
-        query["sector"] = sector
-    projects = await db.projects.find(query, {"_id": 0}).sort("year", -1).to_list(100)
-    return projects
+# NOTE: Projects, team, testimonials, statistics, news, partners, and inquiries 
+# routes have been moved to routes/public_content_routes.py
 
-@api_router.get("/projects/{project_id}", response_model=Project)
-async def get_project(project_id: str):
-    project = await db.projects.find_one({"id": project_id}, {"_id": 0})
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found")
-    return project
-
-@api_router.get("/team", response_model=List[TeamMember])
-async def get_team():
-    team = await db.team.find({}, {"_id": 0}).sort("order", 1).to_list(50)
-    return team
-
-@api_router.get("/testimonials", response_model=List[Testimonial])
-async def get_testimonials(featured: Optional[bool] = None):
-    query = {"featured": True} if featured else {}
-    testimonials = await db.testimonials.find(query, {"_id": 0}).to_list(50)
-    return testimonials
-
-@api_router.get("/statistics", response_model=List[Statistic])
-async def get_statistics():
-    stats = await db.statistics.find({}, {"_id": 0}).sort("order", 1).to_list(20)
-    return stats
-
-@api_router.get("/news", response_model=List[NewsArticle])
-async def get_news(limit: int = 10):
-    news = await db.news.find({"published": True}, {"_id": 0}).sort("created_at", -1).to_list(limit)
-    return news
-
-@api_router.get("/news/{article_id}", response_model=NewsArticle)
-async def get_news_article(article_id: str):
-    article = await db.news.find_one({"id": article_id, "published": True}, {"_id": 0})
-    if not article:
-        raise HTTPException(status_code=404, detail="Article not found")
-    return article
-
-@api_router.get("/partners", response_model=List[Partner])
-async def get_partners():
-    partners = await db.partners.find({}, {"_id": 0}).sort("order", 1).to_list(50)
-    return partners
-
-@api_router.post("/inquiries", response_model=Inquiry)
-async def create_inquiry(inquiry: InquiryCreate):
-    # Bot protection: honeypot field should be empty
-    if inquiry.honeypot:
-        logger.warning(f"Bot detected: honeypot field filled")
-        # Return success to not alert bot, but don't save
-        return Inquiry(**inquiry.model_dump())
-    
-    inquiry_obj = Inquiry(**inquiry.model_dump())
-    doc = inquiry_obj.model_dump()
-    await db.inquiries.insert_one(doc)
-    logger.info(f"New inquiry from {inquiry.email}: {inquiry.subject}")
-    return inquiry_obj
-
-# ==================== ADMIN ROUTES ====================
+# ==================== ADMIN ROUTES (LEGACY - BEING PHASED OUT) ====================
+# NOTE: Admin CRUD for projects, team, testimonials, statistics, news, partners, and inquiries
+# are now handled by routes/public_content_routes.py
 
 @api_router.post("/admin/projects", response_model=Project)
 async def create_project(project: ProjectCreate, _: dict = Depends(verify_token)):
