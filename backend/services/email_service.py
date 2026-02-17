@@ -437,6 +437,133 @@ class EmailService:
             html_content=html,
             from_name=f"DataVision {product.capitalize()}"
         )
+    
+    async def send_leaderboard_winner_email(
+        self,
+        to_email: str,
+        name: str,
+        rank: int,
+        month: str,
+        referrals: int,
+        reward_type: str,
+        reward_value: str,
+        total_earnings: float = 0
+    ) -> Dict[str, Any]:
+        """Send monthly leaderboard winner notification"""
+        
+        rank_emojis = {1: "🥇", 2: "🥈", 3: "🥉"}
+        rank_titles = {1: "1st Place", 2: "2nd Place", 3: "3rd Place"}
+        rank_colors = {1: "#FFD700", 2: "#C0C0C0", 3: "#CD7F32"}
+        
+        emoji = rank_emojis.get(rank, "🏆")
+        title = rank_titles.get(rank, f"{rank}th Place")
+        color = rank_colors.get(rank, "#e63946")
+        
+        content = f"""
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 60px; margin-bottom: 10px;">{emoji}</div>
+                <h1 style="margin: 0 0 10px 0; color: {color}; font-size: 32px;">Congratulations!</h1>
+                <p style="margin: 0; color: #64748b; font-size: 18px;">You're a Top Partner for {month}!</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, {color}15, {color}05); border: 1px solid {color}30; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+                <p style="margin: 0 0 8px 0; color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Achievement</p>
+                <p style="margin: 0; color: #0a1628; font-size: 28px; font-weight: bold;">{title}</p>
+                <p style="margin: 8px 0 0 0; color: #64748b; font-size: 16px;">{referrals} referrals this month</p>
+            </div>
+            
+            <h2 style="margin: 24px 0 16px 0; color: #0a1628; font-size: 20px;">🎁 Your Reward</h2>
+            <div style="background-color: #f8fafc; border-radius: 8px; padding: 20px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Reward Type</td>
+                        <td style="padding: 8px 0; color: #0a1628; font-size: 14px; font-weight: 600; text-align: right;">{reward_type}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Value</td>
+                        <td style="padding: 8px 0; color: {color}; font-size: 14px; font-weight: 600; text-align: right;">{reward_value}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Total Earnings</td>
+                        <td style="padding: 8px 0; color: #0a1628; font-size: 14px; font-weight: 600; text-align: right;">${total_earnings:,.2f}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <p style="margin: 24px 0; color: #475569; font-size: 16px; line-height: 1.6;">
+                Hi {name}, thank you for being an amazing DataVision partner! Your dedication and hard work have earned you a top spot on our leaderboard.
+            </p>
+            
+            <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 24px auto;">
+                <tr>
+                    <td style="background-color: #e63946; border-radius: 6px;">
+                        <a href="https://datavision.co.tz/affiliate/dashboard" style="display: inline-block; padding: 14px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            View Dashboard
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            
+            <p style="margin: 24px 0 0 0; color: #64748b; font-size: 14px; text-align: center;">
+                Keep up the great work! The new month starts fresh - aim for #1! 🚀
+            </p>
+        """
+        
+        html = get_base_template(content)
+        return await self.send_email(
+            to_email=to_email,
+            subject=f"{emoji} You're a Top Partner for {month}! - DataVision",
+            html_content=html,
+            from_name="DataVision Partner Program"
+        )
+    
+    async def send_featured_partner_email(
+        self,
+        to_email: str,
+        name: str,
+        month: str
+    ) -> Dict[str, Any]:
+        """Send featured partner spotlight notification"""
+        
+        content = f"""
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 60px; margin-bottom: 10px;">⭐</div>
+                <h1 style="margin: 0 0 10px 0; color: #e63946; font-size: 32px;">Featured Partner Spotlight!</h1>
+                <p style="margin: 0; color: #64748b; font-size: 18px;">You've been selected for {month}!</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #e6394615, #e6394605); border: 1px solid #e6394630; border-radius: 12px; padding: 24px; margin: 24px 0;">
+                <h2 style="margin: 0 0 16px 0; color: #0a1628; font-size: 20px;">What This Means</h2>
+                <ul style="margin: 0; padding: 0 0 0 20px; color: #475569; font-size: 16px; line-height: 1.8;">
+                    <li>Your profile will be featured on our homepage</li>
+                    <li>Special "Featured Partner" badge on your dashboard</li>
+                    <li>Priority listing in our partner directory</li>
+                    <li>Social media shoutout on DataVision channels</li>
+                </ul>
+            </div>
+            
+            <p style="margin: 24px 0; color: #475569; font-size: 16px; line-height: 1.6;">
+                Hi {name}, congratulations! As one of our top-performing partners, you've earned a spot in our Featured Partner Spotlight. This is our way of recognizing your outstanding contributions to the DataVision partner network.
+            </p>
+            
+            <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 24px auto;">
+                <tr>
+                    <td style="background-color: #e63946; border-radius: 6px;">
+                        <a href="https://datavision.co.tz/affiliate/dashboard" style="display: inline-block; padding: 14px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            View Your Profile
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        """
+        
+        html = get_base_template(content)
+        return await self.send_email(
+            to_email=to_email,
+            subject=f"⭐ You're Our Featured Partner for {month}! - DataVision",
+            html_content=html,
+            from_name="DataVision Partner Program"
+        )
 
 
 # Global email service instance
