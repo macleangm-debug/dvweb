@@ -4,7 +4,7 @@ import axios from 'axios';
 import { 
   Trophy, Users, TrendingUp, Medal, Crown, Award, 
   ChevronUp, ChevronDown, Minus, Calendar, RefreshCw,
-  Share2, Twitter, Linkedin, Facebook, MessageCircle
+  Share2, Twitter, Linkedin, Facebook, MessageCircle, Star
 } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
