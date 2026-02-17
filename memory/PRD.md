@@ -1752,6 +1752,39 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ---
 
+## February 17, 2026 - Custom Billing Page with Upgrade/Downgrade (COMPLETED)
+
+**What was implemented:**
+Full custom billing page at `/billing` with:
+- View current subscription details (plan, price, next billing date)
+- Upgrade to higher plan (prorated charge via Stripe)
+- Downgrade to lower plan (takes effect at end of billing period)
+- Invoice history
+- Cancel subscription (access continues until expiry)
+- Product tabs (Survey360, FieldForce, DataPulse)
+
+**Backend Endpoints:**
+- `GET /api/billing/subscription` - Get current subscription
+- `GET /api/billing/invoices` - Get payment history
+- `POST /api/billing/upgrade` - Upgrade with prorate calculation
+- `POST /api/billing/downgrade` - Schedule downgrade for end of period
+- `POST /api/billing/cancel` - Cancel (access until expiry)
+- `POST /api/billing/reactivate` - Reactivate cancelled subscription
+
+**Frontend:**
+- `/app/frontend/src/pages/BillingPage.jsx` - Full billing management UI
+- Route added at `/billing`
+
+**Business Logic:**
+- **Upgrade:** Calculates prorate: `(new_price - current_price) * days_remaining / 30`
+- **Downgrade:** Stores in `pending_plan_changes`, executes at `expires_at`
+- **Cancel:** Sets status to "cancelled", access continues until expiry
+
+**New DB Collections:**
+- `pending_plan_changes` - Stores scheduled downgrades/upgrades
+
+---
+
 ## February 17, 2026 - Centralized Pricing API (COMPLETED)
 
 **What was implemented:**
