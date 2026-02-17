@@ -2905,6 +2905,129 @@ async def get_user_products(email: str):
     ).to_list(100)
     return {"products": access_records}
 
+@api_router.get("/user/subscriptions")
+async def get_user_subscriptions(email: str):
+    """Get all active subscriptions for a user"""
+    subscriptions = await db.user_subscriptions.find(
+        {"user_email": email, "status": "active"},
+        {"_id": 0}
+    ).to_list(100)
+    return {"subscriptions": subscriptions}
+
+# ==================== ADMIN REVENUE ANALYTICS ====================
+
+@api_router.get("/admin/revenue/overview")
+async def get_revenue_overview(_: dict = Depends(verify_admin_token)):
+    """Get overall revenue statistics"""
+    # Get all paid transactions
+    transactions = await db.payment_transactions.find(
+        {"payment_status": "paid"},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    total_revenue = sum(t.get("amount", 0) for t in transactions)
+    
+    # Revenue by product
+    revenue_by_product = {}
+    for t in transactions:
+        product_id = t.get("product_id", "unknown")
+        if product_id not in revenue_by_product:
+            revenue_by_product[product_id] = {"revenue": 0, "transactions": 0}
+        revenue_by_product[product_id]["revenue"] += t.get("amount", 0)
+        revenue_by_product[product_id]["transactions"] += 1
+    
+    # Active subscriptions count
+    active_subs = await db.user_subscriptions.count_documents({"status": "active"})
+    
+    # Monthly revenue (last 12 months)
+    monthly_revenue = []
+    for i in range(11, -1, -1):
+        month_start = datetime.now(timezone.utc).replace(day=1, hour=0, minute=0, second=0, microsecond=0) - timedelta(days=i*30)
+        month_end = month_start + timedelta(days=30)
+        month_txns = [t for t in transactions 
+                      if t.get("created_at") and 
+                      month_start.isoformat() <= t.get("created_at", "") < month_end.isoformat()]
+        monthly_revenue.append({
+            "month": month_start.strftime("%b %Y"),
+            "revenue": sum(t.get("amount", 0) for t in month_txns),
+            "transactions": len(month_txns)
+        })
+    
+    return {
+        "total_revenue": total_revenue,
+        "total_transactions": len(transactions),
+        "active_subscriptions": active_subs,
+        "revenue_by_product": revenue_by_product,
+        "monthly_revenue": monthly_revenue
+    }
+
+@api_router.get("/admin/revenue/by-product")
+async def get_revenue_by_product(_: dict = Depends(verify_admin_token)):
+    """Get detailed revenue breakdown by product"""
+    transactions = await db.payment_transactions.find(
+        {"payment_status": "paid"},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    products = {}
+    for t in transactions:
+        product_id = t.get("product_id", "unknown")
+        if product_id not in products:
+            products[product_id] = {
+                "product_id": product_id,
+                "product_name": SOFTWARE_PACKAGES.get(t.get("package_id", ""), {}).get("name", product_id),
+                "total_revenue": 0,
+                "transactions": [],
+                "packages": {}
+            }
+        
+        products[product_id]["total_revenue"] += t.get("amount", 0)
+        products[product_id]["transactions"].append({
+            "id": t.get("id"),
+            "amount": t.get("amount"),
+            "package_id": t.get("package_id"),
+            "user_email": t.get("user_email"),
+            "created_at": t.get("created_at")
+        })
+        
+        pkg_id = t.get("package_id", "unknown")
+        if pkg_id not in products[product_id]["packages"]:
+            products[product_id]["packages"][pkg_id] = {"count": 0, "revenue": 0}
+        products[product_id]["packages"][pkg_id]["count"] += 1
+        products[product_id]["packages"][pkg_id]["revenue"] += t.get("amount", 0)
+    
+    # Add subscription counts
+    for product_id in products:
+        sub_count = await db.user_subscriptions.count_documents({
+            "product_id": product_id, 
+            "status": "active"
+        })
+        products[product_id]["active_subscriptions"] = sub_count
+        # Keep only last 10 transactions
+        products[product_id]["transactions"] = products[product_id]["transactions"][-10:]
+    
+    return {"products": list(products.values())}
+
+@api_router.get("/admin/subscriptions")
+async def get_all_subscriptions(
+    product_id: Optional[str] = None,
+    status: Optional[str] = "active",
+    _: dict = Depends(verify_admin_token)
+):
+    """Get all subscriptions with optional filters"""
+    query = {}
+    if product_id:
+        query["product_id"] = product_id
+    if status:
+        query["status"] = status
+    
+    subscriptions = await db.user_subscriptions.find(
+        query,
+        {"_id": 0}
+    ).sort("started_at", -1).to_list(500)
+    
+    return {"subscriptions": subscriptions, "total": len(subscriptions)}
+
 # Import and include Survey360 routes (ALL 46 route modules from GitHub)
 from survey360.survey360_main import survey360_router as survey360_full_router, init_survey360_db
 # Keep the basic routes for backward compatibility with existing frontend
