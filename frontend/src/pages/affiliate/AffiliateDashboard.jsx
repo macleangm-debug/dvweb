@@ -477,6 +477,70 @@ const AffiliateDashboard = () => {
           </motion.div>
         )}
 
+        {/* Tier Progress & Benefits */}
+        {profile && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+            className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800 mb-8"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  <Award className="w-5 h-5" style={{ color: profile.tier_color }} />
+                  {profile.tier} Partner
+                </h3>
+                <p className="text-sm text-slate-400 mt-1">Your current tier and benefits</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold" style={{ color: profile.tier_color }}>{profile.commission_rate}%</p>
+                <p className="text-xs text-slate-400">Commission Rate</p>
+              </div>
+            </div>
+            
+            {/* Tier Benefits */}
+            <div className="bg-slate-800/50 rounded-xl p-4 mb-4">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-3">Your Benefits</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {profile.tier_benefits?.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm text-slate-300">
+                    <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                    <span>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Next Tier Progress */}
+            {profile.next_tier && (
+              <div className="bg-gradient-to-r from-slate-800/50 to-slate-800/30 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm text-slate-300">
+                    Next: <span style={{ color: profile.next_tier.color }} className="font-semibold">{profile.next_tier.name}</span>
+                    <span className="text-slate-400 ml-1">({profile.next_tier.commission_rate}% commission)</span>
+                  </p>
+                  <p className="text-sm text-slate-400">
+                    {profile.total_referrals}/{profile.next_tier.min_referrals}
+                  </p>
+                </div>
+                <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full rounded-full transition-all"
+                    style={{ 
+                      width: `${Math.min(100, (profile.total_referrals / profile.next_tier.min_referrals) * 100)}%`,
+                      backgroundColor: profile.next_tier.color 
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-slate-400 mt-2">
+                  {profile.next_tier.min_referrals - profile.total_referrals} more referrals to unlock {profile.next_tier.commission_rate}% commission!
+                </p>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* Tab Navigation */}
         <div className="flex gap-2 mb-6 border-b border-slate-800 overflow-x-auto">
           {[
