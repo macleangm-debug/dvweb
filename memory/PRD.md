@@ -1752,10 +1752,38 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ---
 
+## February 17, 2026 - Backend Modularization & Affiliate Dashboard Fix (COMPLETED)
+
+**1. Affiliate Dashboard Tier UI Verified:**
+- Tier Progress section renders correctly with `next_tier` object
+- Shows current tier (Bronze), commission rate (10%), benefits
+- Next tier progress bar showing Silver (12% commission)
+- All tier-related data displays properly
+
+**2. Backend Modularization - Public Content Routes:**
+- Moved routes from `server.py` to `/app/backend/routes/public_content_routes.py`
+- Routes moved: `/api/projects`, `/api/team`, `/api/testimonials`, `/api/statistics`, `/api/news`, `/api/partners`, `/api/inquiries`, `/api/admin/projects`, `/api/admin/team`, `/api/admin/testimonials`, `/api/admin/statistics`, `/api/admin/news`, `/api/admin/partners`, `/api/admin/inquiries`
+- Fixed model schema mismatches (TeamMember.position, Testimonial.author_name/author_title, etc.)
+- Server.py reduced from 3232 to 3021 lines (-211 lines)
+- Router included at line 2868-2871 in server.py
+
+**Files Updated:**
+- `/app/backend/server.py` - Removed duplicate routes, added public_content_router import
+- `/app/backend/routes/public_content_routes.py` - Updated model schemas to match database
+- `/app/backend/tests/test_public_content_routes.py` - New test file with 27 tests
+
+**Testing:** 100% pass rate
+- Backend: 27/27 API tests passed
+- Frontend: All UI tests passed
+- Test report: `/app/test_reports/iteration_33.json`
+
+---
+
 ## Pending/In Progress Tasks
 
 ### P1 - High Priority
-1. **Schedule Monthly Rewards Processing** - Set up cron job or manual reminder for month-end
+1. **Continue App.js Refactoring** - Extract `LoginPage` and `AdminDashboard` components to separate files
+2. **Schedule Monthly Rewards Processing** - Set up cron job or manual reminder for month-end
 
 ### P2 - Medium Priority
 1. **Credit Redemption Flow** - Connect credit redemption to product checkout
