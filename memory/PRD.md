@@ -1752,6 +1752,48 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ---
 
+## February 17, 2026 - Centralized Pricing API (COMPLETED)
+
+**What was implemented:**
+SSO pulls correct prices from centralized pricing API, ensuring consistency between UI and Stripe charges.
+
+**Backend Changes:**
+1. **`PRODUCT_PRICING`** - New centralized pricing structure in server.py with:
+   - Product details (name, description)
+   - Plan tiers with prices, features, limits
+   - Package IDs linking to Stripe checkout
+   - Annual vs monthly pricing
+
+2. **New API Endpoints:**
+   - `GET /api/pricing` - All product pricing
+   - `GET /api/pricing/{product_id}` - Single product pricing (survey360, fieldforce, datapulse)
+
+3. **Updated `SOFTWARE_PACKAGES`** - Prices now match `PRODUCT_PRICING`:
+   - Survey360: Free → Starter $19 → Professional $49 → Business $99
+   - FieldForce: Starter $49 → Professional $149 → Enterprise $399
+   - DataPulse: Starter $29 → Professional $79
+
+**Frontend Changes:**
+1. **`survey360Data.js`** - Updated fallback pricing to match API
+2. **`Survey360ProductPage.jsx`** - PricingTab now fetches from `/api/pricing/survey360`
+
+**Testing:**
+```bash
+curl /api/pricing/survey360
+# Returns: Free $0, Starter $19, Pro $49, Business $99
+```
+
+**Architecture:**
+```
+PRODUCT_PRICING (server.py)
+       ↓
+/api/pricing/{product_id}
+       ↓
+Frontend fetches → Displays prices → Checkout uses package_id → Stripe charges correct amount
+```
+
+---
+
 ## February 17, 2026 - Centralized Payment System for SSO (COMPLETED)
 
 **Feature Implemented:**
