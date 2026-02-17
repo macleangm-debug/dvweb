@@ -621,8 +621,8 @@ const PricingTab = () => {
                 </Link>
               ) : plan.price ? (
                 <button
-                  onClick={() => handlePurchase(plan.id)}
-                  disabled={purchaseLoading === plan.id}
+                  onClick={() => handlePurchase(plan.package_id)}
+                  disabled={purchaseLoading === plan.package_id}
                   className={`w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-70 ${
                     plan.popular
                       ? 'bg-white text-teal-700 hover:bg-teal-50'
@@ -630,7 +630,7 @@ const PricingTab = () => {
                   }`}
                   data-testid={`buy-${plan.id}-btn`}
                 >
-                  {purchaseLoading === plan.id ? (
+                  {purchaseLoading === plan.package_id ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
                       Processing...
