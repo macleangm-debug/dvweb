@@ -667,6 +667,8 @@ const AdminDashboard = () => {
         );
       case 'affiliates':
         return <AffiliateManagement subSection={activeSubSection} />;
+      case 'referrals':
+        return <ReferralManagement subSection={activeSubSection} />;
       case 'settings':
         return <AdminSettings subSection={activeSubSection} />;
       default:
