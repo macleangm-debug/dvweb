@@ -1059,6 +1059,328 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
             "referrals_to_next_rank": above["gap"] if above else 0
         }
     
+    # ==================== MONTHLY REWARDS SYSTEM ====================
+    
+    # Monthly reward configurations
+    MONTHLY_REWARDS = {
+        1: {  # 1st Place
+            "type": "Bonus Credits + Tier Upgrade",
+            "credits": 100.0,
+            "tier_upgrade": True,
+            "featured": True,
+            "description": "$100 bonus credits + tier upgrade + Featured Partner spotlight"
+        },
+        2: {  # 2nd Place
+            "type": "Bonus Credits",
+            "credits": 50.0,
+            "tier_upgrade": False,
+            "featured": False,
+            "description": "$50 bonus credits"
+        },
+        3: {  # 3rd Place
+            "type": "Bonus Credits",
+            "credits": 25.0,
+            "tier_upgrade": False,
+            "featured": False,
+            "description": "$25 bonus credits"
+        }
+    }
+    
+    # Tier progression for upgrades
+    TIER_PROGRESSION = {
+        "Bronze": "Silver",
+        "Silver": "Gold",
+        "Gold": "Platinum",
+        "Platinum": "Platinum"  # Max tier
+    }
+    
+    TIER_COLORS = {
+        "Bronze": "#CD7F32",
+        "Silver": "#C0C0C0",
+        "Gold": "#FFD700",
+        "Platinum": "#E5E4E2"
+    }
+    
+    @router.get("/leaderboard/previous-winners")
+    async def get_previous_winners(months: int = Query(default=3, ge=1, le=12)):
+        """Get previous months' leaderboard winners (public)"""
+        
+        winners_history = await db.monthly_rewards.find(
+            {},
+            {"_id": 0}
+        ).sort("month", -1).to_list(months * 3)  # Up to 3 winners per month
+        
+        # Group by month
+        grouped = {}
+        for winner in winners_history:
+            month = winner.get("month", "")
+            if month not in grouped:
+                grouped[month] = []
+            grouped[month].append(winner)
+        
+        return {
+            "history": [
+                {
+                    "month": month,
+                    "winners": sorted(winners, key=lambda x: x.get("rank", 99))
+                }
+                for month, winners in sorted(grouped.items(), reverse=True)
+            ]
+        }
+    
+    @router.get("/featured-partner")
+    async def get_featured_partner():
+        """Get current featured partner for homepage display (public)"""
+        
+        featured = await db.affiliates.find_one(
+            {"is_featured": True, "status": AffiliateStatus.APPROVED},
+            {"_id": 0, "id": 1, "company_name": 1, "name": 1, "tier": 1, "tier_color": 1,
+             "total_referrals": 1, "featured_month": 1}
+        )
+        
+        if not featured:
+            return {"featured_partner": None}
+        
+        return {
+            "featured_partner": {
+                "id": featured["id"],
+                "name": featured.get("company_name") or featured.get("name", "Partner"),
+                "tier": featured.get("tier", "Bronze"),
+                "tier_color": featured.get("tier_color", "#3b82f6"),
+                "total_referrals": featured.get("total_referrals", 0),
+                "featured_month": featured.get("featured_month")
+            }
+        }
+    
+    @router.post("/admin/process-monthly-rewards")
+    async def process_monthly_rewards(
+        payload: dict = Depends(verify_admin_token),
+        month: Optional[str] = None,  # Format: "2026-02" - defaults to previous month
+        dry_run: bool = Query(default=True)  # Safety: dry_run by default
+    ):
+        """
+        Process monthly leaderboard rewards for top 3 partners (admin only).
+        Awards bonus credits, tier upgrades, and featured partner status.
+        Sends congratulatory emails to winners.
+        """
+        from services.email_service import email_service
+        
+        # Determine which month to process
+        if month:
+            # Parse provided month
+            try:
+                year, month_num = map(int, month.split("-"))
+                target_date = datetime(year, month_num, 1, tzinfo=timezone.utc)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid month format. Use YYYY-MM")
+        else:
+            # Default to previous month
+            today = datetime.now(timezone.utc)
+            if today.month == 1:
+                target_date = datetime(today.year - 1, 12, 1, tzinfo=timezone.utc)
+            else:
+                target_date = datetime(today.year, today.month - 1, 1, tzinfo=timezone.utc)
+        
+        month_str = target_date.strftime("%Y-%m")
+        month_display = target_date.strftime("%B %Y")
+        
+        # Check if already processed
+        existing = await db.monthly_rewards.find_one({"month": month_str})
+        if existing and not dry_run:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Rewards for {month_display} have already been processed"
+            )
+        
+        # Calculate date range for the month
+        if target_date.month == 12:
+            end_date = datetime(target_date.year + 1, 1, 1, tzinfo=timezone.utc)
+        else:
+            end_date = datetime(target_date.year, target_date.month + 1, 1, tzinfo=timezone.utc)
+        
+        # Get referrals for the month
+        pipeline = [
+            {
+                "$match": {
+                    "created_at": {
+                        "$gte": target_date.isoformat(),
+                        "$lt": end_date.isoformat()
+                    }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$affiliate_id",
+                    "referrals": {"$sum": 1}
+                }
+            },
+            {"$sort": {"referrals": -1}},
+            {"$limit": 10}
+        ]
+        
+        monthly_stats = await db.referrals.aggregate(pipeline).to_list(10)
+        
+        if not monthly_stats:
+            return {
+                "month": month_display,
+                "dry_run": dry_run,
+                "message": "No referrals found for this month",
+                "winners": []
+            }
+        
+        # Get top 3 winners
+        winners = []
+        emails_sent = []
+        
+        for rank, stat in enumerate(monthly_stats[:3], 1):
+            affiliate = await db.affiliates.find_one(
+                {"id": stat["_id"], "status": AffiliateStatus.APPROVED},
+                {"_id": 0}
+            )
+            
+            if not affiliate:
+                continue
+            
+            reward = MONTHLY_REWARDS.get(rank, MONTHLY_REWARDS[3])
+            
+            winner_data = {
+                "rank": rank,
+                "affiliate_id": affiliate["id"],
+                "name": affiliate.get("company_name") or affiliate.get("name", "Partner"),
+                "email": affiliate.get("email"),
+                "referrals": stat["referrals"],
+                "reward": reward,
+                "month": month_str,
+                "processed_at": datetime.now(timezone.utc).isoformat()
+            }
+            
+            if not dry_run:
+                # Award credits
+                if reward["credits"] > 0:
+                    await db.affiliates.update_one(
+                        {"id": affiliate["id"]},
+                        {"$inc": {"available_balance": reward["credits"]}}
+                    )
+                    
+                    # Log commission
+                    await db.affiliate_commissions.insert_one({
+                        "id": str(uuid.uuid4()),
+                        "affiliate_id": affiliate["id"],
+                        "amount": reward["credits"],
+                        "type": "monthly_reward",
+                        "description": f"Monthly leaderboard reward - {rank} place ({month_display})",
+                        "status": "paid",
+                        "created_at": datetime.now(timezone.utc).isoformat()
+                    })
+                
+                # Tier upgrade for 1st place
+                if reward.get("tier_upgrade"):
+                    current_tier = affiliate.get("tier", "Bronze")
+                    new_tier = TIER_PROGRESSION.get(current_tier, current_tier)
+                    if new_tier != current_tier:
+                        await db.affiliates.update_one(
+                            {"id": affiliate["id"]},
+                            {
+                                "$set": {
+                                    "tier": new_tier,
+                                    "tier_color": TIER_COLORS.get(new_tier, "#3b82f6")
+                                }
+                            }
+                        )
+                        winner_data["tier_upgraded"] = f"{current_tier} → {new_tier}"
+                
+                # Featured partner for 1st place
+                if reward.get("featured"):
+                    # Remove previous featured
+                    await db.affiliates.update_many(
+                        {"is_featured": True},
+                        {"$set": {"is_featured": False}}
+                    )
+                    # Set new featured
+                    await db.affiliates.update_one(
+                        {"id": affiliate["id"]},
+                        {"$set": {"is_featured": True, "featured_month": month_display}}
+                    )
+                
+                # Store reward record
+                await db.monthly_rewards.insert_one({
+                    **winner_data,
+                    "id": str(uuid.uuid4())
+                })
+                
+                # Send email
+                try:
+                    email_result = await email_service.send_leaderboard_winner_email(
+                        to_email=affiliate.get("email"),
+                        name=affiliate.get("name", "Partner"),
+                        rank=rank,
+                        month=month_display,
+                        referrals=stat["referrals"],
+                        reward_type=reward["type"],
+                        reward_value=reward["description"],
+                        total_earnings=affiliate.get("total_earnings", 0)
+                    )
+                    emails_sent.append({
+                        "email": affiliate.get("email"),
+                        "status": email_result.get("status")
+                    })
+                    
+                    # Send featured partner email for 1st place
+                    if reward.get("featured"):
+                        await email_service.send_featured_partner_email(
+                            to_email=affiliate.get("email"),
+                            name=affiliate.get("name", "Partner"),
+                            month=month_display
+                        )
+                except Exception as e:
+                    emails_sent.append({
+                        "email": affiliate.get("email"),
+                        "status": "error",
+                        "error": str(e)
+                    })
+            
+            winners.append(winner_data)
+        
+        return {
+            "month": month_display,
+            "month_code": month_str,
+            "dry_run": dry_run,
+            "message": "Dry run - no changes made" if dry_run else f"Successfully processed rewards for {len(winners)} winners",
+            "winners": winners,
+            "emails_sent": emails_sent if not dry_run else [],
+            "reward_config": MONTHLY_REWARDS
+        }
+    
+    @router.get("/admin/monthly-rewards-history")
+    async def get_monthly_rewards_history(
+        payload: dict = Depends(verify_admin_token),
+        limit: int = Query(default=20, ge=1, le=100)
+    ):
+        """Get history of all monthly reward distributions (admin)"""
+        
+        rewards = await db.monthly_rewards.find(
+            {},
+            {"_id": 0}
+        ).sort("processed_at", -1).to_list(limit)
+        
+        # Group by month
+        grouped = {}
+        for reward in rewards:
+            month = reward.get("month", "")
+            if month not in grouped:
+                grouped[month] = {
+                    "month": month,
+                    "processed_at": reward.get("processed_at"),
+                    "winners": []
+                }
+            grouped[month]["winners"].append(reward)
+        
+        return {
+            "history": list(grouped.values()),
+            "total_months_processed": len(grouped),
+            "reward_config": MONTHLY_REWARDS
+        }
+    
     # ==================== ADMIN ENDPOINTS ====================
     
     @router.get("/admin/applications")
