@@ -613,6 +613,23 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         if total_earnings >= 1000:
             earned_badges.append("top_earner")
         
+        # Consistent Performer - check monthly activity
+        monthly_activity = affiliate.get("monthly_activity", [])
+        if len(monthly_activity) >= 3:
+            # Check if last 3 months all have referrals
+            consecutive_months = 0
+            for month_data in sorted(monthly_activity, key=lambda x: x.get("month", ""), reverse=True)[:3]:
+                if month_data.get("referrals", 0) > 0:
+                    consecutive_months += 1
+            if consecutive_months >= 3:
+                earned_badges.append("consistent_performer")
+        
+        # Quick Starter - 5 referrals in first month
+        created_at = affiliate.get("created_at", "")
+        first_month_referrals = affiliate.get("first_month_referrals", 0)
+        if first_month_referrals >= 5:
+            earned_badges.append("quick_starter")
+        
         # Top 10% badge
         if all_affiliates_stats.get("top_10_threshold", 0) > 0:
             if total_referrals >= all_affiliates_stats["top_10_threshold"]:
