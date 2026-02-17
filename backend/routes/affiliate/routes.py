@@ -499,15 +499,36 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         
         conversion_rate = (period_conversions / total_clicks * 100) if total_clicks > 0 else 0
         
-        # Geographic breakdown (mock - in production would use IP geolocation)
-        # For now, we'll categorize by referrer domain patterns
-        geo_breakdown = [
-            {"region": "Tanzania", "clicks": int(total_clicks * 0.45), "percentage": 45},
-            {"region": "Kenya", "clicks": int(total_clicks * 0.20), "percentage": 20},
-            {"region": "Uganda", "clicks": int(total_clicks * 0.15), "percentage": 15},
-            {"region": "Rwanda", "clicks": int(total_clicks * 0.10), "percentage": 10},
-            {"region": "Other", "clicks": int(total_clicks * 0.10), "percentage": 10},
-        ] if total_clicks > 0 else []
+        # Geographic breakdown from stored geo data in clicks
+        geo_counts = {}
+        for click in clicks:
+            geo = click.get("geo", {})
+            country = geo.get("country", "Unknown")
+            if country not in geo_counts:
+                geo_counts[country] = 0
+            geo_counts[country] += 1
+        
+        # Sort by count and create breakdown
+        if geo_counts and total_clicks > 0:
+            sorted_geo = sorted(geo_counts.items(), key=lambda x: x[1], reverse=True)
+            geo_breakdown = []
+            for country, count in sorted_geo[:5]:  # Top 5 countries
+                percentage = round((count / total_clicks) * 100, 1)
+                geo_breakdown.append({
+                    "region": country,
+                    "clicks": count,
+                    "percentage": percentage
+                })
+            # Add "Other" if there are more countries
+            other_count = sum(c for _, c in sorted_geo[5:])
+            if other_count > 0:
+                geo_breakdown.append({
+                    "region": "Other",
+                    "clicks": other_count,
+                    "percentage": round((other_count / total_clicks) * 100, 1)
+                })
+        else:
+            geo_breakdown = []
         
         return {
             "period_days": period_days,
