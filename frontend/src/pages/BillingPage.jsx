@@ -32,10 +32,11 @@ const BillingPage = () => {
     
     try {
       const token = localStorage.getItem('dv_token');
-      const userEmail = localStorage.getItem('dv_user_email');
+      const userEmail = localStorage.getItem('dv_user_email') || localStorage.getItem('userEmail');
       
-      if (!token || !userEmail) {
-        navigate('/auth/login');
+      if (!token) {
+        setError('Please log in to view billing information');
+        setLoading(false);
         return;
       }
 
