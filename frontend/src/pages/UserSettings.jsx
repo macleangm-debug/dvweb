@@ -187,9 +187,22 @@ const UserSettings = () => {
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               {[
                 { id: 'notifications', label: 'Notifications', icon: Bell },
+                { id: 'billing', label: 'Billing', icon: CreditCard, isLink: true, path: '/billing' },
                 { id: 'account', label: 'Account', icon: User },
                 { id: 'security', label: 'Security', icon: Lock },
               ].map((tab) => (
+                tab.isLink ? (
+                  <Link
+                    key={tab.id}
+                    to={tab.path}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-50 text-slate-700"
+                    data-testid={`settings-${tab.id}-link`}
+                  >
+                    <tab.icon className="w-5 h-5" />
+                    <span className="font-medium">{tab.label}</span>
+                    <ChevronRight className="w-4 h-4 ml-auto text-slate-400" />
+                  </Link>
+                ) : (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
