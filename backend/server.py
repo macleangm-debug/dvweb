@@ -2618,23 +2618,238 @@ from typing import Dict
 from fastapi import Request
 
 # Software Product Packages - defined server-side for security
-# Software Product Packages - defined server-side for security
-# Plan tiers for each product
+# ==================== CENTRALIZED PRICING ====================
+# This is the SINGLE SOURCE OF TRUTH for all product pricing
+# Products fetch their pricing from /api/pricing/{product_id}
+
+PRODUCT_PRICING = {
+    "survey360": {
+        "product_id": "survey360",
+        "product_name": "Survey360",
+        "description": "End-to-end survey management platform",
+        "currency": "usd",
+        "plans": [
+            {
+                "id": "survey360_free",
+                "name": "Free",
+                "price": 0,
+                "period": "forever",
+                "description": "For individuals getting started",
+                "package_id": None,  # No Stripe checkout for free
+                "features": [
+                    "3 surveys",
+                    "100 responses/month",
+                    "10 question types",
+                    "Basic analytics",
+                    "Community support",
+                    "Survey360 branding"
+                ],
+                "limits": {"surveys": 3, "responses_per_month": 100},
+                "popular": False
+            },
+            {
+                "id": "survey360_starter",
+                "name": "Starter",
+                "price": 19,
+                "annual_price": 190,
+                "period": "/month",
+                "description": "For freelancers and small teams",
+                "package_id": "survey360_starter_monthly",
+                "annual_package_id": "survey360_starter_annual",
+                "features": [
+                    "Unlimited surveys",
+                    "1,000 responses/month",
+                    "All question types",
+                    "Skip logic",
+                    "Basic analytics",
+                    "Email support",
+                    "Remove branding"
+                ],
+                "limits": {"surveys": -1, "responses_per_month": 1000},
+                "popular": False
+            },
+            {
+                "id": "survey360_professional",
+                "name": "Professional",
+                "price": 49,
+                "annual_price": 490,
+                "period": "/month",
+                "description": "For growing businesses",
+                "package_id": "survey360_monthly",
+                "annual_package_id": "survey360_annual",
+                "features": [
+                    "Unlimited surveys",
+                    "10,000 responses/month",
+                    "Everything in Starter",
+                    "Custom branding",
+                    "Advanced analytics",
+                    "Priority support",
+                    "API access"
+                ],
+                "limits": {"surveys": -1, "responses_per_month": 10000},
+                "popular": True,
+                "savings": "Save 17% annually"
+            },
+            {
+                "id": "survey360_business",
+                "name": "Business",
+                "price": 99,
+                "annual_price": 990,
+                "period": "/month",
+                "description": "For larger teams and agencies",
+                "package_id": "survey360_business_monthly",
+                "annual_package_id": "survey360_business_annual",
+                "features": [
+                    "Unlimited surveys",
+                    "Unlimited responses",
+                    "Everything in Professional",
+                    "Unlimited team members",
+                    "Custom integrations",
+                    "Dedicated support",
+                    "White-label option",
+                    "SSO"
+                ],
+                "limits": {"surveys": -1, "responses_per_month": -1},
+                "popular": False
+            }
+        ]
+    },
+    "fieldforce": {
+        "product_id": "fieldforce",
+        "product_name": "FieldForce",
+        "description": "Mobile data collection suite",
+        "currency": "usd",
+        "plans": [
+            {
+                "id": "fieldforce_starter",
+                "name": "Starter",
+                "price": 49,
+                "annual_price": 499,
+                "period": "/month",
+                "description": "For small field teams",
+                "package_id": "fieldforce_starter_monthly",
+                "annual_package_id": "fieldforce_10seats",
+                "features": [
+                    "Up to 10 field agents",
+                    "Offline data collection",
+                    "Basic form builder",
+                    "GPS tracking",
+                    "5 GB storage",
+                    "Email support"
+                ],
+                "limits": {"seats": 10, "storage_gb": 5},
+                "popular": False
+            },
+            {
+                "id": "fieldforce_professional",
+                "name": "Professional",
+                "price": 149,
+                "annual_price": 1499,
+                "period": "/month",
+                "description": "For growing organizations",
+                "package_id": "fieldforce_pro_monthly",
+                "annual_package_id": "fieldforce_50seats",
+                "features": [
+                    "Up to 50 field agents",
+                    "Everything in Starter",
+                    "Advanced forms",
+                    "Photo/video capture",
+                    "Real-time sync",
+                    "25 GB storage",
+                    "Priority support"
+                ],
+                "limits": {"seats": 50, "storage_gb": 25},
+                "popular": True,
+                "savings": "Save 17% annually"
+            },
+            {
+                "id": "fieldforce_enterprise",
+                "name": "Enterprise",
+                "price": 399,
+                "annual_price": 3999,
+                "period": "/month",
+                "description": "For large deployments",
+                "package_id": "fieldforce_enterprise_monthly",
+                "annual_package_id": "fieldforce_unlimited",
+                "features": [
+                    "Unlimited field agents",
+                    "Everything in Professional",
+                    "Custom integrations",
+                    "API access",
+                    "100 GB storage",
+                    "Dedicated support",
+                    "On-premise option"
+                ],
+                "limits": {"seats": -1, "storage_gb": 100},
+                "popular": False
+            }
+        ]
+    },
+    "datapulse": {
+        "product_id": "datapulse",
+        "product_name": "DataPulse",
+        "description": "Real-time analytics and visualization",
+        "currency": "usd",
+        "plans": [
+            {
+                "id": "datapulse_starter",
+                "name": "Starter",
+                "price": 29,
+                "annual_price": 290,
+                "period": "/month",
+                "description": "For individuals and small teams",
+                "package_id": "datapulse_starter_monthly",
+                "annual_package_id": "datapulse_starter_annual",
+                "features": [
+                    "5 dashboards",
+                    "Basic charts",
+                    "CSV import",
+                    "Email support"
+                ],
+                "limits": {"dashboards": 5},
+                "popular": False
+            },
+            {
+                "id": "datapulse_professional",
+                "name": "Professional",
+                "price": 79,
+                "annual_price": 790,
+                "period": "/month",
+                "description": "For data-driven teams",
+                "package_id": "dataviz_monthly",
+                "annual_package_id": "dataviz_annual",
+                "features": [
+                    "Unlimited dashboards",
+                    "Advanced visualizations",
+                    "Real-time data",
+                    "API connections",
+                    "Export to PDF/PNG",
+                    "Priority support"
+                ],
+                "limits": {"dashboards": -1},
+                "popular": True,
+                "savings": "Save 17% annually"
+            }
+        ]
+    }
+}
+
+# Plan tiers for each product (used by SSO)
 PRODUCT_PLANS = {
     "survey360": {
         "free": {"name": "Free", "surveys_limit": 3, "responses_limit": 100, "features": ["basic_analytics"]},
-        "starter": {"name": "Starter", "surveys_limit": 10, "responses_limit": 1000, "features": ["basic_analytics", "export"]},
-        "professional": {"name": "Professional", "surveys_limit": 50, "responses_limit": 10000, "features": ["advanced_analytics", "export", "branching", "api_access"]},
-        "enterprise": {"name": "Enterprise", "surveys_limit": -1, "responses_limit": -1, "features": ["all"]}
+        "starter": {"name": "Starter", "surveys_limit": -1, "responses_limit": 1000, "features": ["basic_analytics", "export", "skip_logic"]},
+        "professional": {"name": "Professional", "surveys_limit": -1, "responses_limit": 10000, "features": ["advanced_analytics", "export", "branching", "api_access", "custom_branding"]},
+        "business": {"name": "Business", "surveys_limit": -1, "responses_limit": -1, "features": ["all"]}
     },
     "fieldforce": {
-        "starter": {"name": "Starter", "seats": 10, "features": ["offline_mode", "basic_forms"]},
-        "professional": {"name": "Professional", "seats": 50, "features": ["offline_mode", "advanced_forms", "gps_tracking", "photo_capture"]},
+        "starter": {"name": "Starter", "seats": 10, "features": ["offline_mode", "basic_forms", "gps"]},
+        "professional": {"name": "Professional", "seats": 50, "features": ["offline_mode", "advanced_forms", "gps_tracking", "photo_capture", "real_time_sync"]},
         "enterprise": {"name": "Enterprise", "seats": -1, "features": ["all"]}
     },
     "datapulse": {
-        "starter": {"name": "Starter", "dashboards": 3, "features": ["basic_charts"]},
-        "professional": {"name": "Professional", "dashboards": 20, "features": ["advanced_charts", "real_time", "export"]},
+        "starter": {"name": "Starter", "dashboards": 5, "features": ["basic_charts", "csv_import"]},
+        "professional": {"name": "Professional", "dashboards": -1, "features": ["advanced_charts", "real_time", "export", "api"]},
         "enterprise": {"name": "Enterprise", "dashboards": -1, "features": ["all"]}
     }
 }
