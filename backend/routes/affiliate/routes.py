@@ -162,7 +162,9 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
     
     @router.get("/track/{referral_code}")
     async def track_click(referral_code: str, request: Request):
-        """Track affiliate link click"""
+        """Track affiliate link click with IP geolocation"""
+        import httpx
+        
         affiliate = await db.affiliates.find_one({
             "referral_code": referral_code,
             "status": AffiliateStatus.APPROVED
@@ -171,15 +173,36 @@ def create_affiliate_router(db, verify_token, verify_admin_token):
         if not affiliate:
             raise HTTPException(status_code=404, detail="Invalid referral code")
         
-        # Log click
+        # Get IP address
+        ip_address = request.client.host if request.client else "unknown"
+        
+        # Get geolocation from IP (using free ip-api.com service)
+        geo_data = {"country": "Unknown", "city": "Unknown", "region": "Unknown"}
+        try:
+            if ip_address and ip_address not in ["127.0.0.1", "localhost", "unknown"]:
+                async with httpx.AsyncClient(timeout=2.0) as client:
+                    geo_response = await client.get(f"http://ip-api.com/json/{ip_address}?fields=status,country,regionName,city")
+                    if geo_response.status_code == 200:
+                        geo_json = geo_response.json()
+                        if geo_json.get("status") == "success":
+                            geo_data = {
+                                "country": geo_json.get("country", "Unknown"),
+                                "city": geo_json.get("city", "Unknown"),
+                                "region": geo_json.get("regionName", "Unknown")
+                            }
+        except Exception:
+            pass  # Silently fail geolocation - don't block click tracking
+        
+        # Log click with geo data
         click_data = {
             "id": str(uuid.uuid4()),
             "affiliate_id": affiliate["id"],
             "referral_code": referral_code,
-            "ip_address": request.client.host if request.client else "unknown",
+            "ip_address": ip_address,
             "user_agent": request.headers.get("user-agent", ""),
             "referer": request.headers.get("referer", ""),
             "landing_page": str(request.url),
+            "geo": geo_data,
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
         await db.affiliate_clicks.insert_one(click_data)
