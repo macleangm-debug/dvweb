@@ -1752,6 +1752,55 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ---
 
+## February 17, 2026 - Centralized Payment System for SSO (COMPLETED)
+
+**Feature Implemented:**
+SSO endpoints now include subscription information, enabling products to know user's plan without independent billing.
+
+**Architecture:**
+```
+User → DataVision Pricing → Stripe → user_subscriptions collection
+                                          ↓
+                              SSO Token includes: {plan: "professional", product: "survey360"}
+                                          ↓
+                              Product reads plan from SSO token
+```
+
+**Backend Changes:**
+1. **New collections:**
+   - `user_subscriptions` - Stores active subscriptions with plan, expiry, features
+   - `product_access` - Backward-compatible access records
+
+2. **New constants:**
+   - `PRODUCT_PLANS` - Plan features/limits per product (survey360, fieldforce, datapulse)
+   - `PACKAGE_TO_PLAN` - Maps payment packages to plans and duration
+
+3. **Helper function:**
+   - `get_user_subscription(user_email, product_id)` - Returns active subscription with features
+
+4. **Updated SSO endpoints:**
+   - `/api/auth/sso/survey360` - Returns subscription info, syncs org plan
+   - `/api/auth/sso/fieldforce` - Returns subscription info, syncs org plan/seats
+
+5. **New revenue analytics endpoints:**
+   - `/api/admin/revenue/overview` - Total revenue, by product, monthly breakdown
+   - `/api/admin/revenue/by-product` - Detailed revenue per product
+   - `/api/admin/subscriptions` - List all subscriptions with filters
+   - `/api/user/subscriptions` - Get subscriptions for a user
+
+6. **Payment success handler:**
+   - Creates `user_subscriptions` record with plan, expiry
+   - Creates `product_access` record for backward compatibility
+
+**Frontend Changes:**
+- Admin dashboard now fetches real revenue data from `/api/admin/revenue/overview`
+- Falls back to mock data if no transactions exist
+
+**Testing:** 100% pass rate (22 backend tests, 11 frontend tests)
+- Test report: `/app/test_reports/iteration_34.json`
+
+---
+
 ## February 17, 2026 - Partner of the Month Homepage Feature (COMPLETED)
 
 **Feature Implemented:**
