@@ -564,6 +564,154 @@ class EmailService:
             html_content=html,
             from_name="DataVision Partner Program"
         )
+    
+    async def send_monthly_digest_email(
+        self,
+        to_email: str,
+        name: str,
+        month: str,
+        stats: dict,
+        rank: int,
+        total_partners: int,
+        tips: list,
+        tier: str,
+        tier_color: str,
+        next_tier: dict = None
+    ) -> Dict[str, Any]:
+        """Send monthly digest/summary email to partners"""
+        
+        # Calculate percentile
+        percentile = round((1 - (rank / total_partners)) * 100 if total_partners > 0 else 0, 1)
+        
+        # Performance indicator
+        if percentile >= 90:
+            performance_emoji = "🔥"
+            performance_text = "Outstanding! You're in the top 10%"
+            performance_color = "#22c55e"
+        elif percentile >= 70:
+            performance_emoji = "⭐"
+            performance_text = "Great work! You're above average"
+            performance_color = "#3b82f6"
+        elif percentile >= 50:
+            performance_emoji = "📈"
+            performance_text = "Good progress! Keep pushing"
+            performance_color = "#f59e0b"
+        else:
+            performance_emoji = "💪"
+            performance_text = "Room to grow - check the tips below"
+            performance_color = "#64748b"
+        
+        # Build tips HTML
+        tips_html = ""
+        for i, tip in enumerate(tips[:3], 1):
+            tips_html += f'''
+                <tr>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">
+                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="32" style="vertical-align: top;">
+                                    <div style="width: 24px; height: 24px; background-color: #e6394615; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; color: #e63946; font-weight: bold;">{i}</div>
+                                </td>
+                                <td style="padding-left: 12px;">
+                                    <p style="margin: 0; color: #0a1628; font-size: 14px; font-weight: 500;">{tip["title"]}</p>
+                                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">{tip["description"]}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            '''
+        
+        # Next tier progress
+        next_tier_html = ""
+        if next_tier:
+            progress_percent = min(100, (stats.get("total_referrals", 0) / next_tier["min_referrals"]) * 100)
+            next_tier_html = f'''
+                <div style="background-color: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 16px;">
+                    <p style="margin: 0 0 8px 0; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Next Tier: {next_tier["name"]}</p>
+                    <div style="background-color: #e2e8f0; border-radius: 4px; height: 8px; overflow: hidden;">
+                        <div style="width: {progress_percent}%; height: 100%; background-color: {next_tier["color"]}; border-radius: 4px;"></div>
+                    </div>
+                    <p style="margin: 8px 0 0 0; color: #475569; font-size: 13px;">
+                        {stats.get("total_referrals", 0)}/{next_tier["min_referrals"]} referrals 
+                        ({next_tier["min_referrals"] - stats.get("total_referrals", 0)} more to unlock {next_tier["commission_rate"]}% commission!)
+                    </p>
+                </div>
+            '''
+        
+        content = f"""
+            <div style="text-align: center; padding: 20px 0;">
+                <p style="margin: 0 0 8px 0; color: #64748b; font-size: 14px;">Your Monthly Partner Digest</p>
+                <h1 style="margin: 0; color: #0a1628; font-size: 28px;">{month}</h1>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, {tier_color}15, {tier_color}05); border: 1px solid {tier_color}30; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center;">
+                <p style="margin: 0; font-size: 32px;">{performance_emoji}</p>
+                <p style="margin: 8px 0 4px 0; color: {performance_color}; font-size: 16px; font-weight: 600;">{performance_text}</p>
+                <p style="margin: 0; color: #64748b; font-size: 14px;">Rank #{rank} of {total_partners} partners</p>
+            </div>
+            
+            <h2 style="margin: 24px 0 16px 0; color: #0a1628; font-size: 18px;">📊 Your {month} Stats</h2>
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border-radius: 8px;">
+                <tr>
+                    <td style="padding: 16px; text-align: center; border-right: 1px solid #e2e8f0;">
+                        <p style="margin: 0; color: #64748b; font-size: 12px; text-transform: uppercase;">Referrals</p>
+                        <p style="margin: 4px 0 0 0; color: #0a1628; font-size: 24px; font-weight: bold;">{stats.get("month_referrals", 0)}</p>
+                    </td>
+                    <td style="padding: 16px; text-align: center; border-right: 1px solid #e2e8f0;">
+                        <p style="margin: 0; color: #64748b; font-size: 12px; text-transform: uppercase;">Earnings</p>
+                        <p style="margin: 4px 0 0 0; color: #22c55e; font-size: 24px; font-weight: bold;">${stats.get("month_earnings", 0):,.2f}</p>
+                    </td>
+                    <td style="padding: 16px; text-align: center;">
+                        <p style="margin: 0; color: #64748b; font-size: 12px; text-transform: uppercase;">Conversion</p>
+                        <p style="margin: 4px 0 0 0; color: #0a1628; font-size: 24px; font-weight: bold;">{stats.get("conversion_rate", 0):.1f}%</p>
+                    </td>
+                </tr>
+            </table>
+            
+            <div style="background-color: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 16px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            <p style="margin: 0; color: #64748b; font-size: 13px;">Your Tier</p>
+                            <p style="margin: 4px 0 0 0; color: {tier_color}; font-size: 16px; font-weight: 600;">{tier}</p>
+                        </td>
+                        <td style="text-align: right;">
+                            <p style="margin: 0; color: #64748b; font-size: 13px;">Commission Rate</p>
+                            <p style="margin: 4px 0 0 0; color: #0a1628; font-size: 16px; font-weight: 600;">{stats.get("commission_rate", 10)}%</p>
+                        </td>
+                    </tr>
+                </table>
+                {next_tier_html}
+            </div>
+            
+            <h2 style="margin: 24px 0 16px 0; color: #0a1628; font-size: 18px;">💡 Tips to Boost Your Earnings</h2>
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px;">
+                {tips_html}
+            </table>
+            
+            <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 24px auto;">
+                <tr>
+                    <td style="background-color: #e63946; border-radius: 6px;">
+                        <a href="https://datavision.co.tz/affiliate/dashboard" style="display: inline-block; padding: 14px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            View Full Dashboard
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            
+            <p style="margin: 20px 0 0 0; color: #64748b; font-size: 13px; text-align: center;">
+                Questions? Reply to this email or reach out to your account manager.
+            </p>
+        """
+        
+        html = get_base_template(content)
+        return await self.send_email(
+            to_email=to_email,
+            subject=f"📊 Your {month} Partner Report - DataVision",
+            html_content=html,
+            from_name="DataVision Partner Program"
+        )
 
 
 # Global email service instance
