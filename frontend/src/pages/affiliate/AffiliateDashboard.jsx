@@ -481,6 +481,7 @@ const AffiliateDashboard = () => {
         <div className="flex gap-2 mb-6 border-b border-slate-800 overflow-x-auto">
           {[
             { id: 'overview', label: 'Referrals', icon: Users },
+            { id: 'performance', label: 'Performance', icon: Trophy },
             { id: 'analytics', label: 'Analytics', icon: BarChart3 },
             { id: 'commissions', label: 'Commissions', icon: DollarSign },
           ].map((tab) => (
