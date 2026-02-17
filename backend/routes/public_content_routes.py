@@ -92,18 +92,16 @@ class NewsArticle(BaseModel):
     title: str
     excerpt: str
     content: str
-    author: str
-    published: bool = True
     image_url: Optional[str] = None
+    published: bool = True
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class NewsArticleCreate(BaseModel):
     title: str
     excerpt: str
     content: str
-    author: str
-    published: bool = True
     image_url: Optional[str] = None
+    published: bool = True
 
 class Partner(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
