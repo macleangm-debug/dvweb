@@ -3068,6 +3068,11 @@ from services.email_service import email_service
 referral_router = create_referral_routes(db, verify_token, email_service)
 api_router.include_router(referral_router)
 
+# ==================== ADMIN REFERRAL MANAGEMENT ROUTES ====================
+from routes.admin_referral_routes import create_admin_referral_routes
+admin_referral_router = create_admin_referral_routes(db, verify_admin_token)
+api_router.include_router(admin_referral_router)
+
 # ==================== SHORTENED REFERRAL LINK REDIRECT ====================
 from fastapi.responses import RedirectResponse
 
