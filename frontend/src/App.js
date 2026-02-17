@@ -605,6 +605,7 @@ function App() {
                   <Route path="/contact-us" element={<ContactPage />} />
                   <Route path="/affiliate" element={<AffiliateProgramPage />} />
                   <Route path="/affiliate/dashboard" element={<AffiliateDashboard />} />
+                  <Route path="/affiliate/leaderboard" element={<PartnerLeaderboard />} />
                   <Route path="/settings" element={<UserSettings />} />
                   <Route path="/referrals" element={<ReferralDashboard />} />
                 </Routes>
