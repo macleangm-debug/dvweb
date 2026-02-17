@@ -1604,7 +1604,77 @@ GET  /api/email-preferences/unsubscribe/{token}
   "total_earned": 4,
   "total_available": 10
 }
+
+// /api/affiliates/leaderboard (NEW)
+{
+  "period": "all_time",
+  "period_label": "All Time",
+  "leaderboard": [{"rank": 1, "name": "Admin User", "tier": "Bronze", "referrals": 12}],
+  "stats": {"total_partners": 2, "active_partners": 1, "total_referrals": 12}
+}
+
+// /api/affiliates/badge-share/{badge_id} (NEW)
+{
+  "badge": {"id": "first_referral", "name": "First Referral"},
+  "partner_name": "Admin User",
+  "share_text": {
+    "twitter": "🏆 I just earned the 'First Referral' badge...",
+    "linkedin": "Excited to share...",
+    "facebook": "🎉 Achievement Unlocked!...",
+    "whatsapp": "🏆 Just earned..."
+  }
+}
 ```
+
+---
+
+## February 17, 2026 - Enhanced Gamification & Leaderboard (COMPLETED)
+
+**Features Implemented:**
+
+### 1. Public Partner Leaderboard
+- **New Endpoint:** `/api/affiliates/leaderboard` (NO AUTH REQUIRED)
+- Period filtering: `weekly`, `monthly`, `all_time`
+- Returns: ranked partners with name, tier, referrals count
+- Stats: total_partners, active_partners, total_referrals
+- **New Endpoint:** `/api/affiliates/leaderboard/my-position` (AUTH REQUIRED)
+- Returns: your_position (rank, percentile), above_you, below_you, referrals_to_next_rank
+
+### 2. Badge Social Sharing
+- **New Endpoint:** `/api/affiliates/badge-share/{badge_id}`
+- Returns pre-formatted share text for Twitter, LinkedIn, Facebook, WhatsApp
+- Frontend badge modal updated with social share buttons
+
+### 3. Enhanced Badge System
+- Added `consistent_performer` badge (3 months active)
+- Added `quick_starter` badge (5 referrals in first month)
+- Total badges: 10
+
+### 4. Real IP Geolocation for Click Tracking
+- Click tracking now uses ip-api.com for geolocation
+- Stores country, city, region with each click
+- Analytics geo breakdown now uses real stored data (not mock)
+
+### 5. Partner Leaderboard Page (Frontend)
+- **New Page:** `/affiliate/leaderboard`
+- Stats overview cards
+- Period filter (This Week / This Month / All Time)
+- Ranked partner table with tier badges
+- "Your Position" card for logged-in partners
+- CTA for non-partners
+
+**Files Created:**
+- `/app/frontend/src/pages/affiliate/PartnerLeaderboard.jsx` (NEW ~300 lines)
+
+**Files Updated:**
+- `/app/backend/routes/affiliate/routes.py` (Added ~200 lines: leaderboard, my-position, badge-share, geo tracking)
+- `/app/frontend/src/pages/affiliate/AffiliateDashboard.jsx` (Badge modal with social sharing)
+- `/app/frontend/src/App.js` (Added leaderboard route)
+
+**Testing:** 100% pass rate
+- Backend: 19/19 API tests passed
+- Frontend: All UI tests passed
+- Test report: `/app/test_reports/iteration_31.json`
 
 ---
 
@@ -1612,36 +1682,28 @@ GET  /api/email-preferences/unsubscribe/{token}
 
 ```
 /app
-├── backend/ (3193 lines in server.py + routes)
-│   ├── server.py (~3100 lines - updated with referral processing)
+├── backend/
+│   ├── server.py (~3100 lines)
 │   ├── services/
 │   │   └── email_service.py (Resend integration)
 │   └── routes/
-│       ├── admin_referral_routes.py (434 lines - User referral admin)
-│       ├── auth_routes.py (602 lines - password management)
-│       ├── email_routes.py (Product email endpoints)
-│       ├── email_preferences_routes.py (Email preferences)
-│       ├── referral_routes.py (User referral system)
-│       ├── public_content_routes.py (NEW - ready to import)
-│       └── affiliate/routes.py (Affiliate program + Performance + Badges)
+│       ├── admin_referral_routes.py (434 lines)
+│       ├── auth_routes.py (602 lines)
+│       ├── email_routes.py
+│       ├── email_preferences_routes.py
+│       ├── referral_routes.py
+│       ├── public_content_routes.py (Ready to import)
+│       └── affiliate/routes.py (Full: Performance, Badges, Leaderboard, Sharing)
 ├── frontend/
 │   └── src/
-│       ├── App.js (620 lines - 71% total reduction from original)
+│       ├── App.js (621 lines)
 │       ├── pages/
-│       │   ├── HomePage.jsx (789 lines)
-│       │   ├── AboutPage.jsx (310 lines)
-│       │   ├── ProjectsPage.jsx (119 lines)
-│       │   ├── NewsPage.jsx (105 lines)
-│       │   ├── ContactPage.jsx (227 lines)
-│       │   ├── UserSettings.jsx (370 lines)
-│       │   ├── ReferralDashboard.jsx (380 lines)
+│       │   ├── HomePage.jsx, AboutPage.jsx, ProjectsPage.jsx, NewsPage.jsx
+│       │   ├── ContactPage.jsx, UserSettings.jsx, ReferralDashboard.jsx
 │       │   └── affiliate/
-│       │       └── AffiliateDashboard.jsx (Updated with Performance tab)
-│       └── components/
-│           └── admin/
-│               ├── ReferralManagement.jsx (617 lines)
-│               ├── DashboardOverview.jsx (Analytics + Activity views)
-│               └── AffiliateManagement.jsx (Product-linked promo codes)
+│       │       ├── AffiliateDashboard.jsx (Performance, Badges, Social Sharing)
+│       │       └── PartnerLeaderboard.jsx (NEW)
+│       └── components/admin/...
 ```
 
 ---
