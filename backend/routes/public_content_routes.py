@@ -75,14 +75,16 @@ class TestimonialCreate(BaseModel):
 class Statistic(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     label: str
-    value: str
-    icon: Optional[str] = None
+    value: int
+    suffix: str = ""
+    prefix: str = ""
     order: int = 0
 
 class StatisticCreate(BaseModel):
     label: str
-    value: str
-    icon: Optional[str] = None
+    value: int
+    suffix: str = ""
+    prefix: str = ""
     order: int = 0
 
 class NewsArticle(BaseModel):
