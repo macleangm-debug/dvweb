@@ -17,6 +17,7 @@ import {
 import { toast } from 'sonner';
 import axios from 'axios';
 import BioSignNavbar from './BioSignNavbar';
+import './biosign.css';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
