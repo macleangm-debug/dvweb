@@ -183,6 +183,7 @@ import DVDashboardBuilderPage from './solutions/dataviz-studio/app/pages/Dashboa
 import DVInteractiveDemoPage from './solutions/dataviz-studio/app/pages/InteractiveDemoPage';
 import DVPricingPage from './solutions/dataviz-studio/app/pages/PricingPage';
 import { DashboardLayout as DVDashboardLayout } from './solutions/dataviz-studio/app/layouts/DashboardLayout';
+import { DataVizBillingPage as DVBillingPage } from './solutions/dataviz-studio/app/pages/BillingPage';
 
 // Extracted Page Components
 import HomePage from './pages/HomePage';
