@@ -102,6 +102,7 @@ const NAVIGATION = [
       { label: 'Team', path: '/solutions/fieldforce/app/team', icon: Users },
       { label: 'Roles', path: '/solutions/fieldforce/app/rbac', icon: Shield },
       { label: 'Translations', path: '/solutions/fieldforce/app/translations', icon: Languages },
+      { label: 'Billing', path: '/solutions/fieldforce/app/billing', icon: CreditCard },
       { label: 'Settings', path: '/solutions/fieldforce/app/settings', icon: Settings }
     ]
   }
