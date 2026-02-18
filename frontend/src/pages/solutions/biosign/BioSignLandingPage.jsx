@@ -6,12 +6,12 @@ import {
   Building2, Wallet, Users, ArrowRight, Phone, CreditCard, Banknote,
   Store, Signal, WifiOff, MapPin, BadgeCheck, TrendingUp
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../../../components/ui/button";
+import { Card, CardContent } from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 
-const Landing = () => {
+const BioSignLandingPage = () => {
   const [activeIndustry, setActiveIndustry] = useState("mobile-money");
 
   const features = [
@@ -120,20 +120,20 @@ const Landing = () => {
               <span className="text-xl font-bold tracking-tight">BioSign SDK</span>
             </div>
             <div className="hidden md:flex items-center gap-6">
-              <Link to="/features" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/solutions/biosign/features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Features
               </Link>
               <Link to="/roi" className="text-muted-foreground hover:text-foreground transition-colors">
                 ROI Calculator
               </Link>
-              <Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/solutions/biosign/docs" className="text-muted-foreground hover:text-foreground transition-colors">
                 Documentation
               </Link>
-              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/solutions/biosign/features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Demo Dashboard
               </Link>
             </div>
-            <Link to="/dashboard">
+            <Link to="/solutions/biosign/features">
               <Button className="glow-green" data-testid="hero-cta-btn">
                 Try Demo
                 <ChevronRight className="w-4 h-4 ml-1" />
@@ -165,13 +165,13 @@ const Landing = () => {
                 phishing, SIM swap, and man-in-the-middle attacks.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/dashboard">
+                <Link to="/solutions/biosign/features">
                   <Button size="lg" className="glow-green" data-testid="get-started-btn">
                     <Zap className="w-5 h-5 mr-2" />
                     Get Started
                   </Button>
                 </Link>
-                <Link to="/docs">
+                <Link to="/solutions/biosign/docs">
                   <Button size="lg" variant="outline" data-testid="view-docs-btn">
                     <Code className="w-5 h-5 mr-2" />
                     View Documentation
@@ -349,7 +349,7 @@ const Landing = () => {
                     </div>
                     
                     <div className="pt-4">
-                      <Link to="/features">
+                      <Link to="/solutions/biosign/features">
                         <Button className={key === "mobile-money" ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"}>
                           <TrendingUp className="w-4 h-4 mr-2" />
                           See {industry.title} Demo
@@ -423,7 +423,7 @@ const Landing = () => {
                 Full REST API support with SDK libraries for JavaScript, Python, and mobile platforms.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/docs">
+                <Link to="/solutions/biosign/docs">
                   <Button variant="outline" data-testid="view-api-docs-btn">
                     View API Documentation
                   </Button>
@@ -480,12 +480,12 @@ if (risk.level === "low") {
             user-friendly transaction authorization.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/dashboard">
+            <Link to="/solutions/biosign/features">
               <Button size="lg" className="glow-green" data-testid="start-free-trial-btn">
                 Start Free Trial
               </Button>
             </Link>
-            <Link to="/docs">
+            <Link to="/solutions/biosign/docs">
               <Button size="lg" variant="outline" data-testid="read-docs-btn">
                 Read Documentation
               </Button>
@@ -503,7 +503,7 @@ if (risk.level === "low") {
               <span className="font-semibold">BioSign SDK</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
+              <Link to="/solutions/biosign/docs" className="hover:text-foreground transition-colors">Documentation</Link>
               <Link to="/compliance" className="hover:text-foreground transition-colors">Compliance</Link>
               <Link to="/audit" className="hover:text-foreground transition-colors">Audit</Link>
             </div>
@@ -517,4 +517,4 @@ if (risk.level === "low") {
   );
 };
 
-export default Landing;
+export default BioSignLandingPage;
