@@ -515,6 +515,30 @@ function App() {
             <Route path="/solutions/datapulse" element={<DataPulseLandingPage />} />
             <Route path="/solutions/datapulse/login" element={<DataPulseLoginPage />} />
             <Route path="/solutions/datapulse/register" element={<DataPulseRegisterPage />} />
+            
+            {/* DataViz Studio Routes */}
+            <Route path="/solutions/dataviz" element={<DVLandingPage />} />
+            <Route path="/solutions/dataviz/login" element={<DVLoginPage />} />
+            <Route path="/solutions/dataviz/register" element={<DVRegisterPage />} />
+            <Route path="/solutions/dataviz/pricing" element={<DVPricingPage />} />
+            <Route path="/solutions/dataviz/demo" element={<DVInteractiveDemoPage />} />
+            <Route path="/solutions/dataviz/app/dashboard" element={<DVDashboardLayout><DVDashboardPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/datasets" element={<DVDashboardLayout><DVDatasetsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/charts" element={<DVDashboardLayout><DVChartsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/charts/new" element={<DVDashboardLayout><DVChartsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/dashboards" element={<DVDashboardLayout><DVDashboardsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/dashboards/new" element={<DVDashboardLayout><DVDashboardBuilderPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/dashboards/:id/edit" element={<DVDashboardLayout><DVDashboardBuilderPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/upload" element={<DVDashboardLayout><DVUploadPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/data-sources" element={<DVDashboardLayout><DVDataSourcesPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/database-connections" element={<DVDashboardLayout><DVDatabaseConnectionsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/ai-insights" element={<DVDashboardLayout><DVAIInsightsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/report-builder" element={<DVDashboardLayout><DVReportBuilderPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/help" element={<DVDashboardLayout><DVHelpCenterPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/settings" element={<DVDashboardLayout><DVSettingsPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/team" element={<DVDashboardLayout><DVTeamPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/security" element={<DVDashboardLayout><DVSecurityPage /></DVDashboardLayout>} />
+            
             <Route path="*" element={
               <>
                 <NavbarWithAuth />
