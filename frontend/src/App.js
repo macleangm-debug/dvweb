@@ -281,6 +281,12 @@ function App() {
             <Route path="/solutions/dataviz/app/security" element={<DVDashboardLayout><DVSecurityPage /></DVDashboardLayout>} />
             <Route path="/solutions/dataviz/app/billing" element={<DVDashboardLayout><DVBillingPage /></DVDashboardLayout>} />
             
+            {/* BioSign SDK Routes - with own product navigation */}
+            <Route path="/solutions/biosign" element={<BioSignLandingPage />} />
+            <Route path="/solutions/biosign/features" element={<BioSignFeaturesPage />} />
+            <Route path="/solutions/biosign/docs" element={<BioSignDocsPage />} />
+            <Route path="/solutions/biosign/demo" element={<BioSignDemoPage />} />
+            
             <Route path="*" element={
               <>
                 <NavbarWithAuth />
