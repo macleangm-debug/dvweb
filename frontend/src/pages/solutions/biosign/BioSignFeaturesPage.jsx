@@ -6,6 +6,7 @@ import {
   CheckCircle2, ArrowRight, Server, Key, Activity, FileText, 
   Clock, Users, Cpu, Wifi, WifiOff, MapPin, User, CreditCard, RefreshCw
 } from 'lucide-react';
+import BioSignNavbar from './BioSignNavbar';
 
 const BioSignFeaturesPage = () => {
   const [activeDemo, setActiveDemo] = useState('webauthn');
