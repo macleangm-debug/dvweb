@@ -359,7 +359,7 @@ export function RegisterPage() {
           <p className="text-center text-sm text-muted-foreground mt-6">
             Already have an account?{' '}
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/solutions/dataviz/login')}
               className="text-violet-600 hover:text-violet-700 font-medium"
               data-testid="goto-login-btn"
             >
