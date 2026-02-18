@@ -72,7 +72,7 @@ const BioSignDemoPage = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-slate-950" data-testid="biosign-demo-success">
+      <div className="min-h-screen biosign-theme biosign-noise-bg" data-testid="biosign-demo-success">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/30 via-slate-950 to-violet-900/20" />
         <div className="relative z-10 min-h-screen flex items-center justify-center p-8">
           <motion.div
@@ -109,7 +109,7 @@ const BioSignDemoPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950" data-testid="biosign-demo-form">
+    <div className="min-h-screen biosign-theme biosign-noise-bg" data-testid="biosign-demo-form">
       {/* Product Navigation */}
       <BioSignNavbar />
       
