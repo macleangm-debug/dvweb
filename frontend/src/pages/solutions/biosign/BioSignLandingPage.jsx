@@ -198,11 +198,11 @@ const BioSignLandingPage = () => {
               </div>
             </div>
             <div className="relative animate-fade-in-up delay-200">
-              <div className="relative rounded-2xl overflow-hidden border border-border/50">
+              <div className="relative rounded-2xl overflow-hidden border border-border/50 max-h-[320px]">
                 <img 
                   src="https://images.unsplash.com/photo-1582362710551-6ac08f214e12?w=800&auto=format&fit=crop" 
                   alt="Digital Security Shield"
-                  className="w-full h-auto opacity-80"
+                  className="w-full h-auto max-h-[320px] object-cover opacity-80"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
               </div>
