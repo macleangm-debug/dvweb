@@ -1037,7 +1037,7 @@ const SuccessCTA = ({ featureName }) => (
 );
 
 // ============ MAIN FEATURES PAGE ============
-const Features = () => {
+const BioSignFeaturesPage = () => {
   const { session, loading: sessionLoading, getAuthHeaders } = useDemoSession();
   const { triedFeatures, markFeatureTried, progress } = useProgressTracker();
   const [activeTab, setActiveTab] = useState("webauthn");
