@@ -201,6 +201,9 @@ import DVPricingPage from './solutions/dataviz-studio/app/pages/PricingPage';
 import { DashboardLayout as DVDashboardLayout } from './solutions/dataviz-studio/app/layouts/DashboardLayout';
 import { DataVizBillingPage as DVBillingPage } from './solutions/dataviz-studio/app/pages/BillingPage';
 
+// BioSign SDK Pages
+import { BioSignLandingPage, BioSignFeaturesPage, BioSignDocsPage, BioSignDemoPage } from './pages/solutions/biosign';
+
 // Extracted Page Components
 import HomePage from './pages/HomePage';
 import UserSettings from './pages/UserSettings';
