@@ -110,30 +110,30 @@ const BioSignLandingPage = () => {
     <div className="min-h-screen bg-background noise-bg" data-testid="landing-page">
       {/* Hero Section */}
       <section className="hero-gradient relative overflow-hidden" data-testid="hero-section">
-        {/* Navigation */}
+        {/* Navigation - DataVision Logo only (no back arrow) */}
         <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center shield-animate">
-                <Shield className="w-6 h-6 text-primary" />
+            <Link to="/" className="flex items-center gap-2" data-testid="datavision-link">
+              <div className="bg-white rounded px-2 py-1">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision" 
+                  className="h-6 w-auto"
+                />
               </div>
-              <span className="text-xl font-bold tracking-tight">BioSign SDK</span>
-            </div>
+            </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link to="/solutions/biosign/features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Features
               </Link>
-              <Link to="/roi" className="text-muted-foreground hover:text-foreground transition-colors">
-                ROI Calculator
-              </Link>
               <Link to="/solutions/biosign/docs" className="text-muted-foreground hover:text-foreground transition-colors">
                 Documentation
               </Link>
-              <Link to="/solutions/biosign/features" className="text-muted-foreground hover:text-foreground transition-colors">
-                Demo Dashboard
+              <Link to="/solutions/biosign/demo" className="text-muted-foreground hover:text-foreground transition-colors">
+                Request Demo
               </Link>
             </div>
-            <Link to="/solutions/biosign/features">
+            <Link to="/solutions/biosign/demo">
               <Button className="glow-green" data-testid="hero-cta-btn">
                 Try Demo
                 <ChevronRight className="w-4 h-4 ml-1" />
