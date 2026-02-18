@@ -9,7 +9,8 @@ import {
   ChevronRight, Target, PieChart, GraduationCap, Compass, Scale, TrendingUp,
   Shield, HandHeart, Utensils, AlertTriangle, Truck, Factory,
   FolderOpen, Smartphone, Map, MessageCircle, PenTool, Workflow, Calculator,
-  Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Building2, Activity
+  Zap, Pickaxe, Plane, Landmark, Layers, ShoppingCart, Building2, Activity,
+  Fingerprint, Banknote
 } from 'lucide-react';
 
 const Navbar = ({ user, logout }) => {
