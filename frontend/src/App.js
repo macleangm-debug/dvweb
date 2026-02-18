@@ -541,6 +541,7 @@ function App() {
             <Route path="/solutions/dataviz/app/settings" element={<DVDashboardLayout><DVSettingsPage /></DVDashboardLayout>} />
             <Route path="/solutions/dataviz/app/team" element={<DVDashboardLayout><DVTeamPage /></DVDashboardLayout>} />
             <Route path="/solutions/dataviz/app/security" element={<DVDashboardLayout><DVSecurityPage /></DVDashboardLayout>} />
+            <Route path="/solutions/dataviz/app/billing" element={<DVDashboardLayout><DVBillingPage /></DVDashboardLayout>} />
             
             <Route path="*" element={
               <>
