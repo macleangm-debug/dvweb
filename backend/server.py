@@ -1385,6 +1385,43 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
 async def root():
     return {"message": "DataVision International API", "status": "operational"}
 
+# Solution Inquiries - Demo requests and sales inquiries
+@api_router.post("/inquiries")
+async def create_inquiry(request: Request):
+    """Create a new solution inquiry / demo request"""
+    try:
+        data = await request.json()
+        inquiry = {
+            "name": data.get("name"),
+            "email": data.get("email"),
+            "phone": data.get("phone"),
+            "organization": data.get("organization"),
+            "organization_type": data.get("organizationType"),
+            "country": data.get("country"),
+            "employee_count": data.get("employeeCount"),
+            "message": data.get("message"),
+            "solution": data.get("solution"),
+            "solution_name": data.get("solutionName"),
+            "type": data.get("type", "demo_request"),
+            "status": "new",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        result = await db.inquiries.insert_one(inquiry)
+        logger.info(f"New inquiry received for {data.get('solutionName')} from {data.get('email')}")
+        return {"success": True, "message": "Inquiry submitted successfully"}
+    except Exception as e:
+        logger.error(f"Failed to create inquiry: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit inquiry")
+
+@api_router.get("/inquiries")
+async def get_inquiries(current_user: dict = Depends(get_current_user)):
+    """Get all inquiries (admin only)"""
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    inquiries = await db.inquiries.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return {"inquiries": inquiries}
+
 # NOTE: Projects, team, testimonials, statistics, news, partners, and inquiries 
 # routes have been moved to routes/public_content_routes.py
 
