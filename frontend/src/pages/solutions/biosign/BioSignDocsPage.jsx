@@ -4,15 +4,15 @@ import {
   Book, Code, Terminal, Copy, CheckCircle, 
   ChevronRight, ExternalLink, Zap
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Navbar from "@/components/layout/Navbar";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import { ScrollArea } from "../../../components/ui/scroll-area";
+import BioSignNavbar from "./BioSignNavbar";
 import { toast } from "sonner";
 
-const Documentation = () => {
+const BioSignDocsPage = () => {
   const [copiedCode, setCopiedCode] = useState(null);
 
   const copyToClipboard = (code, id) => {
@@ -552,4 +552,4 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
   );
 };
 
-export default Documentation;
+export default BioSignDocsPage;
