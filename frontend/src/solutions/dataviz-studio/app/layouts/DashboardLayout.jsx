@@ -185,20 +185,20 @@ export function DashboardLayout({ children }) {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" align="start" className="w-56">
-              <DropdownMenuItem onClick={() => navigate('/upload')}>
+              <DropdownMenuItem onClick={() => navigate(`${BASE_PATH}/upload`)}>
                 <Upload className="w-4 h-4 mr-2" />
                 Upload Data
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/dashboards/new')}>
+              <DropdownMenuItem onClick={() => navigate(`${BASE_PATH}/dashboards/new`)}>
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 New Dashboard
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/charts/new')}>
+              <DropdownMenuItem onClick={() => navigate(`${BASE_PATH}/charts/new`)}>
                 <PieChart className="w-4 h-4 mr-2" />
                 New Chart
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/data-sources/new')}>
+              <DropdownMenuItem onClick={() => navigate(`${BASE_PATH}/data-sources/new`)}>
                 <Plug className="w-4 h-4 mr-2" />
                 Connect Data Source
               </DropdownMenuItem>
