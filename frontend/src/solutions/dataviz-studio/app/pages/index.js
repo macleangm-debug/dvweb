@@ -1,0 +1,20 @@
+// DataViz Studio Pages - Re-exports
+export { LoginPage as DataVizLoginPage, RegisterPage as DataVizRegisterPage } from './AuthPages';
+export { default as DataVizLandingPage } from './LandingPage';
+export { default as DataVizDashboardPage } from './DashboardPage';
+export { default as DataVizDatasetsPage } from './DatasetsPage';
+export { default as DataVizChartsPage } from './ChartsPage';
+export { default as DataVizDashboardsPage } from './DashboardsPage';
+export { default as DataVizUploadPage } from './UploadPage';
+export { default as DataVizDataSourcesPage } from './DataSourcesPage';
+export { default as DataVizDatabaseConnectionsPage } from './DatabaseConnectionsPage';
+export { default as DataVizAIInsightsPage } from './AIInsightsPage';
+export { default as DataVizReportBuilderPage } from './ReportBuilderPage';
+export { default as DataVizHelpCenterPage } from './HelpCenterPage';
+export { default as DataVizSettingsPage } from './SettingsPage';
+export { default as DataVizTeamPage } from './TeamPage';
+export { default as DataVizSecurityPage } from './SecurityPage';
+export { default as DataVizDashboardBuilderPage } from './DashboardBuilderPage';
+export { default as DataVizInteractiveDemoPage } from './InteractiveDemoPage';
+export { default as DataVizPricingPage } from './PricingPage';
+export { default as DataVizDataTransformPage } from './DataTransformPage';
