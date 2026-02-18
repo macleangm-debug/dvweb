@@ -1,0 +1,290 @@
+/* BioSign SDK Custom Styles */
+/* Import from original BioSign design system */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Chivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* BioSign CSS Variables */
+.biosign-theme {
+  --bs-background: 0 0% 4%;
+  --bs-foreground: 220 14% 96%;
+  --bs-card: 0 0% 7%;
+  --bs-card-foreground: 0 0% 100%;
+  --bs-primary: 156 100% 50%;
+  --bs-primary-foreground: 0 0% 0%;
+  --bs-secondary: 217 91% 60%;
+  --bs-muted: 217 19% 17%;
+  --bs-muted-foreground: 220 13% 63%;
+  --bs-border: 240 6% 16%;
+  --bs-accent: 240 6% 16%;
+}
+
+/* Apply BioSign theme */
+.biosign-theme {
+  background-color: hsl(0 0% 4%);
+  color: hsl(220 14% 96%);
+  font-family: 'Manrope', sans-serif;
+}
+
+.biosign-theme h1,
+.biosign-theme h2,
+.biosign-theme h3,
+.biosign-theme h4,
+.biosign-theme h5,
+.biosign-theme h6 {
+  font-family: 'Chivo', sans-serif;
+}
+
+.biosign-theme code,
+.biosign-theme pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom scrollbar for BioSign */
+.biosign-theme::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.biosign-theme::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+.biosign-theme::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 4px;
+}
+
+.biosign-theme::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* Noise texture overlay */
+.biosign-noise-bg {
+  position: relative;
+}
+
+.biosign-noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero gradient */
+.biosign-hero-gradient {
+  background: radial-gradient(ellipse at top, hsl(0 0% 7%) 0%, hsl(0 0% 4%) 50%);
+}
+
+/* Glass morphism */
+.biosign-glass {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glow effects */
+.biosign-glow-green {
+  box-shadow: 0 0 20px rgba(0, 255, 148, 0.3);
+}
+
+.biosign-glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.biosign-glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Animations */
+@keyframes biosign-pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 148, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(0, 255, 148, 0.4); }
+}
+
+@keyframes biosign-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes biosign-shield-animate {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.biosign-animate-pulse-glow {
+  animation: biosign-pulse-glow 2s ease-in-out infinite;
+}
+
+.biosign-animate-fade-in-up {
+  animation: biosign-fade-in-up 0.5s ease-out forwards;
+}
+
+.biosign-shield-animate {
+  animation: biosign-shield-animate 2s ease-in-out infinite;
+}
+
+/* Animation delays */
+.biosign-delay-100 { animation-delay: 100ms; }
+.biosign-delay-200 { animation-delay: 200ms; }
+.biosign-delay-300 { animation-delay: 300ms; }
+.biosign-delay-400 { animation-delay: 400ms; }
+.biosign-delay-500 { animation-delay: 500ms; }
+
+/* Terminal styling */
+.biosign-terminal {
+  background: #121212;
+  border: 1px solid #27272A;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.biosign-terminal-header {
+  background: #1a1a1a;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #27272A;
+}
+
+.biosign-terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.biosign-terminal-body {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.biosign-terminal-body pre {
+  margin: 0;
+  color: #e4e4e7;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Feature icon */
+.biosign-feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 255, 148, 0.1);
+  border: 1px solid rgba(0, 255, 148, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Compliance badge */
+.biosign-compliance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(0, 255, 148, 0.1);
+  color: #00FF94;
+  border: 1px solid rgba(0, 255, 148, 0.3);
+}
+
+/* Risk level indicators */
+.biosign-risk-low { color: #00FF94; }
+.biosign-risk-medium { color: #F59E0B; }
+.biosign-risk-high { color: #EF4444; }
+
+/* Status badges */
+.biosign-status-approved { 
+  background: rgba(0, 255, 148, 0.1); 
+  color: #00FF94; 
+  border: 1px solid rgba(0, 255, 148, 0.3); 
+}
+
+.biosign-status-pending { 
+  background: rgba(245, 158, 11, 0.1); 
+  color: #F59E0B; 
+  border: 1px solid rgba(245, 158, 11, 0.3); 
+}
+
+.biosign-status-flagged { 
+  background: rgba(239, 68, 68, 0.1); 
+  color: #EF4444; 
+  border: 1px solid rgba(239, 68, 68, 0.3); 
+}
+
+/* Card styling */
+.biosign-card {
+  background: hsl(0 0% 7%);
+  border: 1px solid hsl(240 6% 16%);
+  border-radius: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.biosign-card:hover {
+  border-color: rgba(0, 255, 148, 0.5);
+}
+
+/* Button primary - green glow */
+.biosign-btn-primary {
+  background: #00FF94;
+  color: #000;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px rgba(0, 255, 148, 0.3);
+}
+
+.biosign-btn-primary:hover {
+  background: #00E085;
+  box-shadow: 0 0 30px rgba(0, 255, 148, 0.5);
+}
+
+/* Button outline */
+.biosign-btn-outline {
+  background: transparent;
+  color: hsl(220 14% 96%);
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid hsl(240 6% 16%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.biosign-btn-outline:hover {
+  background: hsl(240 6% 16%);
+  border-color: hsl(220 14% 96% / 0.3);
+}
+
+/* Text colors */
+.biosign-text-primary { color: #00FF94; }
+.biosign-text-secondary { color: #3B82F6; }
+.biosign-text-muted { color: hsl(220 13% 63%); }
+.biosign-text-foreground { color: hsl(220 14% 96%); }
+
+/* Background colors */
+.biosign-bg-background { background-color: hsl(0 0% 4%); }
+.biosign-bg-card { background-color: hsl(0 0% 7%); }
+.biosign-bg-card-30 { background-color: hsl(0 0% 7% / 0.3); }
+.biosign-bg-muted { background-color: hsl(217 19% 17%); }
+.biosign-bg-accent { background-color: hsl(240 6% 16%); }
+
+/* Border colors */
+.biosign-border { border-color: hsl(240 6% 16%); }
+.biosign-border-primary { border-color: rgba(0, 255, 148, 0.3); }
