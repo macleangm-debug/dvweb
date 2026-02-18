@@ -121,13 +121,7 @@ const BioSignDemoPage = () => {
           {/* Left Column - Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl overflow-hidden">
-                <img 
-                  src="/biosign-logo.png" 
-                  alt="BioSign SDK" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <BioSignLogo size={48} />
               <div>
                 <h1 className="text-2xl font-bold text-white">BioSign SDK</h1>
                 <p className="text-slate-400">by DataVision International</p>
