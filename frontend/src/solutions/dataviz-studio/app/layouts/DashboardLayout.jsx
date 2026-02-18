@@ -53,13 +53,16 @@ import {
 import { useAuthStore, useOrgStore } from '../store';
 import { cn } from '../lib/utils';
 
+// Base path for DataViz Studio within the main app
+const BASE_PATH = '/solutions/dataviz/app';
+
 // Navigation structure for DataViz Studio
 const NAVIGATION = [
   {
     id: 'home',
     label: 'Home',
     icon: House,
-    path: '/dashboard',
+    path: `${BASE_PATH}/dashboard`,
     items: []
   },
   {
@@ -67,10 +70,10 @@ const NAVIGATION = [
     label: 'Data',
     icon: Database,
     items: [
-      { label: 'Data Sources', path: '/data-sources', icon: Plug },
-      { label: 'Database Connections', path: '/database-connections', icon: Database },
-      { label: 'Upload Data', path: '/upload', icon: Upload },
-      { label: 'Datasets', path: '/datasets', icon: Table2 },
+      { label: 'Data Sources', path: `${BASE_PATH}/data-sources`, icon: Plug },
+      { label: 'Database Connections', path: `${BASE_PATH}/database-connections`, icon: Database },
+      { label: 'Upload Data', path: `${BASE_PATH}/upload`, icon: Upload },
+      { label: 'Datasets', path: `${BASE_PATH}/datasets`, icon: Table2 },
     ]
   },
   {
@@ -78,8 +81,8 @@ const NAVIGATION = [
     label: 'Visualize',
     icon: BarChart3,
     items: [
-      { label: 'Dashboards', path: '/dashboards', icon: LayoutDashboard },
-      { label: 'Charts', path: '/charts', icon: PieChart },
+      { label: 'Dashboards', path: `${BASE_PATH}/dashboards`, icon: LayoutDashboard },
+      { label: 'Charts', path: `${BASE_PATH}/charts`, icon: PieChart },
     ]
   },
   {
@@ -87,8 +90,8 @@ const NAVIGATION = [
     label: 'Analyze',
     icon: Sparkles,
     items: [
-      { label: 'AI Insights', path: '/ai-insights', icon: Brain },
-      { label: 'Statistics', path: '/statistics', icon: BarChart3 },
+      { label: 'AI Insights', path: `${BASE_PATH}/ai-insights`, icon: Brain },
+      { label: 'Statistics', path: `${BASE_PATH}/statistics`, icon: BarChart3 },
     ]
   },
   {
@@ -96,10 +99,10 @@ const NAVIGATION = [
     label: 'Export',
     icon: Download,
     items: [
-      { label: 'Reports', path: '/reports', icon: FileText },
-      { label: 'Report Builder', path: '/report-builder', icon: FileText },
-      { label: 'Share', path: '/share', icon: Share2 },
-      { label: 'Export Data', path: '/export', icon: FileSpreadsheet },
+      { label: 'Reports', path: `${BASE_PATH}/reports`, icon: FileText },
+      { label: 'Report Builder', path: `${BASE_PATH}/report-builder`, icon: FileText },
+      { label: 'Share', path: `${BASE_PATH}/share`, icon: Share2 },
+      { label: 'Export Data', path: `${BASE_PATH}/export`, icon: FileSpreadsheet },
     ]
   },
   {
@@ -107,11 +110,11 @@ const NAVIGATION = [
     label: 'Settings',
     icon: Settings,
     items: [
-      { label: 'Team', path: '/team', icon: Users },
-      { label: 'Security', path: '/security', icon: Shield },
-      { label: 'API Keys', path: '/api-keys', icon: Key },
-      { label: 'Settings', path: '/settings', icon: Settings },
-      { label: 'Help Center', path: '/help', icon: HelpCircle },
+      { label: 'Team', path: `${BASE_PATH}/team`, icon: Users },
+      { label: 'Security', path: `${BASE_PATH}/security`, icon: Shield },
+      { label: 'API Keys', path: `${BASE_PATH}/api-keys`, icon: Key },
+      { label: 'Settings', path: `${BASE_PATH}/settings`, icon: Settings },
+      { label: 'Help Center', path: `${BASE_PATH}/help`, icon: HelpCircle },
     ]
   }
 ];
