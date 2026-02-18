@@ -341,30 +341,46 @@ const Navbar = ({ user, logout }) => {
                         )}
 
                         {megaMenuTab === 'solutions' && (
-                          <div className="grid grid-cols-3 gap-3">
-                            {solutionLinks.map((solution, index) => (
-                              <Link
-                                key={solution.path}
-                                to={solution.path}
-                                className={`flex items-start gap-3 p-3 rounded-lg hover:bg-[#f8fafc] transition-colors group ${
-                                  index === 0 ? 'col-span-3 bg-[#0a1628] hover:bg-[#1e293b] mb-2' : ''
-                                }`}
-                              >
-                                <solution.icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                                  index === 0 ? 'text-[#e63946]' : 'text-[#8b5cf6] group-hover:text-[#e63946]'
-                                } transition-colors`} />
-                                <div>
-                                  <span className={`text-sm font-semibold block ${
-                                    index === 0 ? 'text-white' : 'text-[#0a1628] group-hover:text-[#e63946]'
-                                  } transition-colors`}>
-                                    {solution.name}
-                                  </span>
-                                  <span className={`text-xs ${index === 0 ? 'text-white/70' : 'text-[#64748b]'}`}>
-                                    {solution.description}
-                                  </span>
+                          <div className="space-y-4">
+                            {/* Header with All Solutions link */}
+                            <Link
+                              to="/solutions"
+                              className="flex items-center gap-3 p-3 bg-[#0a1628] hover:bg-[#1e293b] rounded-lg transition-colors group"
+                            >
+                              <Layers className="w-5 h-5 text-[#e63946]" />
+                              <div>
+                                <span className="text-sm font-semibold text-white block">All Solutions</span>
+                                <span className="text-xs text-white/70">Browse our complete software portfolio</span>
+                              </div>
+                              <ChevronRight className="w-4 h-4 text-white/50 ml-auto group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                            
+                            {/* Categorized Solutions Grid */}
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                              {Object.entries(solutionCategories).map(([key, category]) => (
+                                <div key={key} className={`p-4 rounded-lg ${category.bgColor} border border-transparent hover:border-gray-200 transition-colors`}>
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <category.icon className={`w-4 h-4 ${category.color}`} />
+                                    <span className="text-xs font-bold text-gray-700 uppercase tracking-wide">{category.title}</span>
+                                  </div>
+                                  <div className="space-y-1">
+                                    {category.solutions.map((solution) => (
+                                      <Link
+                                        key={solution.path}
+                                        to={solution.path}
+                                        className="flex items-center gap-2 p-2 rounded hover:bg-white/80 transition-colors group"
+                                      >
+                                        <solution.icon className={`w-4 h-4 ${category.color} opacity-70 group-hover:opacity-100`} />
+                                        <div className="flex-1 min-w-0">
+                                          <span className="text-sm font-medium text-gray-800 group-hover:text-[#e63946] block truncate">{solution.name}</span>
+                                          <span className="text-xs text-gray-500 truncate block">{solution.description}</span>
+                                        </div>
+                                      </Link>
+                                    ))}
+                                  </div>
                                 </div>
-                              </Link>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         )}
 
