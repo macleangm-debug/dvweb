@@ -280,7 +280,7 @@ export function LandingPage() {
                 <a href="#use-cases" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">Use Cases</a>
                 <a href="#pricing" className="px-4 py-1.5 text-sm text-gray-300 hover:text-white transition-colors rounded-full">Pricing</a>
                 <button 
-                  onClick={() => navigate('/help')}
+                  onClick={() => navigate('/solutions/dataviz/app/help')}
                   className="px-4 py-1.5 text-sm text-purple-400 bg-purple-500/10 rounded-full flex items-center gap-1.5 hover:bg-purple-500/20 transition-colors"
                 >
                   <Sparkles className="w-3 h-3" />
@@ -293,13 +293,13 @@ export function LandingPage() {
               <Button 
                 variant="ghost" 
                 className="text-gray-300 hover:text-white hover:bg-white/5"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/solutions/dataviz/login')}
               >
                 Log in
               </Button>
               <Button 
                 className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white border-0"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/solutions/dataviz/register')}
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 Start Free
@@ -431,7 +431,7 @@ export function LandingPage() {
               <Button 
                 size="lg"
                 className="bg-gradient-to-r from-purple-500 via-fuchsia-500 to-purple-600 hover:from-purple-400 hover:via-fuchsia-400 hover:to-purple-500 text-white border-0 px-8 py-6 text-lg shadow-xl shadow-purple-500/30"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/solutions/dataviz/register')}
               >
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -440,7 +440,7 @@ export function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="border-gray-600 text-gray-300 hover:bg-white/5 px-8 py-6 text-lg"
-                onClick={() => navigate('/demo')}
+                onClick={() => navigate('/solutions/dataviz/demo')}
               >
                 <Play className="w-5 h-5 mr-2" />
                 Interactive Demo
@@ -867,7 +867,7 @@ export function LandingPage() {
               <Button 
                 size="lg"
                 className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white border-0 px-8"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/solutions/dataviz/register')}
               >
                 Start Free Today
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -876,7 +876,7 @@ export function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="border-gray-600 text-gray-300 hover:bg-white/5"
-                onClick={() => navigate('/help')}
+                onClick={() => navigate('/solutions/dataviz/app/help')}
               >
                 <Sparkles className="w-5 h-5 mr-2" />
                 Explore Help Center
@@ -908,7 +908,7 @@ export function LandingPage() {
                 <li><a href="#features" className="text-gray-400 hover:text-white text-sm transition-colors">Features</a></li>
                 <li><a href="#pricing" className="text-gray-400 hover:text-white text-sm transition-colors">Pricing</a></li>
                 <li><a href="#use-cases" className="text-gray-400 hover:text-white text-sm transition-colors">Use Cases</a></li>
-                <li><Link to="/help" className="text-gray-400 hover:text-white text-sm transition-colors">Help Center</Link></li>
+                <li><Link to="/solutions/dataviz/app/help" className="text-gray-400 hover:text-white text-sm transition-colors">Help Center</Link></li>
               </ul>
             </div>
             
