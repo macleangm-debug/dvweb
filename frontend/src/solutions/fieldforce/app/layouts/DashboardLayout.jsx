@@ -31,7 +31,8 @@ import {
   Languages,
   BarChart3,
   Plus,
-  Zap
+  Zap,
+  CreditCard
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
