@@ -7,7 +7,7 @@ import {
   CheckCircle2, Play, Monitor, Cloud, Shield, Zap, Users,
   PieChart, LineChart, TrendingUp, Layers, Settings, ChevronRight,
   Workflow, FileText, Map, Clock, Award, Headphones, CreditCard,
-  Loader2, ShoppingCart, Tag
+  Loader2, ShoppingCart, Tag, Receipt, Scale
 } from 'lucide-react';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
