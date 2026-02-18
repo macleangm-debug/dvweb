@@ -157,6 +157,9 @@ curl -X POST https://api.biosign.dev/api/risk/analyze \\
 
   return (
     <div className="min-h-screen bg-slate-950">
+      {/* Product Navigation */}
+      <BioSignNavbar />
+      
       {/* Header */}
       <section className="pt-32 pb-12 border-b border-slate-800">
         <div className="container mx-auto px-6 lg:px-12">
