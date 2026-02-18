@@ -150,13 +150,7 @@ const BioSignLandingPage = () => {
             <div className="animate-fade-in-up">
               {/* BioSign Logo/Branding in Hero with Glow Animation */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl overflow-hidden biosign-logo-glow">
-                  <img 
-                    src="/biosign-logo.png" 
-                    alt="BioSign SDK" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <BioSignLogo size={48} />
                 <span className="text-2xl font-bold tracking-tight text-primary">BioSign SDK</span>
               </div>
               <div className="flex items-center gap-2 mb-6">
