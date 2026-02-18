@@ -129,6 +129,15 @@ const Navbar = ({ user, logout }) => {
         { name: 'LegalPro', path: '/solutions/legalpro', icon: Scale, description: 'Lawyer management & digital stamps' },
       ]
     },
+    financial: {
+      title: 'Financial Services',
+      icon: Banknote,
+      color: 'text-cyan-500',
+      bgColor: 'bg-cyan-50',
+      solutions: [
+        { name: 'BioSign SDK', path: '/solutions/biosign', icon: Fingerprint, description: 'Biometric transaction security' },
+      ]
+    },
     enterprise: {
       title: 'Enterprise Operations',
       icon: Building2,
