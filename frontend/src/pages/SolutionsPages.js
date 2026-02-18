@@ -218,14 +218,73 @@ const softwareSolutions = [
       'SDG 6 progress tracking'
     ],
     stats: { waterPoints: '10K+', communities: '5K+', beneficiaries: '3M+' }
+  },
+  // Government Solutions
+  {
+    id: 'taxxa',
+    name: 'Taxxa',
+    tagline: 'Government Tax Collection System',
+    shortDesc: 'Modern tax administration with automated collection and compliance monitoring',
+    icon: Receipt,
+    color: '#10b981',
+    category: 'government',
+    industries: ['government'],
+    features: [
+      'Automated tax collection',
+      'Taxpayer registry management',
+      'Fraud detection & prevention',
+      'Mobile payment integration',
+      'Compliance monitoring',
+      'Revenue analytics dashboards'
+    ],
+    stats: { taxpayers: '2M+', collected: '$500M+', compliance: '94%' }
+  },
+  {
+    id: 'ammo',
+    name: 'Ammo',
+    tagline: 'Firearm Registry & Licensing System',
+    shortDesc: 'Secure management of private firearm ownership and licensing',
+    icon: Shield,
+    color: '#f59e0b',
+    category: 'government',
+    industries: ['government', 'security'],
+    features: [
+      'Comprehensive firearm registry',
+      'License application processing',
+      'Background check integration',
+      'Dealer management portal',
+      'Incident tracking & reporting',
+      'Compliance monitoring'
+    ],
+    stats: { firearms: '500K+', licenses: '45K+', accuracy: '99.8%' }
+  },
+  {
+    id: 'legalpro',
+    name: 'LegalPro',
+    tagline: 'Legal Profession Management System',
+    shortDesc: 'Lawyer registry and digital stamp authentication platform',
+    icon: Scale,
+    color: '#3b82f6',
+    category: 'government',
+    industries: ['government', 'legal'],
+    features: [
+      'Lawyer registry & credentials',
+      'Digital stamp authentication',
+      'License management',
+      'CLE tracking & compliance',
+      'Law firm registry',
+      'Document verification via QR'
+    ],
+    stats: { lawyers: '15K+', stamps: '2M+', verification: '99.99%' }
   }
 ];
 
 const solutionCategories = [
   { id: 'all', name: 'All Solutions', icon: Layers },
   { id: 'data-collection', name: 'Data Collection', icon: Database },
-  { id: 'analytics', name: 'Analytics & Visualization', icon: PieChart },
-  { id: 'sectoral', name: 'Sector Solutions', icon: Building2 }
+  { id: 'analytics', name: 'Analytics & BI', icon: PieChart },
+  { id: 'government', name: 'Government', icon: Building2 },
+  { id: 'sectoral', name: 'Sector Solutions', icon: Factory }
 ];
 
 // ==================== SOLUTIONS HUB PAGE ====================
