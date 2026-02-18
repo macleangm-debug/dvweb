@@ -38,7 +38,7 @@ export function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, formData);
+      const response = await axios.post(`${API_URL}/api/dataviz/auth/login`, formData);
       const { token, user, organization } = response.data;
       
       setAuth(user, token);
@@ -48,7 +48,7 @@ export function LoginPage() {
       }
       
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      navigate('/solutions/dataviz/app/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Login failed');
     } finally {
