@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { Shield, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { useState } from "react";
 
-export const Navbar = () => {
+export const BioSignNavbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
+          <Link to="/solutions/biosign" className="flex items-center gap-3" data-testid="logo-link">
             <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
               <Shield className="w-6 h-6 text-primary" />
             </div>
@@ -51,7 +51,7 @@ export const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/docs">
+            <Link to="/solutions/biosign/docs">
               <Button variant="outline" size="sm" data-testid="get-api-key-btn">
                 Get API Key
               </Button>
@@ -86,7 +86,7 @@ export const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/docs" className="mt-4">
+              <Link to="/solutions/biosign/docs" className="mt-4">
                 <Button className="w-full" size="sm">
                   Get API Key
                 </Button>
@@ -99,4 +99,4 @@ export const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default BioSignNavbar;
