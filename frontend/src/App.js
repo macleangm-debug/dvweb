@@ -387,6 +387,14 @@ function App() {
                   <Route path="/solutions/ammo" element={<AmmoPage />} />
                   <Route path="/solutions/legalpro" element={<LegalProPage />} />
                   
+                  {/* Enterprise Solutions */}
+                  <Route path="/solutions/accubooks" element={<AccuBooksPage />} />
+                  <Route path="/solutions/peoplehub" element={<PeopleHubPage />} />
+                  
+                  {/* Solution Inquiry Forms */}
+                  <Route path="/solutions/:solution/inquiry" element={<SolutionInquiryPage />} />
+                  <Route path="/solutions/:solution/demo" element={<SolutionInquiryPage />} />
+                  
                   <Route path="/payment/success" element={<PaymentSuccessPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
