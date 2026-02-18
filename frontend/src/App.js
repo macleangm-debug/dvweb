@@ -400,12 +400,6 @@ function App() {
                   <Route path="/solutions/accubooks" element={<AccuBooksPage />} />
                   <Route path="/solutions/peoplehub" element={<PeopleHubPage />} />
                   
-                  {/* BioSign SDK - Financial Services */}
-                  <Route path="/solutions/biosign" element={<BioSignLandingPage />} />
-                  <Route path="/solutions/biosign/features" element={<BioSignFeaturesPage />} />
-                  <Route path="/solutions/biosign/docs" element={<BioSignDocsPage />} />
-                  <Route path="/solutions/biosign/demo" element={<BioSignDemoPage />} />
-                  
                   {/* Solution Inquiry Forms */}
                   <Route path="/solutions/:solution/inquiry" element={<SolutionInquiryPage />} />
                   <Route path="/solutions/:solution/demo" element={<SolutionInquiryPage />} />
