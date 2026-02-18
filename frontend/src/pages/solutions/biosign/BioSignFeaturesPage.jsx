@@ -1267,4 +1267,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default BioSignFeaturesPage;
