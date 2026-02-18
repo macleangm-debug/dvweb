@@ -156,6 +156,7 @@ import { TeamPage as FFTeamPage, CreateOrganizationPage as FFCreateOrganizationP
 import { RBACPage as FFRBACPage } from './solutions/fieldforce/app/pages/RBACPage';
 import { TranslationsPage as FFTranslationsPage } from './solutions/fieldforce/app/pages/TranslationsPage';
 import { SettingsPage as FFSettingsPage } from './solutions/fieldforce/app/pages/SettingsPage';
+import { FieldForceBillingPage as FFBillingPage } from './solutions/fieldforce/app/pages/BillingPage';
 
 // Affiliate Program Pages
 import AffiliateProgramPage from './pages/affiliate/AffiliateProgramPage';
