@@ -39,6 +39,8 @@ import {
 import { toast } from 'sonner';
 import axios from 'axios';
 
+import { Fingerprint } from 'lucide-react';
+
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Solution metadata
@@ -77,6 +79,13 @@ const solutionMeta = {
     icon: Users,
     color: 'purple',
     bgGradient: 'from-purple-900/30 via-slate-900 to-slate-900'
+  },
+  biosign: {
+    name: 'BioSign SDK',
+    tagline: 'Biometric Transaction Security',
+    icon: Fingerprint,
+    color: 'cyan',
+    bgGradient: 'from-cyan-900/30 via-slate-900 to-slate-900'
   }
 };
 
