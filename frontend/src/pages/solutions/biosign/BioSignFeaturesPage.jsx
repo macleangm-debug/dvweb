@@ -1095,7 +1095,7 @@ const BioSignFeaturesPage = () => {
 
   return (
     <div className="min-h-screen bg-background" data-testid="features-page">
-      <Navbar />
+      <BioSignNavbar />
 
       {/* Progress Bar */}
       <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border/50">
