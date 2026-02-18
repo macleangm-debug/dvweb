@@ -33,7 +33,8 @@ import {
   Share2,
   Plug,
   HelpCircle,
-  BookOpen
+  BookOpen,
+  CreditCard
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
