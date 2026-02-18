@@ -9,6 +9,40 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 18, 2026 - Admin Inquiry Dashboard (COMPLETED)
+
+**Admin Panel Feature: Solution Inquiries Dashboard**
+Built a comprehensive admin dashboard to view and manage sales inquiries/demo requests from Government and Enterprise solution landing pages.
+
+**Backend Updates:**
+- Fixed `GET /api/inquiries` endpoint - now uses proper `verify_admin_token` for authentication
+- Returns inquiries with stats: `{inquiries: [...], stats: {total, new, contacted, converted}}`
+- Added `PUT /api/inquiries/{inquiry_id}/status` endpoint for updating inquiry status
+
+**Frontend Updates - MarketingSales.jsx:**
+- **Stats Cards**: Total Inquiries, New, Contacted, Converted with colored backgrounds
+- **Inquiries Table**: Contact (name, email, avatar), Organization, Solution, Status badge, Date, Actions
+- **Search & Filter**: Real-time search by name/email/organization, Status dropdown filter
+- **Refresh Button**: Reload data from API with loading spinner
+- **View Details Modal**: Full inquiry details with:
+  - Contact info (email, phone, org type, country)
+  - Solution interest section with gradient background
+  - Full message display
+  - Submission timestamp and employee count
+  - "Reply via Email" button with pre-filled mailto link
+- **Email Action Links**: Direct mailto links for quick response
+
+**Data Test IDs Added:**
+- `inquiries-table`, `inquiry-row-{index}`, `view-inquiry-{index}`
+
+**Testing:** 100% pass rate - 12/12 backend tests, all frontend tests passed
+- Test file: `/app/backend/tests/test_inquiry_dashboard.py`
+- Test report: `/app/test_reports/iteration_39.json`
+
+**Current Data:** 17 inquiries in database (13 new status)
+
+---
+
 ### February 18, 2026 - Mega Menu, Enterprise Solutions & Inquiry Forms (COMPLETED)
 
 **Categorized Mega Menu:**
