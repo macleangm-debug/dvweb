@@ -94,13 +94,77 @@ const Navbar = ({ user, logout }) => {
     { name: 'Retail & Consumer Goods', path: '/industries/retail', icon: ShoppingCart, description: 'Consumer insights' },
   ];
 
+  // Categorized Solutions for Mega Menu
+  const solutionCategories = {
+    dataCollection: {
+      title: 'Data Collection & Research',
+      icon: Target,
+      color: 'text-red-500',
+      bgColor: 'bg-red-50',
+      solutions: [
+        { name: 'Survey360', path: '/solutions/survey360', icon: Target, description: 'End-to-end survey management' },
+        { name: 'FieldForce', path: '/solutions/fieldforce', icon: Smartphone, description: 'Mobile data collection suite' },
+        { name: 'DataPulse', path: '/solutions/datapulse', icon: Activity, description: 'Real-time data pipelines' },
+      ]
+    },
+    analytics: {
+      title: 'Analytics & Business Intelligence',
+      icon: PieChart,
+      color: 'text-violet-500',
+      bgColor: 'bg-violet-50',
+      solutions: [
+        { name: 'DataViz Studio', path: '/solutions/dataviz', icon: PieChart, description: 'Data visualization platform' },
+        { name: 'M&E Tracker', path: '/solutions/me-tracker', icon: TrendingUp, description: 'Monitoring & evaluation' },
+      ]
+    },
+    government: {
+      title: 'Government & Public Sector',
+      icon: Landmark,
+      color: 'text-emerald-500',
+      bgColor: 'bg-emerald-50',
+      solutions: [
+        { name: 'Taxxa', path: '/solutions/taxxa', icon: Calculator, description: 'Tax collection system' },
+        { name: 'Ammo', path: '/solutions/ammo', icon: Shield, description: 'Firearm registry & licensing' },
+        { name: 'LegalPro', path: '/solutions/legalpro', icon: Scale, description: 'Lawyer management & digital stamps' },
+      ]
+    },
+    enterprise: {
+      title: 'Enterprise Operations',
+      icon: Building2,
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-50',
+      solutions: [
+        { name: 'AccuBooks', path: '/solutions/accubooks', icon: Calculator, description: 'Accounting & finance' },
+        { name: 'PeopleHub', path: '/solutions/peoplehub', icon: HandHeart, description: 'HR management system' },
+      ]
+    },
+    sectoral: {
+      title: 'Sector Solutions',
+      icon: Factory,
+      color: 'text-amber-500',
+      bgColor: 'bg-amber-50',
+      solutions: [
+        { name: 'AgriData Pro', path: '/solutions/agridata-pro', icon: Sprout, description: 'Agricultural intelligence' },
+        { name: 'EduInsights', path: '/solutions/eduinsights', icon: GraduationCap, description: 'Education analytics' },
+        { name: 'HealthPulse', path: '/solutions/healthpulse', icon: Heart, description: 'Healthcare analytics' },
+        { name: 'WASH Monitor', path: '/solutions/wash-monitor', icon: Droplets, description: 'Water & sanitation tracking' },
+      ]
+    }
+  };
+
+  // Legacy flat list for backward compatibility
   const solutionLinks = [
     { name: 'All Solutions', path: '/solutions', icon: Layers, description: 'Software products overview' },
     { name: 'Survey360', path: '/solutions/survey360', icon: Target, description: 'Survey management platform' },
     { name: 'FieldForce', path: '/solutions/fieldforce', icon: Smartphone, description: 'Mobile data collection' },
     { name: 'DataPulse', path: '/solutions/datapulse', icon: Activity, description: 'Enterprise data collection' },
-    { name: 'DataViz Studio', path: '/solutions/dataviz-studio', icon: PieChart, description: 'Analytics & visualization' },
+    { name: 'DataViz Studio', path: '/solutions/dataviz', icon: PieChart, description: 'Analytics & visualization' },
     { name: 'M&E Tracker', path: '/solutions/me-tracker', icon: TrendingUp, description: 'M&E management system' },
+    { name: 'Taxxa', path: '/solutions/taxxa', icon: Calculator, description: 'Tax collection system' },
+    { name: 'Ammo', path: '/solutions/ammo', icon: Shield, description: 'Firearm registry' },
+    { name: 'LegalPro', path: '/solutions/legalpro', icon: Scale, description: 'Legal profession management' },
+    { name: 'AccuBooks', path: '/solutions/accubooks', icon: Calculator, description: 'Accounting & finance' },
+    { name: 'PeopleHub', path: '/solutions/peoplehub', icon: HandHeart, description: 'HR management' },
     { name: 'AgriData Pro', path: '/solutions/agridata-pro', icon: Sprout, description: 'Agricultural intelligence' },
     { name: 'EduInsights', path: '/solutions/eduinsights', icon: GraduationCap, description: 'Education analytics' },
     { name: 'HealthPulse', path: '/solutions/healthpulse', icon: Heart, description: 'Healthcare analytics' },
