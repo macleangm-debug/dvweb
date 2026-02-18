@@ -109,20 +109,12 @@ const BioSignDemoPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-950" data-testid="biosign-demo-form">
+      {/* Product Navigation */}
+      <BioSignNavbar />
+      
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-950 to-violet-900/20" />
       
-      {/* Back Link */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-12 pt-24">
-        <Link
-          to="/solutions/biosign"
-          className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to BioSign SDK
-        </Link>
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-12 py-12">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-12 pt-24 py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left Column - Info */}
           <div>
