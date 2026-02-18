@@ -152,7 +152,7 @@ export function DashboardLayout({ children }) {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/solutions/dataviz/login');
   };
 
   const handleRailClick = (group) => {
@@ -170,7 +170,7 @@ export function DashboardLayout({ children }) {
         {/* Rail - Thin icon sidebar with labels */}
         <aside className="hidden lg:flex flex-col items-center w-[80px] bg-card border-r border-border py-4">
           {/* Logo - DataViz Studio with Chart Pie icon */}
-          <Link to="/dashboard" className="mb-4">
+          <Link to={`${BASE_PATH}/dashboard`} className="mb-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-violet-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
               <PieChart className="w-6 h-6 text-white" />
             </div>
