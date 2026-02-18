@@ -146,9 +146,9 @@ const BioSignLandingPage = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
-              {/* BioSign Logo/Branding in Hero */}
+              {/* BioSign Logo/Branding in Hero with Glow Animation */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shield-animate">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center biosign-logo-glow">
                   <Shield className="w-7 h-7 text-primary" />
                 </div>
                 <span className="text-2xl font-bold tracking-tight text-primary">BioSign SDK</span>
