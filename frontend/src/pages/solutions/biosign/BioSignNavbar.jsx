@@ -1,119 +1,102 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Fingerprint, Menu, X } from 'lucide-react';
+import { Link, useLocation } from "react-router-dom";
+import { Shield, Menu, X } from "lucide-react";
+import { Button } from "../../../components/ui/button";
+import { useState } from "react";
+import './biosign.css';
 
-// BioSign Product Navigation Component
 const BioSignNavbar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isActive = (path) => location.pathname === path;
-
   const navLinks = [
-    { path: '/solutions/biosign', label: 'Overview' },
-    { path: '/solutions/biosign/features', label: 'Features' },
-    { path: '/solutions/biosign/docs', label: 'Documentation' },
+    { path: "/solutions/biosign", label: "Overview" },
+    { path: "/solutions/biosign/features", label: "Features" },
+    { path: "/solutions/biosign/docs", label: "Documentation" },
+    { path: "/solutions/biosign/demo", label: "Request Demo" },
   ];
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-b border-white/5">
+    <nav className="sticky top-0 z-50 biosign-glass border-b border-white/5" data-testid="biosign-navbar">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* DataVision logo - links to home */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="bg-white rounded px-2 py-1">
-              <img 
-                src="/datavision-logo-cropped.png" 
-                alt="DataVision" 
-                className="h-6 w-auto"
-              />
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
+            <div className="w-10 h-10 rounded-lg bg-[#00FF94]/10 border border-[#00FF94]/30 flex items-center justify-center biosign-shield-animate">
+              <Shield className="w-6 h-6 text-[#00FF94]" />
             </div>
+            <span className="text-xl font-bold tracking-tight text-white">BioSign SDK</span>
           </Link>
 
-          {/* Product Name */}
-          <Link to="/solutions/biosign" className="flex items-center gap-2">
-            <Fingerprint className="w-5 h-5 text-cyan-400" />
-            <span className="font-semibold text-white">BioSign SDK</span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.path}
-                to={link.path} 
-                className={`px-4 py-2 text-sm rounded-lg transition-all ${
-                  isActive(link.path) 
-                    ? 'text-cyan-400 bg-cyan-400/10' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                to={link.path}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive(link.path)
+                    ? "text-[#00FF94] bg-[#00FF94]/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
+                data-testid={`nav-${link.path.split('/').pop()}`}
               >
                 {link.label}
               </Link>
             ))}
-            <a href="#use-cases" className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">Use Cases</a>
           </div>
 
-          {/* Auth Buttons & Mobile Menu */}
-          <div className="flex items-center gap-3">
-            <Link 
-              to="/solutions/biosign/demo"
-              className={`hidden sm:flex px-4 py-2 text-sm font-medium rounded-lg transition-all items-center gap-2 ${
-                isActive('/solutions/biosign/demo')
-                  ? 'bg-cyan-600 text-white'
-                  : 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-400 hover:to-cyan-500'
-              }`}
-            >
-              Request Demo
+          {/* CTA Button */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link to="/solutions/biosign/demo">
+              <Button 
+                size="sm" 
+                className="biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085] font-semibold"
+                data-testid="get-started-btn"
+              >
+                Get Started
+              </Button>
             </Link>
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-300 hover:text-white transition-all"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-950 border-t border-white/5"
+          {/* Mobile menu button */}
+          <button
+            className="lg:hidden p-2 rounded-md hover:bg-white/5 text-gray-300"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            data-testid="mobile-menu-toggle"
           >
-            <div className="px-4 py-4 space-y-2">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-white/5" data-testid="mobile-menu">
+            <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
-                <Link 
+                <Link
                   key={link.path}
-                  to={link.path} 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-lg transition-all ${
+                  to={link.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isActive(link.path)
-                      ? 'text-cyan-400 bg-cyan-400/10'
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                      ? "text-[#00FF94] bg-[#00FF94]/10"
+                      : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link 
-                to="/solutions/biosign/demo" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-3 text-cyan-400 hover:text-cyan-300 hover:bg-white/5 rounded-lg transition-all"
-              >
-                Request Demo
+              <Link to="/solutions/biosign/demo" className="mt-4">
+                <Button className="w-full biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085]" size="sm">
+                  Get Started
+                </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </div>
     </nav>
   );
 };
