@@ -94,7 +94,7 @@ import {
   softwareSolutions
 } from './pages/SolutionsPages';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
-import BillingPage from './pages/BillingPage';
+// BillingPage removed - billing is now handled within each product
 import { Survey360ProductPage } from './components/solutions/survey360';
 
 // DataVision Central Auth Pages
@@ -642,7 +642,6 @@ function App() {
                   <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
                   <Route path="/solutions/wash-monitor" element={<WASHMonitorPage />} />
                   <Route path="/payment/success" element={<PaymentSuccessPage />} />
-                  <Route path="/billing" element={<BillingPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
                   <Route path="/careers" element={<CareersPage />} />
