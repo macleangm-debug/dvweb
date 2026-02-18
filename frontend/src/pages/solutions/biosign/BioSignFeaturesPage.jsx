@@ -1026,7 +1026,7 @@ const SuccessCTA = ({ featureName }) => (
         <Sparkles className="w-5 h-5 text-primary" />
         <span className="font-medium">Great! You just tested {featureName}</span>
       </div>
-      <Link to="/keys">
+      <Link to="/solutions/biosign/demo">
         <Button size="sm" className="glow-green">
           Get API Keys
           <ArrowRight className="w-4 h-4 ml-1" />
@@ -1113,7 +1113,7 @@ const Features = () => {
                   Save Progress
                 </Button>
               )}
-              <Link to="/keys">
+              <Link to="/solutions/biosign/demo">
                 <Button size="sm">Get API Keys</Button>
               </Link>
             </div>
@@ -1229,7 +1229,7 @@ const Features = () => {
               Get your API keys and start building in minutes. Need help with enterprise features?
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/keys">
+              <Link to="/solutions/biosign/demo">
                 <Button size="lg" className="glow-green">
                   Get API Keys
                   <ArrowRight className="w-4 h-4 ml-2" />
