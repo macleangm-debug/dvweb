@@ -256,7 +256,7 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
 
   return (
     <div className="min-h-screen bg-background noise-bg" data-testid="documentation-page">
-      <Navbar />
+      <BioSignNavbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-start justify-between mb-8">
