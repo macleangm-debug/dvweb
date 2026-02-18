@@ -120,8 +120,12 @@ const BioSignDemoPage = () => {
           {/* Left Column - Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-xl flex items-center justify-center">
-                <Fingerprint className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-xl overflow-hidden">
+                <img 
+                  src="/biosign-logo.png" 
+                  alt="BioSign SDK" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">BioSign SDK</h1>
