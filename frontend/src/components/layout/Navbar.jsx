@@ -170,6 +170,7 @@ const Navbar = ({ user, logout }) => {
     { name: 'DataPulse', path: '/solutions/datapulse', icon: Activity, description: 'Enterprise data collection' },
     { name: 'DataViz Studio', path: '/solutions/dataviz', icon: PieChart, description: 'Analytics & visualization' },
     { name: 'M&E Tracker', path: '/solutions/me-tracker', icon: TrendingUp, description: 'M&E management system' },
+    { name: 'BioSign SDK', path: '/solutions/biosign', icon: Fingerprint, description: 'Biometric transaction security' },
     { name: 'Taxxa', path: '/solutions/taxxa', icon: Calculator, description: 'Tax collection system' },
     { name: 'Ammo', path: '/solutions/ammo', icon: Shield, description: 'Firearm registry' },
     { name: 'LegalPro', path: '/solutions/legalpro', icon: Scale, description: 'Legal profession management' },
