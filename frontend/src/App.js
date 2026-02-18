@@ -162,6 +162,27 @@ import AffiliateProgramPage from './pages/affiliate/AffiliateProgramPage';
 import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
 import PartnerLeaderboard from './pages/affiliate/PartnerLeaderboard';
 
+// DataViz Studio Pages (from GitHub repo)
+import { LoginPage as DVLoginPage, RegisterPage as DVRegisterPage } from './solutions/dataviz-studio/app/pages/AuthPages';
+import DVLandingPage from './solutions/dataviz-studio/app/pages/LandingPage';
+import DVDashboardPage from './solutions/dataviz-studio/app/pages/DashboardPage';
+import DVDatasetsPage from './solutions/dataviz-studio/app/pages/DatasetsPage';
+import DVChartsPage from './solutions/dataviz-studio/app/pages/ChartsPage';
+import DVDashboardsPage from './solutions/dataviz-studio/app/pages/DashboardsPage';
+import DVUploadPage from './solutions/dataviz-studio/app/pages/UploadPage';
+import DVDataSourcesPage from './solutions/dataviz-studio/app/pages/DataSourcesPage';
+import DVDatabaseConnectionsPage from './solutions/dataviz-studio/app/pages/DatabaseConnectionsPage';
+import DVAIInsightsPage from './solutions/dataviz-studio/app/pages/AIInsightsPage';
+import DVReportBuilderPage from './solutions/dataviz-studio/app/pages/ReportBuilderPage';
+import DVHelpCenterPage from './solutions/dataviz-studio/app/pages/HelpCenterPage';
+import DVSettingsPage from './solutions/dataviz-studio/app/pages/SettingsPage';
+import DVTeamPage from './solutions/dataviz-studio/app/pages/TeamPage';
+import DVSecurityPage from './solutions/dataviz-studio/app/pages/SecurityPage';
+import DVDashboardBuilderPage from './solutions/dataviz-studio/app/pages/DashboardBuilderPage';
+import DVInteractiveDemoPage from './solutions/dataviz-studio/app/pages/InteractiveDemoPage';
+import DVPricingPage from './solutions/dataviz-studio/app/pages/PricingPage';
+import { DashboardLayout as DVDashboardLayout } from './solutions/dataviz-studio/app/layouts/DashboardLayout';
+
 // Extracted Page Components
 import HomePage from './pages/HomePage';
 import UserSettings from './pages/UserSettings';
