@@ -639,6 +639,7 @@ function App() {
                   <Route path="/solutions/fieldforce/app/rbac" element={<FFRBACPage />} />
                   <Route path="/solutions/fieldforce/app/translations" element={<FFTranslationsPage />} />
                   <Route path="/solutions/fieldforce/app/settings" element={<FFSettingsPage />} />
+                  <Route path="/solutions/fieldforce/app/billing" element={<FFBillingPage />} />
                   
                   <Route path="/solutions/agridata-pro" element={<AgriDataProPage />} />
                   <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
