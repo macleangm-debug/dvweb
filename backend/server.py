@@ -3656,6 +3656,9 @@ from fieldforce.fieldforce_main import fieldforce_router
 # Import and include DataPulse routes
 from routes.datapulse_routes import router as datapulse_router, create_datapulse_routes
 
+# Import and include DataViz Studio routes
+from dataviz_studio.dataviz_main import dataviz_router
+
 # Import Admin Dashboard routes
 from routes.admin_dashboard_routes import router as admin_dashboard_router, create_admin_dashboard_routes
 
@@ -3680,6 +3683,9 @@ api_router.include_router(fieldforce_router)
 # Include DataPulse router
 create_datapulse_routes(db)
 api_router.include_router(datapulse_router)
+
+# Include DataViz Studio router
+api_router.include_router(dataviz_router)
 
 # Include Admin Dashboard routes
 create_admin_dashboard_routes(db)
