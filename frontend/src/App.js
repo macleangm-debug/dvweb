@@ -104,6 +104,12 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 // Government Solutions
 import { TaxxaPage, AmmoPage, LegalProPage } from './pages/government';
 
+// Enterprise Solutions
+import { AccuBooksPage, PeopleHubPage } from './pages/enterprise';
+
+// Solution Inquiry Form
+import SolutionInquiryPage from './pages/SolutionInquiryPage';
+
 import { Survey360ProductPage } from './components/solutions/survey360';
 
 // DataVision Central Auth Pages
