@@ -1,32 +1,34 @@
 import { Link, useLocation } from "react-router-dom";
 import { Shield, Menu, X } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import './biosign.css';
 
-const BioSignNavbar = () => {
+export const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: "/solutions/biosign", label: "Overview" },
-    { path: "/solutions/biosign/features", label: "Features" },
-    { path: "/solutions/biosign/docs", label: "Documentation" },
-    { path: "/solutions/biosign/demo", label: "Request Demo" },
+    { path: "/dashboard", label: "Dashboard" },
+    { path: "/features", label: "Features" },
+    { path: "/docs", label: "Documentation" },
+    { path: "/keys", label: "API Keys" },
+    { path: "/webhooks", label: "Webhooks" },
+    { path: "/billing", label: "Billing" },
+    { path: "/roi", label: "ROI Calculator" },
   ];
 
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 biosign-glass border-b border-white/5" data-testid="biosign-navbar">
+    <nav className="sticky top-0 z-50 glass border-b border-border/50" data-testid="navbar">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
-            <div className="w-10 h-10 rounded-lg bg-[#00FF94]/10 border border-[#00FF94]/30 flex items-center justify-center biosign-shield-animate">
-              <Shield className="w-6 h-6 text-[#00FF94]" />
+            <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
+              <Shield className="w-6 h-6 text-primary" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-white">BioSign SDK</span>
+            <span className="text-xl font-bold tracking-tight">BioSign SDK</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,10 +39,10 @@ const BioSignNavbar = () => {
                 to={link.path}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(link.path)
-                    ? "text-[#00FF94] bg-[#00FF94]/10"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
-                data-testid={`nav-${link.path.split('/').pop()}`}
+                data-testid={`nav-${link.path.replace(/\//g, "-")}`}
               >
                 {link.label}
               </Link>
@@ -49,20 +51,16 @@ const BioSignNavbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/solutions/biosign/demo">
-              <Button 
-                size="sm" 
-                className="biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085] font-semibold"
-                data-testid="get-started-btn"
-              >
-                Get Started
+            <Link to="/docs">
+              <Button variant="outline" size="sm" data-testid="get-api-key-btn">
+                Get API Key
               </Button>
             </Link>
           </div>
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden p-2 rounded-md hover:bg-white/5 text-gray-300"
+            className="lg:hidden p-2 rounded-md hover:bg-accent"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             data-testid="mobile-menu-toggle"
           >
@@ -72,7 +70,7 @@ const BioSignNavbar = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-white/5" data-testid="mobile-menu">
+          <div className="lg:hidden py-4 border-t border-border/50" data-testid="mobile-menu">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
@@ -80,17 +78,17 @@ const BioSignNavbar = () => {
                   to={link.path}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isActive(link.path)
-                      ? "text-[#00FF94] bg-[#00FF94]/10"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link to="/solutions/biosign/demo" className="mt-4">
-                <Button className="w-full biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085]" size="sm">
-                  Get Started
+              <Link to="/docs" className="mt-4">
+                <Button className="w-full" size="sm">
+                  Get API Key
                 </Button>
               </Link>
             </div>
@@ -101,4 +99,4 @@ const BioSignNavbar = () => {
   );
 };
 
-export default BioSignNavbar;
+export default Navbar;

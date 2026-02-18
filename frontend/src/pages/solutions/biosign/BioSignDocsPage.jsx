@@ -4,16 +4,15 @@ import {
   Book, Code, Terminal, Copy, CheckCircle, 
   ChevronRight, ExternalLink, Zap
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
-import { Button } from "../../../components/ui/button";
-import { Badge } from "../../../components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
-import { ScrollArea } from "../../../components/ui/scroll-area";
-import BioSignNavbar from "./BioSignNavbar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Navbar from "@/components/layout/Navbar";
 import { toast } from "sonner";
-import './biosign.css';
 
-const BioSignDocsPage = () => {
+const Documentation = () => {
   const [copiedCode, setCopiedCode] = useState(null);
 
   const copyToClipboard = (code, id) => {
@@ -257,7 +256,7 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
 
   return (
     <div className="min-h-screen bg-background noise-bg" data-testid="documentation-page">
-      <BioSignNavbar />
+      <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-start justify-between mb-8">
@@ -553,4 +552,4 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
   );
 };
 
-export default BioSignDocsPage;
+export default Documentation;

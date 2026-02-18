@@ -4,17 +4,15 @@ import {
   Shield, Fingerprint, Lock, Cpu, Activity, FileCheck, 
   ChevronRight, Code, Smartphone, Globe, Zap, CheckCircle2, Calculator,
   Building2, Wallet, Users, ArrowRight, Phone, CreditCard, Banknote,
-  Store, Signal, WifiOff, MapPin, BadgeCheck, TrendingUp, Menu, X
+  Store, Signal, WifiOff, MapPin, BadgeCheck, TrendingUp
 } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import { Card, CardContent } from "../../../components/ui/card";
-import { Badge } from "../../../components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
-import './biosign.css';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const BioSignLandingPage = () => {
+const Landing = () => {
   const [activeIndustry, setActiveIndustry] = useState("mobile-money");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const features = [
     {
@@ -109,64 +107,48 @@ const BioSignLandingPage = () => {
   const complianceBadges = ["PCI DSS", "ISO 27001", "PSD2 SCA"];
 
   return (
-    <div className="min-h-screen biosign-theme biosign-noise-bg" data-testid="biosign-landing-page">
+    <div className="min-h-screen bg-background noise-bg" data-testid="landing-page">
       {/* Hero Section */}
-      <section className="biosign-hero-gradient relative overflow-hidden" data-testid="hero-section">
+      <section className="hero-gradient relative overflow-hidden" data-testid="hero-section">
         {/* Navigation */}
         <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#00FF94]/10 border border-[#00FF94]/30 flex items-center justify-center biosign-shield-animate">
-                <Shield className="w-6 h-6 text-[#00FF94]" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center shield-animate">
+                <Shield className="w-6 h-6 text-primary" />
               </div>
               <span className="text-xl font-bold tracking-tight">BioSign SDK</span>
-            </Link>
+            </div>
             <div className="hidden md:flex items-center gap-6">
-              <Link to="/solutions/biosign/features" className="text-gray-400 hover:text-white transition-colors">
+              <Link to="/features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Features
               </Link>
-              <Link to="/solutions/biosign/docs" className="text-gray-400 hover:text-white transition-colors">
+              <Link to="/roi" className="text-muted-foreground hover:text-foreground transition-colors">
+                ROI Calculator
+              </Link>
+              <Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
                 Documentation
               </Link>
-              <Link to="/solutions/biosign/demo" className="text-gray-400 hover:text-white transition-colors">
-                Request Demo
+              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+                Demo Dashboard
               </Link>
             </div>
-            <div className="flex items-center gap-4">
-              <Link to="/solutions/biosign/demo" className="hidden sm:block">
-                <Button className="biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085]" data-testid="hero-cta-btn">
-                  Get Started
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-              <button
-                className="md:hidden p-2 text-gray-300 hover:text-white"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
+            <Link to="/dashboard">
+              <Button className="glow-green" data-testid="hero-cta-btn">
+                Try Demo
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            </Link>
           </div>
-          
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 py-4 border-t border-white/10">
-              <div className="flex flex-col gap-2">
-                <Link to="/solutions/biosign/features" className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Features</Link>
-                <Link to="/solutions/biosign/docs" className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Documentation</Link>
-                <Link to="/solutions/biosign/demo" className="px-4 py-2 text-[#00FF94] hover:bg-white/5 rounded-lg">Request Demo</Link>
-              </div>
-            </div>
-          )}
         </nav>
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="biosign-animate-fade-in-up">
+            <div className="animate-fade-in-up">
               <div className="flex items-center gap-2 mb-6">
                 {complianceBadges.map((badge) => (
-                  <span key={badge} className="biosign-compliance-badge">
+                  <span key={badge} className="compliance-badge text-xs">
                     <CheckCircle2 className="w-3 h-3" />
                     {badge}
                   </span>
@@ -175,56 +157,56 @@ const BioSignLandingPage = () => {
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
                 Secure Transactions
                 <br />
-                <span className="text-[#00FF94]">Without OTP</span>
+                <span className="text-primary">Without OTP</span>
               </h1>
-              <p className="text-lg text-gray-400 mb-8 max-w-lg leading-relaxed">
+              <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
                 Device-bound cryptographic signing with biometric confirmation. 
                 Replace SMS/OTP with bank-grade security that's resistant to 
                 phishing, SIM swap, and man-in-the-middle attacks.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/solutions/biosign/demo">
-                  <Button size="lg" className="biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085]" data-testid="get-started-btn">
+                <Link to="/dashboard">
+                  <Button size="lg" className="glow-green" data-testid="get-started-btn">
                     <Zap className="w-5 h-5 mr-2" />
                     Get Started
                   </Button>
                 </Link>
-                <Link to="/solutions/biosign/docs">
-                  <Button size="lg" variant="outline" className="border-gray-700 hover:bg-gray-800" data-testid="view-docs-btn">
+                <Link to="/docs">
+                  <Button size="lg" variant="outline" data-testid="view-docs-btn">
                     <Code className="w-5 h-5 mr-2" />
                     View Documentation
                   </Button>
                 </Link>
               </div>
               <div className="flex items-center gap-6 mt-8">
-                <span className="text-sm text-gray-500">Supported Platforms:</span>
+                <span className="text-sm text-muted-foreground">Supported Platforms:</span>
                 <div className="flex items-center gap-4">
                   {platforms.map((platform) => (
-                    <div key={platform.label} className="flex items-center gap-2 text-sm text-gray-400">
-                      <platform.icon className="w-4 h-4" />
+                    <div key={platform.label} className="flex items-center gap-2 text-sm">
+                      <platform.icon className="w-4 h-4 text-muted-foreground" />
                       <span>{platform.label}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="relative biosign-animate-fade-in-up biosign-delay-200">
-              <div className="relative rounded-2xl overflow-hidden border border-gray-800">
+            <div className="relative animate-fade-in-up delay-200">
+              <div className="relative rounded-2xl overflow-hidden border border-border/50">
                 <img 
                   src="https://images.unsplash.com/photo-1582362710551-6ac08f214e12?w=800&auto=format&fit=crop" 
                   alt="Digital Security Shield"
                   className="w-full h-auto opacity-80"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
               </div>
               {/* Floating stats cards */}
-              <div className="absolute -bottom-4 -left-4 biosign-glass rounded-lg p-4 biosign-animate-fade-in-up biosign-delay-300">
-                <div className="text-2xl font-bold text-[#00FF94]">99.9%</div>
-                <div className="text-xs text-gray-400">Fraud Prevention</div>
+              <div className="absolute -bottom-4 -left-4 glass rounded-lg p-4 animate-fade-in-up delay-300">
+                <div className="text-2xl font-bold text-primary">99.9%</div>
+                <div className="text-xs text-muted-foreground">Fraud Prevention</div>
               </div>
-              <div className="absolute -top-4 -right-4 biosign-glass rounded-lg p-4 biosign-animate-fade-in-up biosign-delay-400">
-                <div className="text-2xl font-bold text-[#3B82F6]">0ms</div>
-                <div className="text-xs text-gray-400">OTP Delay</div>
+              <div className="absolute -top-4 -right-4 glass rounded-lg p-4 animate-fade-in-up delay-400">
+                <div className="text-2xl font-bold text-secondary">0ms</div>
+                <div className="text-xs text-muted-foreground">OTP Delay</div>
               </div>
             </div>
           </div>
@@ -238,7 +220,7 @@ const BioSignLandingPage = () => {
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
               Enterprise-Grade Security
             </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               A complete SDK for implementing secure transaction authorization 
               without relying on vulnerable SMS/OTP mechanisms.
             </p>
@@ -247,15 +229,15 @@ const BioSignLandingPage = () => {
             {features.map((feature, index) => (
               <Card 
                 key={feature.title} 
-                className="biosign-card bg-[#121212] border-gray-800 hover:border-[#00FF94]/50 transition-all duration-200"
+                className="bg-card border-border hover:border-primary/50 transition-all duration-200"
                 data-testid={`feature-card-${index}`}
               >
                 <CardContent className="p-6">
-                  <div className="biosign-feature-icon mb-4">
-                    <feature.icon className="w-6 h-6 text-[#00FF94]" />
+                  <div className="feature-icon mb-4">
+                    <feature.icon className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -266,16 +248,16 @@ const BioSignLandingPage = () => {
       </section>
 
       {/* Industry Use Cases Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#121212]/30" data-testid="industry-section">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-card/30" data-testid="industry-section">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 border-[#00FF94]/30 text-[#00FF94]">
+            <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
               Industry Solutions
             </Badge>
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
               Built for Financial Services
             </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Whether you're a mobile money operator or a traditional bank, BioSign SDK 
               adapts to your specific security and compliance requirements.
             </p>
@@ -283,7 +265,7 @@ const BioSignLandingPage = () => {
 
           {/* Industry Tabs */}
           <Tabs value={activeIndustry} onValueChange={setActiveIndustry} className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-[#0A0A0A]/50">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-background/50">
               <TabsTrigger 
                 value="mobile-money" 
                 className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-orange-400"
@@ -313,19 +295,19 @@ const BioSignLandingPage = () => {
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold">{industry.title}</h3>
-                        <p className="text-sm text-gray-400">{industry.subtitle}</p>
+                        <p className="text-sm text-muted-foreground">{industry.subtitle}</p>
                       </div>
                     </div>
-                    <p className="text-gray-400 mb-6 leading-relaxed">
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
                       {industry.description}
                     </p>
                     
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       {industry.stats.map((stat, idx) => (
-                        <div key={idx} className="text-center p-4 rounded-lg bg-[#0A0A0A]/50">
+                        <div key={idx} className="text-center p-4 rounded-lg bg-background/50">
                           <div className={`text-2xl font-bold ${industry.color}`}>{stat.value}</div>
-                          <div className="text-xs text-gray-400">{stat.label}</div>
+                          <div className="text-xs text-muted-foreground">{stat.label}</div>
                         </div>
                       ))}
                     </div>
@@ -333,7 +315,7 @@ const BioSignLandingPage = () => {
                     {/* Partners */}
                     <div className="flex flex-wrap gap-2">
                       {industry.partners.map((partner, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs bg-gray-800">
+                        <Badge key={idx} variant="secondary" className="text-xs">
                           {partner}
                         </Badge>
                       ))}
@@ -350,7 +332,7 @@ const BioSignLandingPage = () => {
                       {industry.useCases.map((useCase, idx) => (
                         <Card 
                           key={idx} 
-                          className="bg-[#121212]/50 border-gray-800/50 hover:border-[#00FF94]/30 transition-all"
+                          className="bg-card/50 border-border/50 hover:border-primary/30 transition-all"
                           data-testid={`${key}-usecase-${idx}`}
                         >
                           <CardContent className="p-4 flex items-start gap-4">
@@ -359,7 +341,7 @@ const BioSignLandingPage = () => {
                             </div>
                             <div>
                               <h5 className="font-semibold text-sm">{useCase.title}</h5>
-                              <p className="text-xs text-gray-400 mt-1">{useCase.desc}</p>
+                              <p className="text-xs text-muted-foreground mt-1">{useCase.desc}</p>
                             </div>
                           </CardContent>
                         </Card>
@@ -367,7 +349,7 @@ const BioSignLandingPage = () => {
                     </div>
                     
                     <div className="pt-4">
-                      <Link to="/solutions/biosign/features">
+                      <Link to="/features">
                         <Button className={key === "mobile-money" ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"}>
                           <TrendingUp className="w-4 h-4 mr-2" />
                           See {industry.title} Demo
@@ -390,7 +372,7 @@ const BioSignLandingPage = () => {
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Simple integration, powerful security. Replace OTP in three steps.
             </p>
           </div>
@@ -413,12 +395,12 @@ const BioSignLandingPage = () => {
               },
             ].map((item, index) => (
               <div key={item.step} className="relative" data-testid={`step-${index + 1}`}>
-                <div className="text-6xl font-bold text-[#00FF94]/10 absolute -top-4 -left-2">
+                <div className="text-6xl font-bold text-primary/10 absolute -top-4 -left-2">
                   {item.step}
                 </div>
                 <div className="relative pt-8">
                   <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -436,32 +418,32 @@ const BioSignLandingPage = () => {
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
                 Simple Integration
               </h2>
-              <p className="text-lg text-gray-400 mb-6 leading-relaxed">
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                 Integrate BioSign SDK into your existing banking app with just a few lines of code. 
                 Full REST API support with SDK libraries for JavaScript, Python, and mobile platforms.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/solutions/biosign/docs">
-                  <Button variant="outline" className="border-gray-700 hover:bg-gray-800" data-testid="view-api-docs-btn">
+                <Link to="/docs">
+                  <Button variant="outline" data-testid="view-api-docs-btn">
                     View API Documentation
                   </Button>
                 </Link>
-                <Link to="/solutions/biosign/features">
-                  <Button variant="ghost" className="hover:bg-gray-800" data-testid="try-device-demo-btn">
+                <Link to="/demo/device">
+                  <Button variant="ghost" data-testid="try-device-demo-btn">
                     Try Device Demo
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="biosign-terminal" data-testid="code-terminal">
-              <div className="biosign-terminal-header">
-                <div className="biosign-terminal-dot bg-red-500" />
-                <div className="biosign-terminal-dot bg-yellow-500" />
-                <div className="biosign-terminal-dot bg-green-500" />
-                <span className="text-xs text-gray-400 ml-3">transaction.js</span>
+            <div className="terminal" data-testid="code-terminal">
+              <div className="terminal-header">
+                <div className="terminal-dot bg-red-500" />
+                <div className="terminal-dot bg-yellow-500" />
+                <div className="terminal-dot bg-green-500" />
+                <span className="text-xs text-muted-foreground ml-3">transaction.js</span>
               </div>
-              <div className="biosign-terminal-body">
+              <div className="terminal-body">
                 <pre className="text-sm">
 {`// Create signed transaction
 const transaction = await biosign.createTransaction({
@@ -488,23 +470,23 @@ if (risk.level === "low") {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 biosign-hero-gradient" data-testid="cta-section">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 hero-gradient" data-testid="cta-section">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
             Ready to Eliminate OTP?
           </h2>
-          <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Join leading banks and fintechs using BioSign SDK for secure, 
             user-friendly transaction authorization.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/solutions/biosign/demo">
-              <Button size="lg" className="biosign-glow-green bg-[#00FF94] text-black hover:bg-[#00E085]" data-testid="start-free-trial-btn">
-                Request Demo
+            <Link to="/dashboard">
+              <Button size="lg" className="glow-green" data-testid="start-free-trial-btn">
+                Start Free Trial
               </Button>
             </Link>
-            <Link to="/solutions/biosign/docs">
-              <Button size="lg" variant="outline" className="border-gray-700 hover:bg-gray-800" data-testid="read-docs-btn">
+            <Link to="/docs">
+              <Button size="lg" variant="outline" data-testid="read-docs-btn">
                 Read Documentation
               </Button>
             </Link>
@@ -513,20 +495,19 @@ if (risk.level === "low") {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800" data-testid="footer">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-border" data-testid="footer">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Shield className="w-6 h-6 text-[#00FF94]" />
+              <Shield className="w-6 h-6 text-primary" />
               <span className="font-semibold">BioSign SDK</span>
-              <span className="text-gray-500 text-sm">by DataVision International</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-400">
-              <Link to="/solutions/biosign/docs" className="hover:text-white transition-colors">Documentation</Link>
-              <Link to="/solutions/biosign/features" className="hover:text-white transition-colors">Features</Link>
-              <Link to="/solutions/biosign/demo" className="hover:text-white transition-colors">Contact</Link>
+            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
+              <Link to="/compliance" className="hover:text-foreground transition-colors">Compliance</Link>
+              <Link to="/audit" className="hover:text-foreground transition-colors">Audit</Link>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-muted-foreground">
               © 2025 BioSign SDK. All rights reserved.
             </div>
           </div>
@@ -536,4 +517,4 @@ if (risk.level === "low") {
   );
 };
 
-export default BioSignLandingPage;
+export default Landing;

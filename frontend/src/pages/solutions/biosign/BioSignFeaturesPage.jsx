@@ -1,19 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import BioSignNavbar from "./BioSignNavbar";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../components/ui/card";
-import { Badge } from "../../../components/ui/badge";
-import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
-import { Progress } from "../../../components/ui/progress";
-import { Slider } from "../../../components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
-import { ScrollArea } from "../../../components/ui/scroll-area";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../components/ui/collapsible";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../../../components/ui/dialog";
+import { Navbar } from "@/components/layout/Navbar";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   Fingerprint, Smartphone, Shield, Brain, FileText, WifiOff, AlertTriangle, Activity,
@@ -23,7 +23,6 @@ import {
   Wifi, Upload, History, XCircle, Settings, Sparkles, Calendar, Building2, Mail,
   X, Gift, Phone, MessageSquare,
 } from "lucide-react";
-import './biosign.css';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -1026,7 +1025,7 @@ const SuccessCTA = ({ featureName }) => (
         <Sparkles className="w-5 h-5 text-primary" />
         <span className="font-medium">Great! You just tested {featureName}</span>
       </div>
-      <Link to="/solutions/biosign/demo">
+      <Link to="/keys">
         <Button size="sm" className="glow-green">
           Get API Keys
           <ArrowRight className="w-4 h-4 ml-1" />
@@ -1037,7 +1036,7 @@ const SuccessCTA = ({ featureName }) => (
 );
 
 // ============ MAIN FEATURES PAGE ============
-const BioSignFeaturesPage = () => {
+const Features = () => {
   const { session, loading: sessionLoading, getAuthHeaders } = useDemoSession();
   const { triedFeatures, markFeatureTried, progress } = useProgressTracker();
   const [activeTab, setActiveTab] = useState("webauthn");
@@ -1096,7 +1095,7 @@ const BioSignFeaturesPage = () => {
 
   return (
     <div className="min-h-screen bg-background" data-testid="features-page">
-      <BioSignNavbar />
+      <Navbar />
 
       {/* Progress Bar */}
       <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border/50">
@@ -1113,7 +1112,7 @@ const BioSignFeaturesPage = () => {
                   Save Progress
                 </Button>
               )}
-              <Link to="/solutions/biosign/demo">
+              <Link to="/keys">
                 <Button size="sm">Get API Keys</Button>
               </Link>
             </div>
@@ -1229,7 +1228,7 @@ const BioSignFeaturesPage = () => {
               Get your API keys and start building in minutes. Need help with enterprise features?
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/solutions/biosign/demo">
+              <Link to="/keys">
                 <Button size="lg" className="glow-green">
                   Get API Keys
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -1267,4 +1266,4 @@ const BioSignFeaturesPage = () => {
   );
 };
 
-export default BioSignFeaturesPage;
+export default Features;
