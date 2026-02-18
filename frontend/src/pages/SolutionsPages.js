@@ -276,6 +276,45 @@ const softwareSolutions = [
       'Document verification via QR'
     ],
     stats: { lawyers: '15K+', stamps: '2M+', verification: '99.99%' }
+  },
+  // Enterprise Operations Solutions
+  {
+    id: 'accubooks',
+    name: 'AccuBooks',
+    tagline: 'Accounting & Finance Management',
+    shortDesc: 'Complete accounting solution for growing businesses',
+    icon: Receipt,
+    color: '#3b82f6',
+    category: 'enterprise',
+    industries: ['enterprise', 'finance'],
+    features: [
+      'Invoicing & billing',
+      'General ledger',
+      'Expense management',
+      'Financial reporting',
+      'Bank reconciliation',
+      'Multi-currency support'
+    ],
+    stats: { businesses: '10K+', transactions: '$2B+', uptime: '99.9%' }
+  },
+  {
+    id: 'peoplehub',
+    name: 'PeopleHub',
+    tagline: 'HR Management System',
+    shortDesc: 'All-in-one HR platform for modern businesses',
+    icon: Users,
+    color: '#a855f7',
+    category: 'enterprise',
+    industries: ['enterprise', 'hr'],
+    features: [
+      'Recruitment & onboarding',
+      'Employee management',
+      'Time & attendance',
+      'Payroll processing',
+      'Leave management',
+      'Learning & development'
+    ],
+    stats: { companies: '5K+', employees: '500K+', countries: '30+' }
   }
 ];
 
@@ -284,6 +323,7 @@ const solutionCategories = [
   { id: 'data-collection', name: 'Data Collection', icon: Database },
   { id: 'analytics', name: 'Analytics & BI', icon: PieChart },
   { id: 'government', name: 'Government', icon: Building2 },
+  { id: 'enterprise', name: 'Enterprise', icon: Briefcase },
   { id: 'sectoral', name: 'Sector Solutions', icon: Factory }
 ];
 
