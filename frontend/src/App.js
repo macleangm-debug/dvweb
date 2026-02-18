@@ -95,6 +95,15 @@ import {
 } from './pages/SolutionsPages';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 // BillingPage removed - billing is now handled within each product
+
+// Extracted Page Components
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/AdminDashboard';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// Government Solutions
+import { TaxxaPage, AmmoPage, LegalProPage } from './pages/government';
+
 import { Survey360ProductPage } from './components/solutions/survey360';
 
 // DataVision Central Auth Pages
