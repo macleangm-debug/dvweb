@@ -113,6 +113,7 @@ const NAVIGATION = [
       { label: 'Team', path: `${BASE_PATH}/team`, icon: Users },
       { label: 'Security', path: `${BASE_PATH}/security`, icon: Shield },
       { label: 'API Keys', path: `${BASE_PATH}/api-keys`, icon: Key },
+      { label: 'Billing', path: `${BASE_PATH}/billing`, icon: CreditCard },
       { label: 'Settings', path: `${BASE_PATH}/settings`, icon: Settings },
       { label: 'Help Center', path: `${BASE_PATH}/help`, icon: HelpCircle },
     ]
