@@ -4,12 +4,12 @@ import {
   Book, Code, Terminal, Copy, CheckCircle, 
   ChevronRight, ExternalLink, Zap
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Navbar from "@/components/layout/Navbar";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import { ScrollArea } from "../../../components/ui/scroll-area";
+import BioSignNavbar from "./BioSignNavbar";
 import { toast } from "sonner";
 
 const Documentation = () => {
@@ -256,7 +256,7 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
 
   return (
     <div className="min-h-screen bg-background noise-bg" data-testid="documentation-page">
-      <Navbar />
+      <BioSignNavbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-start justify-between mb-8">
