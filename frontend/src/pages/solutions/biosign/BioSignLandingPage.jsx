@@ -10,6 +10,7 @@ import { Button } from "../../../components/ui/button";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import "./biosign.css";
 
 const BioSignLandingPage = () => {
   const [activeIndustry, setActiveIndustry] = useState("mobile-money");
