@@ -610,7 +610,7 @@ function App() {
                     <Route path="settings" element={<Survey360SettingsPage />} />
                   </Route>
                   <Route path="/s/:surveyId" element={<PublicSurveyPage />} />
-                  <Route path="/solutions/dataviz-studio" element={<DataVizStudioPage />} />
+                  <Route path="/solutions/dataviz-studio" element={<DVLandingPage />} />
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
                   
                   {/* FieldForce Routes - Using ORIGINAL GitHub Canva-style Layout */}
