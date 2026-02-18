@@ -11,8 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui
 import { ScrollArea } from "../../../components/ui/scroll-area";
 import BioSignNavbar from "./BioSignNavbar";
 import { toast } from "sonner";
+import './biosign.css';
 
-const Documentation = () => {
+const BioSignDocsPage = () => {
   const [copiedCode, setCopiedCode] = useState(null);
 
   const copyToClipboard = (code, id) => {
