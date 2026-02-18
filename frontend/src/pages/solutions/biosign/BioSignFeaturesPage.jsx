@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import BioSignBioSignNavbar from "./BioSignNavbar";
+import BioSignNavbar from "./BioSignNavbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
@@ -23,6 +23,7 @@ import {
   Wifi, Upload, History, XCircle, Settings, Sparkles, Calendar, Building2, Mail,
   X, Gift, Phone, MessageSquare,
 } from "lucide-react";
+import './biosign.css';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
