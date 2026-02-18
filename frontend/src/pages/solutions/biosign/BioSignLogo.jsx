@@ -2,12 +2,14 @@ import React from 'react';
 
 /**
  * BioSign Logo Component
- * A fingerprint-based logo with cyan/teal gradient styling
+ * Exact recreation of the original BioSign SDK logo from the GitHub repository
+ * - Rounded square container with blue-to-teal diagonal gradient
+ * - Stylized fingerprint icon in light blue
  */
 const BioSignLogo = ({ size = 48, className = "" }) => {
   return (
     <div 
-      className={`biosign-logo-glow rounded-xl overflow-hidden ${className}`}
+      className={`biosign-logo-glow ${className}`}
       style={{ width: size, height: size }}
     >
       <svg
@@ -16,80 +18,87 @@ const BioSignLogo = ({ size = 48, className = "" }) => {
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
       >
-        {/* Gradient Background */}
+        {/* Gradient Definitions */}
         <defs>
-          <linearGradient id="biosign-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0891B2" />
-            <stop offset="50%" stopColor="#06B6D4" />
-            <stop offset="100%" stopColor="#8B5CF6" />
-          </linearGradient>
-          <linearGradient id="biosign-fg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="#E0F2FE" stopOpacity="0.85" />
+          {/* Blue to Teal diagonal gradient (top-left to bottom-right) */}
+          <linearGradient id="biosign-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#00BFFF" />
+            <stop offset="100%" stopColor="#00CED1" />
           </linearGradient>
         </defs>
         
-        {/* Background */}
-        <rect width="48" height="48" rx="10" fill="url(#biosign-bg-gradient)" />
+        {/* Rounded Square Background */}
+        <rect 
+          width="48" 
+          height="48" 
+          rx="12" 
+          fill="url(#biosign-bg)" 
+        />
         
-        {/* Fingerprint Icon */}
-        <g transform="translate(10, 10)">
-          {/* Fingerprint arcs - stylized */}
+        {/* Stylized Fingerprint Icon - Light Blue */}
+        <g transform="translate(12, 10)">
+          {/* Outer curved lines */}
           <path
-            d="M14 2C8.48 2 4 6.48 4 12c0 3.8 2.1 7.1 5.2 8.8"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
+            d="M12 4C7.58 4 4 8.5 4 14c0 4.5 2.2 8.5 5.5 10.5"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
+            opacity="0.95"
           />
           <path
-            d="M14 5c-3.87 0-7 3.13-7 12 0 3.5 1.5 6.5 3.8 8.5"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
+            d="M12 4c4.42 0 8 4.5 8 14 0 4.5-2.2 8.5-5.5 10.5"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
+            opacity="0.95"
+          />
+          
+          {/* Middle curved lines */}
+          <path
+            d="M12 8C9.24 8 7 11.5 7 16c0 3.5 1.5 6.5 3.8 8"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.95"
           />
           <path
-            d="M14 8c-2.21 0-4 1.79-4 4 0 3 0.8 5.5 2.2 7.5"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
+            d="M12 8c2.76 0 5 3.5 5 8 0 3.5-1.5 6.5-3.8 8"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
+            opacity="0.95"
+          />
+          
+          {/* Inner curved lines */}
+          <path
+            d="M12 12c-1.66 0-3 2-3 5 0 2.5 1 4.5 2.5 5.5"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.95"
           />
           <path
-            d="M14 11c-.55 0-1 .45-1 1v8"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
+            d="M12 12c1.66 0 3 2 3 5 0 2.5-1 4.5-2.5 5.5"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
+            opacity="0.95"
           />
+          
+          {/* Center line */}
           <path
-            d="M14 2c5.52 0 10 4.48 10 12 0 3.8-2.1 7.1-5.2 8.8"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
+            d="M12 16v8"
+            stroke="#87CEEB"
+            strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
-          />
-          <path
-            d="M14 5c3.87 0 7 3.13 7 12 0 3.5-1.5 6.5-3.8 8.5"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <path
-            d="M14 8c2.21 0 4 1.79 4 4 0 3-0.8 5.5-2.2 7.5"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <path
-            d="M14 11c.55 0 1 .45 1 1v8"
-            stroke="url(#biosign-fg-gradient)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            fill="none"
+            opacity="0.95"
           />
         </g>
       </svg>
