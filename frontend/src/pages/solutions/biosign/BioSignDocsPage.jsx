@@ -4,6 +4,7 @@ import {
   FileText, Code, Terminal, Book, ArrowRight, Copy, Check,
   ChevronRight, ExternalLink
 } from 'lucide-react';
+import BioSignNavbar from './BioSignNavbar';
 
 const BioSignDocsPage = () => {
   const [activeTab, setActiveTab] = useState('javascript');
