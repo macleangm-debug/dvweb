@@ -201,6 +201,9 @@ const BioSignLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-950">
+      {/* Product Navigation */}
+      <BioSignNavbar />
+      
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {/* Background gradient */}
