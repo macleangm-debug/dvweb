@@ -375,6 +375,12 @@ function App() {
                   <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
                   <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
                   <Route path="/solutions/wash-monitor" element={<WASHMonitorPage />} />
+                  
+                  {/* Government Solutions */}
+                  <Route path="/solutions/taxxa" element={<TaxxaPage />} />
+                  <Route path="/solutions/ammo" element={<AmmoPage />} />
+                  <Route path="/solutions/legalpro" element={<LegalProPage />} />
+                  
                   <Route path="/payment/success" element={<PaymentSuccessPage />} />
                   <Route path="/insights" element={<InsightsPage />} />
                   <Route path="/insights/:articleId" element={<ArticlePage />} />
