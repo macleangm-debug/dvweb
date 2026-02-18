@@ -518,6 +518,7 @@ function App() {
             <Route path="/solutions/datapulse" element={<DataPulseLandingPage />} />
             <Route path="/solutions/datapulse/login" element={<DataPulseLoginPage />} />
             <Route path="/solutions/datapulse/register" element={<DataPulseRegisterPage />} />
+            <Route path="/solutions/datapulse/app/billing" element={<DataPulseBillingPage />} />
             
             {/* DataViz Studio Routes */}
             <Route path="/solutions/dataviz" element={<DVLandingPage />} />
