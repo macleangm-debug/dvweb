@@ -183,7 +183,7 @@ export function LoginPage() {
           <p className="text-center text-sm text-muted-foreground mt-6">
             Don't have an account?{' '}
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/solutions/dataviz/register')}
               className="text-violet-600 hover:text-violet-700 font-medium"
               data-testid="goto-register-btn"
             >
@@ -213,7 +213,7 @@ export function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/register`, formData);
+      const response = await axios.post(`${API_URL}/api/dataviz/auth/register`, formData);
       const { token, user, organization } = response.data;
       
       setAuth(user, token);
@@ -223,7 +223,7 @@ export function RegisterPage() {
       }
       
       toast.success('Account created successfully!');
-      navigate('/dashboard');
+      navigate('/solutions/dataviz/app/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Registration failed');
     } finally {
