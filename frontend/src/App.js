@@ -176,7 +176,7 @@ import DVAIInsightsPage from './solutions/dataviz-studio/app/pages/AIInsightsPag
 import DVReportBuilderPage from './solutions/dataviz-studio/app/pages/ReportBuilderPage';
 import DVHelpCenterPage from './solutions/dataviz-studio/app/pages/HelpCenterPage';
 import DVSettingsPage from './solutions/dataviz-studio/app/pages/SettingsPage';
-import DVTeamPage from './solutions/dataviz-studio/app/pages/TeamPage';
+import { TeamPage as DVTeamPage } from './solutions/dataviz-studio/app/pages/TeamPage';
 import DVSecurityPage from './solutions/dataviz-studio/app/pages/SecurityPage';
 import DVDashboardBuilderPage from './solutions/dataviz-studio/app/pages/DashboardBuilderPage';
 import DVInteractiveDemoPage from './solutions/dataviz-studio/app/pages/InteractiveDemoPage';
