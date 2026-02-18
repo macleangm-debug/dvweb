@@ -16,6 +16,7 @@ import {
 } from '../../../components/ui/select';
 import { toast } from 'sonner';
 import axios from 'axios';
+import BioSignNavbar from './BioSignNavbar';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
