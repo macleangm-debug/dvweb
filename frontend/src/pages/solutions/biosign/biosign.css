@@ -111,6 +111,21 @@
     50% { box-shadow: 0 0 40px rgba(0, 255, 148, 0.4); }
 }
 
+@keyframes logo-glow-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 15px rgba(0, 255, 148, 0.3), inset 0 0 10px rgba(0, 255, 148, 0.1);
+        border-color: rgba(0, 255, 148, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(0, 255, 148, 0.5), inset 0 0 15px rgba(0, 255, 148, 0.2);
+        border-color: rgba(0, 255, 148, 0.5);
+    }
+}
+
+.biosign-logo-glow {
+    animation: logo-glow-pulse 2.5s ease-in-out infinite;
+}
+
 @keyframes scan-line {
     0% { transform: translateY(-100%); }
     100% { transform: translateY(100%); }
