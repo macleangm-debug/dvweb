@@ -1,451 +1,1269 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { Navbar } from "@/components/layout/Navbar";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import {
-  Fingerprint, Shield, Smartphone, Globe, Zap, Lock, Eye, AlertTriangle,
-  CheckCircle2, ArrowRight, Server, Key, Activity, FileText, 
-  Clock, Users, Cpu, Wifi, WifiOff, MapPin, User, CreditCard, RefreshCw
-} from 'lucide-react';
-import BioSignNavbar from './BioSignNavbar';
+  Fingerprint, Smartphone, Shield, Brain, FileText, WifiOff, AlertTriangle, Activity,
+  CheckCircle2, CheckCircle, ArrowRight, Lock, Eye, Zap, Globe, Key, RefreshCw,
+  Monitor, Send, DollarSign, User, Clock, Gauge, TrendingUp, Search, Filter,
+  Bell, Keyboard, MousePointer, ChevronDown, ChevronRight, Copy, Code, Terminal,
+  Wifi, Upload, History, XCircle, Settings, Sparkles, Calendar, Building2, Mail,
+  X, Gift, Phone, MessageSquare,
+} from "lucide-react";
 
-const BioSignFeaturesPage = () => {
-  const [activeDemo, setActiveDemo] = useState('webauthn');
-  const [registrationStep, setRegistrationStep] = useState(0);
-  const [userId, setUserId] = useState('user-demo-123');
+const API = process.env.REACT_APP_BACKEND_URL;
 
-  const demos = [
-    { id: 'webauthn', name: 'WebAuthn', icon: Fingerprint },
-    { id: 'device', name: 'Device', icon: Smartphone },
-    { id: 'transaction', name: 'Transaction', icon: CreditCard },
-    { id: 'risk', name: 'Risk Analysis', icon: Activity },
-    { id: 'audit', name: 'Audit Logs', icon: FileText },
-    { id: 'offline', name: 'Offline', icon: WifiOff },
-    { id: 'fraud', name: 'Fraud Alerts', icon: AlertTriangle },
-    { id: 'behavioral', name: 'Behavioral', icon: User },
-  ];
+// Demo Session Context
+const useDemoSession = () => {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const registrationSteps = [
-    { name: 'Request Options', status: 'pending' },
-    { name: 'Generate Keys', status: 'pending' },
-    { name: 'Biometric Verify', status: 'pending' },
-    { name: 'Server Verify', status: 'pending' },
-    { name: 'Complete', status: 'pending' },
-  ];
-
-  const apiEndpoints = {
-    authentication: [
-      { method: 'POST', endpoint: '/api/auth/register', description: 'Register new user' },
-      { method: 'POST', endpoint: '/api/auth/login', description: 'Login and get JWT' },
-      { method: 'POST', endpoint: '/api/auth/refresh', description: 'Refresh access token' },
-      { method: 'GET', endpoint: '/api/auth/me', description: 'Get current user' },
-      { method: 'POST', endpoint: '/api/auth/verify-email', description: 'Verify email token' },
-    ],
-    devices: [
-      { method: 'POST', endpoint: '/api/devices/register', description: 'Register device' },
-      { method: 'GET', endpoint: '/api/devices/list', description: 'List user devices' },
-      { method: 'DELETE', endpoint: '/api/devices/{id}', description: 'Remove device' },
-    ],
-    webauthn: [
-      { method: 'POST', endpoint: '/api/webauthn/register/options', description: 'Get registration options' },
-      { method: 'POST', endpoint: '/api/webauthn/register/verify', description: 'Verify registration' },
-      { method: 'POST', endpoint: '/api/webauthn/authenticate/options', description: 'Get auth options' },
-      { method: 'POST', endpoint: '/api/webauthn/authenticate/verify', description: 'Verify authentication' },
-    ],
-    transactions: [
-      { method: 'POST', endpoint: '/api/transactions/create', description: 'Create transaction' },
-      { method: 'POST', endpoint: '/api/transactions/sign', description: 'Sign transaction' },
-      { method: 'GET', endpoint: '/api/transactions/{id}', description: 'Get transaction' },
-      { method: 'POST', endpoint: '/api/transactions/verify', description: 'Verify signature' },
-      { method: 'GET', endpoint: '/api/transactions/history', description: 'Transaction history' },
-    ],
-    risk: [
-      { method: 'POST', endpoint: '/api/risk/analyze', description: 'Analyze transaction risk' },
-    ],
-    behavioral: [
-      { method: 'POST', endpoint: '/api/behavioral/capture', description: 'Capture behavioral data' },
-      { method: 'POST', endpoint: '/api/behavioral/analyze', description: 'Analyze behavior patterns' },
-    ],
-    fraud: [
-      { method: 'GET', endpoint: '/api/fraud/alerts', description: 'Get fraud alerts' },
-      { method: 'PUT', endpoint: '/api/fraud/alerts/{id}', description: 'Update alert status' },
-    ],
-    audit: [
-      { method: 'GET', endpoint: '/api/audit/logs', description: 'Get audit logs' },
-      { method: 'GET', endpoint: '/api/audit/export', description: 'Export logs' },
-    ],
-  };
-
-  const simulateRegistration = () => {
-    setRegistrationStep(0);
-    const interval = setInterval(() => {
-      setRegistrationStep(prev => {
-        if (prev >= 4) {
-          clearInterval(interval);
-          return 4;
+  useEffect(() => {
+    const initSession = async () => {
+      // Check for existing session in localStorage
+      const stored = localStorage.getItem('biosign_demo_session');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (new Date(parsed.expires_at) > new Date()) {
+          setSession(parsed);
+          setLoading(false);
+          return;
         }
-        return prev + 1;
-      });
-    }, 800);
+      }
+      
+      // Create new demo session
+      try {
+        const response = await axios.post(`${API}/api/demo/session`);
+        const sessionData = {
+          ...response.data,
+          expires_at: new Date(Date.now() + response.data.expires_in * 1000).toISOString()
+        };
+        localStorage.setItem('biosign_demo_session', JSON.stringify(sessionData));
+        setSession(sessionData);
+      } catch (error) {
+        console.error("Failed to create demo session:", error);
+        // Create a fallback local session for demos that don't need backend
+        setSession({ access_token: null, user_id: 'local_demo' });
+      }
+      setLoading(false);
+    };
+    
+    initSession();
+  }, []);
+
+  const getAuthHeaders = () => {
+    if (session?.access_token) {
+      return { Authorization: `Bearer ${session.access_token}` };
+    }
+    return {};
   };
+
+  return { session, loading, getAuthHeaders };
+};
+
+// Progress Tracker Hook
+const useProgressTracker = () => {
+  const [triedFeatures, setTriedFeatures] = useState(() => {
+    const stored = localStorage.getItem('biosign_tried_features');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const markFeatureTried = (featureId) => {
+    if (!triedFeatures.includes(featureId)) {
+      const updated = [...triedFeatures, featureId];
+      setTriedFeatures(updated);
+      localStorage.setItem('biosign_tried_features', JSON.stringify(updated));
+    }
+  };
+
+  return { triedFeatures, markFeatureTried, progress: triedFeatures.length };
+};
+
+// ============ WEBAUTHN DEMO ============
+const WebAuthnDemo = ({ onSuccess, getAuthHeaders }) => {
+  const [userId, setUserId] = useState("demo-user");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [step, setStep] = useState(0);
+
+  const registerCredential = async () => {
+    setLoading(true);
+    setStep(1);
+    try {
+      await new Promise(r => setTimeout(r, 500));
+      setStep(2);
+      const response = await axios.post(`${API}/api/webauthn/register/options?user_id=${userId}`);
+      setStep(3);
+      await new Promise(r => setTimeout(r, 800));
+      setStep(4);
+      
+      const credentialId = btoa(Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => String.fromCharCode(b)).join(''));
+      await axios.post(`${API}/api/webauthn/register/verify`, null, {
+        params: {
+          challenge_id: response.data.challenge_id,
+          credential_id: credentialId,
+          client_data_json: btoa(JSON.stringify({ type: "webauthn.create", challenge: response.data.options.challenge })),
+          attestation_object: btoa("simulated"),
+          device_name: "Demo Browser"
+        }
+      });
+      setStep(5);
+      setResult({ success: true, message: "Credential registered successfully!" });
+      toast.success("WebAuthn registration complete!");
+      onSuccess?.();
+    } catch (error) {
+      setResult({ success: false, message: error.response?.data?.detail || "Registration failed" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const steps = ["Request Options", "Generate Keys", "Biometric Verify", "Server Verify", "Complete"];
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Product Navigation */}
-      <BioSignNavbar />
-      
-      {/* Header */}
-      <section className="pt-32 pb-12">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center gap-2 text-cyan-400 text-sm mb-4">
-            <span className="px-2 py-1 bg-cyan-500/10 rounded">0/{demos.length} features explored</span>
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Fingerprint className="w-5 h-5 text-green-500" />
+            Register Credential
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label>User ID</Label>
+            <Input value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="Enter user ID" />
           </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-              <p className="text-slate-400 mb-2">8 Interactive Demos • 50+ API Endpoints</p>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">
-                Try Every Feature Right Now
-              </h1>
-              <p className="text-slate-400 mt-2">
-                No signup required. Your demo session is ready. Explore bank-grade security features live.
-              </p>
+          <Button onClick={registerCredential} disabled={loading} className="w-full">
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Key className="w-4 h-4 mr-2" />}
+            {loading ? "Registering..." : "Register with Biometrics"}
+          </Button>
+          {result && (
+            <div className={`p-3 rounded-lg ${result.success ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+              {result.success ? <CheckCircle className="w-4 h-4 inline mr-2" /> : <AlertTriangle className="w-4 h-4 inline mr-2" />}
+              {result.message}
             </div>
-            <Link 
-              to="/solutions/biosign/demo"
-              className="px-6 py-3 bg-cyan-500 text-white rounded-xl font-semibold hover:bg-cyan-600 transition-all"
-            >
-              Get API Keys
-            </Link>
-          </div>
-
-          {/* Compliance Badges */}
-          <div className="flex flex-wrap gap-3">
-            {['PSD2 Compliant', 'PCI DSS 4.0', 'FIDO2 Certified', 'ISO 27001', 'SOC 2 Type II', 'GDPR'].map((badge, index) => (
-              <span key={index} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm border border-slate-700">
-                {badge}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demos Section */}
-      <section className="py-12 bg-slate-900/50">
-        <div className="container mx-auto px-6 lg:px-12">
-          <h2 className="text-2xl font-bold text-white mb-8">Interactive Demos</h2>
-
-          {/* Demo Tabs */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {demos.map((demo) => (
-              <button
-                key={demo.id}
-                onClick={() => setActiveDemo(demo.id)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
-                  activeDemo === demo.id
-                    ? 'bg-cyan-500 text-white'
-                    : 'bg-slate-800 text-slate-400 hover:text-white'
-                }`}
-              >
-                <demo.icon className="w-4 h-4" />
-                {demo.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Demo Content */}
-          <div className="bg-slate-800/50 rounded-2xl border border-slate-700 p-8">
-            {activeDemo === 'webauthn' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-6">Register Credential</h3>
-                
-                <div className="mb-6">
-                  <label className="block text-slate-400 text-sm mb-2">User ID</label>
-                  <input
-                    type="text"
-                    value={userId}
-                    onChange={(e) => setUserId(e.target.value)}
-                    className="w-full md:w-96 px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:border-cyan-500 focus:outline-none"
-                    placeholder="Enter user ID"
-                  />
-                </div>
-
-                <button
-                  onClick={simulateRegistration}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-violet-500 text-white rounded-xl font-semibold hover:from-cyan-600 hover:to-violet-600 transition-all flex items-center gap-2"
-                >
-                  <Fingerprint className="w-5 h-5" /> Register with Biometrics
-                </button>
-
-                {/* Registration Progress */}
-                <div className="mt-8">
-                  <h4 className="text-sm font-semibold text-slate-400 mb-4">Registration Progress</h4>
-                  <div className="flex items-center gap-4 overflow-x-auto pb-4">
-                    {registrationSteps.map((step, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-                          index < registrationStep
-                            ? 'bg-emerald-500 text-white'
-                            : index === registrationStep
-                            ? 'bg-cyan-500 text-white animate-pulse'
-                            : 'bg-slate-700 text-slate-400'
-                        }`}>
-                          {index < registrationStep ? <CheckCircle2 className="w-5 h-5" /> : index + 1}
-                        </div>
-                        <span className={`text-sm whitespace-nowrap ${
-                          index <= registrationStep ? 'text-white' : 'text-slate-500'
-                        }`}>
-                          {step.name}
-                        </span>
-                        {index < registrationSteps.length - 1 && (
-                          <div className={`w-8 h-0.5 ${
-                            index < registrationStep ? 'bg-emerald-500' : 'bg-slate-700'
-                          }`} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          )}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Registration Progress</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {steps.map((s, i) => (
+            <div key={i} className={`flex items-center gap-3 p-2 rounded ${step > i ? 'bg-green-500/10' : step === i + 1 ? 'bg-primary/10' : 'bg-muted/30'}`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step > i ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-primary text-white' : 'bg-muted'}`}>
+                {step > i ? <CheckCircle className="w-3 h-3" /> : i + 1}
               </div>
-            )}
-
-            {activeDemo === 'device' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Device Management</h3>
-                <p className="text-slate-400 mb-6">Register and manage trusted devices for your users.</p>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Smartphone className="w-8 h-8 text-cyan-400" />
-                      <div>
-                        <p className="text-white font-medium">iPhone 14 Pro</p>
-                        <p className="text-slate-400 text-sm">Registered 2 days ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Active</span>
-                      <span className="px-2 py-1 bg-cyan-500/20 text-cyan-400 rounded text-xs">Face ID</span>
-                    </div>
-                  </div>
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Globe className="w-8 h-8 text-violet-400" />
-                      <div>
-                        <p className="text-white font-medium">Chrome on MacBook</p>
-                        <p className="text-slate-400 text-sm">Registered 5 days ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Active</span>
-                      <span className="px-2 py-1 bg-violet-500/20 text-violet-400 rounded text-xs">Touch ID</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeDemo === 'transaction' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Transaction Signing</h3>
-                <p className="text-slate-400 mb-6">Create and sign transactions with cryptographic security.</p>
-                
-                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700">
-                  <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <label className="block text-slate-400 text-sm mb-2">Amount</label>
-                      <input type="text" value="$1,500.00" readOnly className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white" />
-                    </div>
-                    <div>
-                      <label className="block text-slate-400 text-sm mb-2">Recipient</label>
-                      <input type="text" value="ACC-123456 (Jane Doe)" readOnly className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white" />
-                    </div>
-                  </div>
-                  <button className="px-6 py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition-all flex items-center gap-2">
-                    <Lock className="w-5 h-5" /> Sign Transaction
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {activeDemo === 'risk' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">AI Risk Analysis</h3>
-                <p className="text-slate-400 mb-6">Real-time transaction risk scoring using advanced AI.</p>
-                
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30">
-                    <p className="text-emerald-400 text-sm font-medium">Low Risk</p>
-                    <p className="text-2xl font-bold text-white mt-1">Score: 15</p>
-                    <p className="text-slate-400 text-sm mt-2">Auto-approved</p>
-                  </div>
-                  <div className="p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
-                    <p className="text-amber-400 text-sm font-medium">Medium Risk</p>
-                    <p className="text-2xl font-bold text-white mt-1">Score: 55</p>
-                    <p className="text-slate-400 text-sm mt-2">Biometric required</p>
-                  </div>
-                  <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/30">
-                    <p className="text-red-400 text-sm font-medium">High Risk</p>
-                    <p className="text-2xl font-bold text-white mt-1">Score: 85</p>
-                    <p className="text-slate-400 text-sm mt-2">Manual review</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeDemo === 'audit' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Tamper-Proof Audit Logs</h3>
-                <p className="text-slate-400 mb-6">Complete forensic-ready audit trail for compliance.</p>
-                
-                <div className="space-y-3">
-                  {[
-                    { time: '2 mins ago', event: 'Transaction signed', user: 'user-123', status: 'success' },
-                    { time: '5 mins ago', event: 'Device registered', user: 'user-456', status: 'success' },
-                    { time: '12 mins ago', event: 'Risk analysis triggered', user: 'user-123', status: 'warning' },
-                    { time: '15 mins ago', event: 'Authentication attempt', user: 'user-789', status: 'failed' },
-                  ].map((log, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 bg-slate-900/50 rounded-xl">
-                      <span className={`w-2 h-2 rounded-full ${
-                        log.status === 'success' ? 'bg-emerald-400' :
-                        log.status === 'warning' ? 'bg-amber-400' : 'bg-red-400'
-                      }`} />
-                      <span className="text-slate-400 text-sm w-24">{log.time}</span>
-                      <span className="text-white flex-1">{log.event}</span>
-                      <span className="text-slate-500 text-sm">{log.user}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {activeDemo === 'offline' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Offline Transaction Queue</h3>
-                <p className="text-slate-400 mb-6">Queue transactions in rural areas, sync when online.</p>
-                
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/10 rounded-xl border border-amber-500/30">
-                    <WifiOff className="w-5 h-5 text-amber-400" />
-                    <span className="text-amber-400">Offline Mode</span>
-                  </div>
-                  <span className="text-slate-400">3 transactions queued</span>
-                </div>
-
-                <button className="px-6 py-3 bg-cyan-500 text-white rounded-xl font-semibold hover:bg-cyan-600 transition-all flex items-center gap-2">
-                  <RefreshCw className="w-5 h-5" /> Sync Now
-                </button>
-              </div>
-            )}
-
-            {activeDemo === 'fraud' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Real-Time Fraud Alerts</h3>
-                <p className="text-slate-400 mb-6">Instant notifications for suspicious activities.</p>
-                
-                <div className="space-y-3">
-                  <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/30">
-                    <div className="flex items-center gap-3 mb-2">
-                      <AlertTriangle className="w-5 h-5 text-red-400" />
-                      <span className="text-red-400 font-medium">High Priority Alert</span>
-                    </div>
-                    <p className="text-white">Unusual location detected for user-123</p>
-                    <p className="text-slate-400 text-sm mt-1">Transaction from new country (Nigeria) - usually Kenya</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeDemo === 'behavioral' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Behavioral Biometrics</h3>
-                <p className="text-slate-400 mb-6">Continuous authentication through behavior patterns.</p>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700">
-                    <p className="text-slate-400 text-sm mb-1">Typing Pattern</p>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-2 bg-slate-700 rounded-full">
-                        <div className="w-4/5 h-2 bg-emerald-500 rounded-full" />
-                      </div>
-                      <span className="text-emerald-400 text-sm">82% match</span>
-                    </div>
-                  </div>
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700">
-                    <p className="text-slate-400 text-sm mb-1">Session Behavior</p>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-2 bg-slate-700 rounded-full">
-                        <div className="w-11/12 h-2 bg-emerald-500 rounded-full" />
-                      </div>
-                      <span className="text-emerald-400 text-sm">94% match</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* API Reference Section */}
-      <section className="py-12">
-        <div className="container mx-auto px-6 lg:px-12">
-          <h2 className="text-2xl font-bold text-white mb-2">API Reference</h2>
-          <p className="text-slate-400 mb-8">33+ endpoints for complete SDK integration</p>
-
-          <div className="space-y-6">
-            {Object.entries(apiEndpoints).map(([category, endpoints]) => (
-              <div key={category} className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-                <div className="px-6 py-4 bg-slate-800/50 border-b border-slate-700 flex items-center justify-between">
-                  <h3 className="text-white font-semibold capitalize">{category.replace(/([A-Z])/g, ' $1')}</h3>
-                  <span className="text-slate-400 text-sm">{endpoints.length}</span>
-                </div>
-                <div className="divide-y divide-slate-700/50">
-                  {endpoints.map((api, index) => (
-                    <div key={index} className="px-6 py-3 flex items-center gap-4 hover:bg-slate-700/20">
-                      <span className={`text-xs font-mono px-2 py-0.5 rounded ${
-                        api.method === 'POST' ? 'bg-emerald-500/20 text-emerald-400' :
-                        api.method === 'PUT' ? 'bg-amber-500/20 text-amber-400' :
-                        api.method === 'DELETE' ? 'bg-red-500/20 text-red-400' :
-                        'bg-blue-500/20 text-blue-400'
-                      }`}>
-                        {api.method}
-                      </span>
-                      <code className="text-cyan-400 text-sm flex-1">{api.endpoint}</code>
-                      <span className="text-slate-400 text-sm">{api.description}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-12 bg-slate-900/50">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="bg-gradient-to-r from-cyan-600/20 to-violet-600/20 rounded-2xl p-8 border border-cyan-500/20 text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Ready to Integrate?</h2>
-            <p className="text-slate-400 mb-6">Get your API keys and start building in minutes. Need help with enterprise features?</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/solutions/biosign/demo"
-                className="px-6 py-3 bg-cyan-500 text-white rounded-xl font-semibold hover:bg-cyan-600 transition-all"
-              >
-                Get API Keys
-              </Link>
-              <Link 
-                to="/solutions/biosign/demo"
-                className="px-6 py-3 bg-slate-800 text-white rounded-xl font-semibold hover:bg-slate-700 transition-all"
-              >
-                Book Enterprise Demo
-              </Link>
+              <span className={step > i ? 'text-green-400' : step === i + 1 ? 'text-primary' : 'text-muted-foreground'}>{s}</span>
             </div>
-          </div>
-        </div>
-      </section>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 };
 
-export default BioSignFeaturesPage;
+// ============ DEVICE DEMO ============
+const DeviceDemo = ({ onSuccess, getAuthHeaders }) => {
+  const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [deviceName, setDeviceName] = useState("");
+  const userId = "demo-user-001";
+
+  const fetchDevices = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API}/api/devices/${userId}`, { headers: getAuthHeaders() });
+      setDevices(response.data);
+    } catch (e) { console.log("No devices yet"); }
+  }, [getAuthHeaders]);
+
+  useEffect(() => { fetchDevices(); }, [fetchDevices]);
+
+  const registerDevice = async () => {
+    if (!deviceName) { toast.error("Enter device name"); return; }
+    setLoading(true);
+    try {
+      const publicKey = btoa(Array.from(crypto.getRandomValues(new Uint8Array(64))).map(b => String.fromCharCode(b)).join(''));
+      await axios.post(`${API}/api/devices/register`, {
+        user_id: userId, device_name: deviceName, device_type: "web", public_key: publicKey,
+        device_fingerprint: { browser: "Chrome", platform: navigator.platform }
+      }, { headers: getAuthHeaders() });
+      toast.success("Device registered!");
+      setDeviceName("");
+      fetchDevices();
+      onSuccess?.();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Failed to register device");
+    } finally { setLoading(false); }
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Smartphone className="w-5 h-5 text-blue-500" />
+            Register Device
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label>Device Name</Label>
+            <Input value={deviceName} onChange={(e) => setDeviceName(e.target.value)} placeholder="e.g., My MacBook" />
+          </div>
+          <Button onClick={registerDevice} disabled={loading} className="w-full">
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Smartphone className="w-4 h-4 mr-2" />}
+            Register Device
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Registered Devices ({devices.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[200px]">
+            {devices.length > 0 ? devices.map((d) => (
+              <div key={d.id} className="flex items-center justify-between p-3 mb-2 rounded-lg bg-accent/30">
+                <div className="flex items-center gap-3">
+                  <Monitor className="w-5 h-5 text-blue-400" />
+                  <div>
+                    <p className="font-medium text-sm">{d.device_name}</p>
+                    <p className="text-xs text-muted-foreground">{d.device_type}</p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="text-green-400">Active</Badge>
+              </div>
+            )) : (
+              <p className="text-center text-muted-foreground py-8">No devices registered yet</p>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ TRANSACTION DEMO ============
+const TransactionDemo = ({ onSuccess, getAuthHeaders }) => {
+  const [amount, setAmount] = useState("500");
+  const [recipient, setRecipient] = useState("ACC-123456");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const createTransaction = async () => {
+    setLoading(true);
+    try {
+      const signature = btoa(JSON.stringify({ amount, recipient, timestamp: Date.now() }));
+      const response = await axios.post(`${API}/api/transactions/create`, {
+        user_id: "demo-user-001", device_id: "demo-device", amount: parseFloat(amount),
+        currency: "USD", recipient_id: recipient, recipient_name: "Jane Smith",
+        description: "Demo payment", signature,
+        geolocation: { lat: 40.7128, lng: -74.0060, city: "New York", country: "US" }
+      }, { headers: getAuthHeaders() });
+      setResult(response.data);
+      toast.success("Transaction created!");
+      onSuccess?.();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Failed to create transaction");
+    } finally { setLoading(false); }
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Send className="w-5 h-5 text-emerald-500" />
+            Create Transaction
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Amount (USD)</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input value={amount} onChange={(e) => setAmount(e.target.value)} className="pl-9" type="number" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Recipient</Label>
+              <Input value={recipient} onChange={(e) => setRecipient(e.target.value)} />
+            </div>
+          </div>
+          <Button onClick={createTransaction} disabled={loading} className="w-full">
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Shield className="w-4 h-4 mr-2" />}
+            Sign & Submit
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Transaction Result</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {result ? (
+            <div className="space-y-3">
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span className="text-muted-foreground">ID</span><span className="font-mono text-xs">{result.transaction_id?.slice(0,12)}...</span></div>
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span className="text-muted-foreground">Status</span><Badge className="bg-green-500/10 text-green-400">{result.status}</Badge></div>
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span className="text-muted-foreground">Risk Score</span><span className={result.risk_analysis?.risk_level === 'low' ? 'text-green-400' : 'text-yellow-400'}>{(result.risk_analysis?.risk_score * 100).toFixed(0)}%</span></div>
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground py-8">Submit a transaction to see results</p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ RISK ANALYSIS DEMO ============
+const RiskDemo = ({ onSuccess }) => {
+  const [amount, setAmount] = useState(500);
+  const [newRecipient, setNewRecipient] = useState(false);
+  const [unusualLocation, setUnusualLocation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const analyzeRisk = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${API}/api/risk/analyze`, {
+        user_id: "demo-user-001", device_id: "demo-device", amount,
+        recipient_id: newRecipient ? "NEW-999" : "KNOWN-123",
+        geolocation: unusualLocation ? { lat: -33.86, lng: 151.20, city: "Sydney", country: "AU" } : { lat: 40.71, lng: -74.00, city: "New York", country: "US" },
+        behavioral_data: { typing_speed_deviation: 0.2, session_duration: 0.8 }
+      });
+      setResult(response.data);
+      toast.success("Risk analysis complete!");
+      onSuccess?.();
+    } catch (error) {
+      toast.error("Analysis failed");
+    } finally { setLoading(false); }
+  };
+
+  const getRiskColor = (level) => ({ low: "text-green-400", medium: "text-yellow-400", high: "text-red-400" }[level] || "text-yellow-400");
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Brain className="w-5 h-5 text-purple-500" />
+            Risk Parameters
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between"><Label>Amount</Label><span className="text-primary font-bold">${amount}</span></div>
+            <Slider value={[amount]} onValueChange={([v]) => setAmount(v)} min={10} max={10000} step={100} />
+          </div>
+          <div className="flex items-center justify-between p-3 bg-accent/30 rounded">
+            <span>New Recipient</span>
+            <Button size="sm" variant={newRecipient ? "default" : "outline"} onClick={() => setNewRecipient(!newRecipient)}>{newRecipient ? "Yes" : "No"}</Button>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-accent/30 rounded">
+            <span>Unusual Location</span>
+            <Button size="sm" variant={unusualLocation ? "default" : "outline"} onClick={() => setUnusualLocation(!unusualLocation)}>{unusualLocation ? "Yes" : "No"}</Button>
+          </div>
+          <Button onClick={analyzeRisk} disabled={loading} className="w-full">
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Gauge className="w-4 h-4 mr-2" />}
+            Analyze Risk
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Risk Assessment</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {result ? (
+            <div className="space-y-4">
+              <div className="text-center">
+                <p className={`text-5xl font-bold ${getRiskColor(result.risk_level)}`}>{(result.risk_score * 100).toFixed(0)}%</p>
+                <p className={`text-lg uppercase ${getRiskColor(result.risk_level)}`}>{result.risk_level} Risk</p>
+              </div>
+              <Progress value={result.risk_score * 100} className={`h-2 ${result.risk_level === 'low' ? '[&>div]:bg-green-500' : result.risk_level === 'medium' ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'}`} />
+              {result.risk_factors?.length > 0 && (
+                <div className="space-y-1">
+                  {result.risk_factors.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-yellow-400">
+                      <AlertTriangle className="w-3 h-3" />{f}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground py-8">Adjust parameters and analyze</p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ AUDIT LOGS DEMO ============
+const AuditDemo = ({ onSuccess }) => {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const response = await axios.get(`${API}/api/audit/logs?limit=10`);
+        setLogs(response.data);
+        if (response.data.length > 0) onSuccess?.();
+      } catch (e) { console.log("No logs"); }
+      setLoading(false);
+    };
+    fetchLogs();
+  }, [onSuccess]);
+
+  const getEventColor = (type) => ({
+    device_registration: "text-green-400 bg-green-500/10",
+    transaction_created: "text-blue-400 bg-blue-500/10",
+    demo_session_created: "text-purple-400 bg-purple-500/10",
+  }[type] || "text-muted-foreground bg-muted");
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <FileText className="w-5 h-5 text-amber-500" />
+          Audit Log ({logs.length} entries)
+          <Badge variant="outline" className="ml-auto text-green-400"><CheckCircle className="w-3 h-3 mr-1" />SHA-256 Protected</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="h-[300px]">
+          {loading ? (
+            <div className="flex justify-center py-8"><RefreshCw className="w-6 h-6 animate-spin" /></div>
+          ) : logs.length > 0 ? (
+            <div className="space-y-2">
+              {logs.map((log) => (
+                <div key={log.id} className="p-3 rounded-lg bg-accent/30 border border-border/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className={getEventColor(log.event_type)}>{log.event_type?.replace(/_/g, ' ')}</Badge>
+                    <span className="text-xs text-muted-foreground">{new Date(log.timestamp).toLocaleString()}</span>
+                  </div>
+                  <div className="flex gap-4 text-xs">
+                    <span><span className="text-muted-foreground">Hash:</span> <code className="text-primary/70">{log.integrity_hash?.slice(0,16)}...</code></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground py-8">No audit logs yet. Try the other demos first!</p>
+          )}
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  );
+};
+
+// ============ OFFLINE TRANSACTIONS DEMO ============
+const OfflineDemo = ({ onSuccess }) => {
+  const [pendingCount, setPendingCount] = useState(0);
+  const [syncedCount, setSyncedCount] = useState(0);
+
+  const queueTransaction = () => {
+    setPendingCount(prev => prev + 1);
+    toast.success("Transaction queued!");
+    onSuccess?.();
+  };
+
+  const syncAll = () => {
+    setSyncedCount(prev => prev + pendingCount);
+    setPendingCount(0);
+    toast.success("All transactions synced!");
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <WifiOff className="w-5 h-5 text-cyan-500" />
+            Offline Queue Demo
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/30">
+            <Wifi className="w-5 h-5 text-green-400" />
+            <span className="font-medium">Online</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Users can sign transactions offline. They sync automatically when connectivity returns.
+          </p>
+          <Button onClick={queueTransaction} className="w-full">
+            <Upload className="w-4 h-4 mr-2" />
+            Queue Offline Transaction
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Sync Status</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 rounded-lg bg-yellow-500/10 text-center">
+              <Clock className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
+              <p className="text-2xl font-bold">{pendingCount}</p>
+              <p className="text-xs text-muted-foreground">Pending</p>
+            </div>
+            <div className="p-4 rounded-lg bg-green-500/10 text-center">
+              <CheckCircle2 className="w-6 h-6 mx-auto mb-2 text-green-500" />
+              <p className="text-2xl font-bold">{syncedCount}</p>
+              <p className="text-xs text-muted-foreground">Synced</p>
+            </div>
+          </div>
+          <Button variant="outline" className="w-full" disabled={pendingCount === 0} onClick={syncAll}>
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Sync All ({pendingCount})
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ FRAUD ALERTS DEMO ============
+const FraudDemo = ({ onSuccess }) => {
+  const [alerts, setAlerts] = useState([]);
+
+  const createTestAlert = () => {
+    const severities = ["critical", "high", "medium", "low"];
+    const types = ["unusual_location", "high_amount", "velocity_exceeded", "new_device"];
+    const newAlert = {
+      id: Date.now(),
+      severity: severities[Math.floor(Math.random() * severities.length)],
+      alert_type: types[Math.floor(Math.random() * types.length)],
+      risk_score: Math.floor(Math.random() * 50) + 50,
+      created_at: new Date().toISOString(),
+    };
+    setAlerts(prev => [newAlert, ...prev].slice(0, 5));
+    toast.warning("New fraud alert!");
+    onSuccess?.();
+  };
+
+  const getSeverityColor = (s) => ({
+    critical: "bg-red-500/10 text-red-500 border-red-500/30",
+    high: "bg-orange-500/10 text-orange-500 border-orange-500/30",
+    medium: "bg-yellow-500/10 text-yellow-500 border-yellow-500/30",
+    low: "bg-green-500/10 text-green-500 border-green-500/30"
+  }[s] || "bg-muted");
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
+            Fraud Alert System
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Real-time monitoring detects suspicious patterns and triggers instant alerts.
+          </p>
+          <div className="grid grid-cols-4 gap-2 text-center">
+            {["critical", "high", "medium", "low"].map(s => (
+              <div key={s} className={`p-2 rounded ${getSeverityColor(s)}`}>
+                <p className="text-lg font-bold">{alerts.filter(a => a.severity === s).length}</p>
+                <p className="text-xs capitalize">{s}</p>
+              </div>
+            ))}
+          </div>
+          <Button onClick={createTestAlert} variant="outline" className="w-full">
+            <Zap className="w-4 h-4 mr-2" />
+            Simulate Alert
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Alerts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[200px]">
+            {alerts.length > 0 ? (
+              <div className="space-y-2">
+                {alerts.map(a => (
+                  <div key={a.id} className="p-3 rounded-lg bg-accent/30 border border-border/50">
+                    <div className="flex items-center gap-2">
+                      <Badge className={getSeverityColor(a.severity)}>{a.severity}</Badge>
+                      <span className="text-sm">{a.alert_type.replace(/_/g, ' ')}</span>
+                    </div>
+                    <div className="flex justify-between mt-1 text-xs text-muted-foreground">
+                      <span>Risk: {a.risk_score}%</span>
+                      <span>{new Date(a.created_at).toLocaleTimeString()}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground py-8">No alerts. Click simulate to test.</p>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ BEHAVIORAL BIOMETRICS DEMO ============
+const BehavioralDemo = ({ onSuccess }) => {
+  const [collecting, setCollecting] = useState(false);
+  const [text, setText] = useState("");
+  const [keyCount, setKeyCount] = useState(0);
+  const [analysis, setAnalysis] = useState(null);
+
+  const handleKeyDown = () => {
+    if (collecting) setKeyCount(prev => prev + 1);
+  };
+
+  const startCollection = () => {
+    setCollecting(true);
+    setText("");
+    setKeyCount(0);
+    setAnalysis(null);
+    toast.info("Start typing to collect behavioral data");
+  };
+
+  const analyzePattern = () => {
+    setCollecting(false);
+    const typingSpeed = text.length / 5;
+    const riskScore = Math.random() * 30;
+    setAnalysis({
+      typing_speed: typingSpeed.toFixed(1),
+      key_events: keyCount,
+      risk_score: riskScore.toFixed(0),
+      recommendation: riskScore < 20 ? "normal" : "review"
+    });
+    toast.success("Behavioral analysis complete!");
+    onSuccess?.();
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Brain className="w-5 h-5 text-purple-500" />
+            Behavioral Collection
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`flex items-center gap-2 p-3 rounded-lg ${collecting ? 'bg-green-500/10' : 'bg-muted/30'}`}>
+            <div className={`w-3 h-3 rounded-full ${collecting ? 'bg-green-500 animate-pulse' : 'bg-muted-foreground'}`} />
+            <span>{collecting ? "Collecting..." : "Ready"}</span>
+          </div>
+          <div className="space-y-2">
+            <Label>Type something naturally:</Label>
+            <textarea 
+              className="w-full h-24 p-3 rounded-lg bg-muted border border-border resize-none"
+              placeholder={collecting ? "Type here..." : "Click Start to begin"}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={!collecting}
+            />
+          </div>
+          {!collecting ? (
+            <Button onClick={startCollection} className="w-full">
+              <Activity className="w-4 h-4 mr-2" />
+              Start Collection
+            </Button>
+          ) : (
+            <Button onClick={analyzePattern} className="w-full" disabled={text.length < 10}>
+              <Eye className="w-4 h-4 mr-2" />
+              Analyze ({text.length} chars)
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Analysis Results</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {collecting && (
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="p-3 rounded-lg bg-purple-500/10 text-center">
+                <Keyboard className="w-5 h-5 mx-auto mb-1 text-purple-500" />
+                <p className="text-lg font-bold">{text.length}</p>
+                <p className="text-xs text-muted-foreground">Characters</p>
+              </div>
+              <div className="p-3 rounded-lg bg-blue-500/10 text-center">
+                <Activity className="w-5 h-5 mx-auto mb-1 text-blue-500" />
+                <p className="text-lg font-bold">{keyCount}</p>
+                <p className="text-xs text-muted-foreground">Key Events</p>
+              </div>
+            </div>
+          )}
+          {analysis ? (
+            <div className="space-y-3">
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span>Typing Speed</span><span className="font-bold">{analysis.typing_speed} c/s</span></div>
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span>Key Events</span><span className="font-bold">{analysis.key_events}</span></div>
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span>Risk Score</span><span className={`font-bold ${analysis.risk_score < 20 ? 'text-green-400' : 'text-yellow-400'}`}>{analysis.risk_score}%</span></div>
+              <div className="flex justify-between p-2 bg-accent/30 rounded"><span>Status</span><Badge className={analysis.recommendation === 'normal' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}>{analysis.recommendation}</Badge></div>
+            </div>
+          ) : !collecting ? (
+            <p className="text-center text-muted-foreground py-8">Start collection to analyze</p>
+          ) : null}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// ============ API REFERENCE ============
+const APIReference = () => {
+  const [openSections, setOpenSections] = useState(["auth"]);
+
+  const toggleSection = (id) => {
+    setOpenSections(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
+  };
+
+  const apiGroups = [
+    { id: "auth", title: "Authentication", icon: Lock, color: "text-green-500", endpoints: [
+      { method: "POST", path: "/api/auth/register", desc: "Register new user" },
+      { method: "POST", path: "/api/auth/login", desc: "Login and get JWT" },
+      { method: "POST", path: "/api/auth/refresh", desc: "Refresh access token" },
+      { method: "GET", path: "/api/auth/me", desc: "Get current user" },
+      { method: "POST", path: "/api/auth/verify-email", desc: "Verify email token" },
+    ]},
+    { id: "devices", title: "Devices", icon: Smartphone, color: "text-blue-500", endpoints: [
+      { method: "POST", path: "/api/devices/register", desc: "Register new device" },
+      { method: "GET", path: "/api/devices/{user_id}", desc: "Get user devices" },
+      { method: "DELETE", path: "/api/devices/{device_id}", desc: "Revoke device" },
+    ]},
+    { id: "webauthn", title: "WebAuthn", icon: Fingerprint, color: "text-purple-500", endpoints: [
+      { method: "POST", path: "/api/webauthn/register/options", desc: "Get registration options" },
+      { method: "POST", path: "/api/webauthn/register/verify", desc: "Verify registration" },
+      { method: "POST", path: "/api/webauthn/authenticate/options", desc: "Get auth options" },
+      { method: "POST", path: "/api/webauthn/authenticate/verify", desc: "Verify authentication" },
+    ]},
+    { id: "transactions", title: "Transactions", icon: Send, color: "text-emerald-500", endpoints: [
+      { method: "POST", path: "/api/transactions/create", desc: "Create signed transaction" },
+      { method: "POST", path: "/api/transactions/verify", desc: "Verify with biometric" },
+      { method: "GET", path: "/api/transactions/{user_id}", desc: "Get user transactions" },
+      { method: "POST", path: "/api/transactions/offline/queue", desc: "Queue offline tx" },
+      { method: "POST", path: "/api/transactions/offline/sync", desc: "Sync offline transactions" },
+    ]},
+    { id: "risk", title: "Risk Analysis", icon: Brain, color: "text-yellow-500", endpoints: [
+      { method: "POST", path: "/api/risk/analyze", desc: "AI-powered risk scoring" },
+    ]},
+    { id: "behavioral", title: "Behavioral", icon: Activity, color: "text-pink-500", endpoints: [
+      { method: "GET", path: "/api/behavioral/profile", desc: "Get user profile" },
+      { method: "POST", path: "/api/behavioral/session", desc: "Submit session data" },
+    ]},
+    { id: "fraud", title: "Fraud Alerts", icon: AlertTriangle, color: "text-red-500", endpoints: [
+      { method: "GET", path: "/api/fraud-alerts", desc: "Get alerts" },
+      { method: "PATCH", path: "/api/fraud-alerts/{id}/acknowledge", desc: "Acknowledge alert" },
+    ]},
+    { id: "audit", title: "Audit Logs", icon: FileText, color: "text-amber-500", endpoints: [
+      { method: "GET", path: "/api/audit/logs", desc: "Get audit logs" },
+      { method: "GET", path: "/api/audit/verify/{log_id}", desc: "Verify log integrity" },
+    ]},
+    { id: "apikeys", title: "API Keys", icon: Key, color: "text-cyan-500", endpoints: [
+      { method: "POST", path: "/api/api-keys", desc: "Create API key" },
+      { method: "GET", path: "/api/api-keys", desc: "List API keys" },
+      { method: "DELETE", path: "/api/api-keys/{key_id}", desc: "Revoke key" },
+    ]},
+    { id: "webhooks", title: "Webhooks", icon: Globe, color: "text-indigo-500", endpoints: [
+      { method: "POST", path: "/api/webhooks", desc: "Create webhook" },
+      { method: "GET", path: "/api/webhooks", desc: "List webhooks" },
+      { method: "POST", path: "/api/webhooks/{id}/test", desc: "Test webhook" },
+    ]},
+    { id: "billing", title: "Billing", icon: DollarSign, color: "text-green-500", endpoints: [
+      { method: "GET", path: "/api/billing/plans", desc: "Get pricing plans" },
+      { method: "POST", path: "/api/billing/checkout", desc: "Create checkout session" },
+      { method: "GET", path: "/api/billing/subscription", desc: "Get subscription" },
+    ]},
+  ];
+
+  const methodColors = { GET: "bg-green-500/10 text-green-400", POST: "bg-blue-500/10 text-blue-400", PUT: "bg-yellow-500/10 text-yellow-400", PATCH: "bg-orange-500/10 text-orange-400", DELETE: "bg-red-500/10 text-red-400" };
+  const totalEndpoints = apiGroups.reduce((sum, g) => sum + g.endpoints.length, 0);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Code className="w-5 h-5" />
+          API Reference
+          <Badge variant="outline" className="ml-2">{totalEndpoints}+ endpoints</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          {apiGroups.map((group) => (
+            <Collapsible key={group.id} open={openSections.includes(group.id)}>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" className="w-full justify-between p-4 h-auto" onClick={() => toggleSection(group.id)}>
+                  <div className="flex items-center gap-3">
+                    <group.icon className={`w-5 h-5 ${group.color}`} />
+                    <span className="font-medium">{group.title}</span>
+                    <Badge variant="outline" className="text-xs">{group.endpoints.length}</Badge>
+                  </div>
+                  {openSections.includes(group.id) ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="pl-8 pr-4 pb-4 space-y-2">
+                  {group.endpoints.map((ep, i) => (
+                    <div key={i} className="flex items-center gap-3 p-2 rounded bg-accent/30 text-sm">
+                      <Badge className={`${methodColors[ep.method]} font-mono text-xs w-16 justify-center`}>{ep.method}</Badge>
+                      <code className="text-xs font-mono flex-1">{ep.path}</code>
+                      <span className="text-muted-foreground text-xs hidden md:block">{ep.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// ============ EMAIL CAPTURE MODAL ============
+const EmailCaptureModal = ({ open, onOpenChange, triedFeatures, sessionId }) => {
+  const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!email) { toast.error("Please enter your email"); return; }
+    setLoading(true);
+    try {
+      await axios.post(`${API}/api/demo/capture-lead`, {
+        email,
+        company_name: companyName,
+        demo_session_id: sessionId,
+        features_tried: triedFeatures,
+        source: "features_page"
+      });
+      setSuccess(true);
+      toast.success("Progress saved!");
+    } catch (error) {
+      toast.error("Failed to save. Please try again.");
+    } finally { setLoading(false); }
+  };
+
+  if (success) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <div className="text-center py-6">
+            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-8 h-8 text-green-500" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">You're All Set!</h3>
+            <p className="text-muted-foreground mb-4">Check your email for next steps and the integration guide.</p>
+            <Button onClick={() => onOpenChange(false)}>Continue Exploring</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Gift className="w-5 h-5 text-primary" />
+            Save Your Progress
+          </DialogTitle>
+          <DialogDescription>
+            You've explored {triedFeatures.length} features! Enter your email to save progress and get the integration guide.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Work Email</Label>
+            <Input id="email" type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="company">Company (optional)</Label>
+            <Input id="company" placeholder="Your Company" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+          </div>
+          <Button onClick={handleSubmit} className="w-full" disabled={loading}>
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2" />}
+            Save & Get Guide
+          </Button>
+          <p className="text-xs text-center text-muted-foreground">We'll never spam. Unsubscribe anytime.</p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ============ BOOK DEMO MODAL ============
+const BookDemoModal = ({ open, onOpenChange }) => {
+  const [formData, setFormData] = useState({ name: "", email: "", company_name: "", company_size: "", use_case: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.email || !formData.company_name || !formData.company_size) {
+      toast.error("Please fill in required fields");
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.post(`${API}/api/demo/book-call`, formData);
+      setSuccess(true);
+      toast.success("Demo request submitted!");
+    } catch (error) {
+      toast.error("Failed to submit. Please try again.");
+    } finally { setLoading(false); }
+  };
+
+  if (success) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <div className="text-center py-6">
+            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-green-500" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Demo Request Received!</h3>
+            <p className="text-muted-foreground mb-4">Our team will reach out within 24 hours to schedule your call.</p>
+            <Button onClick={() => onOpenChange(false)}>Got It</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-primary" />
+            Book a Personalized Demo
+          </DialogTitle>
+          <DialogDescription>
+            Talk to our team about enterprise features, custom integrations, and volume pricing.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Name *</Label>
+              <Input placeholder="John Smith" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label>Work Email *</Label>
+              <Input type="email" placeholder="john@company.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Company *</Label>
+              <Input placeholder="Acme Inc" value={formData.company_name} onChange={(e) => setFormData({...formData, company_name: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label>Company Size *</Label>
+              <Select value={formData.company_size} onValueChange={(v) => setFormData({...formData, company_size: v})}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1-10">1-10 employees</SelectItem>
+                  <SelectItem value="11-50">11-50 employees</SelectItem>
+                  <SelectItem value="51-200">51-200 employees</SelectItem>
+                  <SelectItem value="200+">200+ employees</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Use Case</Label>
+            <Input placeholder="e.g., Payment authorization for mobile banking" value={formData.use_case} onChange={(e) => setFormData({...formData, use_case: e.target.value})} />
+          </div>
+          <div className="space-y-2">
+            <Label>Message (optional)</Label>
+            <textarea className="w-full h-20 p-3 rounded-lg bg-muted border border-border resize-none text-sm" placeholder="Any specific requirements or questions?" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
+          </div>
+          <Button onClick={handleSubmit} className="w-full" disabled={loading}>
+            {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Phone className="w-4 h-4 mr-2" />}
+            Request Demo Call
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ============ SUCCESS CTA ============
+const SuccessCTA = ({ featureName }) => (
+  <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-primary/10 to-green-500/10 border border-primary/30 animate-fade-in">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <Sparkles className="w-5 h-5 text-primary" />
+        <span className="font-medium">Great! You just tested {featureName}</span>
+      </div>
+      <Link to="/keys">
+        <Button size="sm" className="glow-green">
+          Get API Keys
+          <ArrowRight className="w-4 h-4 ml-1" />
+        </Button>
+      </Link>
+    </div>
+  </div>
+);
+
+// ============ MAIN FEATURES PAGE ============
+const Features = () => {
+  const { session, loading: sessionLoading, getAuthHeaders } = useDemoSession();
+  const { triedFeatures, markFeatureTried, progress } = useProgressTracker();
+  const [activeTab, setActiveTab] = useState("webauthn");
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [showBookDemo, setShowBookDemo] = useState(false);
+  const [lastSuccess, setLastSuccess] = useState(null);
+  const emailCaptureShown = useRef(false);
+
+  // Show email capture after 3 features
+  useEffect(() => {
+    if (progress >= 3 && !emailCaptureShown.current) {
+      const hasEmail = localStorage.getItem('biosign_lead_captured');
+      if (!hasEmail) {
+        setTimeout(() => setShowEmailCapture(true), 1500);
+        emailCaptureShown.current = true;
+      }
+    }
+  }, [progress]);
+
+  const handleDemoSuccess = (featureId, featureName) => {
+    markFeatureTried(featureId);
+    setLastSuccess({ id: featureId, name: featureName });
+    setTimeout(() => setLastSuccess(null), 5000);
+  };
+
+  const trustBadges = [
+    { label: "PSD2 Compliant", icon: CheckCircle2 },
+    { label: "PCI DSS 4.0", icon: Shield },
+    { label: "FIDO2 Certified", icon: Fingerprint },
+    { label: "ISO 27001", icon: Lock },
+    { label: "SOC 2 Type II", icon: FileText },
+    { label: "GDPR", icon: Eye },
+  ];
+
+  const demoTabs = [
+    { id: "webauthn", label: "WebAuthn", icon: Fingerprint, color: "text-green-500", name: "Biometric Login" },
+    { id: "device", label: "Device", icon: Smartphone, color: "text-blue-500", name: "Device Binding" },
+    { id: "transaction", label: "Transaction", icon: Send, color: "text-emerald-500", name: "Transaction Signing" },
+    { id: "risk", label: "Risk Analysis", icon: Brain, color: "text-purple-500", name: "AI Risk Analysis" },
+    { id: "audit", label: "Audit Logs", icon: FileText, color: "text-amber-500", name: "Audit Logging" },
+    { id: "offline", label: "Offline", icon: WifiOff, color: "text-cyan-500", name: "Offline Sync" },
+    { id: "fraud", label: "Fraud Alerts", icon: AlertTriangle, color: "text-red-500", name: "Fraud Detection" },
+    { id: "behavioral", label: "Behavioral", icon: Activity, color: "text-pink-500", name: "Behavioral Analysis" },
+  ];
+
+  if (sessionLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Preparing your demo environment...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background" data-testid="features-page">
+      <Navbar />
+
+      {/* Progress Bar */}
+      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium">{progress}/8 features explored</span>
+              <Progress value={(progress / 8) * 100} className="w-32 h-2" />
+            </div>
+            <div className="flex items-center gap-2">
+              {progress >= 3 && (
+                <Button size="sm" variant="outline" onClick={() => setShowEmailCapture(true)}>
+                  <Mail className="w-4 h-4 mr-2" />
+                  Save Progress
+                </Button>
+              )}
+              <Link to="/keys">
+                <Button size="sm">Get API Keys</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-10">
+          <Badge className="mb-4 bg-primary/10 text-primary border-primary/30">
+            <Zap className="w-3 h-3 mr-1" />
+            8 Interactive Demos • 50+ API Endpoints
+          </Badge>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+            Try Every Feature <span className="text-primary">Right Now</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+            No signup required. Your demo session is ready. Explore bank-grade security features live.
+          </p>
+          
+          {/* Trust Badges */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {trustBadges.map((badge, i) => (
+              <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/50 border border-border/50 text-sm">
+                <badge.icon className="w-3.5 h-3.5 text-green-500" />
+                <span>{badge.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Interactive Demo Tabs */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Terminal className="w-5 h-5 text-primary" />
+              Interactive Demos
+            </h2>
+            <div className="flex gap-1">
+              {demoTabs.map((tab) => (
+                <div key={tab.id} className={`w-3 h-3 rounded-full transition-colors ${triedFeatures.includes(tab.id) ? 'bg-green-500' : 'bg-muted'}`} title={tab.label} />
+              ))}
+            </div>
+          </div>
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
+              {demoTabs.map((tab) => (
+                <TabsTrigger 
+                  key={tab.id} 
+                  value={tab.id}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                >
+                  <tab.icon className={`w-4 h-4`} />
+                  {tab.label}
+                  {triedFeatures.includes(tab.id) && (
+                    <CheckCircle className="w-3 h-3 text-green-500 absolute -top-1 -right-1" />
+                  )}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            <TabsContent value="webauthn" className="mt-0">
+              <WebAuthnDemo onSuccess={() => handleDemoSuccess("webauthn", "Biometric Login")} getAuthHeaders={getAuthHeaders} />
+              {lastSuccess?.id === "webauthn" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="device" className="mt-0">
+              <DeviceDemo onSuccess={() => handleDemoSuccess("device", "Device Binding")} getAuthHeaders={getAuthHeaders} />
+              {lastSuccess?.id === "device" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="transaction" className="mt-0">
+              <TransactionDemo onSuccess={() => handleDemoSuccess("transaction", "Transaction Signing")} getAuthHeaders={getAuthHeaders} />
+              {lastSuccess?.id === "transaction" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="risk" className="mt-0">
+              <RiskDemo onSuccess={() => handleDemoSuccess("risk", "AI Risk Analysis")} />
+              {lastSuccess?.id === "risk" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="audit" className="mt-0">
+              <AuditDemo onSuccess={() => handleDemoSuccess("audit", "Audit Logging")} />
+              {lastSuccess?.id === "audit" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="offline" className="mt-0">
+              <OfflineDemo onSuccess={() => handleDemoSuccess("offline", "Offline Sync")} />
+              {lastSuccess?.id === "offline" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="fraud" className="mt-0">
+              <FraudDemo onSuccess={() => handleDemoSuccess("fraud", "Fraud Detection")} />
+              {lastSuccess?.id === "fraud" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+            <TabsContent value="behavioral" className="mt-0">
+              <BehavioralDemo onSuccess={() => handleDemoSuccess("behavioral", "Behavioral Analysis")} />
+              {lastSuccess?.id === "behavioral" && <SuccessCTA featureName={lastSuccess.name} />}
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* API Reference */}
+        <div className="mb-10">
+          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <Code className="w-5 h-5 text-primary" />
+            API Reference
+          </h2>
+          <APIReference />
+        </div>
+
+        {/* Bottom CTA */}
+        <Card className="bg-gradient-to-b from-primary/10 to-transparent border-primary/30">
+          <CardContent className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-3">Ready to Integrate?</h2>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              Get your API keys and start building in minutes. Need help with enterprise features?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/keys">
+                <Button size="lg" className="glow-green">
+                  Get API Keys
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" onClick={() => setShowBookDemo(true)}>
+                <Calendar className="w-4 h-4 mr-2" />
+                Book Enterprise Demo
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+
+      {/* Floating Book Demo Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button size="lg" className="shadow-lg rounded-full pl-4 pr-5 gap-2" onClick={() => setShowBookDemo(true)}>
+          <MessageSquare className="w-5 h-5" />
+          Talk to Sales
+        </Button>
+      </div>
+
+      {/* Modals */}
+      <EmailCaptureModal 
+        open={showEmailCapture} 
+        onOpenChange={(open) => {
+          setShowEmailCapture(open);
+          if (!open) localStorage.setItem('biosign_lead_captured', 'true');
+        }}
+        triedFeatures={triedFeatures}
+        sessionId={session?.session_id}
+      />
+      <BookDemoModal open={showBookDemo} onOpenChange={setShowBookDemo} />
+    </div>
+  );
+};
+
+export default Features;
