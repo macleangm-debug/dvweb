@@ -1,19 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Navbar } from "@/components/layout/Navbar";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import BioSignNavbar from "./BioSignNavbar";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import { Progress } from "../../../components/ui/progress";
+import { Slider } from "../../../components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
+import { ScrollArea } from "../../../components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../../../components/ui/dialog";
 import { toast } from "sonner";
 import {
   Fingerprint, Smartphone, Shield, Brain, FileText, WifiOff, AlertTriangle, Activity,
@@ -1025,7 +1025,7 @@ const SuccessCTA = ({ featureName }) => (
         <Sparkles className="w-5 h-5 text-primary" />
         <span className="font-medium">Great! You just tested {featureName}</span>
       </div>
-      <Link to="/keys">
+      <Link to="/solutions/biosign/demo">
         <Button size="sm" className="glow-green">
           Get API Keys
           <ArrowRight className="w-4 h-4 ml-1" />
@@ -1036,7 +1036,7 @@ const SuccessCTA = ({ featureName }) => (
 );
 
 // ============ MAIN FEATURES PAGE ============
-const Features = () => {
+const BioSignFeaturesPage = () => {
   const { session, loading: sessionLoading, getAuthHeaders } = useDemoSession();
   const { triedFeatures, markFeatureTried, progress } = useProgressTracker();
   const [activeTab, setActiveTab] = useState("webauthn");
@@ -1112,7 +1112,7 @@ const Features = () => {
                   Save Progress
                 </Button>
               )}
-              <Link to="/keys">
+              <Link to="/solutions/biosign/demo">
                 <Button size="sm">Get API Keys</Button>
               </Link>
             </div>
@@ -1228,7 +1228,7 @@ const Features = () => {
               Get your API keys and start building in minutes. Need help with enterprise features?
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/keys">
+              <Link to="/solutions/biosign/demo">
                 <Button size="lg" className="glow-green">
                   Get API Keys
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -1266,4 +1266,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default BioSignFeaturesPage;
