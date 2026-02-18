@@ -1414,13 +1414,66 @@ async def create_inquiry(request: Request):
         raise HTTPException(status_code=500, detail="Failed to submit inquiry")
 
 @api_router.get("/inquiries")
-async def get_inquiries(current_user: dict = Depends(get_current_user)):
+async def get_inquiries(payload: dict = Depends(verify_admin_token)):
     """Get all inquiries (admin only)"""
-    if current_user.get("role") != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
-    
     inquiries = await db.inquiries.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
-    return {"inquiries": inquiries}
+    
+    # Calculate stats
+    total = len(inquiries)
+    new_count = len([i for i in inquiries if i.get("status") == "new"])
+    contacted_count = len([i for i in inquiries if i.get("status") == "contacted"])
+    converted_count = len([i for i in inquiries if i.get("status") == "converted"])
+    
+    return {
+        "inquiries": inquiries,
+        "stats": {
+            "total": total,
+            "new": new_count,
+            "contacted": contacted_count,
+            "converted": converted_count
+        }
+    }
+
+@api_router.put("/inquiries/{inquiry_id}/status")
+async def update_inquiry_status(inquiry_id: str, request: Request, payload: dict = Depends(verify_admin_token)):
+    """Update inquiry status (admin only)"""
+    try:
+        data = await request.json()
+        new_status = data.get("status")
+        notes = data.get("notes", "")
+        
+        valid_statuses = ["new", "contacted", "qualified", "converted", "closed"]
+        if new_status not in valid_statuses:
+            raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+        
+        update_data = {
+            "status": new_status,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "updated_by": payload.get("sub")
+        }
+        if notes:
+            update_data["notes"] = notes
+        
+        result = await db.inquiries.update_one(
+            {"solution": {"$exists": True}, "email": {"$exists": True}},
+            {"$set": update_data}
+        )
+        
+        # Try to find by other means if the first approach didn't work
+        # Since we don't have an id field, use email + solution as unique identifier
+        if result.modified_count == 0:
+            # Try finding with a more specific query
+            inquiry = await db.inquiries.find_one({"email": inquiry_id}, {"_id": 0})
+            if inquiry:
+                await db.inquiries.update_one(
+                    {"email": inquiry_id, "solution": inquiry.get("solution")},
+                    {"$set": update_data}
+                )
+        
+        return {"message": "Inquiry status updated", "status": new_status}
+    except Exception as e:
+        logger.error(f"Failed to update inquiry status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update inquiry status")
 
 # NOTE: Projects, team, testimonials, statistics, news, partners, and inquiries 
 # routes have been moved to routes/public_content_routes.py

@@ -3,13 +3,20 @@ import axios from 'axios';
 import {
   TrendingUp, Users, DollarSign, Target, Mail, Phone, Calendar,
   Filter, Search, MoreVertical, Plus, ChevronRight, Clock, User,
-  CheckCircle, AlertCircle, ArrowRight, Tag, Building2, Globe
+  CheckCircle, AlertCircle, ArrowRight, Tag, Building2, Globe, RefreshCw,
+  Eye, MessageSquare, ExternalLink
 } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
 const MarketingSales = ({ subSection }) => {
   const [leads, setLeads] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
+  const [inquiryStats, setInquiryStats] = useState({ total: 0, new: 0, contacted: 0, converted: 0 });
+  const [loadingInquiries, setLoadingInquiries] = useState(false);
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [pipeline, setPipeline] = useState({
     new: [],
     contacted: [],
@@ -22,8 +29,31 @@ const MarketingSales = ({ subSection }) => {
   const [segments, setSegments] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Fetch real inquiries from API
+  const fetchInquiries = async () => {
+    setLoadingInquiries(true);
+    try {
+      const token = localStorage.getItem('dv_token');
+      const response = await axios.get(`${API}/api/inquiries`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setInquiries(response.data.inquiries || []);
+      setInquiryStats(response.data.stats || { total: 0, new: 0, contacted: 0, converted: 0 });
+    } catch (error) {
+      console.error('Failed to fetch inquiries:', error);
+    } finally {
+      setLoadingInquiries(false);
+    }
+  };
+
   useEffect(() => {
-    // Load mock data
+    if (subSection === 'leads') {
+      fetchInquiries();
+    }
+  }, [subSection]);
+
+  useEffect(() => {
+    // Load mock data for other sections
     setLeads([
       { id: 1, name: 'John Mwangi', email: 'john@worldbank.org', company: 'World Bank', source: 'Website', status: 'new', date: '2024-02-10', value: 25000 },
       { id: 2, name: 'Sarah Kim', email: 'sarah@unicef.org', company: 'UNICEF', source: 'Referral', status: 'contacted', date: '2024-02-09', value: 45000 },
