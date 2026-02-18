@@ -120,6 +120,7 @@ const SolutionInquiryPage = () => {
     amber: { bg: 'bg-amber-500', border: 'border-amber-500/30', text: 'text-amber-400', btnBg: 'bg-amber-500 hover:bg-amber-600' },
     blue: { bg: 'bg-blue-500', border: 'border-blue-500/30', text: 'text-blue-400', btnBg: 'bg-blue-500 hover:bg-blue-600' },
     purple: { bg: 'bg-purple-500', border: 'border-purple-500/30', text: 'text-purple-400', btnBg: 'bg-purple-500 hover:bg-purple-600' },
+    cyan: { bg: 'bg-cyan-500', border: 'border-cyan-500/30', text: 'text-cyan-400', btnBg: 'bg-cyan-500 hover:bg-cyan-600' },
     gray: { bg: 'bg-gray-500', border: 'border-gray-500/30', text: 'text-gray-400', btnBg: 'bg-gray-500 hover:bg-gray-600' }
   };
   const colors = colorClasses[meta.color];
