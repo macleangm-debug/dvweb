@@ -553,4 +553,4 @@ curl -X POST https://api.biosign.io/api/risk/analyze \\
   );
 };
 
-export default Documentation;
+export default BioSignDocsPage;
