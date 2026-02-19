@@ -534,54 +534,6 @@ const HomePage = () => {
               </div>
             </motion.div>
           </div>
-
-          {/* Trust Badges - Enhanced Partner Logos */}
-          <div className="mt-20 pt-16 border-t border-white/10">
-            <p className="text-white/50 text-sm uppercase tracking-wider mb-8 text-center">Trusted by Leading Global Organizations</p>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
-              {[
-                { name: 'World Bank', abbr: 'WB', color: '#0057B7' },
-                { name: 'UNICEF', abbr: 'UNICEF', color: '#1CABE2' },
-                { name: 'USAID', abbr: 'USAID', color: '#002F6C' },
-                { name: 'Gates Foundation', abbr: 'BMGF', color: '#8B5CF6' },
-                { name: 'WHO', abbr: 'WHO', color: '#009ADE' }
-              ].map((org, i) => (
-                <div 
-                  key={i} 
-                  className="flex flex-col items-center justify-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all group"
-                >
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: `${org.color}20` }}
-                  >
-                    <span className="font-bold text-sm" style={{ color: org.color }}>{org.abbr.slice(0, 2)}</span>
-                  </div>
-                  <span className="text-white/70 text-sm font-medium">{org.name}</span>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center mt-6">
-              {[
-                { name: 'African Development Bank', abbr: 'AfDB', color: '#00A651' },
-                { name: 'European Union', abbr: 'EU', color: '#003399' },
-                { name: 'UK FCDO', abbr: 'FCDO', color: '#E4003B' },
-                { name: 'UN Agencies', abbr: 'UN', color: '#4B9CD3' }
-              ].map((org, i) => (
-                <div 
-                  key={i} 
-                  className="flex flex-col items-center justify-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all group"
-                >
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: `${org.color}20` }}
-                  >
-                    <span className="font-bold text-sm" style={{ color: org.color }}>{org.abbr.slice(0, 2)}</span>
-                  </div>
-                  <span className="text-white/70 text-sm font-medium text-center">{org.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
