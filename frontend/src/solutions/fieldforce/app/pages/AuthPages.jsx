@@ -24,7 +24,15 @@ export function LoginPage() {
     setLoading(true);
     try {
       const response = await authAPI.login(email, password);
-      setAuth(response.data.user, response.data.access_token);
+      const { user, access_token } = response.data;
+      
+      // Store in zustand
+      setAuth(user, access_token);
+      
+      // Also store in localStorage for FieldForceCanvaLayout compatibility
+      localStorage.setItem('fieldforce_token', access_token);
+      localStorage.setItem('fieldforce_user', JSON.stringify(user));
+      
       toast.success('Welcome back!');
       navigate('/solutions/fieldforce/app/dashboard');
     } catch (error) {
