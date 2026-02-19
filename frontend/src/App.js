@@ -287,6 +287,17 @@ function App() {
             <Route path="/solutions/biosign/docs" element={<BioSignDocsPage />} />
             <Route path="/solutions/biosign/demo" element={<BioSignDemoPage />} />
             
+            {/* Survey360 App Routes - NO FOOTER (self-contained app) */}
+            <Route path="/solutions/survey360/app" element={<Survey360AppLayout />}>
+              <Route path="dashboard" element={<Survey360DashboardPage />} />
+              <Route path="surveys" element={<Survey360SurveysPage />} />
+              <Route path="surveys/new" element={<Survey360BuilderPage />} />
+              <Route path="surveys/:id/edit" element={<Survey360BuilderPage />} />
+              <Route path="responses" element={<Survey360ResponsesPage />} />
+              <Route path="billing" element={<Survey360BillingPage />} />
+              <Route path="settings" element={<Survey360SettingsPage />} />
+            </Route>
+            
             {/* FieldForce App Routes - NO FOOTER (self-contained app) */}
             <Route path="/solutions/fieldforce/app/login" element={<FFLoginPage />} />
             <Route path="/solutions/fieldforce/app/register" element={<FFRegisterPage />} />
