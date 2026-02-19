@@ -112,18 +112,25 @@ const BioSignLandingPage = () => {
     <div className="min-h-screen bg-background noise-bg" data-testid="landing-page">
       {/* Hero Section */}
       <section className="hero-gradient relative overflow-hidden" data-testid="hero-section">
-        {/* Navigation - DataVision Logo only (no back arrow) */}
+        {/* Navigation */}
         <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2" data-testid="datavision-link">
-              <div className="bg-white rounded px-2 py-1">
-                <img 
-                  src="/datavision-logo-cropped.png" 
-                  alt="DataVision" 
-                  className="h-6 w-auto"
-                />
+            {/* Logo Section - DataVision + BioSign */}
+            <div className="flex items-center gap-4">
+              <Link to="/" className="flex items-center gap-2" data-testid="datavision-link">
+                <div className="bg-white rounded px-2 py-1">
+                  <img 
+                    src="/datavision-logo-cropped.png" 
+                    alt="DataVision" 
+                    className="h-6 w-auto"
+                  />
+                </div>
+              </Link>
+              <div className="flex items-center gap-2">
+                <BioSignLogo size={36} />
+                <span className="text-lg font-bold tracking-tight">BioSign SDK</span>
               </div>
-            </Link>
+            </div>
             <div className="hidden md:flex items-center gap-6">
               <Link to="/solutions/biosign/features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Features
