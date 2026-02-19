@@ -1,9 +1,12 @@
+/**
+ * DataPulse Billing Page - Integrated with App Layout
+ * Dark theme consistent with DataPulse design system
+ */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   CreditCard,
   Check,
-  X,
   Zap,
   Building2,
   Sparkles,
@@ -18,21 +21,9 @@ import {
   Clock,
   Server
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Button } from '../../../components/ui/button';
-import { Badge } from '../../../components/ui/badge';
-import { Progress } from '../../../components/ui/progress';
-import { Skeleton } from '../../../components/ui/skeleton';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../../../components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { DashboardLayout } from '../../../../solutions/datapulse/app/layouts/DashboardLayout';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -44,7 +35,9 @@ const PLANS = [
     description: 'For testing and evaluation',
     monthlyPrice: 0,
     icon: Activity,
-    color: 'from-gray-500 to-gray-600',
+    color: 'from-slate-500 to-slate-600',
+    bgColor: 'bg-slate-500/10',
+    textColor: 'text-slate-400',
     limits: { dataSources: 2, eventsPerDay: 1000, retentionDays: 7, users: 1 },
     features: ['2 data sources', '1K events/day', '7-day retention', 'Basic alerts', 'Email notifications']
   },
@@ -55,6 +48,8 @@ const PLANS = [
     monthlyPrice: 49,
     icon: Zap,
     color: 'from-indigo-500 to-blue-500',
+    bgColor: 'bg-indigo-500/10',
+    textColor: 'text-indigo-400',
     limits: { dataSources: 10, eventsPerDay: 50000, retentionDays: 30, users: 5 },
     features: ['10 data sources', '50K events/day', '30-day retention', '5 team members', 'Slack integration', 'Custom dashboards']
   },
@@ -65,6 +60,8 @@ const PLANS = [
     monthlyPrice: 149,
     icon: Sparkles,
     color: 'from-purple-500 to-violet-500',
+    bgColor: 'bg-purple-500/10',
+    textColor: 'text-purple-400',
     popular: true,
     limits: { dataSources: 50, eventsPerDay: 500000, retentionDays: 90, users: 20 },
     features: ['50 data sources', '500K events/day', '90-day retention', '20 team members', 'API access', 'Advanced analytics']
@@ -75,13 +72,54 @@ const PLANS = [
     description: 'For large organizations',
     monthlyPrice: 499,
     icon: Building2,
-    color: 'from-slate-600 to-slate-700',
+    color: 'from-cyan-500 to-teal-500',
+    bgColor: 'bg-cyan-500/10',
+    textColor: 'text-cyan-400',
     limits: { dataSources: -1, eventsPerDay: -1, retentionDays: 365, users: -1 },
     features: ['Unlimited sources', 'Unlimited events', '1-year retention', 'Unlimited users', 'SSO/SAML', 'Dedicated support', 'SLA guarantee']
   }
 ];
 
-export function DataPulseBillingPage() {
+// Usage Progress Bar Component
+const UsageBar = ({ used, limit, label }) => {
+  const percentage = limit === -1 ? 0 : Math.min((used / limit) * 100, 100);
+  const isUnlimited = limit === -1;
+  const isWarning = percentage > 70;
+  const isCritical = percentage > 90;
+  
+  const formatNumber = (num) => {
+    if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num/1000).toFixed(0)}K`;
+    return num.toString();
+  };
+  
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-white/70">{label}</span>
+        <span className={`text-sm font-medium ${isCritical ? 'text-red-400' : isWarning ? 'text-amber-400' : 'text-white/90'}`}>
+          {isUnlimited ? 'Unlimited' : `${formatNumber(used)} / ${formatNumber(limit)}`}
+        </span>
+      </div>
+      {!isUnlimited && (
+        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className={`h-full rounded-full ${
+              isCritical ? 'bg-gradient-to-r from-red-500 to-red-400' :
+              isWarning ? 'bg-gradient-to-r from-amber-500 to-amber-400' :
+              'bg-gradient-to-r from-indigo-500 to-purple-400'
+            }`}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+function DataPulseBillingContent() {
   const [usage, setUsage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
@@ -126,7 +164,6 @@ export function DataPulseBillingPage() {
   const confirmUpgrade = async () => {
     setUpgrading(true);
     try {
-      // Mock upgrade - would integrate with Stripe in production
       toast.success(`Upgraded to ${selectedPlan.name} plan! (Demo mode - Stripe integration pending)`);
       setUpgradeDialogOpen(false);
       await loadUsage();
@@ -137,130 +174,133 @@ export function DataPulseBillingPage() {
     }
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num/1000).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  const UsageCard = ({ title, used, limit, icon: Icon, suffix = '' }) => {
-    const percentage = limit === -1 ? 0 : Math.min((used / limit) * 100, 100);
-    const isUnlimited = limit === -1;
-    
-    return (
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 text-slate-300">
-              <Icon className="w-4 h-4" />
-              <span className="text-sm font-medium">{title}</span>
-            </div>
-            <Badge variant={percentage > 80 ? 'destructive' : 'secondary'} className="text-xs">
-              {isUnlimited ? 'Unlimited' : `${formatNumber(used)}/${formatNumber(limit)}${suffix}`}
-            </Badge>
-          </div>
-          {!isUnlimited && (
-            <Progress value={percentage} className="h-2" />
-          )}
-        </CardContent>
-      </Card>
-    );
-  };
-
   if (loading) {
     return (
-      <div className="p-6 space-y-6">
-        <Skeleton className="h-8 w-48" />
+      <div className="space-y-6 animate-pulse" data-testid="billing-loading">
+        <div className="h-8 w-48 bg-white/5 rounded-lg"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24" />)}
+          {[1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-white/5 rounded-xl"></div>)}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-64" />)}
+          {[1, 2, 3, 4].map(i => <div key={i} className="h-80 bg-white/5 rounded-xl"></div>)}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-8 bg-slate-900 min-h-screen" data-testid="datapulse-billing-page">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 font-['Inter',sans-serif]" data-testid="datapulse-billing-page">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Billing & Subscription</h1>
-          <p className="text-slate-400 mt-1">Manage your DataPulse subscription and usage</p>
+          <h1 className="text-2xl font-semibold text-white tracking-tight">Billing & Subscription</h1>
+          <p className="text-white/60 mt-1 text-sm">Manage your DataPulse subscription and monitor usage</p>
         </div>
-        <Badge className={`bg-gradient-to-r ${currentPlan.color} text-white px-4 py-1`}>
+        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r ${currentPlan.color} text-white text-sm font-medium shadow-lg`}>
+          <currentPlan.icon className="w-4 h-4" />
           {currentPlan.name} Plan
-        </Badge>
-      </div>
-
-      {/* Current Usage */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-indigo-400" />
-          Current Usage
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <UsageCard 
-            title="Data Sources" 
-            used={usage?.dataSources?.used || 0} 
-            limit={currentPlan.limits.dataSources}
-            icon={Database}
-          />
-          <UsageCard 
-            title="Events Today" 
-            used={usage?.eventsToday?.used || 0} 
-            limit={currentPlan.limits.eventsPerDay}
-            icon={Activity}
-          />
-          <UsageCard 
-            title="Team Members" 
-            used={usage?.users?.used || 0} 
-            limit={currentPlan.limits.users}
-            icon={Users}
-          />
-          <Card className="bg-slate-800/50 border-slate-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Clock className="w-4 h-4" />
-                  <span className="text-sm font-medium">Data Retention</span>
-                </div>
-                <Badge variant="secondary" className="text-xs">
-                  {currentPlan.limits.retentionDays} days
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
-      {/* Billing Period */}
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-indigo-400" />
-              <div>
-                <p className="text-sm font-medium text-white">Billing Period</p>
-                <p className="text-xs text-slate-400">
-                  {usage?.billing_period?.start ? new Date(usage.billing_period.start).toLocaleDateString() : 'N/A'} - {usage?.billing_period?.end ? new Date(usage.billing_period.end).toLocaleDateString() : 'N/A'}
-                </p>
-              </div>
+      {/* Current Usage Overview */}
+      <div className="bg-[#1e293b] rounded-2xl border border-white/10 overflow-hidden">
+        <div className="p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-indigo-400" />
             </div>
-            <Button variant="outline" size="sm" onClick={loadUsage} className="border-slate-600 text-slate-300 hover:bg-slate-700">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh
-            </Button>
+            <div>
+              <h2 className="text-lg font-semibold text-white">Current Usage</h2>
+              <p className="text-white/50 text-sm">This billing period</p>
+            </div>
+            <button 
+              onClick={loadUsage}
+              className="ml-auto p-2 rounded-lg hover:bg-white/5 text-white/50 hover:text-white transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        
+        <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-white/70">
+              <Database className="w-4 h-4" />
+              <span className="text-sm font-medium">Data Sources</span>
+            </div>
+            <UsageBar 
+              used={usage?.dataSources?.used || 0} 
+              limit={currentPlan.limits.dataSources}
+              label="Connected sources"
+            />
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-white/70">
+              <Activity className="w-4 h-4" />
+              <span className="text-sm font-medium">Events Today</span>
+            </div>
+            <UsageBar 
+              used={usage?.eventsToday?.used || 0} 
+              limit={currentPlan.limits.eventsPerDay}
+              label="Daily events"
+            />
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-white/70">
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">Team Members</span>
+            </div>
+            <UsageBar 
+              used={usage?.users?.used || 0} 
+              limit={currentPlan.limits.users}
+              label="Active users"
+            />
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-white/70">
+              <Clock className="w-4 h-4" />
+              <span className="text-sm font-medium">Data Retention</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-white/70">Retention period</span>
+              <span className="text-sm font-medium text-white/90">{currentPlan.limits.retentionDays} days</span>
+            </div>
+            <div className="h-2 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-full"></div>
+          </div>
+        </div>
+      </div>
 
-      {/* Plans */}
+      {/* Billing Period Card */}
+      <div className="bg-[#1e293b] rounded-xl border border-white/10 p-4">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-blue-400" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-white">Billing Period</p>
+            <p className="text-xs text-white/50">
+              {usage?.billing_period?.start ? new Date(usage.billing_period.start).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'} 
+              {' — '}
+              {usage?.billing_period?.end ? new Date(usage.billing_period.end).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
+            </p>
+          </div>
+          {currentPlan.monthlyPrice > 0 && (
+            <div className="text-right">
+              <p className="text-sm text-white/50">Monthly cost</p>
+              <p className="text-xl font-bold text-white">${currentPlan.monthlyPrice}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Pricing Plans */}
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-white">Available Plans</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PLANS.map((plan) => {
+          {PLANS.map((plan, index) => {
             const Icon = plan.icon;
             const isCurrentPlan = plan.id === currentPlan.id;
             
@@ -269,113 +309,179 @@ export function DataPulseBillingPage() {
                 key={plan.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
                 className="relative"
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge className="bg-gradient-to-r from-purple-500 to-violet-500 text-white">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-violet-500 text-white text-xs font-medium shadow-lg">
+                      <Zap className="w-3 h-3" />
                       Most Popular
-                    </Badge>
+                    </span>
                   </div>
                 )}
-                <Card className={`h-full bg-slate-800/50 border-slate-700 ${plan.popular ? 'ring-2 ring-purple-500' : ''} ${isCurrentPlan ? 'ring-2 ring-indigo-500' : ''}`}>
-                  <CardHeader className="pb-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${plan.color} flex items-center justify-center mb-3`}>
-                      <Icon className="w-6 h-6 text-white" />
+                
+                <div className={`h-full bg-[#1e293b] rounded-2xl border transition-all duration-300 ${
+                  plan.popular ? 'border-purple-500/50 shadow-lg shadow-purple-500/10' : 
+                  isCurrentPlan ? 'border-indigo-500/50 shadow-lg shadow-indigo-500/10' : 
+                  'border-white/10 hover:border-white/20'
+                }`}>
+                  <div className="p-6 space-y-4">
+                    {/* Plan Icon & Name */}
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${plan.color} flex items-center justify-center shadow-lg`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white">{plan.name}</h3>
+                        <p className="text-xs text-white/50">{plan.description}</p>
+                      </div>
                     </div>
-                    <CardTitle className="text-white">{plan.name}</CardTitle>
-                    <CardDescription className="text-slate-400">{plan.description}</CardDescription>
-                    <div className="mt-2">
-                      <span className="text-3xl font-bold text-white">${plan.monthlyPrice}</span>
-                      <span className="text-slate-400">/month</span>
+
+                    {/* Price */}
+                    <div className="pt-2">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-bold text-white">${plan.monthlyPrice}</span>
+                        <span className="text-white/50 text-sm">/month</span>
+                      </div>
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <ul className="space-y-2">
+
+                    {/* Features */}
+                    <ul className="space-y-2 pt-2">
                       {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                          <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
-                          {feature}
+                        <li key={i} className="flex items-start gap-2 text-sm text-white/70">
+                          <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${plan.textColor}`} />
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
-                    {isCurrentPlan ? (
-                      <Button disabled className="w-full bg-slate-700 text-slate-400">
-                        Current Plan
-                      </Button>
-                    ) : (
-                      <Button 
-                        onClick={() => handleUpgrade(plan)}
-                        className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90`}
-                        data-testid={`upgrade-to-${plan.id}`}
-                      >
-                        {plan.monthlyPrice > currentPlan.monthlyPrice ? 'Upgrade' : 'Downgrade'}
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
+
+                    {/* Action Button */}
+                    <div className="pt-4">
+                      {isCurrentPlan ? (
+                        <div className="w-full py-2.5 px-4 rounded-xl bg-white/5 text-center text-white/50 text-sm font-medium border border-white/10">
+                          Current Plan
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={() => handleUpgrade(plan)}
+                          className={`w-full py-2.5 px-4 rounded-xl bg-gradient-to-r ${plan.color} text-white text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg`}
+                          data-testid={`upgrade-to-${plan.id}`}
+                        >
+                          {plan.monthlyPrice > currentPlan.monthlyPrice ? 'Upgrade' : 'Downgrade'}
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Upgrade Dialog */}
-      <Dialog open={upgradeDialogOpen} onOpenChange={setUpgradeDialogOpen}>
-        <DialogContent className="bg-slate-800 border-slate-700">
-          <DialogHeader>
-            <DialogTitle className="text-white">
-              {selectedPlan?.monthlyPrice > currentPlan.monthlyPrice ? 'Upgrade' : 'Change'} to {selectedPlan?.name}
-            </DialogTitle>
-            <DialogDescription className="text-slate-400">
-              {selectedPlan?.monthlyPrice > currentPlan.monthlyPrice 
-                ? `You'll be charged $${selectedPlan?.monthlyPrice}/month starting today.`
-                : `Your plan will change at the end of your current billing period.`
-              }
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <div className="flex items-center justify-between p-4 bg-slate-900 rounded-lg">
-              <div>
-                <p className="text-sm text-slate-400">New monthly cost</p>
-                <p className="text-2xl font-bold text-white">${selectedPlan?.monthlyPrice}</p>
-              </div>
-              <Badge className={`bg-gradient-to-r ${selectedPlan?.color} text-white`}>
-                {selectedPlan?.name}
-              </Badge>
+      {/* Demo Mode Notice */}
+      <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-indigo-200">Demo Mode</p>
+            <p className="text-xs text-indigo-300/70 mt-1">
+              Payment processing is currently in demo mode. Stripe integration will be enabled when API keys are configured.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Methods Section */}
+      <div className="bg-[#1e293b] rounded-2xl border border-white/10 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+              <CreditCard className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-white">Payment Method</h2>
+              <p className="text-white/50 text-sm">Manage your billing information</p>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setUpgradeDialogOpen(false)} className="border-slate-600 text-slate-300">
-              Cancel
-            </Button>
-            <Button 
-              onClick={confirmUpgrade} 
-              disabled={upgrading}
-              className={`bg-gradient-to-r ${selectedPlan?.color}`}
-            >
-              {upgrading ? 'Processing...' : 'Confirm Change'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </div>
+        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center">
+              <span className="text-white text-xs font-bold">VISA</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-white font-medium">•••• •••• •••• 4242</p>
+              <p className="text-xs text-white/50">Expires 12/26</p>
+            </div>
+            <button className="text-sm text-indigo-400 hover:text-indigo-300 font-medium">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
 
-      {/* Payment Method Notice */}
-      <Card className="bg-indigo-500/10 border-indigo-500/30">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-indigo-400 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-indigo-200">Demo Mode</p>
-              <p className="text-xs text-indigo-300/70 mt-1">
-                Payment processing is currently in demo mode. Stripe integration will be enabled when API keys are configured.
+      {/* Upgrade Dialog */}
+      {upgradeDialogOpen && selectedPlan && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[#1e293b] rounded-2xl border border-white/10 w-full max-w-md overflow-hidden shadow-2xl"
+          >
+            <div className="p-6 border-b border-white/10">
+              <h3 className="text-lg font-semibold text-white">
+                {selectedPlan.monthlyPrice > currentPlan.monthlyPrice ? 'Upgrade' : 'Change'} to {selectedPlan.name}
+              </h3>
+              <p className="text-sm text-white/60 mt-1">
+                {selectedPlan.monthlyPrice > currentPlan.monthlyPrice 
+                  ? `You'll be charged $${selectedPlan.monthlyPrice}/month starting today.`
+                  : `Your plan will change at the end of your current billing period.`
+                }
               </p>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            
+            <div className="p-6">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                <div>
+                  <p className="text-sm text-white/60">New monthly cost</p>
+                  <p className="text-2xl font-bold text-white">${selectedPlan.monthlyPrice}</p>
+                </div>
+                <div className={`px-3 py-1.5 rounded-lg bg-gradient-to-r ${selectedPlan.color} text-white text-sm font-medium`}>
+                  {selectedPlan.name}
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6 pt-0 flex gap-3">
+              <button 
+                onClick={() => setUpgradeDialogOpen(false)}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 transition-colors font-medium text-sm"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmUpgrade}
+                disabled={upgrading}
+                className={`flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r ${selectedPlan.color} text-white font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-50`}
+              >
+                {upgrading ? 'Processing...' : 'Confirm Change'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
+  );
+}
+
+export function DataPulseBillingPage() {
+  return (
+    <DashboardLayout>
+      <DataPulseBillingContent />
+    </DashboardLayout>
   );
 }
 
