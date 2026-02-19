@@ -189,7 +189,7 @@ const DataPulseLandingPage = () => {
             </span>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              Field Data Collection
+              Real-Time Data Analytics
               <br />
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 Reimagined
@@ -197,8 +197,8 @@ const DataPulseLandingPage = () => {
             </h1>
             
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-8">
-              The most powerful platform for research, monitoring & evaluation. 
-              Collect data anywhere, even offline. Trusted by leading organizations worldwide.
+              The most powerful platform for data integration, real-time analytics, and business intelligence. 
+              Monitor KPIs, track metrics, and make data-driven decisions. Trusted by leading organizations worldwide.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
