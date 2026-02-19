@@ -258,6 +258,11 @@ export function Survey360AppLayout({ children }) {
               {children || <Outlet />}
             </div>
           </main>
+          
+          {/* Powered by Footer */}
+          <footer className="h-10 bg-[#0f1d32] border-t border-white/5 flex items-center justify-center">
+            <span className="text-xs text-gray-500">Powered by <a href="/" className="text-gray-400 hover:text-white transition-colors">DataVision International</a></span>
+          </footer>
         </div>
 
         {/* Mobile Menu Overlay */}
