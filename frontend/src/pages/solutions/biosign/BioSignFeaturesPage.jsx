@@ -1165,9 +1165,9 @@ const BioSignFeaturesPage = () => {
                 <TabsTrigger 
                   key={tab.id} 
                   value={tab.id}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border/50 bg-card/50 hover:bg-card hover:border-primary/30 data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:border-primary relative transition-all"
                 >
-                  <tab.icon className={`w-4 h-4`} />
+                  <tab.icon className="w-4 h-4" />
                   {tab.label}
                   {triedFeatures.includes(tab.id) && (
                     <CheckCircle className="w-3 h-3 text-green-500 absolute -top-1 -right-1" />
