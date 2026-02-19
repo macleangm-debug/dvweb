@@ -418,9 +418,9 @@ const DataPulseLandingPage = () => {
               Join 500+ organizations using DataPulse for research, monitoring, and evaluation.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/solutions/fieldforce/demo">
+              <Link to="/solutions/datapulse/demo">
                 <button className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity">
-                  Try FieldForce Demo
+                  Try DataPulse Demo
                 </button>
               </Link>
               <Link to="/solutions/datapulse/register">
