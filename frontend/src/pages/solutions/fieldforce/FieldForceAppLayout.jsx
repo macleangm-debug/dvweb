@@ -29,7 +29,8 @@ import {
   Languages,
   BarChart3,
   Plus,
-  Zap
+  Zap,
+  CreditCard
 } from 'lucide-react';
 import axios from 'axios';
 
