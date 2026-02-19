@@ -478,11 +478,7 @@ function DataVizBillingContent() {
 }
 
 export function DataVizBillingPage() {
-  return (
-    <DashboardLayout>
-      <DataVizBillingContent />
-    </DashboardLayout>
-  );
+  return <DataVizBillingContent />;
 }
 
 export default DataVizBillingPage;
