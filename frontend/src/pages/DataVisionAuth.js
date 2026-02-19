@@ -339,16 +339,39 @@ export const DataVisionRegister = () => {
         const ssoResponse = await axios.post(`${API}/api/auth/sso/fieldforce`, {}, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        localStorage.setItem('fieldforce_token', ssoResponse.data.access_token);
         localStorage.setItem('ff_token', ssoResponse.data.access_token);
-        localStorage.setItem('ff_user', JSON.stringify(ssoResponse.data.user));
-        navigate('/solutions/fieldforce/app/dashboard');
+        localStorage.setItem('fieldforce_user', JSON.stringify(ssoResponse.data.user));
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+        window.location.href = '/solutions/fieldforce/app/dashboard';
       } else if (redirect.includes('survey360')) {
         const ssoResponse = await axios.post(`${API}/api/auth/sso/survey360`, {}, {
           headers: { Authorization: `Bearer ${token}` }
         });
         localStorage.setItem('survey360_token', ssoResponse.data.access_token);
         localStorage.setItem('survey360_user', JSON.stringify(ssoResponse.data.user));
-        navigate('/solutions/survey360/app/dashboard');
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+        window.location.href = '/solutions/survey360/app/dashboard';
+      } else if (redirect.includes('dataviz')) {
+        const ssoResponse = await axios.post(`${API}/api/auth/sso/dataviz`, {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        localStorage.setItem('dataviz_token', ssoResponse.data.access_token);
+        localStorage.setItem('dataviz_user', JSON.stringify(ssoResponse.data.user));
+        window.location.href = '/solutions/dataviz/app/dashboard';
+      } else if (redirect.includes('datapulse')) {
+        const ssoResponse = await axios.post(`${API}/api/auth/sso/datapulse`, {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        localStorage.setItem('dp_token', ssoResponse.data.access_token);
+        localStorage.setItem('datapulse_user', JSON.stringify(ssoResponse.data.user));
+        window.location.href = '/solutions/datapulse/app/dashboard';
       } else {
         navigate('/');
       }
