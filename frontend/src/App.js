@@ -386,31 +386,6 @@ function App() {
                   <Route path="/solutions/dataviz-studio" element={<DVLandingPage />} />
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
                   
-                  {/* FieldForce Routes - Using ORIGINAL GitHub Canva-style Layout */}
-                  <Route path="/solutions/fieldforce/app/login" element={<FFLoginPage />} />
-                  <Route path="/solutions/fieldforce/app/register" element={<FFRegisterPage />} />
-                  <Route path="/solutions/fieldforce/app/dashboard" element={<FFDashboardPage />} />
-                  <Route path="/solutions/fieldforce/app/projects" element={<FFProjectsPage />} />
-                  <Route path="/solutions/fieldforce/app/forms" element={<FFFormsPage />} />
-                  <Route path="/solutions/fieldforce/app/forms/new" element={<FFFormBuilderPage />} />
-                  <Route path="/solutions/fieldforce/app/forms/:id/edit" element={<FFFormBuilderPage />} />
-                  <Route path="/solutions/fieldforce/app/forms/:id/preview" element={<FFFormPreviewPage />} />
-                  <Route path="/solutions/fieldforce/app/templates" element={<FFFormTemplatesPage />} />
-                  <Route path="/solutions/fieldforce/app/submissions" element={<FFSubmissionsPage />} />
-                  <Route path="/solutions/fieldforce/app/cases" element={<FFCasesPage />} />
-                  <Route path="/solutions/fieldforce/app/cases/import" element={<FFCaseImportPage />} />
-                  <Route path="/solutions/fieldforce/app/datasets" element={<FFDatasetsPage />} />
-                  <Route path="/solutions/fieldforce/app/map" element={<FFGPSMapPage />} />
-                  <Route path="/solutions/fieldforce/app/devices" element={<FFDeviceManagementPage />} />
-                  <Route path="/solutions/fieldforce/app/quality" element={<FFQualityPage />} />
-                  <Route path="/solutions/fieldforce/app/analytics" element={<FFAnalyticsPage />} />
-                  <Route path="/solutions/fieldforce/app/team" element={<FFTeamPage />} />
-                  <Route path="/solutions/fieldforce/app/organizations/new" element={<FFCreateOrganizationPage />} />
-                  <Route path="/solutions/fieldforce/app/rbac" element={<FFRBACPage />} />
-                  <Route path="/solutions/fieldforce/app/translations" element={<FFTranslationsPage />} />
-                  <Route path="/solutions/fieldforce/app/settings" element={<FFSettingsPage />} />
-                  <Route path="/solutions/fieldforce/app/billing" element={<FFBillingPage />} />
-                  
                   <Route path="/solutions/agridata-pro" element={<AgriDataProPage />} />
                   <Route path="/solutions/eduinsights" element={<EduInsightsPage />} />
                   <Route path="/solutions/healthpulse" element={<HealthPulsePage />} />
