@@ -1,414 +1,100 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MapPin, Mail, Lock, User, ArrowRight, ExternalLink } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Separator } from '../components/ui/separator';
-import { useAuthStore } from '../store';
-import { authAPI } from '../lib/api';
-import { toast } from 'sonner';
-import '../App.css'; // Import FieldForce dark theme styles
+/**
+ * FieldForce Auth Pages - Redirects to DataVision SSO
+ * Single Sign-On Architecture: All auth goes through DataVision
+ */
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin } from 'lucide-react';
+import '../App.css';
 
+// Redirect to DataVision SSO for login
 export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { setAuth } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await authAPI.login(email, password);
-      const { user, access_token } = response.data;
-      
-      // Store in zustand
-      setAuth(user, access_token);
-      
-      // Also store in localStorage for FieldForceCanvaLayout compatibility
-      localStorage.setItem('fieldforce_token', access_token);
-      localStorage.setItem('fieldforce_user', JSON.stringify(user));
-      
-      toast.success('Welcome back!');
-      navigate('/solutions/fieldforce/app/dashboard');
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Invalid credentials');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSSOLogin = async () => {
-    // Check for existing DataVision token
-    const dvToken = localStorage.getItem('dv_token') || localStorage.getItem('datavision_token') || localStorage.getItem('token');
+  useEffect(() => {
+    // Check if already authenticated with DataVision
+    const dvToken = localStorage.getItem('dv_token') || localStorage.getItem('datavision_token');
     
     if (dvToken) {
-      try {
-        setLoading(true);
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/sso/fieldforce`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${dvToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          // Store token in localStorage for FieldForce app
-          localStorage.setItem('fieldforce_token', data.access_token);
-          // Also store in auth-storage for Zustand compatibility
-          localStorage.setItem('auth-storage', JSON.stringify({
-            state: { user: data.user, token: data.access_token, isAuthenticated: true },
-            version: 0
-          }));
-          setAuth(data.user, data.access_token);
-          toast.success('Logged in via DataVision SSO!');
-          // Small delay to allow Zustand persist to sync before navigation
-          await new Promise(resolve => setTimeout(resolve, 100));
-          navigate('/solutions/fieldforce/app/dashboard');
-          return;
-        }
-      } catch (error) {
-        console.log('SSO exchange failed');
-      } finally {
-        setLoading(false);
-      }
+      // Already logged in with DataVision, try to get FieldForce token
+      exchangeSSOToken(dvToken);
+    } else {
+      // Redirect to DataVision SSO
+      window.location.href = '/auth/login?redirect=fieldforce';
     }
-    
-    // Redirect to DataVision login with return URL
-    toast.info('Redirecting to DataVision login...');
-    window.location.href = '/auth/login?redirect=fieldforce';
+  }, []);
+
+  const exchangeSSOToken = async (dvToken) => {
+    try {
+      const API = process.env.REACT_APP_BACKEND_URL;
+      const response = await fetch(`${API}/api/auth/sso/fieldforce`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${dvToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('fieldforce_token', data.access_token);
+        localStorage.setItem('fieldforce_user', JSON.stringify(data.user));
+        localStorage.setItem('ff_token', data.access_token);
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: data.user, token: data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+        window.location.href = '/solutions/fieldforce/app/dashboard';
+      } else {
+        // Token invalid, redirect to SSO
+        window.location.href = '/auth/login?redirect=fieldforce';
+      }
+    } catch (error) {
+      console.error('SSO exchange failed:', error);
+      window.location.href = '/auth/login?redirect=fieldforce';
+    }
   };
 
   return (
-    <div className="fieldforce-app min-h-screen bg-background flex">
-      {/* Left side - Clean branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
-        
-        <div className="relative z-10 flex flex-col justify-center p-12 w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex items-center gap-3 mb-12">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <MapPin className="w-7 h-7 text-white" />
-              </div>
-              <span className="font-barlow text-3xl font-bold tracking-tight text-foreground">FieldForce</span>
-            </div>
-            <h1 className="font-barlow text-4xl font-bold tracking-tight mb-4 text-foreground">
-              Mobile Data Collection
-              <br />
-              Made Simple
-            </h1>
-            <p className="text-lg text-foreground/70 max-w-md">
-              Powerful mobile tools for field teams and enumerators. 
-              Built for reliability, scalability, and actionable insights.
-            </p>
-            
-            {/* Feature highlights */}
-            <div className="mt-10 space-y-4">
-              {[
-                'Works fully offline in remote areas',
-                'GPS tracking & geofencing',
-                'Photo & audio capture',
-                'Multi-language support (English, Swahili)'
-              ].map((feature, idx) => (
-                <div key={idx} className="flex items-center gap-3 text-foreground/70">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="text-sm">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* DataVision branding */}
-            <div className="mt-12 pt-8 border-t border-border/50">
-              <p className="text-xs text-muted-foreground mb-2">Powered by</p>
-              <p className="text-sm font-medium text-foreground">DataVision International</p>
-              <p className="text-xs text-muted-foreground">Research & Statistics Consultancy</p>
-            </div>
-          </motion.div>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1d32] to-[#0a1628] flex items-center justify-center">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-xl flex items-center justify-center">
+            <MapPin className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-2xl font-bold text-white">FieldForce</span>
+        </div>
+        <div className="flex items-center gap-3 text-white/60">
+          <div className="w-5 h-5 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin"></div>
+          <span>Redirecting to DataVision Login...</span>
         </div>
       </div>
-
-      {/* Right side - Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="w-full max-w-md"
-        >
-          <Card className="border-border shadow-sm">
-            <CardHeader className="text-center pb-2">
-              <div className="lg:hidden flex items-center justify-center gap-2 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
-                <span className="font-barlow text-2xl font-bold">FieldForce</span>
-              </div>
-              <CardTitle className="font-barlow text-2xl">Welcome back</CardTitle>
-              <CardDescription>Sign in to your account to continue</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Demo Credentials Box */}
-              <div className="mb-4 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg dark:from-emerald-950/20 dark:to-teal-950/20 dark:border-emerald-800">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">i</span>
-                  </div>
-                  <span className="font-medium text-emerald-800 dark:text-emerald-200 text-sm">Demo Credentials</span>
-                </div>
-                <div className="space-y-1 text-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">Email:</span>
-                    <code className="bg-white dark:bg-slate-800 px-2 py-0.5 rounded text-emerald-700 dark:text-emerald-300 font-mono text-xs">demo@fieldforce.io</code>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">Password:</span>
-                    <code className="bg-white dark:bg-slate-800 px-2 py-0.5 rounded text-emerald-700 dark:text-emerald-300 font-mono text-xs">Test123!</code>
-                  </div>
-                </div>
-              </div>
-
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10"
-                      required
-                      data-testid="login-email-input"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10"
-                      required
-                      data-testid="login-password-input"
-                    />
-                  </div>
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600" 
-                  disabled={loading}
-                  data-testid="login-submit-btn"
-                >
-                  {loading ? 'Signing in...' : 'Sign in'}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </form>
-
-              <div className="relative my-6">
-                <Separator />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-3 text-xs text-muted-foreground">
-                  OR
-                </span>
-              </div>
-
-              <Button 
-                variant="outline" 
-                className="w-full bg-gradient-to-r from-slate-800 to-slate-900 border-2 border-teal-500/50 hover:border-teal-400 hover:from-slate-700 hover:to-slate-800 text-white py-6 rounded-xl transition-all duration-300 shadow-lg shadow-teal-500/10 hover:shadow-teal-500/20" 
-                onClick={handleSSOLogin}
-                data-testid="sso-login-btn"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                    <img 
-                      src="/datavision-logo-cropped.png" 
-                      alt="DataVision" 
-                      className="h-5 w-auto"
-                    />
-                  </div>
-                  <span className="font-semibold">Continue with DataVision</span>
-                </div>
-              </Button>
-
-              <p className="text-center text-sm text-muted-foreground mt-6">
-                Don&apos;t have an account?{' '}
-                <Link to="/register" className="text-emerald-600 hover:underline font-medium" data-testid="register-link">
-                  Sign up
-                </Link>
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
     </div>
   );
 }
 
+// Redirect to DataVision SSO for registration
 export function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { setAuth } = useAuthStore();
-  const navigate = useNavigate();
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await authAPI.register(email, password, name);
-      setAuth(response.data.user, response.data.access_token);
-      toast.success('Account created successfully!');
-      navigate('/dashboard');
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Registration failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    window.location.href = '/auth/register?redirect=fieldforce';
+  }, []);
 
   return (
-    <div className="fieldforce-app min-h-screen bg-background flex items-center justify-center p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
-      >
-        <Card className="border-border shadow-sm">
-          <CardHeader className="text-center pb-2">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-barlow text-2xl font-bold">FieldForce</span>
-            </div>
-            <CardTitle className="font-barlow text-2xl">Create account</CardTitle>
-            <CardDescription>Start collecting data with your team</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleRegister} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="pl-10"
-                    required
-                    data-testid="register-name-input"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    required
-                    data-testid="register-email-input"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10"
-                    required
-                    minLength={6}
-                    data-testid="register-password-input"
-                  />
-                </div>
-              </div>
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600" 
-                disabled={loading}
-                data-testid="register-submit-btn"
-              >
-                {loading ? 'Creating account...' : 'Create account'}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </form>
-
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              Already have an account?{' '}
-              <Link to="/login" className="text-emerald-600 hover:underline font-medium" data-testid="login-link">
-                Sign in
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </div>
-  );
-}
-
-export function AuthCallbackPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
-
-  const handleSSOCallback = React.useCallback(async (code) => {
-    try {
-      const redirectUri = `${window.location.origin}/auth/callback`;
-      const response = await authAPI.ssoCallback(code, redirectUri);
-      setAuth(response.data.user, response.data.access_token);
-      toast.success('SSO login successful!');
-      navigate('/dashboard');
-    } catch (error) {
-      toast.error('SSO authentication failed');
-      navigate('/login');
-    }
-  }, [navigate, setAuth]);
-
-  React.useEffect(() => {
-    const code = searchParams.get('code');
-    if (code) {
-      handleSSOCallback(code);
-    } else {
-      navigate('/login');
-    }
-  }, [searchParams, navigate, handleSSOCallback]);
-
-  return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1d32] to-[#0a1628] flex items-center justify-center">
       <div className="text-center">
-        <MapPin className="w-12 h-12 text-emerald-500 animate-pulse mx-auto mb-4" />
-        <p className="text-muted-foreground">Completing authentication...</p>
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-xl flex items-center justify-center">
+            <MapPin className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-2xl font-bold text-white">FieldForce</span>
+        </div>
+        <div className="flex items-center gap-3 text-white/60">
+          <div className="w-5 h-5 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin"></div>
+          <span>Redirecting to DataVision Registration...</span>
+        </div>
       </div>
     </div>
   );
 }
+
+export default LoginPage;
