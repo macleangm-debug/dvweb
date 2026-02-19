@@ -41,83 +41,753 @@ import {
 } from 'lucide-react';
 
 // Interactive Demo Components
-const RealTimeMetricsDemo = () => {
-  const [metrics, setMetrics] = useState({
-    activeUsers: 1247,
-    dataPoints: 45892,
-    apiCalls: 8934,
-    responseTime: 42
-  });
-  const [isLive, setIsLive] = useState(true);
 
-  useEffect(() => {
-    if (!isLive) return;
-    const interval = setInterval(() => {
-      setMetrics(prev => ({
-        activeUsers: prev.activeUsers + Math.floor(Math.random() * 10) - 3,
-        dataPoints: prev.dataPoints + Math.floor(Math.random() * 100),
-        apiCalls: prev.apiCalls + Math.floor(Math.random() * 50),
-        responseTime: Math.max(20, Math.min(80, prev.responseTime + Math.floor(Math.random() * 10) - 5))
-      }));
-    }, 1500);
-    return () => clearInterval(interval);
-  }, [isLive]);
+// Dashboard Builder Demo - Actual clickable interface
+const DashboardBuilderDemo = () => {
+  const [widgets, setWidgets] = useState([
+    { id: 1, type: 'metric', title: 'Total Revenue', value: '$124,500', color: 'cyan' },
+    { id: 2, type: 'chart', title: 'Sales Trend', color: 'teal' }
+  ]);
+  const [selectedWidget, setSelectedWidget] = useState(null);
+  const [newWidgetType, setNewWidgetType] = useState('metric');
+  const [newWidgetTitle, setNewWidgetTitle] = useState('');
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const availableWidgets = [
+    { type: 'metric', label: 'Metric Card', icon: BarChart3 },
+    { type: 'chart', label: 'Line Chart', icon: LineChart },
+    { type: 'table', label: 'Data Table', icon: Database },
+    { type: 'gauge', label: 'Gauge', icon: Target }
+  ];
+
+  const addWidget = () => {
+    if (!newWidgetTitle) return;
+    const newWidget = {
+      id: Date.now(),
+      type: newWidgetType,
+      title: newWidgetTitle,
+      value: newWidgetType === 'metric' ? '$0' : null,
+      color: ['cyan', 'teal', 'emerald', 'purple'][Math.floor(Math.random() * 4)]
+    };
+    setWidgets([...widgets, newWidget]);
+    setNewWidgetTitle('');
+    setShowAddForm(false);
+  };
+
+  const removeWidget = (id) => {
+    setWidgets(widgets.filter(w => w.id !== id));
+    if (selectedWidget === id) setSelectedWidget(null);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
-          <Activity className="w-5 h-5 text-cyan-400" />
-          Real-Time Metrics Dashboard
+          <Layers className="w-5 h-5 text-cyan-400" />
+          Dashboard Builder
         </h3>
         <button 
-          onClick={() => setIsLive(!isLive)}
-          className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 ${isLive ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-slate-700 text-slate-400'}`}
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="px-3 py-1.5 bg-cyan-500 text-black rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-cyan-400 transition-colors"
         >
-          <span className={`w-2 h-2 rounded-full ${isLive ? 'bg-green-400 animate-pulse' : 'bg-slate-500'}`} />
-          {isLive ? 'Live' : 'Paused'}
+          <Plus className="w-4 h-4" />
+          Add Widget
         </button>
       </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-          <div className="text-sm text-slate-400 mb-1">Active Users</div>
-          <div className="text-2xl font-bold text-cyan-400">{metrics.activeUsers.toLocaleString()}</div>
-          <div className="text-xs text-green-400 mt-1">↑ 12% from last hour</div>
+
+      {/* Add Widget Form */}
+      {showAddForm && (
+        <div className="bg-slate-800 border border-cyan-500/30 rounded-xl p-4 space-y-4">
+          <div className="text-sm font-medium text-cyan-400">New Widget</div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Widget Type</label>
+              <select 
+                value={newWidgetType}
+                onChange={(e) => setNewWidgetType(e.target.value)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              >
+                {availableWidgets.map(w => (
+                  <option key={w.type} value={w.type}>{w.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Widget Title</label>
+              <input 
+                type="text"
+                value={newWidgetTitle}
+                onChange={(e) => setNewWidgetTitle(e.target.value)}
+                placeholder="e.g., Monthly Revenue"
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button 
+              onClick={addWidget}
+              disabled={!newWidgetTitle}
+              className="px-4 py-2 bg-cyan-500 text-black rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Add to Dashboard
+            </button>
+            <button 
+              onClick={() => setShowAddForm(false)}
+              className="px-4 py-2 bg-slate-700 rounded-lg text-sm"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-          <div className="text-sm text-slate-400 mb-1">Data Points</div>
-          <div className="text-2xl font-bold text-cyan-400">{metrics.dataPoints.toLocaleString()}</div>
-          <div className="text-xs text-green-400 mt-1">↑ 8% from last hour</div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-          <div className="text-sm text-slate-400 mb-1">API Calls/min</div>
-          <div className="text-2xl font-bold text-cyan-400">{metrics.apiCalls.toLocaleString()}</div>
-          <div className="text-xs text-slate-400 mt-1">Avg: 8,500/min</div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-          <div className="text-sm text-slate-400 mb-1">Response Time</div>
-          <div className="text-2xl font-bold text-cyan-400">{metrics.responseTime}ms</div>
-          <div className="text-xs text-green-400 mt-1">Target: &lt;50ms</div>
+      )}
+
+      {/* Dashboard Preview */}
+      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+        <div className="text-xs text-slate-500 mb-3">Dashboard Preview (Click to select)</div>
+        <div className="grid grid-cols-2 gap-3 min-h-[200px]">
+          {widgets.map((widget) => (
+            <div 
+              key={widget.id}
+              onClick={() => setSelectedWidget(widget.id)}
+              className={`relative bg-slate-900 border rounded-lg p-3 cursor-pointer transition-all ${
+                selectedWidget === widget.id 
+                  ? 'border-cyan-500 ring-2 ring-cyan-500/20' 
+                  : 'border-slate-700 hover:border-slate-600'
+              }`}
+            >
+              {selectedWidget === widget.id && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); removeWidget(widget.id); }}
+                  className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+              <div className="text-xs text-slate-400 mb-1">{widget.title}</div>
+              {widget.type === 'metric' && (
+                <div className={`text-xl font-bold text-${widget.color}-400`}>{widget.value}</div>
+              )}
+              {widget.type === 'chart' && (
+                <div className="flex items-end h-12 gap-0.5">
+                  {[40, 60, 45, 80, 65, 90, 75].map((h, i) => (
+                    <div key={i} className={`flex-1 bg-${widget.color}-500 rounded-t`} style={{ height: `${h}%` }} />
+                  ))}
+                </div>
+              )}
+              {widget.type === 'table' && (
+                <div className="space-y-1">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="h-2 bg-slate-700 rounded" style={{ width: `${100 - i * 20}%` }} />
+                  ))}
+                </div>
+              )}
+              {widget.type === 'gauge' && (
+                <div className="w-12 h-6 border-t-4 border-l-4 border-r-4 border-cyan-500 rounded-t-full mx-auto" />
+              )}
+            </div>
+          ))}
+          {widgets.length === 0 && (
+            <div className="col-span-2 flex items-center justify-center text-slate-500 text-sm">
+              Click "Add Widget" to start building your dashboard
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Mini Chart Visualization */}
-      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-slate-400">Traffic Overview (Last 24h)</span>
-          <LineChart className="w-4 h-4 text-slate-500" />
+      {selectedWidget && (
+        <div className="text-xs text-cyan-400 flex items-center gap-2">
+          <CheckCircle className="w-3 h-3" />
+          Widget selected - Click the X to remove it
         </div>
-        <div className="flex items-end h-20 gap-1">
-          {[35, 45, 40, 55, 70, 65, 80, 75, 90, 85, 95, 88, 78, 82, 90, 95, 88, 92, 85, 80, 75, 82, 88, 92].map((h, i) => (
-            <div 
-              key={i} 
-              className="flex-1 bg-gradient-to-t from-cyan-500 to-teal-500 rounded-t opacity-80 hover:opacity-100 transition-opacity"
-              style={{ height: `${h}%` }}
-            />
-          ))}
+      )}
+    </div>
+  );
+};
+
+// Query Builder Demo - Actual SQL query builder interface
+const QueryBuilderDemo = () => {
+  const [table, setTable] = useState('users');
+  const [columns, setColumns] = useState(['id', 'name', 'email']);
+  const [condition, setCondition] = useState({ field: 'status', operator: '=', value: 'active' });
+  const [limit, setLimit] = useState(100);
+  const [queryResult, setQueryResult] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const tables = ['users', 'orders', 'products', 'transactions', 'events'];
+  const columnOptions = {
+    users: ['id', 'name', 'email', 'status', 'created_at'],
+    orders: ['id', 'user_id', 'total', 'status', 'created_at'],
+    products: ['id', 'name', 'price', 'category', 'stock'],
+    transactions: ['id', 'amount', 'type', 'status', 'timestamp'],
+    events: ['id', 'event_type', 'user_id', 'data', 'created_at']
+  };
+
+  const generatedQuery = `SELECT ${columns.join(', ')}
+FROM ${table}
+WHERE ${condition.field} ${condition.operator} '${condition.value}'
+LIMIT ${limit};`;
+
+  const runQuery = () => {
+    setIsRunning(true);
+    setTimeout(() => {
+      setQueryResult({
+        rows: Math.floor(Math.random() * 50) + 10,
+        time: (Math.random() * 0.5 + 0.1).toFixed(3),
+        success: true
+      });
+      setIsRunning(false);
+    }, 1500);
+  };
+
+  const toggleColumn = (col) => {
+    if (columns.includes(col)) {
+      setColumns(columns.filter(c => c !== col));
+    } else {
+      setColumns([...columns, col]);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold flex items-center gap-2">
+          <Database className="w-5 h-5 text-cyan-400" />
+          Visual Query Builder
+        </h3>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        {/* Query Configuration */}
+        <div className="space-y-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-4">
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400 font-medium">Select Table</label>
+              <select 
+                value={table}
+                onChange={(e) => { setTable(e.target.value); setColumns(['id']); }}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              >
+                {tables.map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400 font-medium">Select Columns</label>
+              <div className="flex flex-wrap gap-2">
+                {columnOptions[table]?.map(col => (
+                  <button
+                    key={col}
+                    onClick={() => toggleColumn(col)}
+                    className={`px-2 py-1 rounded text-xs transition-colors ${
+                      columns.includes(col) 
+                        ? 'bg-cyan-500 text-black' 
+                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    }`}
+                  >
+                    {col}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400 font-medium">Where Condition</label>
+              <div className="grid grid-cols-3 gap-2">
+                <select 
+                  value={condition.field}
+                  onChange={(e) => setCondition({...condition, field: e.target.value})}
+                  className="bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5 text-sm"
+                >
+                  {columnOptions[table]?.map(col => (
+                    <option key={col} value={col}>{col}</option>
+                  ))}
+                </select>
+                <select 
+                  value={condition.operator}
+                  onChange={(e) => setCondition({...condition, operator: e.target.value})}
+                  className="bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5 text-sm"
+                >
+                  <option value="=">=</option>
+                  <option value="!=">!=</option>
+                  <option value=">">{'>'}</option>
+                  <option value="<">{'<'}</option>
+                  <option value="LIKE">LIKE</option>
+                </select>
+                <input 
+                  type="text"
+                  value={condition.value}
+                  onChange={(e) => setCondition({...condition, value: e.target.value})}
+                  className="bg-slate-700 border border-slate-600 rounded-lg px-2 py-1.5 text-sm"
+                  placeholder="value"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400 font-medium">Limit Results</label>
+              <input 
+                type="number"
+                value={limit}
+                onChange={(e) => setLimit(parseInt(e.target.value) || 100)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Generated Query & Results */}
+        <div className="space-y-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl p-4">
+            <div className="text-xs text-slate-500 mb-2">Generated SQL</div>
+            <pre className="text-sm text-cyan-400 font-mono whitespace-pre-wrap">{generatedQuery}</pre>
+          </div>
+
+          <button 
+            onClick={runQuery}
+            disabled={isRunning || columns.length === 0}
+            className="w-full px-4 py-2.5 bg-cyan-500 text-black rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-cyan-400 transition-colors disabled:opacity-50"
+          >
+            {isRunning ? (
+              <>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                Running Query...
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                Run Query
+              </>
+            )}
+          </button>
+
+          {queryResult && (
+            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
+              <div className="flex items-center gap-2 text-green-400 mb-2">
+                <CheckCircle className="w-4 h-4" />
+                Query Executed Successfully
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-slate-400">Rows returned:</span>
+                  <span className="text-white ml-2">{queryResult.rows}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400">Execution time:</span>
+                  <span className="text-white ml-2">{queryResult.time}s</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+    </div>
+  );
+};
+
+// Alert Configuration Demo - Set up monitoring alerts
+const AlertConfigDemo = () => {
+  const [alertName, setAlertName] = useState('High CPU Usage');
+  const [metric, setMetric] = useState('cpu_usage');
+  const [operator, setOperator] = useState('>');
+  const [threshold, setThreshold] = useState(80);
+  const [duration, setDuration] = useState(5);
+  const [channels, setChannels] = useState(['email']);
+  const [savedAlerts, setSavedAlerts] = useState([
+    { id: 1, name: 'API Latency Alert', metric: 'response_time', condition: '> 500ms', status: 'active' },
+    { id: 2, name: 'Error Rate Alert', metric: 'error_rate', condition: '> 5%', status: 'active' }
+  ]);
+  const [saveResult, setSaveResult] = useState(null);
+
+  const metrics = [
+    { value: 'cpu_usage', label: 'CPU Usage (%)' },
+    { value: 'memory_usage', label: 'Memory Usage (%)' },
+    { value: 'response_time', label: 'Response Time (ms)' },
+    { value: 'error_rate', label: 'Error Rate (%)' },
+    { value: 'request_count', label: 'Request Count' }
+  ];
+
+  const notificationChannels = [
+    { value: 'email', label: 'Email' },
+    { value: 'slack', label: 'Slack' },
+    { value: 'pagerduty', label: 'PagerDuty' },
+    { value: 'webhook', label: 'Webhook' }
+  ];
+
+  const toggleChannel = (channel) => {
+    if (channels.includes(channel)) {
+      setChannels(channels.filter(c => c !== channel));
+    } else {
+      setChannels([...channels, channel]);
+    }
+  };
+
+  const saveAlert = () => {
+    const newAlert = {
+      id: Date.now(),
+      name: alertName,
+      metric: metric,
+      condition: `${operator} ${threshold}`,
+      status: 'active'
+    };
+    setSavedAlerts([...savedAlerts, newAlert]);
+    setSaveResult({ success: true, message: 'Alert created successfully!' });
+    setTimeout(() => setSaveResult(null), 3000);
+  };
+
+  const toggleAlertStatus = (id) => {
+    setSavedAlerts(savedAlerts.map(a => 
+      a.id === id ? { ...a, status: a.status === 'active' ? 'paused' : 'active' } : a
+    ));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold flex items-center gap-2">
+          <Bell className="w-5 h-5 text-cyan-400" />
+          Alert Configuration
+        </h3>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        {/* Alert Builder */}
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-4">
+          <div className="text-sm font-medium text-cyan-400">Create New Alert</div>
+          
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Alert Name</label>
+            <input 
+              type="text"
+              value={alertName}
+              onChange={(e) => setAlertName(e.target.value)}
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              placeholder="e.g., High CPU Usage"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Metric</label>
+            <select 
+              value={metric}
+              onChange={(e) => setMetric(e.target.value)}
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+            >
+              {metrics.map(m => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Condition</label>
+            <div className="grid grid-cols-2 gap-2">
+              <select 
+                value={operator}
+                onChange={(e) => setOperator(e.target.value)}
+                className="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              >
+                <option value=">">Greater than</option>
+                <option value="<">Less than</option>
+                <option value=">=">Greater or equal</option>
+                <option value="<=">Less or equal</option>
+              </select>
+              <input 
+                type="number"
+                value={threshold}
+                onChange={(e) => setThreshold(parseInt(e.target.value) || 0)}
+                className="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">For Duration (minutes)</label>
+            <input 
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(parseInt(e.target.value) || 1)}
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Notification Channels</label>
+            <div className="flex flex-wrap gap-2">
+              {notificationChannels.map(ch => (
+                <button
+                  key={ch.value}
+                  onClick={() => toggleChannel(ch.value)}
+                  className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                    channels.includes(ch.value) 
+                      ? 'bg-cyan-500 text-black' 
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  {ch.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button 
+            onClick={saveAlert}
+            disabled={!alertName || channels.length === 0}
+            className="w-full px-4 py-2.5 bg-cyan-500 text-black rounded-lg font-medium hover:bg-cyan-400 transition-colors disabled:opacity-50"
+          >
+            Create Alert
+          </button>
+
+          {saveResult && (
+            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 flex items-center gap-2 text-green-400 text-sm">
+              <CheckCircle className="w-4 h-4" />
+              {saveResult.message}
+            </div>
+          )}
+        </div>
+
+        {/* Active Alerts */}
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-4">
+          <div className="text-sm font-medium text-cyan-400">Active Alerts</div>
+          
+          <div className="space-y-3">
+            {savedAlerts.map((alert) => (
+              <div 
+                key={alert.id}
+                className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-center justify-between"
+              >
+                <div>
+                  <div className="font-medium text-sm">{alert.name}</div>
+                  <div className="text-xs text-slate-400">{alert.metric} {alert.condition}</div>
+                </div>
+                <button
+                  onClick={() => toggleAlertStatus(alert.id)}
+                  className={`px-2 py-1 rounded text-xs ${
+                    alert.status === 'active' 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-slate-700 text-slate-400'
+                  }`}
+                >
+                  {alert.status === 'active' ? '● Active' : '○ Paused'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Data Connection Demo - Connect to databases
+const DataConnectionDemo = () => {
+  const [connectionType, setConnectionType] = useState('postgresql');
+  const [host, setHost] = useState('db.example.com');
+  const [port, setPort] = useState('5432');
+  const [database, setDatabase] = useState('analytics');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
+  const [isTesting, setIsTesting] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+  const [connections, setConnections] = useState([
+    { id: 1, type: 'postgresql', name: 'Production DB', status: 'connected' },
+    { id: 2, type: 'mongodb', name: 'Analytics Store', status: 'connected' }
+  ]);
+
+  const connectionTypes = [
+    { value: 'postgresql', label: 'PostgreSQL', port: '5432' },
+    { value: 'mysql', label: 'MySQL', port: '3306' },
+    { value: 'mongodb', label: 'MongoDB', port: '27017' },
+    { value: 'snowflake', label: 'Snowflake', port: '443' },
+    { value: 'bigquery', label: 'BigQuery', port: '443' }
+  ];
+
+  const testConnection = () => {
+    setIsTesting(true);
+    setTestResult(null);
+    setTimeout(() => {
+      const success = Math.random() > 0.2;
+      setTestResult({
+        success,
+        message: success ? 'Connection successful! Database is reachable.' : 'Connection failed. Please check credentials.'
+      });
+      setIsTesting(false);
+    }, 2000);
+  };
+
+  const saveConnection = () => {
+    if (testResult?.success) {
+      const newConnection = {
+        id: Date.now(),
+        type: connectionType,
+        name: `${database} (${connectionTypes.find(c => c.value === connectionType)?.label})`,
+        status: 'connected'
+      };
+      setConnections([...connections, newConnection]);
+      setTestResult({ success: true, message: 'Connection saved successfully!' });
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold flex items-center gap-2">
+          <Server className="w-5 h-5 text-cyan-400" />
+          Data Source Connection
+        </h3>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        {/* Connection Form */}
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-4">
+          <div className="text-sm font-medium text-cyan-400">New Connection</div>
+          
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Database Type</label>
+            <select 
+              value={connectionType}
+              onChange={(e) => {
+                setConnectionType(e.target.value);
+                setPort(connectionTypes.find(c => c.value === e.target.value)?.port || '5432');
+              }}
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+            >
+              {connectionTypes.map(type => (
+                <option key={type.value} value={type.value}>{type.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Host</label>
+              <input 
+                type="text"
+                value={host}
+                onChange={(e) => setHost(e.target.value)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+                placeholder="hostname"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Port</label>
+              <input 
+                type="text"
+                value={port}
+                onChange={(e) => setPort(e.target.value)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-slate-400">Database Name</label>
+            <input 
+              type="text"
+              value={database}
+              onChange={(e) => setDatabase(e.target.value)}
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              placeholder="database"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Username</label>
+              <input 
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs text-slate-400">Password</label>
+              <input 
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button 
+              onClick={testConnection}
+              disabled={isTesting || !host || !database}
+              className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {isTesting ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  Testing...
+                </>
+              ) : (
+                <>
+                  <Zap className="w-4 h-4" />
+                  Test Connection
+                </>
+              )}
+            </button>
+            <button 
+              onClick={saveConnection}
+              disabled={!testResult?.success}
+              className="flex-1 px-4 py-2.5 bg-cyan-500 text-black rounded-lg font-medium hover:bg-cyan-400 transition-colors disabled:opacity-50"
+            >
+              Save Connection
+            </button>
+          </div>
+
+          {testResult && (
+            <div className={`p-3 rounded-lg flex items-center gap-2 text-sm ${
+              testResult.success 
+                ? 'bg-green-500/10 border border-green-500/30 text-green-400' 
+                : 'bg-red-500/10 border border-red-500/30 text-red-400'
+            }`}>
+              {testResult.success ? <CheckCircle className="w-4 h-4" /> : <X className="w-4 h-4" />}
+              {testResult.message}
+            </div>
+          )}
+        </div>
+
+        {/* Saved Connections */}
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-4">
+          <div className="text-sm font-medium text-cyan-400">Connected Sources</div>
+          
+          <div className="space-y-3">
+            {connections.map((conn) => (
+              <div 
+                key={conn.id}
+                className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center">
+                    <Database className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-sm">{conn.name}</div>
+                    <div className="text-xs text-slate-400">{conn.type}</div>
+                  </div>
+                </div>
+                <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">
+                  ● {conn.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DataPulseLandingPage = () => {
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDemo, setActiveDemo] = useState('dashboard');
     </div>
   );
 };
