@@ -37,7 +37,9 @@ import {
   CheckCircle,
   Clock,
   Target,
-  Mic
+  Mic,
+  Plus,
+  Bell
 } from 'lucide-react';
 
 // Interactive Demo Components
