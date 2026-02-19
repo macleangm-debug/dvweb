@@ -148,15 +148,11 @@ const BioSignLandingPage = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
-              {/* BioSign Logo/Branding in Hero with Glow Animation */}
+              {/* Compliance Badges - above heading like original */}
               <div className="flex items-center gap-3 mb-6">
-                <BioSignLogo size={48} />
-                <span className="text-2xl font-bold tracking-tight text-primary">BioSign SDK</span>
-              </div>
-              <div className="flex items-center gap-2 mb-6">
                 {complianceBadges.map((badge) => (
-                  <span key={badge} className="compliance-badge text-xs">
-                    <CheckCircle2 className="w-3 h-3" />
+                  <span key={badge} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm font-medium">
+                    <CheckCircle2 className="w-4 h-4" />
                     {badge}
                   </span>
                 ))}
