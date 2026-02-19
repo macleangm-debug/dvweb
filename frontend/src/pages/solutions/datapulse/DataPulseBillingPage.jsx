@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { DashboardLayout } from '../../../../solutions/datapulse/app/layouts/DashboardLayout';
+import { DashboardLayout } from '../../../solutions/datapulse/app/layouts/DashboardLayout';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
