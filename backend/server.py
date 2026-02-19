@@ -1379,6 +1379,110 @@ async def datavision_to_fieldforce_sso(authorization: str = Header(None)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+
+@api_router.post("/auth/sso/dataviz")
+async def datavision_to_dataviz_sso(authorization: str = Header(None)):
+    """Exchange DataVision token for DataViz Studio token"""
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(status_code=401, detail="No authorization token provided")
+    
+    dv_token = authorization.replace('Bearer ', '')
+    
+    try:
+        # Verify DataVision token
+        payload = jwt.decode(dv_token, JWT_SECRET, algorithms=["HS256"])
+        user_id = payload.get("sub") or payload.get("user_id")
+        
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token payload")
+        
+        # Get or create DataViz user
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Create DataViz-specific token
+        dv_token_data = {
+            "sub": str(user["_id"]),
+            "email": user["email"],
+            "name": user.get("name", ""),
+            "product": "dataviz",
+            "sso": True,
+            "exp": datetime.now(timezone.utc) + timedelta(days=7)
+        }
+        dataviz_token = jwt.encode(dv_token_data, JWT_SECRET, algorithm="HS256")
+        
+        return {
+            "user": {
+                "id": str(user["_id"]),
+                "email": user["email"],
+                "name": user.get("name", "DataViz User"),
+                "avatar": user.get("avatar"),
+                "sso_provider": "datavision",
+                "sso_linked": True,
+            },
+            "access_token": dataviz_token,
+            "sso": True,
+            "provider": "datavision"
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@api_router.post("/auth/sso/datapulse")
+async def datavision_to_datapulse_sso(authorization: str = Header(None)):
+    """Exchange DataVision token for DataPulse token"""
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(status_code=401, detail="No authorization token provided")
+    
+    dp_token = authorization.replace('Bearer ', '')
+    
+    try:
+        # Verify DataVision token
+        payload = jwt.decode(dp_token, JWT_SECRET, algorithms=["HS256"])
+        user_id = payload.get("sub") or payload.get("user_id")
+        
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token payload")
+        
+        # Get or create DataPulse user
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Create DataPulse-specific token
+        dp_token_data = {
+            "sub": str(user["_id"]),
+            "email": user["email"],
+            "name": user.get("name", ""),
+            "product": "datapulse",
+            "sso": True,
+            "exp": datetime.now(timezone.utc) + timedelta(days=7)
+        }
+        datapulse_token = jwt.encode(dp_token_data, JWT_SECRET, algorithm="HS256")
+        
+        return {
+            "user": {
+                "id": str(user["_id"]),
+                "email": user["email"],
+                "name": user.get("name", "DataPulse User"),
+                "avatar": user.get("avatar"),
+                "sso_provider": "datavision",
+                "sso_linked": True,
+            },
+            "access_token": datapulse_token,
+            "sso": True,
+            "provider": "datavision"
+        }
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
 # ==================== PUBLIC ROUTES ====================
 
 @api_router.get("/")
