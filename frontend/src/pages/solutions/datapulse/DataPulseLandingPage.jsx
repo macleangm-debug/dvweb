@@ -546,6 +546,79 @@ const DataPulseLandingPage = () => {
         </div>
       </section>
 
+      {/* Interactive Demo Section */}
+      <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="inline-block px-4 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-sm text-indigo-300 mb-4">
+              <Zap className="w-4 h-4 inline mr-2" />
+              Interactive Demo • No Signup Required
+            </span>
+            <h2 className="text-3xl font-bold mb-4">Try DataPulse Features Live</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Experience real-time analytics, data integrations, and KPI monitoring firsthand.
+            </p>
+          </motion.div>
+
+          {/* Demo Tabs */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {[
+              { id: 'metrics', label: 'Real-Time Metrics', icon: Activity },
+              { id: 'integration', label: 'Data Integration', icon: Database },
+              { id: 'kpi', label: 'KPI Dashboard', icon: Target },
+              { id: 'alerts', label: 'Alerts & Monitoring', icon: AlertTriangle }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveDemo(tab.id)}
+                className={`px-4 py-2.5 rounded-lg flex items-center gap-2 transition-all ${
+                  activeDemo === tab.id 
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' 
+                    : 'bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Demo Content */}
+          <motion.div
+            key={activeDemo}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-4xl mx-auto"
+          >
+            {activeDemo === 'metrics' && <RealTimeMetricsDemo />}
+            {activeDemo === 'integration' && <DataIntegrationDemo />}
+            {activeDemo === 'kpi' && <KPIDashboardDemo />}
+            {activeDemo === 'alerts' && <AlertsDemo />}
+          </motion.div>
+
+          {/* Demo CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-8"
+          >
+            <p className="text-slate-400 mb-4">Want to see more? Get a personalized demo of all features.</p>
+            <Link to="/solutions/datapulse/register">
+              <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto">
+                Request Full Demo
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
