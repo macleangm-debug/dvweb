@@ -351,6 +351,11 @@ export const FieldForceCanvaLayout = ({ children }) => {
             {children}
           </div>
         </main>
+        
+        {/* Powered by Footer */}
+        <footer className="h-10 bg-[#0f172a] border-t border-white/10 flex items-center justify-center">
+          <span className="text-xs text-white/40">Powered by <a href="/" className="text-white/60 hover:text-white transition-colors">DataVision International</a></span>
+        </footer>
       </div>
 
       {/* Mobile Menu Overlay */}
