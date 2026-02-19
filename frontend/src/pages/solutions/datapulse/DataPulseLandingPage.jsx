@@ -36,7 +36,8 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
-  Target
+  Target,
+  Mic
 } from 'lucide-react';
 
 // Interactive Demo Components
@@ -66,7 +67,7 @@ const RealTimeMetricsDemo = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
-          <Activity className="w-5 h-5 text-indigo-400" />
+          <Activity className="w-5 h-5 text-cyan-400" />
           Real-Time Metrics Dashboard
         </h3>
         <button 
@@ -81,22 +82,22 @@ const RealTimeMetricsDemo = () => {
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
           <div className="text-sm text-slate-400 mb-1">Active Users</div>
-          <div className="text-2xl font-bold text-indigo-400">{metrics.activeUsers.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-cyan-400">{metrics.activeUsers.toLocaleString()}</div>
           <div className="text-xs text-green-400 mt-1">↑ 12% from last hour</div>
         </div>
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
           <div className="text-sm text-slate-400 mb-1">Data Points</div>
-          <div className="text-2xl font-bold text-purple-400">{metrics.dataPoints.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-cyan-400">{metrics.dataPoints.toLocaleString()}</div>
           <div className="text-xs text-green-400 mt-1">↑ 8% from last hour</div>
         </div>
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
           <div className="text-sm text-slate-400 mb-1">API Calls/min</div>
-          <div className="text-2xl font-bold text-emerald-400">{metrics.apiCalls.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-cyan-400">{metrics.apiCalls.toLocaleString()}</div>
           <div className="text-xs text-slate-400 mt-1">Avg: 8,500/min</div>
         </div>
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
           <div className="text-sm text-slate-400 mb-1">Response Time</div>
-          <div className="text-2xl font-bold text-amber-400">{metrics.responseTime}ms</div>
+          <div className="text-2xl font-bold text-cyan-400">{metrics.responseTime}ms</div>
           <div className="text-xs text-green-400 mt-1">Target: &lt;50ms</div>
         </div>
       </div>
@@ -111,7 +112,7 @@ const RealTimeMetricsDemo = () => {
           {[35, 45, 40, 55, 70, 65, 80, 75, 90, 85, 95, 88, 78, 82, 90, 95, 88, 92, 85, 80, 75, 82, 88, 92].map((h, i) => (
             <div 
               key={i} 
-              className="flex-1 bg-gradient-to-t from-indigo-500 to-purple-500 rounded-t opacity-80 hover:opacity-100 transition-opacity"
+              className="flex-1 bg-gradient-to-t from-cyan-500 to-teal-500 rounded-t opacity-80 hover:opacity-100 transition-opacity"
               style={{ height: `${h}%` }}
             />
           ))}
@@ -122,7 +123,7 @@ const RealTimeMetricsDemo = () => {
 };
 
 const DataIntegrationDemo = () => {
-  const [connections, setConnections] = useState([
+  const [connections] = useState([
     { name: 'PostgreSQL', status: 'connected', latency: '12ms', icon: Database },
     { name: 'MongoDB', status: 'connected', latency: '8ms', icon: Server },
     { name: 'REST API', status: 'connected', latency: '45ms', icon: Globe },
@@ -141,10 +142,10 @@ const DataIntegrationDemo = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
-          <Database className="w-5 h-5 text-indigo-400" />
+          <Database className="w-5 h-5 text-cyan-400" />
           Data Source Connections
         </h3>
-        <button className="px-3 py-1.5 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-lg text-sm flex items-center gap-2">
+        <button className="px-3 py-1.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-lg text-sm flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
           Sync All
         </button>
@@ -155,7 +156,7 @@ const DataIntegrationDemo = () => {
           <div key={idx} className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center">
-                <conn.icon className="w-5 h-5 text-indigo-400" />
+                <conn.icon className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
                 <div className="font-medium">{conn.name}</div>
@@ -178,11 +179,11 @@ const DataIntegrationDemo = () => {
       </div>
 
       {testResult && (
-        <div className={`p-4 rounded-xl flex items-center gap-3 ${testResult.status === 'success' ? 'bg-green-500/10 border border-green-500/30' : 'bg-indigo-500/10 border border-indigo-500/30'}`}>
+        <div className={`p-4 rounded-xl flex items-center gap-3 ${testResult.status === 'success' ? 'bg-green-500/10 border border-green-500/30' : 'bg-cyan-500/10 border border-cyan-500/30'}`}>
           {testResult.status === 'testing' ? (
             <>
-              <RefreshCw className="w-5 h-5 text-indigo-400 animate-spin" />
-              <span className="text-indigo-400">Testing {testResult.name} connection...</span>
+              <RefreshCw className="w-5 h-5 text-cyan-400 animate-spin" />
+              <span className="text-cyan-400">Testing {testResult.name} connection...</span>
             </>
           ) : (
             <>
@@ -208,7 +209,7 @@ const KPIDashboardDemo = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
-          <Target className="w-5 h-5 text-indigo-400" />
+          <Target className="w-5 h-5 text-cyan-400" />
           KPI Performance Dashboard
         </h3>
         <select className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm">
@@ -230,7 +231,7 @@ const KPIDashboardDemo = () => {
             <div className="text-2xl font-bold mb-2">{kpi.value}</div>
             <div className="w-full bg-slate-700 rounded-full h-2 mb-2">
               <div 
-                className={`h-2 rounded-full ${kpi.progress >= 100 ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'}`}
+                className={`h-2 rounded-full ${kpi.progress >= 100 ? 'bg-gradient-to-r from-cyan-500 to-teal-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'}`}
                 style={{ width: `${Math.min(kpi.progress, 100)}%` }}
               />
             </div>
@@ -258,7 +259,7 @@ const AlertsDemo = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
-          <AlertTriangle className="w-5 h-5 text-indigo-400" />
+          <AlertTriangle className="w-5 h-5 text-cyan-400" />
           System Alerts & Notifications
         </h3>
         <span className="px-2 py-1 bg-red-500/20 text-red-400 rounded text-xs">
@@ -280,12 +281,12 @@ const AlertsDemo = () => {
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                 alert.type === 'error' ? 'bg-red-500/20' :
                 alert.type === 'warning' ? 'bg-amber-500/20' :
-                alert.type === 'success' ? 'bg-green-500/20' : 'bg-indigo-500/20'
+                alert.type === 'success' ? 'bg-green-500/20' : 'bg-cyan-500/20'
               }`}>
                 {alert.type === 'error' ? <X className="w-4 h-4 text-red-400" /> :
                  alert.type === 'warning' ? <AlertTriangle className="w-4 h-4 text-amber-400" /> :
                  alert.type === 'success' ? <CheckCircle className="w-4 h-4 text-green-400" /> :
-                 <Activity className="w-4 h-4 text-indigo-400" />}
+                 <Activity className="w-4 h-4 text-cyan-400" />}
               </div>
               <div>
                 <div className="text-sm">{alert.message}</div>
@@ -316,117 +317,132 @@ const DataPulseLandingPage = () => {
   const [activeDemo, setActiveDemo] = useState('metrics');
 
   const stats = [
-    { value: '10M+', label: 'Data points collected' },
-    { value: '50+', label: 'Countries served' },
-    { value: '99.9%', label: 'Uptime guarantee' },
-    { value: '500+', label: 'Organizations' }
+    { value: '500+', label: 'Free submissions' },
+    { value: '100%', label: 'Offline capable' },
+    { value: '256-bit', label: 'AES Encryption' },
+    { value: '24/7', label: 'Support available' }
   ];
 
   const howItWorks = [
     {
       step: 1,
-      title: 'Design & Configure',
-      description: 'Build complex forms with advanced logic, validations, and multi-language support.',
-      color: 'from-indigo-500 to-purple-500'
+      title: 'Connect Data Sources',
+      description: 'Integrate with databases, APIs, and streaming platforms in minutes.',
+      color: 'from-cyan-500 to-teal-500'
     },
     {
       step: 2,
-      title: 'Deploy Anywhere',
-      description: 'Deploy to field teams with offline-first capabilities and GPS tracking.',
-      color: 'from-emerald-500 to-teal-500'
+      title: 'Build Dashboards',
+      description: 'Create real-time dashboards with drag-and-drop visualization tools.',
+      color: 'from-emerald-500 to-cyan-500'
     },
     {
       step: 3,
-      title: 'Monitor Quality',
-      description: 'AI-powered quality monitoring ensures data integrity in real-time.',
-      color: 'from-orange-500 to-amber-500'
+      title: 'Set Up Alerts',
+      description: 'Configure intelligent alerts and automated monitoring rules.',
+      color: 'from-teal-500 to-cyan-500'
     },
     {
       step: 4,
-      title: 'Analyze & Report',
-      description: 'Advanced analytics, statistical analysis, and automated reporting.',
-      color: 'from-rose-500 to-pink-500'
+      title: 'Share Insights',
+      description: 'Collaborate with teams and export reports automatically.',
+      color: 'from-cyan-500 to-blue-500'
     }
   ];
 
   const features = [
-    { icon: Database, title: 'Enterprise Data Collection', description: 'Handle millions of records with enterprise-grade infrastructure.' },
-    { icon: WifiOff, title: 'Offline-First Architecture', description: 'Full functionality without internet. Auto-sync when connected.' },
-    { icon: Brain, title: 'AI Quality Monitoring', description: 'Machine learning detects anomalies and ensures data quality.' },
-    { icon: GitBranch, title: 'Complex Skip Logic', description: 'Nested conditions, calculated fields, and dynamic forms.' },
-    { icon: Map, title: 'GPS & Geofencing', description: 'Location validation, route tracking, and area restrictions.' },
-    { icon: Layers, title: 'Multi-Language (EN/SW)', description: 'Full localization support including Swahili.' },
-    { icon: Workflow, title: 'CATI/CAPI Integration', description: 'Computer-assisted interviewing for phone and in-person surveys.' },
-    { icon: Shield, title: 'Enterprise Security', description: 'SOC 2 compliant with role-based access control.' }
+    { icon: Database, title: 'Real-Time Analytics', description: 'Process millions of data points with sub-second latency.' },
+    { icon: Activity, title: 'Live Dashboards', description: 'Auto-refreshing dashboards with customizable widgets.' },
+    { icon: Brain, title: 'AI Insights', description: 'Machine learning powered anomaly detection and forecasting.' },
+    { icon: GitBranch, title: 'Data Pipelines', description: 'Build complex ETL workflows with visual pipeline builder.' },
+    { icon: Globe, title: 'Multi-Source Integration', description: 'Connect 100+ data sources including databases and APIs.' },
+    { icon: Layers, title: 'Custom Metrics', description: 'Define custom KPIs and calculated metrics.' },
+    { icon: Shield, title: 'Enterprise Security', description: 'SOC 2 compliant with role-based access control.' },
+    { icon: Workflow, title: 'Automated Reports', description: 'Schedule and distribute reports automatically.' }
   ];
 
   const useCases = [
-    { icon: Building2, title: 'Development Organizations', description: 'Monitor & Evaluate programs, track indicators, and measure impact across large-scale development initiatives.', tags: ['M&E Systems', 'Impact Evaluation', 'Indicator Tracking'] },
-    { icon: BarChart3, title: 'Research Institutions', description: 'Conduct rigorous quantitative and qualitative research with robust data collection methodologies.', tags: ['Academic Research', 'Policy Studies', 'Statistical Analysis'] },
-    { icon: Users, title: 'Government Agencies', description: 'National surveys, census operations, and public service monitoring at scale.', tags: ['Census Operations', 'Public Services', 'National Statistics'] },
-    { icon: TrendingUp, title: 'Market Research', description: 'Large-scale consumer studies with quality controls and advanced sampling methodologies.', tags: ['Consumer Studies', 'Brand Research', 'Market Analysis'] }
+    { icon: Building2, title: 'Business Intelligence', description: 'Transform raw data into actionable business insights with comprehensive BI tools.', tags: ['Dashboards', 'Reports', 'Analytics'] },
+    { icon: BarChart3, title: 'Operations Monitoring', description: 'Real-time monitoring of business operations and system performance.', tags: ['KPIs', 'Alerts', 'Metrics'] },
+    { icon: Users, title: 'Customer Analytics', description: 'Deep insights into customer behavior, retention, and lifetime value.', tags: ['Segmentation', 'Cohorts', 'Funnels'] },
+    { icon: TrendingUp, title: 'Financial Analytics', description: 'Track revenue, costs, and financial KPIs across the organization.', tags: ['Revenue', 'P&L', 'Forecasting'] }
   ];
 
   const pricingPlans = [
     {
-      name: 'Professional',
-      price: 499,
-      features: ['Unlimited forms', '10,000 submissions/month', 'Full offline support', 'Basic analytics'],
+      name: 'Starter',
+      price: 99,
+      features: ['5 data sources', '10 dashboards', 'Daily refresh', 'Email support'],
       popular: false
     },
     {
-      name: 'Enterprise',
-      price: 1499,
-      features: ['Unlimited everything', 'AI quality monitoring', 'CATI/CAPI modules', 'Priority support', 'Custom integrations'],
+      name: 'Professional',
+      price: 299,
+      features: ['25 data sources', 'Unlimited dashboards', 'Real-time refresh', 'AI insights', 'Priority support'],
       popular: true
     },
     {
-      name: 'Custom',
-      price: null,
-      features: ['On-premise deployment', 'Custom development', 'Dedicated support', 'SLA guarantee', 'Training included'],
+      name: 'Enterprise',
+      price: 'Custom',
+      features: ['Unlimited everything', 'Custom integrations', 'Dedicated support', 'SLA guarantee', 'On-premise option'],
       popular: false
     }
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white" data-testid="datapulse-landing">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800">
+    <div className="min-h-screen bg-slate-950 text-white">
+      {/* Navigation - Standard DataVision Design */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link to="/solutions/datapulse" className="flex items-center gap-2" data-testid="datapulse-logo">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-white" />
+            {/* DataVision Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <div className="bg-white rounded-lg px-2 py-1">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision" 
+                  className="h-6 w-auto"
+                />
               </div>
-              <span className="font-bold text-xl">DataPulse</span>
             </Link>
-            
+
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm text-slate-300 hover:text-white transition-colors">Features</a>
-              <a href="#how-it-works" className="text-sm text-slate-300 hover:text-white transition-colors">How It Works</a>
-              <a href="#pricing" className="text-sm text-slate-300 hover:text-white transition-colors">Pricing</a>
+              <a href="#features" className="text-slate-300 hover:text-white transition-colors">Features</a>
+              <a href="#how-it-works" className="text-slate-300 hover:text-white transition-colors">How It Works</a>
+              <a href="#use-cases" className="text-slate-300 hover:text-white transition-colors">Use Cases</a>
+              <a href="#pricing" className="text-slate-300 hover:text-white transition-colors">Pricing</a>
+              <a href="#demo" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                <Play className="w-4 h-4" />
+                Demo
+              </a>
             </div>
 
-            <div className="hidden md:flex items-center gap-3">
-              <Link to="/solutions/datapulse/login">
-                <button className="px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors" data-testid="datapulse-signin-btn">
-                  Sign In
-                </button>
+            {/* Auth Buttons */}
+            <div className="hidden md:flex items-center gap-4">
+              <Link to="/solutions/datapulse/login" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                <ArrowRight className="w-4 h-4" />
+                Log in
               </Link>
               <Link to="/solutions/datapulse/register">
-                <button className="px-4 py-2 text-sm bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg hover:opacity-90 transition-opacity" data-testid="datapulse-getstarted-btn">
-                  Request Demo
-                  <ArrowRight className="w-4 h-4 ml-1 inline" />
+                <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  Start Free
                 </button>
               </Link>
             </div>
 
-            <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
+        {/* Mobile Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -441,10 +457,10 @@ const DataPulseLandingPage = () => {
                 <a href="#pricing" className="block text-slate-300 hover:text-white">Pricing</a>
                 <div className="pt-4 space-y-2">
                   <Link to="/solutions/datapulse/login" className="block w-full text-center py-2 border border-slate-700 rounded-lg">
-                    Sign In
+                    Log In
                   </Link>
-                  <Link to="/solutions/datapulse/register" className="block w-full text-center py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg">
-                    Request Demo
+                  <Link to="/solutions/datapulse/register" className="block w-full text-center py-2 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg">
+                    Start Free
                   </Link>
                 </div>
               </div>
@@ -453,11 +469,16 @@ const DataPulseLandingPage = () => {
         </AnimatePresence>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Standard DataVision Design */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/10 via-transparent to-transparent" />
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 via-transparent to-transparent" />
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl" />
+        
+        {/* Voice Assistant Icon */}
+        <div className="absolute left-8 bottom-1/3 w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center">
+          <Mic className="w-6 h-6 text-purple-400" />
+        </div>
         
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -465,49 +486,46 @@ const DataPulseLandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <span className="inline-block px-4 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-sm text-indigo-300 mb-6">
-              Enterprise-Grade Data Collection Platform
-            </span>
-            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Real-Time Data Analytics
               <br />
-              <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                Reimagined
+              <span className="text-cyan-400">
+                Made Simple
               </span>
             </h1>
             
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-8">
-              The most powerful platform for data integration, real-time analytics, and business intelligence. 
-              Monitor KPIs, track metrics, and make data-driven decisions. Trusted by leading organizations worldwide.
+              Powerful data integration and analytics platform for modern teams. 
+              Real-time dashboards, AI insights, and automated reporting - 
+              all in one platform trusted by data teams worldwide.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/solutions/datapulse/demo">
-                <button className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2" data-testid="hero-demo-btn">
-                  <Play className="w-5 h-5" />
-                  Try DataPulse Demo
-                </button>
-              </Link>
               <Link to="/solutions/datapulse/register">
-                <button className="w-full sm:w-auto px-8 py-3 border border-slate-700 rounded-lg font-medium hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                  Request Enterprise Demo
+                <button className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2" data-testid="hero-cta-btn">
+                  Start Free Trial
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
+              <a href="#demo">
+                <button className="w-full sm:w-auto px-8 py-3 bg-slate-800 border border-slate-700 rounded-lg font-medium hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+                  <Play className="w-5 h-5" />
+                  Try Interactive Demo
+                </button>
+              </a>
             </div>
           </motion.div>
 
           {/* Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20"
           >
             {stats.map((stat, idx) => (
-              <div key={idx} className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">{stat.value}</div>
+              <div key={idx} className="text-center">
+                <div className="text-3xl font-bold text-cyan-400">{stat.value}</div>
                 <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
               </div>
             ))}
@@ -519,9 +537,9 @@ const DataPulseLandingPage = () => {
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Enterprise Features</h2>
+            <h2 className="text-3xl font-bold mb-4">Powerful Analytics Features</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Built for organizations that need reliability, scale, and advanced capabilities.
+              Everything you need to transform data into actionable insights.
             </p>
           </div>
           
@@ -535,8 +553,8 @@ const DataPulseLandingPage = () => {
                 transition={{ delay: idx * 0.1 }}
                 className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:bg-slate-800 transition-colors"
               >
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-indigo-400" />
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-cyan-400" />
                 </div>
                 <h3 className="font-semibold mb-2">{feature.title}</h3>
                 <p className="text-sm text-slate-400">{feature.description}</p>
@@ -555,7 +573,7 @@ const DataPulseLandingPage = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <span className="inline-block px-4 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-sm text-indigo-300 mb-4">
+            <span className="inline-block px-4 py-1.5 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-sm text-cyan-300 mb-4">
               <Zap className="w-4 h-4 inline mr-2" />
               Interactive Demo • No Signup Required
             </span>
@@ -578,7 +596,7 @@ const DataPulseLandingPage = () => {
                 onClick={() => setActiveDemo(tab.id)}
                 className={`px-4 py-2.5 rounded-lg flex items-center gap-2 transition-all ${
                   activeDemo === tab.id 
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' 
+                    ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white' 
                     : 'bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700'
                 }`}
               >
@@ -610,7 +628,7 @@ const DataPulseLandingPage = () => {
           >
             <p className="text-slate-400 mb-4">Want to see more? Get a personalized demo of all features.</p>
             <Link to="/solutions/datapulse/register">
-              <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto">
+              <button className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto">
                 Request Full Demo
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -620,12 +638,12 @@ const DataPulseLandingPage = () => {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">How It Works</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              From design to insights in four simple steps.
+              From data sources to insights in four simple steps.
             </p>
           </div>
           
@@ -654,12 +672,12 @@ const DataPulseLandingPage = () => {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
+      <section id="use-cases" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Built for Your Industry</h2>
+            <h2 className="text-3xl font-bold mb-4">Built for Every Team</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Trusted by development organizations, research institutions, and government agencies worldwide.
+              DataPulse powers data-driven decisions across industries.
             </p>
           </div>
           
@@ -671,18 +689,18 @@ const DataPulseLandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 hover:bg-slate-800/50 transition-colors"
+                className="bg-slate-800/50 border border-slate-700 rounded-xl p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
-                    <useCase.icon className="w-6 h-6 text-indigo-400" />
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center flex-shrink-0">
+                    <useCase.icon className="w-6 h-6 text-cyan-400" />
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">{useCase.title}</h3>
                     <p className="text-sm text-slate-400 mb-3">{useCase.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {useCase.tags.map((tag, tagIdx) => (
-                        <span key={tagIdx} className="px-2 py-1 text-xs bg-slate-700/50 rounded-full text-slate-300">
+                        <span key={tagIdx} className="px-2 py-1 bg-slate-700 rounded text-xs text-slate-300">
                           {tag}
                         </span>
                       ))}
@@ -696,12 +714,12 @@ const DataPulseLandingPage = () => {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Enterprise Pricing</h2>
+            <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Flexible plans designed for organizations of all sizes.
+              Start free and scale as you grow. No hidden fees.
             </p>
           </div>
           
@@ -713,43 +731,39 @@ const DataPulseLandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`relative rounded-2xl p-8 ${
-                  plan.popular 
-                    ? 'bg-gradient-to-b from-indigo-500/20 to-purple-500/20 border-2 border-indigo-500' 
-                    : 'bg-slate-800/50 border border-slate-700'
-                }`}
+                className={`bg-slate-800/50 border rounded-xl p-6 ${plan.popular ? 'border-cyan-500' : 'border-slate-700'}`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full text-sm font-medium">
+                  <span className="inline-block px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs mb-4">
                     Most Popular
-                  </div>
+                  </span>
                 )}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                  {plan.price !== null ? (
-                    <div>
+                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                <div className="mb-6">
+                  {typeof plan.price === 'number' ? (
+                    <>
                       <span className="text-4xl font-bold">${plan.price}</span>
                       <span className="text-slate-400">/month</span>
-                    </div>
+                    </>
                   ) : (
-                    <div className="text-4xl font-bold">Contact Us</div>
+                    <span className="text-4xl font-bold">{plan.price}</span>
                   )}
                 </div>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, featureIdx) => (
-                    <li key={featureIdx} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-5 h-5 text-indigo-400 flex-shrink-0" />
-                      <span className="text-slate-300">{feature}</span>
+                    <li key={featureIdx} className="flex items-center gap-2 text-sm text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                      {feature}
                     </li>
                   ))}
                 </ul>
-                <Link to={plan.price === null ? '/contact' : '/solutions/datapulse/register'}>
-                  <button className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:opacity-90'
+                <Link to="/solutions/datapulse/register">
+                  <button className={`w-full py-2 rounded-lg font-medium transition-colors ${
+                    plan.popular 
+                      ? 'bg-gradient-to-r from-cyan-500 to-teal-500 hover:opacity-90' 
                       : 'border border-slate-600 hover:bg-slate-700'
                   }`}>
-                    {plan.price === null ? 'Contact Sales' : 'Get Started'}
+                    Get Started
                   </button>
                 </Link>
               </motion.div>
@@ -758,26 +772,26 @@ const DataPulseLandingPage = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl p-12 border border-indigo-500/30"
+            className="text-center"
           >
-            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Data Collection?</h2>
+            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Data?</h2>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto">
-              Join 500+ organizations using DataPulse for research, monitoring, and evaluation.
+              Join thousands of teams using DataPulse for real-time analytics and business intelligence.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/solutions/datapulse/demo">
-                <button className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition-opacity">
-                  Try DataPulse Demo
+              <Link to="/solutions/datapulse/register">
+                <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                  Start Free Trial
                 </button>
               </Link>
-              <Link to="/solutions/datapulse/register">
+              <Link to="/solutions/datapulse/demo">
                 <button className="px-8 py-3 border border-slate-600 rounded-lg font-medium hover:bg-slate-800 transition-colors">
                   Request Enterprise Demo
                 </button>
@@ -791,16 +805,24 @@ const DataPulseLandingPage = () => {
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
-                <Activity className="w-4 h-4 text-white" />
+            <Link to="/" className="flex items-center gap-2">
+              <div className="bg-white rounded-lg px-2 py-1">
+                <img 
+                  src="/datavision-logo-cropped.png" 
+                  alt="DataVision" 
+                  className="h-5 w-auto"
+                />
               </div>
-              <span className="font-bold">DataPulse</span>
-              <span className="text-slate-500 ml-2">by DataVision</span>
+              <span className="font-semibold">DataPulse</span>
+            </Link>
+            <div className="flex items-center gap-6 text-sm text-slate-400">
+              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-white transition-colors">Support</a>
             </div>
-            <div className="text-sm text-slate-500">
-              © 2026 DataPulse. All rights reserved.
-            </div>
+            <p className="text-sm text-slate-500">
+              © 2024 DataVision International. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
@@ -808,5 +830,4 @@ const DataPulseLandingPage = () => {
   );
 };
 
-export { DataPulseLandingPage };
 export default DataPulseLandingPage;
