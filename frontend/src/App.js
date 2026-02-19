@@ -384,15 +384,6 @@ function App() {
                   <Route path="/solutions/survey360/pricing" element={<Survey360PricingPage />} />
                   <Route path="/solutions/survey360/login" element={<Survey360LoginPage />} />
                   <Route path="/solutions/survey360/register" element={<Survey360RegisterPage />} />
-                  <Route path="/solutions/survey360/app" element={<Survey360AppLayout />}>
-                    <Route path="dashboard" element={<Survey360DashboardPage />} />
-                    <Route path="surveys" element={<Survey360SurveysPage />} />
-                    <Route path="surveys/new" element={<Survey360BuilderPage />} />
-                    <Route path="surveys/:id/edit" element={<Survey360BuilderPage />} />
-                    <Route path="responses" element={<Survey360ResponsesPage />} />
-                    <Route path="billing" element={<Survey360BillingPage />} />
-                    <Route path="settings" element={<Survey360SettingsPage />} />
-                  </Route>
                   <Route path="/s/:surveyId" element={<PublicSurveyPage />} />
                   <Route path="/solutions/dataviz-studio" element={<DVLandingPage />} />
                   <Route path="/solutions/me-tracker" element={<METrackerPage />} />
