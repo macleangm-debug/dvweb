@@ -9,6 +9,40 @@ User requested restructuring of the DataVision website navigation and services:
 
 ## What's Been Implemented
 
+### February 19, 2026 - Single SSO Architecture (COMPLETED)
+
+**Unified DataVision SSO for All Products**
+Implemented a single sign-on system where DataVision International is the only authentication gateway. All product login/register pages now redirect to the central DataVision SSO.
+
+**SSO Flow:**
+1. User clicks Login/Register on any product (FieldForce, Survey360, DataViz, DataPulse)
+2. Redirected to `/auth/login?redirect={product}` or `/auth/register?redirect={product}`
+3. Authenticates with DataVision credentials
+4. Token exchange generates product-specific token via `/api/auth/sso/{product}`
+5. Redirected to product dashboard with both DV token and product token
+
+**Products Under SSO:**
+- FieldForce → `/auth/login?redirect=fieldforce`
+- Survey360 → `/auth/login?redirect=survey360`
+- DataViz Studio → `/auth/login?redirect=dataviz`
+- DataPulse → `/auth/login?redirect=datapulse`
+
+**Backend Endpoints Added:**
+- `POST /api/auth/sso/dataviz` - Exchange DV token for DataViz token
+- `POST /api/auth/sso/datapulse` - Exchange DV token for DataPulse token
+
+**Files Modified:**
+- `/app/frontend/src/solutions/fieldforce/app/pages/AuthPages.jsx` - SSO redirect
+- `/app/frontend/src/pages/solutions/survey360/Survey360AuthPages.jsx` - SSO redirect
+- `/app/frontend/src/solutions/dataviz-studio/app/pages/AuthPages.jsx` - SSO redirect
+- `/app/frontend/src/pages/solutions/datapulse/DataPulseAuthPages.jsx` - SSO redirect
+- `/app/frontend/src/pages/DataVisionAuth.js` - Updated to handle all 4 products
+- `/app/backend/server.py` - Added SSO endpoints for DataViz and DataPulse
+
+**Test Account:** `admin@datavision.co.tz` / `admin123`
+
+---
+
 ### February 18, 2026 - BioSign SDK Integration (COMPLETED)
 
 **New Financial Services Category & BioSign SDK Product**
