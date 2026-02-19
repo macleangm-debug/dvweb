@@ -7,7 +7,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://biosign-branding.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://data-analytics-hub-11.preview.emergentagent.com')
 
 class TestAdminLogin:
     """Test admin authentication"""

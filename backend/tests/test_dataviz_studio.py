@@ -7,7 +7,7 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://biosign-branding.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://data-analytics-hub-11.preview.emergentagent.com')
 
 
 class TestDataVizAuthEndpoints:
