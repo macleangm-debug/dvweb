@@ -227,7 +227,7 @@ export const DataVisionLogin = () => {
 
         <div className="mt-8 text-center">
           <p className="text-gray-500 text-xs mb-3">Access all DataVision products with one account</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3">
             <div className="flex items-center gap-2 text-gray-400 text-sm">
               <div className="w-6 h-6 bg-teal-500/20 rounded flex items-center justify-center">
                 <svg className="w-3 h-3 text-teal-400" fill="currentColor" viewBox="0 0 20 20">
@@ -237,13 +237,29 @@ export const DataVisionLogin = () => {
               FieldForce
             </div>
             <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <div className="w-6 h-6 bg-purple-500/20 rounded flex items-center justify-center">
-                <svg className="w-3 h-3 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-6 h-6 bg-cyan-500/20 rounded flex items-center justify-center">
+                <svg className="w-3 h-3 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                 </svg>
               </div>
               Survey360
+            </div>
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
+              <div className="w-6 h-6 bg-violet-500/20 rounded flex items-center justify-center">
+                <svg className="w-3 h-3 text-violet-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                </svg>
+              </div>
+              DataViz
+            </div>
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
+              <div className="w-6 h-6 bg-indigo-500/20 rounded flex items-center justify-center">
+                <svg className="w-3 h-3 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              DataPulse
             </div>
           </div>
         </div>
