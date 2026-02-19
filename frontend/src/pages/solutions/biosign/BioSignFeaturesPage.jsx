@@ -135,38 +135,43 @@ const WebAuthnDemo = ({ onSuccess, getAuthHeaders }) => {
 
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      <Card>
+      <Card className="bg-card border-border/50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Fingerprint className="w-5 h-5 text-green-500" />
+            <Fingerprint className="w-5 h-5 text-primary" />
             Register Credential
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>User ID</Label>
-            <Input value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="Enter user ID" />
+            <Label className="text-muted-foreground">User ID</Label>
+            <Input 
+              value={userId} 
+              onChange={(e) => setUserId(e.target.value)} 
+              placeholder="demo-user" 
+              className="bg-background border-border"
+            />
           </div>
-          <Button onClick={registerCredential} disabled={loading} className="w-full">
+          <Button onClick={registerCredential} disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-black font-medium">
             {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Key className="w-4 h-4 mr-2" />}
             {loading ? "Registering..." : "Register with Biometrics"}
           </Button>
           {result && (
-            <div className={`p-3 rounded-lg ${result.success ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+            <div className={`p-3 rounded-lg ${result.success ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`}>
               {result.success ? <CheckCircle className="w-4 h-4 inline mr-2" /> : <AlertTriangle className="w-4 h-4 inline mr-2" />}
               {result.message}
             </div>
           )}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="bg-card border-border/50">
         <CardHeader>
           <CardTitle>Registration Progress</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {steps.map((s, i) => (
-            <div key={i} className={`flex items-center gap-3 p-2 rounded ${step > i ? 'bg-green-500/10' : step === i + 1 ? 'bg-primary/10' : 'bg-muted/30'}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step > i ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-primary text-white' : 'bg-muted'}`}>
+            <div key={i} className={`flex items-center gap-3 p-3 rounded-lg ${step > i ? 'bg-green-500/10 border border-green-500/20' : step === i + 1 ? 'bg-primary/10 border border-primary/20' : 'bg-muted/20 border border-border/30'}`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step > i ? 'bg-green-500 text-black' : step === i + 1 ? 'bg-primary text-black' : 'bg-muted text-muted-foreground'}`}>
                 {step > i ? <CheckCircle className="w-3 h-3" /> : i + 1}
               </div>
               <span className={step > i ? 'text-green-400' : step === i + 1 ? 'text-primary' : 'text-muted-foreground'}>{s}</span>
