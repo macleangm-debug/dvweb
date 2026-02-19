@@ -461,6 +461,11 @@ export function DashboardLayout({ children }) {
               {children}
             </div>
           </main>
+          
+          {/* Powered by Footer */}
+          <footer className="h-10 bg-card border-t border-border flex items-center justify-center">
+            <span className="text-xs text-muted-foreground">Powered by <a href="/" className="text-foreground/60 hover:text-foreground transition-colors">DataVision International</a></span>
+          </footer>
         </div>
 
         {/* Mobile Menu Overlay */}
