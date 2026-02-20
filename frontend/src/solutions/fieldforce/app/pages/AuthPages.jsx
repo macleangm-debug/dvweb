@@ -3,7 +3,7 @@
  * Single Sign-On Architecture: All auth goes through DataVision
  */
 import React, { useState, useEffect } from 'react';
-import SSOLoadingOverlay, { STAGES } from '../../../../components/SSOLoadingOverlay';
+import SSOLoadingOverlay, { STAGES } from '@/components/SSOLoadingOverlay';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
