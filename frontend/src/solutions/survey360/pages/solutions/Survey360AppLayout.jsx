@@ -34,6 +34,7 @@ import {
 } from '../../components/ui/tooltip';
 import { useAuthStore, useOrgStore, useUIStore } from '../../store';
 import { cn } from '../../lib/utils';
+import SSOLoadingOverlay, { STAGES } from '../../../../components/SSOLoadingOverlay';
 
 const NAVIGATION = [
   { id: 'home', label: 'Home', icon: Home, path: '/solutions/survey360/app/dashboard' },
@@ -50,10 +51,27 @@ export function Survey360AppLayout({ children }) {
   const { currentOrg, organizations, setCurrentOrg } = useOrgStore();
   const { theme, setTheme } = useUIStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLogoutOverlay, setShowLogoutOverlay] = useState(false);
+  const [logoutStage, setLogoutStage] = useState(STAGES.LOGGING_OUT);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    setShowLogoutOverlay(true);
+    setLogoutStage(STAGES.LOGGING_OUT);
+    
+    await new Promise(r => setTimeout(r, 1000));
+    
     logout();
-    navigate('/solutions/survey360/login');
+    localStorage.removeItem('survey360_token');
+    localStorage.removeItem('survey360_user');
+    localStorage.removeItem('auth-storage');
+    localStorage.removeItem('org-storage');
+    localStorage.removeItem('datavision_token');
+    localStorage.removeItem('dv_token');
+    
+    setLogoutStage(STAGES.LOGOUT_COMPLETE);
+    await new Promise(r => setTimeout(r, 800));
+    
+    window.location.href = '/';
   };
 
   const toggleTheme = () => {
