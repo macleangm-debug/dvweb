@@ -90,6 +90,14 @@ export function Survey360AppLayout({ children }) {
   }
 
   return (
+    <>
+      {/* SSO Logout Overlay */}
+      <SSOLoadingOverlay 
+        product="survey360" 
+        stage={logoutStage} 
+        isVisible={showLogoutOverlay} 
+      />
+      
     <TooltipProvider>
       <div className="flex h-screen bg-[#0a1628]">
         {/* Sidebar */}
