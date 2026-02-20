@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import SSOLoadingOverlay, { STAGES } from '../components/SSOLoadingOverlay';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
