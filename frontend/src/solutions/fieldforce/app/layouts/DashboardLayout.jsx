@@ -205,6 +205,14 @@ export function DashboardLayout({ children }) {
   };
 
   return (
+    <>
+      {/* SSO Logout Overlay */}
+      <SSOLoadingOverlay 
+        product="fieldforce" 
+        stage={logoutStage} 
+        isVisible={showLogoutOverlay} 
+      />
+      
     <TooltipProvider>
       <div className="fieldforce-app flex h-screen bg-background">
         {/* Rail - Thin icon sidebar with labels */}
