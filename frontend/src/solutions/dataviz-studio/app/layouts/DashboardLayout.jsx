@@ -53,6 +53,7 @@ import {
 } from '../components/ui/tooltip';
 import { useAuthStore, useOrgStore } from '../store';
 import { cn } from '../lib/utils';
+import SSOLoadingOverlay, { STAGES } from '../../../../../components/SSOLoadingOverlay';
 
 // Base path for DataViz Studio within the main app
 const BASE_PATH = '/solutions/dataviz/app';
