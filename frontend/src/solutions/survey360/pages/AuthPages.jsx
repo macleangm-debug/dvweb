@@ -2,27 +2,30 @@
  * Survey360 Auth Pages - Redirects to DataVision SSO
  * Single Sign-On Architecture: All auth goes through DataVision
  */
-import React, { useEffect } from 'react';
-import { ClipboardList } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import SSOLoadingOverlay, { STAGES } from '../../../../components/SSOLoadingOverlay';
+
+const API = process.env.REACT_APP_BACKEND_URL;
 
 // Redirect to DataVision SSO for login
 export function LoginPage() {
+  const [stage, setStage] = useState(STAGES.REDIRECT_TO_SSO);
+
   useEffect(() => {
-    // Check if already authenticated with DataVision
     const dvToken = localStorage.getItem('dv_token') || localStorage.getItem('datavision_token');
     
     if (dvToken) {
-      // Already logged in with DataVision, try to get Survey360 token
+      setStage(STAGES.EXCHANGING_TOKEN);
       exchangeSSOToken(dvToken);
     } else {
-      // Redirect to DataVision SSO
-      window.location.href = '/auth/login?redirect=survey360';
+      setTimeout(() => {
+        window.location.href = '/auth/login?redirect=survey360';
+      }, 1500);
     }
   }, []);
 
   const exchangeSSOToken = async (dvToken) => {
     try {
-      const API = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${API}/api/auth/sso/survey360`, {
         method: 'POST',
         headers: {
@@ -45,7 +48,14 @@ export function LoginPage() {
             version: 0
           }));
         }
-        window.location.href = '/solutions/survey360/app/dashboard';
+        
+        setStage(STAGES.ENTERING_APP);
+        setTimeout(() => {
+          setStage(STAGES.COMPLETE);
+          setTimeout(() => {
+            window.location.href = '/solutions/survey360/app/dashboard';
+          }, 500);
+        }, 800);
       } else {
         window.location.href = '/auth/login?redirect=survey360';
       }
@@ -55,46 +65,20 @@ export function LoginPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1d32] to-[#0a1628] flex items-center justify-center">
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl flex items-center justify-center">
-            <ClipboardList className="w-6 h-6 text-white" />
-          </div>
-          <span className="text-2xl font-bold text-white">Survey360</span>
-        </div>
-        <div className="flex items-center gap-3 text-white/60">
-          <div className="w-5 h-5 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin"></div>
-          <span>Redirecting to DataVision Login...</span>
-        </div>
-      </div>
-    </div>
-  );
+  return <SSOLoadingOverlay product="survey360" stage={stage} isVisible={true} />;
 }
 
 // Redirect to DataVision SSO for registration
 export function RegisterPage() {
+  const [stage] = useState(STAGES.REDIRECT_TO_SSO);
+
   useEffect(() => {
-    window.location.href = '/auth/register?redirect=survey360';
+    setTimeout(() => {
+      window.location.href = '/auth/register?redirect=survey360';
+    }, 1500);
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1d32] to-[#0a1628] flex items-center justify-center">
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl flex items-center justify-center">
-            <ClipboardList className="w-6 h-6 text-white" />
-          </div>
-          <span className="text-2xl font-bold text-white">Survey360</span>
-        </div>
-        <div className="flex items-center gap-3 text-white/60">
-          <div className="w-5 h-5 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin"></div>
-          <span>Redirecting to DataVision Registration...</span>
-        </div>
-      </div>
-    </div>
-  );
+  return <SSOLoadingOverlay product="survey360" stage={stage} isVisible={true} />;
 }
 
 export default LoginPage;
