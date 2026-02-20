@@ -265,7 +265,7 @@ const SSOLoadingOverlay = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-6 text-white/40 text-xs"
+              className="mt-4 text-white/40 text-xs"
             >
               Secure single sign-on powered by DataVision International
             </motion.p>
