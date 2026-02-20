@@ -45,8 +45,11 @@ Build a comprehensive web platform for DataVision featuring a decentralized, pro
 - Created `SSOLoadingOverlay.jsx` component with animated transitions
 - Product-specific color themes and branding during SSO flow
 - Progress stages: "Connecting" → "Setting Up" → "Welcome" → "Ready"
+- Added logout overlay stages: "Signing Out" → "Signed Out"
 - Updated all 4 product auth pages (FieldForce, Survey360, DataPulse, DataViz)
+- Updated all 4 product DashboardLayout files with logout overlay
 - Updated central DataVisionAuth.js for smooth post-login transitions
+- Fixed backend SSO endpoints for DataPulse and DataViz (SECRET_KEY, user lookup)
 
 ### Feb 2026 - SSO & Billing UI
 - Unified DataVision SSO implemented across all 4 products
