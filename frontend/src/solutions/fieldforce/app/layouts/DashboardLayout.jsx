@@ -173,9 +173,26 @@ export function DashboardLayout({ children }) {
   const currentGroup = NAVIGATION.find(g => g.id === activeGroup);
   const showPanel = currentGroup?.items?.length > 0;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    setShowLogoutOverlay(true);
+    setLogoutStage(STAGES.LOGGING_OUT);
+    
+    // Small delay to show the overlay
+    await new Promise(r => setTimeout(r, 1000));
+    
+    // Clear all auth data
     logout();
-    navigate('/solutions/fieldforce/app/login');
+    localStorage.removeItem('fieldforce_token');
+    localStorage.removeItem('ff_token');
+    localStorage.removeItem('fieldforce_user');
+    localStorage.removeItem('auth-storage');
+    localStorage.removeItem('datavision_token');
+    localStorage.removeItem('dv_token');
+    
+    setLogoutStage(STAGES.LOGOUT_COMPLETE);
+    await new Promise(r => setTimeout(r, 800));
+    
+    window.location.href = '/';
   };
 
   const handleRailClick = (group) => {
