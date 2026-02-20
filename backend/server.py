@@ -1442,19 +1442,19 @@ async def datavision_to_datapulse_sso(authorization: str = Header(None)):
     try:
         # Verify DataVision token
         payload = jwt.decode(dp_token, SECRET_KEY, algorithms=["HS256"])
-        user_id = payload.get("sub") or payload.get("user_id")
+        user_email = payload.get("sub")
         
-        if not user_id:
+        if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token payload")
         
-        # Get or create DataPulse user
-        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        # Get user from datavision_users collection
+        user = await db.datavision_users.find_one({"email": user_email}, {"_id": 0, "password": 0})
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
         # Create DataPulse-specific token
         dp_token_data = {
-            "sub": str(user["_id"]),
+            "sub": user_email,
             "email": user["email"],
             "name": user.get("name", ""),
             "product": "datapulse",
