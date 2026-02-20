@@ -163,6 +163,8 @@ export function DashboardLayout({ children }) {
   const [activeGroup, setActiveGroup] = useState('home');
   const [panelOpen, setPanelOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLogoutOverlay, setShowLogoutOverlay] = useState(false);
+  const [logoutStage, setLogoutStage] = useState(STAGES.LOGGING_OUT);
 
   // Update active group based on route
   useEffect(() => {
@@ -174,9 +176,22 @@ export function DashboardLayout({ children }) {
   const currentGroup = NAVIGATION.find(g => g.id === activeGroup);
   const showPanel = currentGroup?.items?.length > 0;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    setShowLogoutOverlay(true);
+    setLogoutStage(STAGES.LOGGING_OUT);
+    
+    await new Promise(r => setTimeout(r, 1000));
+    
     logout();
-    navigate('/login');
+    localStorage.removeItem('dp_token');
+    localStorage.removeItem('datapulse_user');
+    localStorage.removeItem('datavision_token');
+    localStorage.removeItem('dv_token');
+    
+    setLogoutStage(STAGES.LOGOUT_COMPLETE);
+    await new Promise(r => setTimeout(r, 800));
+    
+    window.location.href = '/';
   };
 
   const handleRailClick = (group) => {
@@ -189,6 +204,14 @@ export function DashboardLayout({ children }) {
   };
 
   return (
+    <>
+      {/* SSO Logout Overlay */}
+      <SSOLoadingOverlay 
+        product="datapulse" 
+        stage={logoutStage} 
+        isVisible={showLogoutOverlay} 
+      />
+      
     <TooltipProvider>
       <div className="flex h-screen bg-background">
         {/* Rail - Thin icon sidebar with labels */}
