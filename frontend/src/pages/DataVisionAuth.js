@@ -721,6 +721,7 @@ export const DataVisionRegister = () => {
         </Link>
       </motion.div>
     </div>
+    </>
   );
 };
 
