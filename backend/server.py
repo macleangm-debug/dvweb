@@ -1441,7 +1441,7 @@ async def datavision_to_datapulse_sso(authorization: str = Header(None)):
     
     try:
         # Verify DataVision token
-        payload = jwt.decode(dp_token, JWT_SECRET, algorithms=["HS256"])
+        payload = jwt.decode(dp_token, SECRET_KEY, algorithms=["HS256"])
         user_id = payload.get("sub") or payload.get("user_id")
         
         if not user_id:
@@ -1461,7 +1461,7 @@ async def datavision_to_datapulse_sso(authorization: str = Header(None)):
             "sso": True,
             "exp": datetime.now(timezone.utc) + timedelta(days=7)
         }
-        datapulse_token = jwt.encode(dp_token_data, JWT_SECRET, algorithm="HS256")
+        datapulse_token = jwt.encode(dp_token_data, SECRET_KEY, algorithm="HS256")
         
         return {
             "user": {
