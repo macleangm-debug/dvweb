@@ -183,6 +183,14 @@ export function DashboardLayout({ children }) {
   };
 
   return (
+    <>
+      {/* SSO Logout Overlay */}
+      <SSOLoadingOverlay 
+        product="dataviz" 
+        stage={logoutStage} 
+        isVisible={showLogoutOverlay} 
+      />
+      
     <TooltipProvider>
       <div className="flex h-screen bg-background">
         {/* Rail - Thin icon sidebar with labels */}
