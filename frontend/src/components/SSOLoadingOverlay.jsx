@@ -89,6 +89,18 @@ const SSOLoadingOverlay = ({
           subtitle: 'Launching application...',
           progress: 100
         };
+      case STAGES.LOGGING_OUT:
+        return {
+          title: 'Signing Out',
+          subtitle: `Logging out of ${productConfig.name}...`,
+          progress: 50
+        };
+      case STAGES.LOGOUT_COMPLETE:
+        return {
+          title: 'Signed Out',
+          subtitle: 'Redirecting to home...',
+          progress: 100
+        };
       default:
         return {
           title: 'Loading',
