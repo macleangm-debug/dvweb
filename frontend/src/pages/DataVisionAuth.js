@@ -58,9 +58,39 @@ export const DataVisionLogin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayProduct, setOverlayProduct] = useState('fieldforce');
+  const [overlayStage, setOverlayStage] = useState(STAGES.AUTHENTICATING);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') || '/';
+
+  const handleProductRedirect = async (access_token, product, dashboardUrl, storageSetup) => {
+    setOverlayProduct(product);
+    setShowOverlay(true);
+    setOverlayStage(STAGES.AUTHENTICATING);
+    
+    await new Promise(r => setTimeout(r, 600));
+    setOverlayStage(STAGES.EXCHANGING_TOKEN);
+    
+    try {
+      const ssoResponse = await axios.post(`${API}/api/auth/sso/${product}`, {}, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      });
+      
+      storageSetup(ssoResponse.data);
+      
+      setOverlayStage(STAGES.ENTERING_APP);
+      await new Promise(r => setTimeout(r, 800));
+      setOverlayStage(STAGES.COMPLETE);
+      await new Promise(r => setTimeout(r, 500));
+      
+      window.location.href = dashboardUrl;
+    } catch (err) {
+      setShowOverlay(false);
+      setError('Failed to access product. Please try again.');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,48 +108,40 @@ export const DataVisionLogin = () => {
       localStorage.setItem('datavision_user', JSON.stringify(user));
       
       if (redirect.includes('fieldforce')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/fieldforce`, {}, {
-          headers: { Authorization: `Bearer ${access_token}` }
-        });
-        localStorage.setItem('fieldforce_token', ssoResponse.data.access_token);
-        localStorage.setItem('ff_token', ssoResponse.data.access_token);
-        localStorage.setItem('fieldforce_user', JSON.stringify(ssoResponse.data.user));
-        localStorage.setItem('auth-storage', JSON.stringify({
-          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
-          version: 0
-        }));
-        window.location.href = '/solutions/fieldforce/app/dashboard';
-      } else if (redirect.includes('survey360')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/survey360`, {}, {
-          headers: { Authorization: `Bearer ${access_token}` }
-        });
-        localStorage.setItem('survey360_token', ssoResponse.data.access_token);
-        localStorage.setItem('survey360_user', JSON.stringify(ssoResponse.data.user));
-        localStorage.setItem('auth-storage', JSON.stringify({
-          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
-          version: 0
-        }));
-        if (ssoResponse.data.user.org_id) {
-          localStorage.setItem('org-storage', JSON.stringify({
-            state: { currentOrg: { id: ssoResponse.data.user.org_id, name: ssoResponse.data.user.name + "'s Organization" }, organizations: [] },
+        await handleProductRedirect(access_token, 'fieldforce', '/solutions/fieldforce/app/dashboard', (data) => {
+          localStorage.setItem('fieldforce_token', data.access_token);
+          localStorage.setItem('ff_token', data.access_token);
+          localStorage.setItem('fieldforce_user', JSON.stringify(data.user));
+          localStorage.setItem('auth-storage', JSON.stringify({
+            state: { user: data.user, token: data.access_token, isAuthenticated: true },
             version: 0
           }));
-        }
-        window.location.href = '/solutions/survey360/app/dashboard';
+        });
+      } else if (redirect.includes('survey360')) {
+        await handleProductRedirect(access_token, 'survey360', '/solutions/survey360/app/dashboard', (data) => {
+          localStorage.setItem('survey360_token', data.access_token);
+          localStorage.setItem('survey360_user', JSON.stringify(data.user));
+          localStorage.setItem('auth-storage', JSON.stringify({
+            state: { user: data.user, token: data.access_token, isAuthenticated: true },
+            version: 0
+          }));
+          if (data.user.org_id) {
+            localStorage.setItem('org-storage', JSON.stringify({
+              state: { currentOrg: { id: data.user.org_id, name: data.user.name + "'s Organization" }, organizations: [] },
+              version: 0
+            }));
+          }
+        });
       } else if (redirect.includes('dataviz')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/dataviz`, {}, {
-          headers: { Authorization: `Bearer ${access_token}` }
+        await handleProductRedirect(access_token, 'dataviz', '/solutions/dataviz/app/dashboard', (data) => {
+          localStorage.setItem('dataviz_token', data.access_token);
+          localStorage.setItem('dataviz_user', JSON.stringify(data.user));
         });
-        localStorage.setItem('dataviz_token', ssoResponse.data.access_token);
-        localStorage.setItem('dataviz_user', JSON.stringify(ssoResponse.data.user));
-        window.location.href = '/solutions/dataviz/app/dashboard';
       } else if (redirect.includes('datapulse')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/datapulse`, {}, {
-          headers: { Authorization: `Bearer ${access_token}` }
+        await handleProductRedirect(access_token, 'datapulse', '/solutions/datapulse/app/dashboard', (data) => {
+          localStorage.setItem('dp_token', data.access_token);
+          localStorage.setItem('datapulse_user', JSON.stringify(data.user));
         });
-        localStorage.setItem('dp_token', ssoResponse.data.access_token);
-        localStorage.setItem('datapulse_user', JSON.stringify(ssoResponse.data.user));
-        window.location.href = '/solutions/datapulse/app/dashboard';
       } else {
         navigate(redirect);
       }
