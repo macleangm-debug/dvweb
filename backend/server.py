@@ -1396,8 +1396,10 @@ async def datavision_to_dataviz_sso(authorization: str = Header(None)):
         if not user_email:
             raise HTTPException(status_code=401, detail="Invalid token payload")
         
-        # Get user from datavision_users collection
+        # Get user from datavision_users collection first, then try admins
         user = await db.datavision_users.find_one({"email": user_email}, {"_id": 0, "password": 0})
+        if not user:
+            user = await db.admins.find_one({"email": user_email}, {"_id": 0, "password": 0})
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
