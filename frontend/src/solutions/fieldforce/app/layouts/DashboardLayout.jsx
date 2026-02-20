@@ -131,6 +131,8 @@ export function DashboardLayout({ children }) {
   const [panelOpen, setPanelOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
+  const [showLogoutOverlay, setShowLogoutOverlay] = useState(false);
+  const [logoutStage, setLogoutStage] = useState(STAGES.LOGGING_OUT);
 
   // Auth guard - check both Zustand state and localStorage
   useEffect(() => {
