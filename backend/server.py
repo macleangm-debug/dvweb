@@ -1465,7 +1465,7 @@ async def datavision_to_datapulse_sso(authorization: str = Header(None)):
         
         return {
             "user": {
-                "id": str(user["_id"]),
+                "id": user.get("id", user_email),
                 "email": user["email"],
                 "name": user.get("name", "DataPulse User"),
                 "avatar": user.get("avatar"),
