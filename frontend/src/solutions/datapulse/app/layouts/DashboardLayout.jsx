@@ -61,7 +61,7 @@ import {
 import { useAuthStore, useOrgStore, useUIStore } from '../store';
 import { cn } from '../lib/utils';
 import { OfflineStatusIndicator } from '../components/OfflineStatus';
-import SSOLoadingOverlay, { STAGES } from 'components/SSOLoadingOverlay';
+import SSOLoadingOverlay, { STAGES } from '@/components/SSOLoadingOverlay';
 
 // Navigation structure - grouped for Canva-style rail
 const NAVIGATION = [
