@@ -375,6 +375,7 @@ export function Survey360AppLayout({ children }) {
         </AnimatePresence>
       </div>
     </TooltipProvider>
+    </>
   );
 }
 
