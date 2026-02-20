@@ -44,7 +44,9 @@ const STAGES = {
   AUTHENTICATING: 'authenticating',
   EXCHANGING_TOKEN: 'exchanging_token',
   ENTERING_APP: 'entering_app',
-  COMPLETE: 'complete'
+  COMPLETE: 'complete',
+  LOGGING_OUT: 'logging_out',
+  LOGOUT_COMPLETE: 'logout_complete'
 };
 
 const SSOLoadingOverlay = ({ 
