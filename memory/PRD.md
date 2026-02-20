@@ -41,6 +41,13 @@ Build a comprehensive web platform for DataVision featuring a decentralized, pro
 
 ## What's Been Implemented
 
+### Feb 20, 2026 - SSO UX Improvement
+- Created `SSOLoadingOverlay.jsx` component with animated transitions
+- Product-specific color themes and branding during SSO flow
+- Progress stages: "Connecting" → "Setting Up" → "Welcome" → "Ready"
+- Updated all 4 product auth pages (FieldForce, Survey360, DataPulse, DataViz)
+- Updated central DataVisionAuth.js for smooth post-login transitions
+
 ### Feb 2026 - SSO & Billing UI
 - Unified DataVision SSO implemented across all 4 products
 - Individual product login pages redirect to central SSO
