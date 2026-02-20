@@ -34,7 +34,7 @@ import {
 } from '../../components/ui/tooltip';
 import { useAuthStore, useOrgStore, useUIStore } from '../../store';
 import { cn } from '../../lib/utils';
-import SSOLoadingOverlay, { STAGES } from '../../../../components/SSOLoadingOverlay';
+import SSOLoadingOverlay, { STAGES } from 'components/SSOLoadingOverlay';
 
 const NAVIGATION = [
   { id: 'home', label: 'Home', icon: Home, path: '/solutions/survey360/app/dashboard' },

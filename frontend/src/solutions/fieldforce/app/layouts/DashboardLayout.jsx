@@ -52,7 +52,7 @@ import {
 import { useAuthStore, useOrgStore, useUIStore } from '../store';
 import { cn } from '../lib/utils';
 import { OfflineStatusIndicator } from '../components/OfflineStatus';
-import SSOLoadingOverlay, { STAGES } from '../../../../../components/SSOLoadingOverlay';
+import SSOLoadingOverlay, { STAGES } from 'components/SSOLoadingOverlay';
 
 // FieldForce Navigation - Simplified for mobile data collection
 const NAVIGATION = [
