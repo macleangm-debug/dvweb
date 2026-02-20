@@ -309,6 +309,9 @@ export const DataVisionRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [token, setToken] = useState('');
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayProduct, setOverlayProduct] = useState('fieldforce');
+  const [overlayStage, setOverlayStage] = useState(STAGES.EXCHANGING_TOKEN);
   
   // Step 2 fields
   const [country, setCountry] = useState('');
@@ -344,6 +347,7 @@ export const DataVisionRegister = () => {
       const { access_token, user } = response.data;
       
       localStorage.setItem('datavision_token', access_token);
+      localStorage.setItem('dv_token', access_token);
       localStorage.setItem('datavision_user', JSON.stringify(user));
       setToken(access_token);
       
@@ -381,49 +385,61 @@ export const DataVisionRegister = () => {
     }
   };
 
-  const completeRegistration = async () => {
+  const handleProductRedirect = async (product, dashboardUrl, storageSetup) => {
+    setOverlayProduct(product);
+    setShowOverlay(true);
+    setOverlayStage(STAGES.EXCHANGING_TOKEN);
+    
     try {
-      if (redirect.includes('fieldforce')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/fieldforce`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        localStorage.setItem('fieldforce_token', ssoResponse.data.access_token);
-        localStorage.setItem('ff_token', ssoResponse.data.access_token);
-        localStorage.setItem('fieldforce_user', JSON.stringify(ssoResponse.data.user));
-        localStorage.setItem('auth-storage', JSON.stringify({
-          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
-          version: 0
-        }));
-        window.location.href = '/solutions/fieldforce/app/dashboard';
-      } else if (redirect.includes('survey360')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/survey360`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        localStorage.setItem('survey360_token', ssoResponse.data.access_token);
-        localStorage.setItem('survey360_user', JSON.stringify(ssoResponse.data.user));
-        localStorage.setItem('auth-storage', JSON.stringify({
-          state: { user: ssoResponse.data.user, token: ssoResponse.data.access_token, isAuthenticated: true },
-          version: 0
-        }));
-        window.location.href = '/solutions/survey360/app/dashboard';
-      } else if (redirect.includes('dataviz')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/dataviz`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        localStorage.setItem('dataviz_token', ssoResponse.data.access_token);
-        localStorage.setItem('dataviz_user', JSON.stringify(ssoResponse.data.user));
-        window.location.href = '/solutions/dataviz/app/dashboard';
-      } else if (redirect.includes('datapulse')) {
-        const ssoResponse = await axios.post(`${API}/api/auth/sso/datapulse`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        localStorage.setItem('dp_token', ssoResponse.data.access_token);
-        localStorage.setItem('datapulse_user', JSON.stringify(ssoResponse.data.user));
-        window.location.href = '/solutions/datapulse/app/dashboard';
-      } else {
-        navigate('/');
-      }
+      const ssoResponse = await axios.post(`${API}/api/auth/sso/${product}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      storageSetup(ssoResponse.data);
+      
+      setOverlayStage(STAGES.ENTERING_APP);
+      await new Promise(r => setTimeout(r, 800));
+      setOverlayStage(STAGES.COMPLETE);
+      await new Promise(r => setTimeout(r, 500));
+      
+      window.location.href = dashboardUrl;
     } catch (err) {
+      setShowOverlay(false);
+      navigate('/');
+    }
+  };
+
+  const completeRegistration = async () => {
+    if (redirect.includes('fieldforce')) {
+      await handleProductRedirect('fieldforce', '/solutions/fieldforce/app/dashboard', (data) => {
+        localStorage.setItem('fieldforce_token', data.access_token);
+        localStorage.setItem('ff_token', data.access_token);
+        localStorage.setItem('fieldforce_user', JSON.stringify(data.user));
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: data.user, token: data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+      });
+    } else if (redirect.includes('survey360')) {
+      await handleProductRedirect('survey360', '/solutions/survey360/app/dashboard', (data) => {
+        localStorage.setItem('survey360_token', data.access_token);
+        localStorage.setItem('survey360_user', JSON.stringify(data.user));
+        localStorage.setItem('auth-storage', JSON.stringify({
+          state: { user: data.user, token: data.access_token, isAuthenticated: true },
+          version: 0
+        }));
+      });
+    } else if (redirect.includes('dataviz')) {
+      await handleProductRedirect('dataviz', '/solutions/dataviz/app/dashboard', (data) => {
+        localStorage.setItem('dataviz_token', data.access_token);
+        localStorage.setItem('dataviz_user', JSON.stringify(data.user));
+      });
+    } else if (redirect.includes('datapulse')) {
+      await handleProductRedirect('datapulse', '/solutions/datapulse/app/dashboard', (data) => {
+        localStorage.setItem('dp_token', data.access_token);
+        localStorage.setItem('datapulse_user', JSON.stringify(data.user));
+      });
+    } else {
       navigate('/');
     }
   };
@@ -433,6 +449,14 @@ export const DataVisionRegister = () => {
   };
 
   return (
+    <>
+      {/* SSO Loading Overlay */}
+      <SSOLoadingOverlay 
+        product={overlayProduct} 
+        stage={overlayStage} 
+        isVisible={showOverlay} 
+      />
+      
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
