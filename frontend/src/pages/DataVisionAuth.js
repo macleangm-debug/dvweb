@@ -296,6 +296,7 @@ export const DataVisionLogin = () => {
         </div>
       </motion.div>
     </div>
+    </>
   );
 };
 
