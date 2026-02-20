@@ -596,6 +596,7 @@ export function DashboardLayout({ children }) {
         </AnimatePresence>
       </div>
     </TooltipProvider>
+    </>
   );
 }
 
